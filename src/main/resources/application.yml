@@ -1,0 +1,23 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: thicket-member
+
+  profiles:
+    active: localDB
+
+  datasource:
+    driver-class-name: ${local_db.driver}
+    username: ${local_db.username_}
+    password: ${local_db.password}
+    url: ${local_db.url}
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
