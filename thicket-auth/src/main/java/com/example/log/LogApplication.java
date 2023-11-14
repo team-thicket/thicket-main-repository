@@ -9,5 +9,5 @@ public class LogApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LogApplication.class, args);
 	}
-
+//1
 }
