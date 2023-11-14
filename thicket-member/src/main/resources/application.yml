@@ -9,10 +9,10 @@ spring:
     active: localDB
 
   datasource:
-    driver-class-name: ${local_db.driver}
-    username: ${local_db.username_}
-    password: ${local_db.password}
-    url: ${local_db.url}
+    driver-class-name: ${localDB.driver}
+    username: ${localDB.username_}
+    password: ${localDB.password}
+    url: ${localDB.url}
 
   jpa:
     hibernate:
