@@ -22,7 +22,7 @@ public class MemberServiceImpl implements MemberService{
         // 존재여부를 검사할 필요가 없어졌음.
 
 
-        Member findMember = memberRepository.findByEmail("test123@gmail.com");
+        Member findMember = memberRepository.findByEmail("토큰에서@꺼낸.이메일");
 
         return ResponseMemberDto.toDto(findMember);
     }
@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     public void setNewPassword(RequestSetNewPasswordDto dto) {
         // 인증인가 서버와 연동 했을때 토큰에서 PK Id 값을 추출해서 진행
-        Member findMember = memberRepository.findByEmail("test123@gmail.com");
+        Member findMember = memberRepository.findByEmail("토큰에서@꺼낸.이메일");
 
         if (!dto.getOldPw().equals(findMember.getPassword())) {
             //예외 던지기로 변경
@@ -50,7 +50,7 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     public void setInactive(RequestInactiveDto dto) {
         // 인증인가 서버와 연동 했을때 토큰에서 PK Id 값을 추출해서 진행
-        Member findMember = memberRepository.findByEmail("test123@gmail.com");
+        Member findMember = memberRepository.findByEmail("토큰에서@꺼낸.이메일");
 
         if (!findMember.getPassword().equals(dto.getPswd())) {
             //IllegalArgumentException으로 처리

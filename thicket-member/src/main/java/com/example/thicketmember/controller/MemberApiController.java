@@ -4,6 +4,7 @@ import com.example.thicketmember.dto.request.RequestInactiveDto;
 import com.example.thicketmember.dto.request.RequestSetNewPasswordDto;
 import com.example.thicketmember.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,5 +30,10 @@ public class MemberApiController {
     public ResponseEntity<?> withdraw(@RequestBody RequestInactiveDto dto){
         memberService.setInactive(dto);
         return ResponseEntity.ok("");
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handler(IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }
