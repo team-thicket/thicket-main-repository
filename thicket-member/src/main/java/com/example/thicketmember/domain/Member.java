@@ -5,11 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Getter
-@AllArgsConstructor
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
@@ -31,8 +30,19 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
+    // 테스트용 메서드
+    public static Member createMember(String newName, LocalDate newBirth, String newEmail, String newPassword, MemberStatus newStatus) {
+        Member member = new Member();
 
+        member.name = newName;
+        member.birth = newBirth;
+        member.email = newEmail;
+        member.password = newPassword;
+        member.status = newStatus;
 
+        return member;
+    }
+    //비즈니스 메서드
     public void changePassword(String newPassword) {
         password = newPassword;
     }

@@ -1,9 +1,10 @@
 package com.example.thicketmember.service;
 
-import org.springframework.http.ResponseEntity;
+import com.example.thicketmember.domain.Member;
+import com.example.thicketmember.dto.ResponseMemberDto;
 
 public interface MemberService {
-    ResponseEntity<?> getMemberByEmail(String email);
-    ResponseEntity<?> setNewPassword(String oldPw, String newPw);
-    ResponseEntity<?> setInactive(String pswd);
+    ResponseMemberDto getMemberByToken();
+    void setNewPassword(String oldPw, String newPw);
+    void setInactive(String pswd);
 }

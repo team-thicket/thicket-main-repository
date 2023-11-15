@@ -1,8 +1,11 @@
 package com.example.thicketmember.service;
 
 import com.example.thicketmember.domain.Member;
+import com.example.thicketmember.dto.RequestChangeMemberStatusDto;
+import com.example.thicketmember.dto.ResponseMemberDto;
 import com.example.thicketmember.enumerate.MemberStatus;
 import com.example.thicketmember.repository.MemberRepository;
+import jakarta.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,67 +20,47 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     @Override
-    public ResponseEntity<?> getMemberByEmail(String email) {
+    public ResponseMemberDto getMemberByToken() {
         // 인증인가 서버와 연동 했을때 토큰에서 PK Id 값을 추출해서 진행
-        Long tokenId = 1L;
-        Optional<Member> optionalMember = memberRepository.findById(tokenId);
+        // 이미 인증/인가 서버에서 회원의 존재 여부가 검증 되었기 때문에
+        // 존재여부를 검사할 필요가 없어졌음.
 
-        if (optionalMember.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("존재하지 않는 회원입니다.");
-        }
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(optionalMember.get());
+        Member findMember = memberRepository.findByEmail("test123@gmail.com");
+
+        return ResponseMemberDto.toDto(findMember);
     }
 
     @Override
-//    @Transactional
-    public ResponseEntity<?> setNewPassword(String oldPw, String newPw) {
+    @Transactional
+    public void setNewPassword(String oldPw, String newPw) {
         // 인증인가 서버와 연동 했을때 토큰에서 PK Id 값을 추출해서 진행
-        Long tokenId = 1L;
-        Optional<Member> optionalMember = memberRepository.findById(tokenId);
+        Member findMember = memberRepository.findByEmail("test123@gmail.com");
 
-        if (optionalMember.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 Id값의 멤버가 없습니다");
+        if (!oldPw.equals(findMember.getPassword())) {
+            //예외 던지기로 변경
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
         }
 
-        Member member = optionalMember.get();
-        if (!oldPw.equals(member.getPassword())) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("현재 비밀번호가 일치하지 않습니다.");
-        }
         if (oldPw.equals(newPw)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("새로운 비밀번호를 입력해주세요.");
+            //예외 던지기로 변경
+            throw new IllegalArgumentException("새로운 비밀번호를 입력해 주세요.");
         }
 
-        member.changePassword(newPw);
-
-        return ResponseEntity.status(HttpStatus.OK).body(member);
+        findMember.changePassword(newPw);
     }
 
     @Override
-//    @Transactional
-    public ResponseEntity<?> setInactive(String pswd) {
+    @Transactional
+    public void setInactive(String pswd) {
         // 인증인가 서버와 연동 했을때 토큰에서 PK Id 값을 추출해서 진행
-        Long tokenId = 1L;
-        Optional<Member> optionalMember = memberRepository.findById(tokenId);
+        Member findMember = memberRepository.findByEmail("test123@gmail.com");
 
-        if (optionalMember.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("존재하지 않는 회원입니다.");
+        if (!findMember.getPassword().equals(pswd)) {
+            //IllegalArgumentException으로 처리
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        Member member = optionalMember.get();
-
-        if (!member.getPassword().equals(pswd)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호가 일치하지 않습니다.");
-        }
-
-        if (member.getStatus().equals(MemberStatus.INACTIVE)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 탈퇴된 회원입니다.");
-        }
-
-        // Call the deactivate method to update the state
-        member.inactive();
-
-        return ResponseEntity.status(HttpStatus.OK).body("정상적으로 탈퇴하였습니다.");
+        findMember.inactive();
     }
 }
