@@ -1,10 +1,7 @@
 package com.example.log.security;
 
 
-import com.example.log.JsonLoginProcessingFilter;
-import com.example.log.LoginFailureHandler;
-import com.example.log.LoginSuccessHandler;
-import com.example.log.UserDetailsServiceImpl;
+import com.example.log.*;
 import com.example.log.repository.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +31,18 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 public class SecurityConfiguration {
 
-    @Autowired
-    public SecurityConfiguration(ObjectMapper objectMapper, ObjectPostProcessor<Object> objectPostProcessor, MemberRepository memberRepository) {
-        this.objectMapper = objectMapper;
-        this.objectPostProcessor = objectPostProcessor;
-        this.memberRepository = memberRepository;
-    }
-
+    private final JwtTokenProvider jwtTokenProvider;
     private final ObjectMapper objectMapper;
-    private final ObjectPostProcessor<Object> objectPostProcessor;
     private final MemberRepository memberRepository;
+    private final ObjectPostProcessor<Object> objectPostProcessor;
+
+    @Autowired
+    public SecurityConfiguration(JwtTokenProvider jwtTokenProvider, ObjectMapper objectMapper, MemberRepository memberRepository, ObjectPostProcessor<Object> objectPostProcessor) {
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.objectMapper = objectMapper;
+        this.memberRepository = memberRepository;
+        this.objectPostProcessor = objectPostProcessor;
+    }
 
     @Bean
     @ConditionalOnProperty(name = "spring.h2.console.enabled", havingValue = "true")
@@ -64,8 +63,8 @@ public class SecurityConfiguration {
                 .requestCache().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.addFilterAt(loginProcessingFilter(authenticationManager(), authenticationSuccessHandler(), authenticationFailureHandler()),
-                UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAt(loginProcessingFilter(authenticationManager(), authenticationSuccessHandler(jwtTokenProvider), authenticationFailureHandler()), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -102,13 +101,12 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new LoginSuccessHandler();
+    public AuthenticationSuccessHandler authenticationSuccessHandler(JwtTokenProvider jwtTokenProvider) {
+        return new LoginSuccessHandler(jwtTokenProvider);
     }
 
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return new LoginFailureHandler(objectMapper);
     }
-
 }
