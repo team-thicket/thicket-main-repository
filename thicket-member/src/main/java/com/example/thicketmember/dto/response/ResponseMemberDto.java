@@ -1,4 +1,4 @@
-package com.example.thicketmember.dto;
+package com.example.thicketmember.dto.response;
 
 import com.example.thicketmember.domain.Member;
 import jakarta.validation.constraints.NotEmpty;
