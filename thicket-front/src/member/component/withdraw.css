@@ -1,0 +1,32 @@
+@import "../../assets/css/setting/mixin.css";
+@import "../../assets/css/setting/fonts.css";
+
+.red-text {
+    color: red;
+  }
+
+
+
+.withdraw {
+    font-family: "nanumSquareNeo";
+    position: absolute;
+    font-size: 20px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.withdrawal-button{
+    font-family: "nanumSquareNeo";
+    font-size: 18px; /* 원하는 크기로 조절합니다. */
+    text-align: center; /* 버튼을 오른쪽으로 정렬합니다. */
+    width: 100px; /* 원하는 너비로 조절합니다. */
+    height: 35px; /* 원하는 높이로 조절합니다. */
+    transform: translate(300%, 0%);
+}
+
+p{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
