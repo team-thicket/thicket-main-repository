@@ -30,7 +30,7 @@ public class Init {
             Member member = Member.createMember(
                     "홍길동",
                     LocalDate.of(2023,11,14),
-                    "토큰에서@꺼낸.이메일",
+                    "test123@gmail.com",
                     "1234",
                     MemberStatus.ACTIVE);
             em.persist(member);

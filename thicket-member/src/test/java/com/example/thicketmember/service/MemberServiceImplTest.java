@@ -41,7 +41,7 @@ class MemberServiceImplTest {
         String email = "test123@gmail.com";
 
         //when
-        ResponseMemberDto findMember = memberService.getMemberByToken();
+        ResponseMemberDto findMember = memberService.getMemberByToken(email);
 
         //then
         assertEquals("홍길동", findMember.getName());
@@ -57,7 +57,7 @@ class MemberServiceImplTest {
         dto.setOldPw("1234");
         dto.setNewPw("4567");
         //when
-        memberService.setNewPassword(dto);
+        memberService.setNewPassword(email, dto);
         Member findMember = memberRepository.findByEmail(email);
         //then
         assertEquals("4567",findMember.getPassword());
@@ -72,7 +72,7 @@ class MemberServiceImplTest {
         dto.setNewPw("4567");
 
         //when //then
-        assertThrows(IllegalArgumentException.class, () -> memberService.setNewPassword(dto));
+        assertThrows(IllegalArgumentException.class, () -> memberService.setNewPassword(email, dto));
 
     }
 
@@ -85,7 +85,7 @@ class MemberServiceImplTest {
         dto.setNewPw("4567");
 
         //when //then
-        assertThrows(IllegalArgumentException.class, () -> memberService.setNewPassword(dto));
+        assertThrows(IllegalArgumentException.class, () -> memberService.setNewPassword(email, dto));
     }
 
     @Test
@@ -96,7 +96,7 @@ class MemberServiceImplTest {
         dto.setPswd("1234");
 
         //when
-        memberService.setInactive(dto);
+        memberService.setInactive(email, dto);
         Member findMember = memberRepository.findByEmail(email);
 
         //then
@@ -112,7 +112,7 @@ class MemberServiceImplTest {
         dto.setPswd("4567");
 
         //when //then
-        assertThrows(IllegalArgumentException.class, () -> memberService.setInactive(dto));
+        assertThrows(IllegalArgumentException.class, () -> memberService.setInactive(email, dto));
 
     }
 }

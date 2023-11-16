@@ -1,5 +1,6 @@
 package com.example.thicketmember.domain;
 
+import com.example.thicketmember.TimeStamp;
 import com.example.thicketmember.enumerate.MemberStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

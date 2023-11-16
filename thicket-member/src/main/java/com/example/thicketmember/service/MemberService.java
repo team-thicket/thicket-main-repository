@@ -5,7 +5,7 @@ import com.example.thicketmember.dto.request.RequestSetNewPasswordDto;
 import com.example.thicketmember.dto.response.ResponseMemberDto;
 
 public interface MemberService {
-    ResponseMemberDto getMemberByToken();
-    void setNewPassword(RequestSetNewPasswordDto dto);
-    void setInactive(RequestInactiveDto dto);
+    ResponseMemberDto getMemberByToken(String email);
+    void setNewPassword(String email, RequestSetNewPasswordDto dto);
+    void setInactive(String email, RequestInactiveDto dto);
 }
