@@ -1,11 +1,16 @@
+# .gitignore
+
+# Help files
 HELP.md
+
+# Gradle files
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### STS ###
+# STS files
 .apt_generated
 .classpath
 .factorypath
@@ -17,7 +22,7 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### IntelliJ IDEA ###
+# IntelliJ IDEA files
 .idea
 *.iws
 *.iml
@@ -26,12 +31,19 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### NetBeans ###
+# NetBeans files
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
+# VS Code files
 .vscode/
+
+# DB configuration files
+src/main/resources/application-deployDB.yml
+src/main/resources/application-localDB.yml
+src/test/resources/application-testDB.yml
+src/test/resources/application-mail.yml
+src/test/resources/application-redis.yml

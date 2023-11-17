@@ -1,13 +1,13 @@
-package com.example.thicketauth;
+package com.example.log;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ThicketAuthApplicationTests {
+class LogApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }

@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: ${localDB.driver}
+    username: ${localDB.username_}
+    password: ${localDB.password}
+    url: ${localDB.url}
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+#        show_sql: true
+        format_sql: true
+
+logging.level:
+  org.hibernate.SQL: debug
+#  org.hibernate.type: trace
+
+jwt:
+  properties:
+    secret:
+    access-token-expiration-seconds: 900 # 900 15분
+    refresh-token-expiration-seconds: 1209600 # 1209600 14일
+    token-prefix: Bearer
+  response:
+    access-token-header-name: Authorization
+    refresh-token-header-name: Refresh-Token
