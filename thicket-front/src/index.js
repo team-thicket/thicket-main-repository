@@ -7,7 +7,7 @@ import Withdraw from './member/component/withdraw';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <div>
-        <App />
+        {/* <App /> */}
         <Withdraw />
     </div>
 );
