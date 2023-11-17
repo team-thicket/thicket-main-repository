@@ -1,8 +1,10 @@
+import React from "react";
+import Layout from "./member/component/Layout";
+
+
 function App() {
   return (
-    <div>
-      <h2>Hello World!</h2>
-    </div>
+      <Layout />
   );
 }
 export default App;

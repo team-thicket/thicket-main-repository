@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './MemberMyPage.css';
+import '../../assets/css/setting/MemberMyPage.css';
 
 export const MemberMyPage = () => {
     // States to track passwords

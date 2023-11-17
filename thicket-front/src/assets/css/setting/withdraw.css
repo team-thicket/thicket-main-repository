@@ -1,15 +1,11 @@
-@import "../../assets/css/setting/mixin.css";
-@import "../../assets/css/setting/fonts.css";
+@import "mixin.css";
+@import "fonts.css";
 
 
 
 .withdraw {
     font-family: "nanumSquareNeo";
-    position: absolute;
     font-size: 20px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
 }
 
 .withdrawal-button{

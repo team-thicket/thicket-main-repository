@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./withdraw.css";
+import "../../assets/css/setting/withdraw.css";
 import "../../assets/css/setting/fonts.css";
 import "../../assets/css/setting/mixin.css";
 
