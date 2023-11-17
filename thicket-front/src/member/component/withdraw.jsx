@@ -32,7 +32,7 @@ const Withdraw = () => {
       setShowPasswordInput(true);
     }
   };
-
+  
   return (
     <section id="withdraw" className="withdraw">
       <div>
@@ -40,9 +40,10 @@ const Withdraw = () => {
         <hr />
         <br />
 
-        <p>탈퇴 시 해당 계정 내 모든 예매 정보는 삭제되며, 계정 복구는 불가능합니다.</p>
+        <p>탈퇴 시 해당 계정 내 모든 예매 정보는 확인 불가합니다.</p>
         <br />
-        <p>탈퇴한 이메일로 재가입은 불가능합니다.</p>
+        <p>회원님의 개인정보는 탈퇴 후 2년간 보관되며, </ p>
+        <p>  동일 이메일로 재가입하실 경우 개인정보 인증이 필요합니다. </p>
         <br /> <br />
         <h3 style={{ color: "red" }}>정말 탈퇴하시겠습니까?</h3>
 
