@@ -8,10 +8,10 @@ spring:
     active: testDB
 
   datasource:
-    driver-class-name: ${test_db.driver}
-    username: ${test_db.username_}
+    driver-class-name: ${testDB.driver}
+    username: ${testDB.username_}
     password: # 테스트 DB는 비밀번호 없음.
-    url: ${test_db.url}
+    url: ${testDB.url}
 
   jpa:
     hibernate:

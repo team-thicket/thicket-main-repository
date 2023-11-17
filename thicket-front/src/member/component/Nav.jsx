@@ -18,7 +18,7 @@ function Nav() {
             <Menu name={"연극"} />
             <Menu name={"콘서트"} />
             <Menu name={"티켓오픈"} />
-            <Menu name={"로그인"} />
+            <Menu name={"마이페이지"} link={"/mypage"} />
             <Menu name={"로그아웃"} />
         </Menubar>
     )

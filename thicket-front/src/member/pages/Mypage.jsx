@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import Menu from "../component/Menu";
+import {MemberMyPage} from "../component/MemberMyPage";
+import Withdraw from "../component/withdraw";
+import React from "react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,7 +39,9 @@ const Mypage = () => {
                 <Menu name={"관람 내역"} />
                 <Menu name={"보유 쿠폰"} />
             </ASide>
-            <Main>asdf</Main>
+            <Main>
+                <MemberMyPage />
+            </Main>
         </Wrapper>
     )
 }
