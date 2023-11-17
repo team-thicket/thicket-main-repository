@@ -1,4 +1,4 @@
-package com.example.log;
+package com.example.log.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

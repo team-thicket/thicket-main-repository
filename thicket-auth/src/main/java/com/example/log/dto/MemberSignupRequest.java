@@ -23,6 +23,7 @@ public class MemberSignupRequest {
 
     private LocalDate birthdate;
 
-    private Role role;
+    @Builder.Default
+    private Role role = Role.USER;
 
 }

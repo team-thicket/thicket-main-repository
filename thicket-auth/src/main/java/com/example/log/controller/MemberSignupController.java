@@ -9,19 +9,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/members")
 public class MemberSignupController {
 
     private final MemberSignupService memberSignupService;
 
-    @PostMapping("/member")
+    @PostMapping("/join")
     public ResponseEntity<MemberSignupResponse> signup(
             @RequestBody @Valid MemberSignupRequest request) {
         MemberSignupResponse response = memberSignupService.signup(request);

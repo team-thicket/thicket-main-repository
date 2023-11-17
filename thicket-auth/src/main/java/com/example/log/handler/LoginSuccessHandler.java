@@ -1,5 +1,6 @@
-package com.example.log;
+package com.example.log.handler;
 
+import com.example.log.jwt.JwtTokenProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +25,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         String username = ((User) authentication.getPrincipal()).getUsername();
-        String accessToken = jwtTokenProvider.createAccessToken(username);
+        String email = ((User) authentication.getPrincipal()).getUsername();  // 이메일 정보를 가져옴
+        String accessToken = jwtTokenProvider.createAccessToken(username, email);  // 이메일 정보를 추가하여 토큰 생성
         String refreshToken = jwtTokenProvider.createRefreshToken(username);
         response.addHeader("Authorization", "Bearer " + accessToken);
         response.addHeader("Refresh-Token", refreshToken);

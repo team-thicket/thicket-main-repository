@@ -1,6 +1,8 @@
-package com.example.log;
+package com.example.log.handler;
 
 
+import com.example.log.error.ErrorCode;
+import com.example.log.error.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,8 +1,13 @@
 package com.example.log.security;
 
 
-import com.example.log.*;
+import com.example.log.handler.LoginFailureHandler;
+import com.example.log.handler.LoginSuccessHandler;
+import com.example.log.jwt.JsonLoginProcessingFilter;
+import com.example.log.jwt.JwtAuthenticationFilter;
+import com.example.log.jwt.JwtTokenProvider;
 import com.example.log.repository.MemberRepository;
+import com.example.log.service.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -55,7 +60,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .requestMatchers(
-                        new AntPathRequestMatcher("/member", HttpMethod.POST.name()))
+                        new AntPathRequestMatcher("/members/join", HttpMethod.POST.name()))
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -78,9 +83,9 @@ public class SecurityConfiguration {
         jsonLoginProcessingFilter.setAuthenticationManager(authenticationManager);
         jsonLoginProcessingFilter.setAuthenticationSuccessHandler(successHandler);
         jsonLoginProcessingFilter.setAuthenticationFailureHandler(failureHandler);
+        jsonLoginProcessingFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/members/login", HttpMethod.POST.name()));
         return jsonLoginProcessingFilter;
     }
-
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
         AuthenticationManagerBuilder builder = new AuthenticationManagerBuilder(objectPostProcessor);
