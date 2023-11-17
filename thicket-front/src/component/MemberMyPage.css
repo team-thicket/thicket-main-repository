@@ -1,0 +1,58 @@
+.member-page-container {
+    border: 2px solid #000;
+    border-radius: 10px;
+    padding: 20px;
+    width: 950px;
+    margin: 10px;
+}
+
+.info-table,
+.password-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+h2.custom {
+    margin: 0 0 10px 0;
+}
+
+th {
+    text-align: left;
+    height: 29px;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    background: #f7f7f7;
+    width: 180px;
+    border-top: 1px solid #000;
+}
+
+td {
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    background: white;
+    border-top: 1px solid #000;
+}
+
+input {
+    width: 200px;
+    padding: 4px;
+    box-sizing: border-box;
+    /*margin-bottom: 5px;*/
+}
+
+button.custom {
+    margin-left: 10px;
+    cursor: pointer;
+    padding: 1px 8px;
+    border: 1px solid #000;
+    border-radius: 5px;
+}
+
+button.withdrawal-btn {
+    margin-left: 0;
+    padding: 6px;
+    border: 1px solid #000;
+    cursor: pointer;
+    border-radius: 5px;
+}

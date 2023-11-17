@@ -6,7 +6,7 @@ import {MemberMyPage} from './component/MemberMyPage';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <>
-        <App />
+        {/*<App />*/}
         <MemberMyPage />
     </>
 );
