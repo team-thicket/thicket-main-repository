@@ -1,14 +1,28 @@
+.member-page-container {
+    padding: 10px;
+}
+
+div.custom {
+    padding-top: 40px;
+}
+
+div.custom-right {
+    padding-top: 20px;
+    text-align: right;
+}
+
 .info-table,
 .password-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-h2.custom {
+h1.custom {
     margin: 0 0 10px 0;
+    padding-left: 5px;
 }
 
-th {
+th.custom {
     text-align: left;
     height: 29px;
     padding: 10px;
@@ -18,7 +32,7 @@ th {
     border-top: 1px solid #000;
 }
 
-td {
+td.custom {
     text-align: left;
     padding: 10px;
     border-bottom: 1px solid #ccc;
@@ -26,24 +40,22 @@ td {
     border-top: 1px solid #000;
 }
 
-input {
+input.custom {
     width: 200px;
-    padding: 4px;
+    height: 25px;
     box-sizing: border-box;
-    /*margin-bottom: 5px;*/
 }
 
 button.custom {
     margin-left: 10px;
     cursor: pointer;
-    padding: 1px 8px;
+    padding: 4px 8px;
     border: 1px solid #000;
     border-radius: 5px;
 }
 
 button.withdrawal-btn {
-    margin-left: 0;
-    padding: 6px;
+    padding: 4px 8px;
     border: 1px solid #000;
     cursor: pointer;
     border-radius: 5px;
