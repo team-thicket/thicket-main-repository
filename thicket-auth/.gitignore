@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### yml ###
+src/main/resources/application-deployDB.yml
+src/main/resources/application-localDB.yml
+application-testDB.yml
+src/main/resources/application-mail.yml
+src/main/resources/application-redis.yml
