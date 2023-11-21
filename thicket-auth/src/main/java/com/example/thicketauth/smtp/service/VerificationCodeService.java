@@ -15,7 +15,6 @@ public class VerificationCodeService {
     public void saveVerificationCode(String email, String code) {
         // 인증 코드 저장
         redisTemplate.opsForValue().set(email, code);
-
         // 10분 후에 만료
         redisTemplate.expire(email, 10, TimeUnit.MINUTES);
     }

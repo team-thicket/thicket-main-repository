@@ -17,18 +17,16 @@ import java.util.Random;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class EmailServiceImpl {
+public class EmailService {
 
         private final JavaMailSender javaMailSender;
         private final SpringTemplateEngine templateEngine;
 
         public String sendMail(EmailMessage emailMessage, String email) {
             String authNum = createCode();
-
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
             try {
-
                 MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
                 mimeMessageHelper.setTo(emailMessage.getTo()); // 메일 수신자
                 mimeMessageHelper.setSubject(emailMessage.getSubject()); // 메일 제목
@@ -36,7 +34,6 @@ public class EmailServiceImpl {
                 javaMailSender.send(mimeMessage);
 
                 log.info("Success");
-
                 return authNum;
 
             } catch (MessagingException e) {
@@ -52,7 +49,6 @@ public class EmailServiceImpl {
 
             for (int i = 0; i < 8; i++) {
                 int index = random.nextInt(4);
-
                 switch (index) {
                     case 0: key.append((char) ((int) random.nextInt(26) + 97)); break;
                     case 1: key.append((char) ((int) random.nextInt(26) + 65)); break;

@@ -18,8 +18,11 @@ public class RedisConfig {
 
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(new JedisConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort)));
-        return redisTemplate;
+            RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+            redisTemplate.setConnectionFactory
+            (new JedisConnectionFactory
+            (new RedisStandaloneConfiguration(redisHost, redisPort)));
+
+            return redisTemplate;
     }
 }
