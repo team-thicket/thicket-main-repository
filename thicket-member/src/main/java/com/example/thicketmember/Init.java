@@ -32,9 +32,8 @@ public class Init {
                     "홍길동",
                     LocalDate.of(2023,11,14),
                     "test123@gmail.com",
-                    "a12345678!",
-                    MemberStatus.ACTIVE,
-                    Role.USER);
+                    "1234",
+                    MemberStatus.ACTIVE, Role.USER);
             em.persist(member);
         }
 
