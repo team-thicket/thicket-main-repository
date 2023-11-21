@@ -4,9 +4,12 @@ import com.example.thicketmember.dto.request.RequestInactiveDto;
 import com.example.thicketmember.dto.request.RequestSetNewPasswordDto;
 import com.example.thicketmember.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,21 +26,26 @@ public class MemberApiController {
 
     @PatchMapping("") // api 명세 => PATCH /members
     public ResponseEntity<?> changePassword(HttpServletRequest req,
-                                            @RequestBody RequestSetNewPasswordDto dto){
+                                            @RequestBody @Valid RequestSetNewPasswordDto dto){
         memberService.setNewPassword(req.getHeader("Email"), dto);
         return ResponseEntity.ok("");
     }
 
     @DeleteMapping("") // api 명세 => DELETE /members
     public ResponseEntity<?> withdraw(HttpServletRequest req,
-                                      @RequestBody RequestInactiveDto dto){
+                                      @RequestBody @Valid RequestInactiveDto dto){
         memberService.setInactive(req.getHeader("Email"), dto);
         return ResponseEntity.ok("");
     }
 
     // @ExceptionHandler를 통해 AOP로 한번에 예외 처리
-    @ExceptionHandler
-    public ResponseEntity<?> handler(IllegalArgumentException e) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> bindingHandler(BindingResult bindingResult) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
+    }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> exceptionHandler(Exception e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }
