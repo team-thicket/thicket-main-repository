@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import Menu from "../component/Menu";
 import {MemberMyPage} from "../component/MemberMyPage";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Withdraw from "../component/withdraw";
-import React from "react";
+import React, {useState} from "react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,6 +32,14 @@ const Main = styled.div`
   display: inline-block;
 `
 const Mypage = () => {
+    const [content, setContent] = useState("mypage");
+    const contentHandler = (e) => {
+        setContent(e.target.name);
+    }
+    const selectComponent = {
+        mypage: <MemberMyPage contentHandler={contentHandler}/>,
+        withdraw: <Withdraw />
+    };
     return(
         <Wrapper>
             <ASide>
@@ -39,9 +48,7 @@ const Mypage = () => {
                 <Menu name={"관람 내역"} />
                 <Menu name={"보유 쿠폰"} />
             </ASide>
-            <Main>
-                <MemberMyPage />
-            </Main>
+            {content && <Main>{selectComponent[content]}</Main>}
         </Wrapper>
     )
 }

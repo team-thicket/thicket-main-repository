@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import '../../assets/css/setting/MemberMyPage.css';
+import Mypage from "../pages/Mypage";
+import {Route} from "react-router-dom";
 
-export const MemberMyPage = () => {
+export const MemberMyPage = ({contentHandler}) => {
     // States to track passwords
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -34,15 +36,6 @@ export const MemberMyPage = () => {
             console.error('New passwords do not match');
             // You may want to display an error message to the user
         }
-    };
-
-    const handleWithdrawal = () => {
-        // Implement the logic to handle withdrawal
-        // For example, you can send a request to the server to process the withdrawal
-        console.log('Withdrawal logic here');
-        // 현재 코드에서는 단순히 콘솔에 "Withdrawal logic here"를 출력하는 부분만 구현되어 있습니다.
-        // 이 부분은 서버로 인출 요청을 보내는 등의 실제 로직으로 수정해야 합니다.
-        window.location.href = '#';
     };
 
     return (
@@ -115,7 +108,7 @@ export const MemberMyPage = () => {
                 </table>
             </div>
             <div className="custom-right">
-                <button className="withdrawal-btn" onClick={handleWithdrawal}>회원탈퇴</button>
+                <button className="withdrawal-btn" onClick={contentHandler} name={"withdraw"}>회원탈퇴</button>
             </div>
         </div>
     );
