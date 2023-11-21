@@ -58,4 +58,16 @@ public class MemberServiceImpl implements MemberService{
 
         findMember.inactive();
     }
+
+    @Override
+    @Transactional
+    public void setAdmin(String email, RequestInactiveDto dto) {
+        Member findMember = memberRepository.findByEmail(email);
+
+        if (!findMember.getPassword().equals(dto.getPswd())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        findMember.changeAdmin();
+    }
 }

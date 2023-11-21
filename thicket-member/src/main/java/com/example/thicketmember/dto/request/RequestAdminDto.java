@@ -1,9 +1,9 @@
 package com.example.thicketmember.dto.request;
 
-import lombok.*;
+import lombok.Data;
 
 
 @Data
-public class RequestInactiveDto {
+public class RequestAdminDto {
     String pswd;
 }

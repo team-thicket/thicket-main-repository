@@ -1,6 +1,7 @@
 package com.example.thicketmember;
 
 import com.example.thicketmember.domain.Member;
+import com.example.thicketmember.enumerate.Role;
 import com.example.thicketmember.enumerate.MemberStatus;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
@@ -32,7 +33,8 @@ public class Init {
                     LocalDate.of(2023,11,14),
                     "test123@gmail.com",
                     "1234",
-                    MemberStatus.ACTIVE);
+                    MemberStatus.ACTIVE,
+                    Role.USER);
             em.persist(member);
         }
 
