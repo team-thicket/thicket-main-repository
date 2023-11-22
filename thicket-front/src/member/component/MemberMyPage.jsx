@@ -30,11 +30,6 @@ export const MemberMyPage = ({contentHandler}) => {
             })
     }, []);
 
-    const changePassword = () => {
-
-    }
-
-
     // 비밀번호 일치 확인 함수
     const handlePasswordCheck = () => {
         // Implement the logic to check the current password
@@ -68,16 +63,16 @@ export const MemberMyPage = ({contentHandler}) => {
                 <table className="info-table">
                     <tbody>
                     <tr>
-                        <th>이름</th>
-                        <td>{memberName}</td>
+                        <th className="custom">이름</th>
+                        <td className="custom">{memberName}</td>
                     </tr>
                     <tr>
-                        <th>생년월일</th>
-                        <td>{memberBirth}</td>
+                        <th className="custom" >생년월일</th>
+                        <td className="custom" >{memberBirth}</td>
                     </tr>
                     <tr>
-                        <th>이메일</th>
-                        <td>{memberEmail}</td>
+                        <th className="custom" >이메일</th>
+                        <td className="custom" >{memberEmail}</td>
                     </tr>
                     </tbody>
                 </table>
