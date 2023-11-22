@@ -33,7 +33,7 @@ public class Init {
                     LocalDate.of(2023,11,14),
                     "test123@gmail.com",
                     "1234",
-                    MemberStatus.ACTIVE);
+                    MemberStatus.ACTIVE, Role.USER);
             em.persist(member);
         }
 
