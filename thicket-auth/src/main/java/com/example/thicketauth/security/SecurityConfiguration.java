@@ -1,13 +1,13 @@
-package com.example.log.security;
+package com.example.thicketauth.security;
 
 
-import com.example.log.handler.LoginFailureHandler;
-import com.example.log.handler.LoginSuccessHandler;
-import com.example.log.jwt.JsonLoginProcessingFilter;
-import com.example.log.jwt.JwtAuthenticationFilter;
-import com.example.log.jwt.JwtTokenProvider;
-import com.example.log.repository.MemberRepository;
-import com.example.log.service.UserDetailsServiceImpl;
+import com.example.thicketauth.handler.LoginFailureHandler;
+import com.example.thicketauth.handler.LoginSuccessHandler;
+import com.example.thicketauth.jwt.JsonLoginProcessingFilter;
+import com.example.thicketauth.jwt.JwtAuthenticationFilter;
+import com.example.thicketauth.jwt.JwtTokenProvider;
+import com.example.thicketauth.repository.MemberRepository;
+import com.example.thicketauth.service.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

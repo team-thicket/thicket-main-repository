@@ -1,6 +1,6 @@
-package com.example.log.handler;
+package com.example.thicketauth.handler;
 
-import com.example.log.jwt.JwtTokenProvider;
+import com.example.thicketauth.jwt.JwtTokenProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,12 +1,12 @@
-package com.example.log.service;
+package com.example.thicketauth.service;
 
-import com.example.log.entity.Role;
-import com.example.log.exception.EmailDuplicateException;
-import com.example.log.entity.Password;
-import com.example.log.dto.MemberSignupRequest;
-import com.example.log.dto.MemberSignupResponse;
-import com.example.log.entity.Member;
-import com.example.log.repository.MemberRepository;
+import com.example.thicketauth.entity.Role;
+import com.example.thicketauth.exception.EmailDuplicateException;
+import com.example.thicketauth.entity.Password;
+import com.example.thicketauth.dto.RequestMemberSignup;
+import com.example.thicketauth.dto.ResponseMemberSignup;
+import com.example.thicketauth.entity.Member;
+import com.example.thicketauth.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,7 @@ public class MemberSignupService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public MemberSignupResponse signup(MemberSignupRequest request) {
+    public ResponseMemberSignup signup(RequestMemberSignup request) {
         if (memberRepository.existsByEmail(request.getEmail())) {
             throw new EmailDuplicateException(request.getEmail());
         }
@@ -39,6 +39,6 @@ public class MemberSignupService {
         memberRepository.save(member);
         System.out.println("Member is saved: " + member);
 
-        return MemberSignupResponse.from(member);
+        return ResponseMemberSignup.from(member);
     }
 }

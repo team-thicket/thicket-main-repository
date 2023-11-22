@@ -1,8 +1,8 @@
-package com.example.log.handler;
+package com.example.thicketauth.handler;
 
 
-import com.example.log.error.ErrorCode;
-import com.example.log.error.ErrorResponse;
+import com.example.thicketauth.error.ErrorCode;
+import com.example.thicketauth.error.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

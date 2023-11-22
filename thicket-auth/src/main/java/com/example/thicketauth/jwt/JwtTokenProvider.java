@@ -1,4 +1,4 @@
-package com.example.log.jwt;
+package com.example.thicketauth.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

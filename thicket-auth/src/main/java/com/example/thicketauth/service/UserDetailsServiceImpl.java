@@ -1,7 +1,7 @@
-package com.example.log.service;
+package com.example.thicketauth.service;
 
-import com.example.log.entity.Member;
-import com.example.log.repository.MemberRepository;
+import com.example.thicketauth.entity.Member;
+import com.example.thicketauth.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

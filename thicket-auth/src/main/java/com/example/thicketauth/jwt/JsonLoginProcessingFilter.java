@@ -1,4 +1,4 @@
-package com.example.log.jwt;
+package com.example.thicketauth.jwt;
 
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;

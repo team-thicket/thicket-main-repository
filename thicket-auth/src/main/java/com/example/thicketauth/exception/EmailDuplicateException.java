@@ -1,4 +1,4 @@
-package com.example.log.exception;
+package com.example.thicketauth.exception;
 
 public class EmailDuplicateException extends RuntimeException {
     public EmailDuplicateException(String message) {

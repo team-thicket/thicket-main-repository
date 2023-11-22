@@ -1,4 +1,4 @@
-package com.example.log.entity;
+package com.example.thicketauth.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;

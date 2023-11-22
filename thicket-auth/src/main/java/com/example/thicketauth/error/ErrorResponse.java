@@ -1,4 +1,4 @@
-package com.example.log.error;
+package com.example.thicketauth.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,6 @@
-package com.example.log.repository;
+package com.example.thicketauth.repository;
 
-import com.example.log.entity.Member;
+import com.example.thicketauth.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

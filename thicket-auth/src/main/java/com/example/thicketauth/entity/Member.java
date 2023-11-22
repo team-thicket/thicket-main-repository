@@ -1,4 +1,4 @@
-package com.example.log.entity;
+package com.example.thicketauth.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -35,6 +35,10 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+
     @Builder
     public Member(String email, Password password, String name, LocalDate birthdate , Role role) {
         this.email = email;
@@ -42,5 +46,6 @@ public class Member {
         this.name = name;
         this.birthdate = birthdate;
         this.role = role;
+        this.status = UserStatus.ACTIVE;
     }
 }

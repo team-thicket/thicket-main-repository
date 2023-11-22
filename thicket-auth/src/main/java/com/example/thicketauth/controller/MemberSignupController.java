@@ -1,9 +1,9 @@
-package com.example.log.controller;
+package com.example.thicketauth.controller;
 
-import com.example.log.dto.MemberSignupRequest;
-import com.example.log.dto.MemberSignupResponse;
-import com.example.log.exception.EmailDuplicateException;
-import com.example.log.service.MemberSignupService;
+import com.example.thicketauth.dto.RequestMemberSignup;
+import com.example.thicketauth.dto.ResponseMemberSignup;
+import com.example.thicketauth.exception.EmailDuplicateException;
+import com.example.thicketauth.service.MemberSignupService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +20,9 @@ public class MemberSignupController {
     private final MemberSignupService memberSignupService;
 
     @PostMapping("/join")
-    public ResponseEntity<MemberSignupResponse> signup(
-            @RequestBody @Valid MemberSignupRequest request) {
-        MemberSignupResponse response = memberSignupService.signup(request);
+    public ResponseEntity<ResponseMemberSignup> signup(
+            @RequestBody @Valid RequestMemberSignup request) {
+        ResponseMemberSignup response = memberSignupService.signup(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
