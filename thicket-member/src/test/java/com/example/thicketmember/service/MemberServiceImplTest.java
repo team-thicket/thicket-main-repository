@@ -4,7 +4,7 @@ import com.example.thicketmember.domain.Member;
 import com.example.thicketmember.dto.request.RequestInactiveDto;
 import com.example.thicketmember.dto.request.RequestSetNewPasswordDto;
 import com.example.thicketmember.dto.response.ResponseMemberDto;
-import com.example.thicketmember.enumerate.Role;
+import com.example.thicketmember.enumerate.MemberRole;
 import com.example.thicketmember.enumerate.MemberStatus;
 import com.example.thicketmember.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +34,7 @@ class MemberServiceImplTest {
                 "test123@gmail.com",
                 "1234",
                 MemberStatus.ACTIVE,
-                Role.USER);
+                MemberRole.USER);
         memberRepository.save(member);
     }
     @Test

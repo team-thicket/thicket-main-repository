@@ -1,7 +1,7 @@
 package com.example.thicketmember.domain;
 
 import com.example.thicketmember.TimeStamp;
-import com.example.thicketmember.enumerate.Role;
+import com.example.thicketmember.enumerate.MemberRole;
 import com.example.thicketmember.enumerate.MemberStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,7 +33,7 @@ public class Member extends TimeStamp {
     private MemberStatus status;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private MemberRole memberRole;
 
     // 테스트용 메서드
     public static Member createMember(String newName,
@@ -41,7 +41,7 @@ public class Member extends TimeStamp {
                                       String newEmail,
                                       String newPassword,
                                       MemberStatus newStatus,
-                                      Role newRole) {
+                                      MemberRole newMemberRole) {
         Member member = new Member();
 
         member.name = newName;
@@ -49,7 +49,7 @@ public class Member extends TimeStamp {
         member.email = newEmail;
         member.password = newPassword;
         member.status = newStatus;
-        member.role = newRole;
+        member.memberRole = newMemberRole;
 
         return member;
     }
@@ -62,5 +62,5 @@ public class Member extends TimeStamp {
         status = MemberStatus.INACTIVE;
     }
 
-    public void changeAdmin() { role = Role.ADMIN; }
+    public void changeAdmin() { memberRole = MemberRole.ADMIN; }
 }

@@ -1,10 +1,19 @@
 package com.example.thicketmember.dto.request;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
 public class RequestSetNewPasswordDto {
-    String oldPw;
-    String newPw;
+
+    @NotBlank(message = "현재 비밀번호는 비워둘 수 없습니다.")
+    @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}",
+            message = "비밀번호는 영문, 숫자, 특수 기호가 적어도 1개 이상씩 포함된 8~20자의 문자여야합니다.")
+    private String oldPw;
+
+    @NotBlank(message = "새로운 비밀번호는 비워둘 수 없습니다.")
+    @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}",
+            message = "비밀번호는 영문, 숫자, 특수 기호가 적어도 1개 이상씩 포함된 8~20자의 문자여야합니다.")
+    private String newPw;
 }

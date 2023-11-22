@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import '../../assets/css/setting/MemberMyPage.css';
 import Mypage from "../pages/Mypage";
 import {Route} from "react-router-dom";
@@ -8,11 +8,29 @@ export const MemberMyPage = ({contentHandler}) => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
+    const [memberName, setMemberName] = useState("");
+    const [memberBirth, setMemberBirth] = useState("");
+    const [memberEmail, setMemberEmail] = useState("");
 
     // State to track password check result
     const [passwordCheckResult, setPasswordCheckResult] = useState(null);
+    useEffect(() => {
+        fetch('/members',{
+            method: "GET",
+            headers: {
+                "Email":'test123@gmail.com',
+            },
+            // cache: "no-cache"
+        })
+            .then(res => res.json())
+            .then(data => {
+                setMemberName(data.name);
+                setMemberBirth(data.birth);
+                setMemberEmail(data.email);
+            })
+    }, []);
 
-    // Function to handle password check
+    // 비밀번호 일치 확인 함수
     const handlePasswordCheck = () => {
         // Implement the logic to check the current password
         // For example, you can compare it with the actual current password
@@ -22,7 +40,7 @@ export const MemberMyPage = ({contentHandler}) => {
         // 이 부분을 실제로 사용자가 입력한 비밀번호와 실제 비밀번호를 비교하는 로직으로 수정해야 합니다.
     };
 
-    // Function to handle password change
+    // 비밀번호 변경 함수
     const handlePasswordChange = () => {
         // Implement the logic to update the password here
         if (newPassword === confirmNewPassword) {
@@ -46,15 +64,15 @@ export const MemberMyPage = ({contentHandler}) => {
                     <tbody>
                     <tr>
                         <th className="custom">이름</th>
-                        <td className="custom">값을 받아온 이름</td>
+                        <td className="custom">{memberName}</td>
                     </tr>
                     <tr>
-                        <th className="custom">생년월일</th>
-                        <td className="custom">yyyy년 MM월 dd일</td>
+                        <th className="custom" >생년월일</th>
+                        <td className="custom" >{memberBirth}</td>
                     </tr>
                     <tr>
-                        <th className="custom">이메일</th>
-                        <td className="custom">값을받아온@이메일.주소</td>
+                        <th className="custom" >이메일</th>
+                        <td className="custom" >{memberEmail}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -73,10 +91,6 @@ export const MemberMyPage = ({contentHandler}) => {
                                    value={currentPassword}
                                    onChange={(e) => setCurrentPassword(e.target.value)}
                             />
-                            <button className="custom" onClick={handlePasswordCheck}>확인</button>
-                            {passwordCheckResult === false && (
-                                <p style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</p>
-                            )}
                         </td>
                     </tr>
                     <tr>
