@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import '../../assets/css/setting/MemberMyPage.css';
 
 export const MemberMyPage = () => {
@@ -6,11 +6,34 @@ export const MemberMyPage = () => {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
+    const [memberName, setMemberName] = useState("");
+    const [memberBirth, setMemberBirth] = useState("");
+    const [memberEmail, setMemberEmail] = useState("");
 
     // State to track password check result
     const [passwordCheckResult, setPasswordCheckResult] = useState(null);
+    useEffect(() => {
+        fetch('/members',{
+            method: "GET",
+            headers: {
+                "Email":'test123@gmail.com',
+            },
+            // cache: "no-cache"
+        })
+            .then(res => res.json())
+            .then(data => {
+                setMemberName(data.name);
+                setMemberBirth(data.birth);
+                setMemberEmail(data.email);
+            })
+    }, []);
 
-    // Function to handle password check
+    const changePassword = () => {
+
+    }
+
+
+    // 비밀번호 일치 확인 함수
     const handlePasswordCheck = () => {
         // Implement the logic to check the current password
         // For example, you can compare it with the actual current password
@@ -20,7 +43,7 @@ export const MemberMyPage = () => {
         // 이 부분을 실제로 사용자가 입력한 비밀번호와 실제 비밀번호를 비교하는 로직으로 수정해야 합니다.
     };
 
-    // Function to handle password change
+    // 비밀번호 변경 함수
     const handlePasswordChange = () => {
         // Implement the logic to update the password here
         if (newPassword === confirmNewPassword) {
@@ -36,14 +59,9 @@ export const MemberMyPage = () => {
         }
     };
 
-    const handleWithdrawal = () => {
-        // Implement the logic to handle withdrawal
-        // For example, you can send a request to the server to process the withdrawal
-        console.log('Withdrawal logic here');
-        // 현재 코드에서는 단순히 콘솔에 "Withdrawal logic here"를 출력하는 부분만 구현되어 있습니다.
-        // 이 부분은 서버로 인출 요청을 보내는 등의 실제 로직으로 수정해야 합니다.
-        window.location.href = '#';
-    };
+    const checkPassword = () => {
+
+    }
 
     return (
         <div className="member-page-container">
@@ -53,15 +71,15 @@ export const MemberMyPage = () => {
                     <tbody>
                     <tr>
                         <th>이름</th>
-                        <td>값을 받아온 이름</td>
+                        <td>{memberName}</td>
                     </tr>
                     <tr>
                         <th>생년월일</th>
-                        <td>yyyy년 MM월 dd일</td>
+                        <td>{memberBirth}</td>
                     </tr>
                     <tr>
                         <th>이메일</th>
-                        <td>값을받아온@이메일.주소</td>
+                        <td>{memberEmail}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -81,10 +99,6 @@ export const MemberMyPage = () => {
                                 value={currentPassword}
                                 onChange={(e) => setCurrentPassword(e.target.value)}
                             />
-                            <button className="custom" onClick={handlePasswordCheck}>확인</button>
-                            {passwordCheckResult === false && (
-                                <p style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</p>
-                            )}
                         </td>
                     </tr>
                     <tr>

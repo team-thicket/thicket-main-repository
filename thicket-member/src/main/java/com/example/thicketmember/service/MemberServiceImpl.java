@@ -20,6 +20,7 @@ public class MemberServiceImpl implements MemberService{
         // 인증인가 서버와 연동 했을때 인증 인가 서버에서 토큰을 이메일로 변환해서 보내준다.
         // 이미 인증/인가 서버에서 회원의 존재 여부가 검증 되었기 때문에
         // 존재여부를 검사할 필요가 없어졌다.
+
         Member findMember = memberRepository.findByEmail(email);
 
         return ResponseMemberDto.toDto(findMember);
