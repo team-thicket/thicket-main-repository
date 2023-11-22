@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import '../../assets/css/setting/MemberMyPage.css';
+import Mypage from "../pages/Mypage";
+import {Route} from "react-router-dom";
 
-export const MemberMyPage = () => {
+export const MemberMyPage = ({contentHandler}) => {
     // States to track passwords
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -36,50 +38,40 @@ export const MemberMyPage = () => {
         }
     };
 
-    const handleWithdrawal = () => {
-        // Implement the logic to handle withdrawal
-        // For example, you can send a request to the server to process the withdrawal
-        console.log('Withdrawal logic here');
-        // 현재 코드에서는 단순히 콘솔에 "Withdrawal logic here"를 출력하는 부분만 구현되어 있습니다.
-        // 이 부분은 서버로 인출 요청을 보내는 등의 실제 로직으로 수정해야 합니다.
-        window.location.href = '#';
-    };
-
     return (
         <div className="member-page-container">
             <div>
-                <h2 className="custom">기본정보</h2>
+                <h1 className="custom">기본정보</h1>
                 <table className="info-table">
                     <tbody>
                     <tr>
-                        <th>이름</th>
-                        <td>값을 받아온 이름</td>
+                        <th className="custom">이름</th>
+                        <td className="custom">값을 받아온 이름</td>
                     </tr>
                     <tr>
-                        <th>생년월일</th>
-                        <td>yyyy년 MM월 dd일</td>
+                        <th className="custom">생년월일</th>
+                        <td className="custom">yyyy년 MM월 dd일</td>
                     </tr>
                     <tr>
-                        <th>이메일</th>
-                        <td>값을받아온@이메일.주소</td>
+                        <th className="custom">이메일</th>
+                        <td className="custom">값을받아온@이메일.주소</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <br /><br />
-            <div>
-                <h2 className="custom">비밀번호 변경</h2>
+            <div className="custom">
+                <h1 className="custom">비밀번호 변경</h1>
                 <table className="password-table">
                     <tbody>
                     <tr>
-                        <th>기존 비밀번호</th>
-                        <td>
-                            <input
-                                type="password"
-                                id="currentPassword"
-                                placeholder="비밀번호를 입력하세요."
-                                value={currentPassword}
-                                onChange={(e) => setCurrentPassword(e.target.value)}
+                        <th className="custom">기존 비밀번호</th>
+                        <td className="custom">
+                            <input className="custom"
+                                   type="password"
+                                   id="currentPassword"
+                                   placeholder="  비밀번호를 입력하세요."
+                                   value={currentPassword}
+                                   onChange={(e) => setCurrentPassword(e.target.value)}
                             />
                             <button className="custom" onClick={handlePasswordCheck}>확인</button>
                             {passwordCheckResult === false && (
@@ -88,26 +80,26 @@ export const MemberMyPage = () => {
                         </td>
                     </tr>
                     <tr>
-                        <th>신규 비밀번호</th>
-                        <td>
-                            <input
-                                type="password"
-                                id="newPassword"
-                                placeholder="비밀번호를 입력하세요."
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
+                        <th className="custom">신규 비밀번호</th>
+                        <td className="custom">
+                            <input className="custom"
+                                   type="password"
+                                   id="newPassword"
+                                   placeholder="  비밀번호를 입력하세요."
+                                   value={newPassword}
+                                   onChange={(e) => setNewPassword(e.target.value)}
                             />
                         </td>
                     </tr>
                     <tr>
-                        <th>신규 비밀번호 재확인</th>
-                        <td>
-                            <input
-                                type="password"
-                                id="confirmNewPassword"
-                                placeholder="비밀번호를 입력하세요."
-                                value={confirmNewPassword}
-                                onChange={(e) => setConfirmNewPassword(e.target.value)}
+                        <th className="custom">신규 비밀번호 재확인</th>
+                        <td className="custom">
+                            <input className="custom"
+                                   type="password"
+                                   id="confirmNewPassword"
+                                   placeholder="  비밀번호를 입력하세요."
+                                   value={confirmNewPassword}
+                                   onChange={(e) => setConfirmNewPassword(e.target.value)}
                             />
                             <button className="custom" onClick={handlePasswordChange}>변경</button>
                         </td>
@@ -115,9 +107,8 @@ export const MemberMyPage = () => {
                     </tbody>
                 </table>
             </div>
-            <br /><br />
-            <div>
-                <button className="withdrawal-btn" onClick={handleWithdrawal}>회원탈퇴</button>
+            <div className="custom-right">
+                <button className="withdrawal-btn" onClick={contentHandler} name={"withdraw"}>회원탈퇴</button>
             </div>
         </div>
     );

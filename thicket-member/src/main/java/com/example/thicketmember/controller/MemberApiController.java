@@ -38,6 +38,13 @@ public class MemberApiController {
         return ResponseEntity.ok("");
     }
 
+    @PatchMapping("/change") // api 명세 => PATCH /members/change
+    public ResponseEntity<?> changeAdmin(HttpServletRequest req,
+                                         @RequestBody RequestInactiveDto dto){
+        memberService.setAdmin(req.getHeader("Email"), dto);
+        return ResponseEntity.ok("");
+    }
+
     // @ExceptionHandler를 통해 AOP로 한번에 예외 처리
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> bindingHandler(BindingResult bindingResult) {

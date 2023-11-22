@@ -1,12 +1,12 @@
 package com.example.thicketmember.domain;
 
 import com.example.thicketmember.TimeStamp;
+import com.example.thicketmember.enumerate.Role;
 import com.example.thicketmember.enumerate.MemberStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -17,22 +17,31 @@ public class Member extends TimeStamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 11, nullable = false)
     private String name;
 
-    @Column(length = 100, nullable = false)
+    @Column(nullable = false)
     private LocalDate birth;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 225, nullable = false)
     private String email;
 
-    @Column(length = 100, nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     // 테스트용 메서드
-    public static Member createMember(String newName, LocalDate newBirth, String newEmail, String newPassword, MemberStatus newStatus) {
+    public static Member createMember(String newName,
+                                      LocalDate newBirth,
+                                      String newEmail,
+                                      String newPassword,
+                                      MemberStatus newStatus,
+                                      Role newRole) {
         Member member = new Member();
 
         member.name = newName;
@@ -40,6 +49,7 @@ public class Member extends TimeStamp {
         member.email = newEmail;
         member.password = newPassword;
         member.status = newStatus;
+        member.role = newRole;
 
         return member;
     }
@@ -51,4 +61,6 @@ public class Member extends TimeStamp {
     public void inactive() {
         status = MemberStatus.INACTIVE;
     }
+
+    public void changeAdmin() { role = Role.ADMIN; }
 }

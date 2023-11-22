@@ -1,6 +1,7 @@
 package com.example.thicketmember;
 
 import com.example.thicketmember.domain.Member;
+import com.example.thicketmember.enumerate.Role;
 import com.example.thicketmember.enumerate.MemberStatus;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;

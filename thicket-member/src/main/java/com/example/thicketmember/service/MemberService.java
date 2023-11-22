@@ -8,4 +8,5 @@ public interface MemberService {
     ResponseMemberDto getMemberByToken(String email);
     void setNewPassword(String email, RequestSetNewPasswordDto dto);
     void setInactive(String email, RequestInactiveDto dto);
+    void setAdmin(String email, RequestInactiveDto dto);
 }
