@@ -1,14 +1,12 @@
 import styled from "styled-components";
 import Menu from "../component/Menu";
 import {MemberMyPage} from "../component/MemberMyPage";
-import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import Withdraw from "../component/withdraw";
+import Withdraw from "../component/Withdraw";
 import React, {useState} from "react";
 
 const Wrapper = styled.div`
   display: flex;
-  //width: 100%;
-  //height: 500px;
+  width: 100%;
 `
 const ASide = styled.div`
   align-items: center;

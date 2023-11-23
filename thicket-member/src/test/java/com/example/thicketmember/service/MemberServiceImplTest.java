@@ -56,8 +56,8 @@ class MemberServiceImplTest {
         //given
         String email = "test123@gmail.com";
         RequestSetNewPasswordDto dto = new RequestSetNewPasswordDto();
-        dto.setOldPw("1234");
-        dto.setNewPw("4567");
+        dto.setCurrentPassword("1234");
+        dto.setNewPassword("4567");
         //when
         memberService.setNewPassword(email, dto);
         Member findMember = memberRepository.findByEmail(email);
@@ -70,8 +70,8 @@ class MemberServiceImplTest {
         //given
         String email = "test123@gmail.com";
         RequestSetNewPasswordDto dto = new RequestSetNewPasswordDto();
-        dto.setOldPw("1111");
-        dto.setNewPw("4567");
+        dto.setCurrentPassword("1111");
+        dto.setNewPassword("4567");
 
         //when //then
         assertThrows(IllegalArgumentException.class, () -> memberService.setNewPassword(email, dto));
@@ -83,8 +83,8 @@ class MemberServiceImplTest {
         //given
         String email = "test123@gmail.com";
         RequestSetNewPasswordDto dto = new RequestSetNewPasswordDto();
-        dto.setOldPw("4567");
-        dto.setNewPw("4567");
+        dto.setCurrentPassword("4567");
+        dto.setNewPassword("4567");
 
         //when //then
         assertThrows(IllegalArgumentException.class, () -> memberService.setNewPassword(email, dto));
