@@ -6,27 +6,23 @@ import "../../assets/css/setting/mixin.css";
 const Withdraw = () => {
   const [password, setPassword] = useState('');
   const [showPasswordInput, setShowPasswordInput] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
 
   const handleWithdrawal = () => {
     if (showPasswordInput) {
-      // Check if the password is entered
       if (password.trim() === '') {
-        // If the password is not entered, set an error flag
-        setPasswordError(true);
-        return; // Do not proceed with withdrawal
+        alert("본인 확인용 비밀번호를 입력해주십시오.");
+        return;
       }
-
-      // 탈퇴 로직을 이곳에 추가
-      // 예를 들어, API 호출 등을 사용하여 서버에 탈퇴 요청을 보낼 수 있습니다.
-      console.log("사용자가 탈퇴하기 버튼을 클릭했습니다.");
-      console.log("입력한 비밀번호:", password);
-      // 여기에서 비밀번호를 사용하여 탈퇴 로직을 수행할 수 있습니다.
-
-      // 탈퇴 로직 수행 후 다시 초기 상태로 설정
-      setPassword('');
-      setShowPasswordInput(false);
-      setPasswordError(false); // Reset password error flag
+      fetch('/members',{
+        method: "DELETE",
+        headers: {
+          'Email':'test123@gmail.com',
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({password})
+      })
+      .then(res => res.text())
+      .then(data => alert(data))
     } else {
       // "탈퇴하기" 버튼을 클릭하면 비밀번호 입력란을 보여줌
       setShowPasswordInput(true);
@@ -51,7 +47,7 @@ const Withdraw = () => {
 
         {showPasswordInput && (
           <>
-            <label htmlFor="password" style={{ fontSize: "18px", margin: "4px", color: passwordError ? "red" : "inherit" }}>
+            <label htmlFor="password" style={{ fontSize: "18px", margin: "4px", color: "inherit" }}>
               비밀번호:</label>
             <input
               type="password"
@@ -59,22 +55,17 @@ const Withdraw = () => {
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
-                setPasswordError(false); // Reset password error flag on input change
               }}
               placeholder="비밀번호를 입력하세요"
               style={{
-                border: passwordError ? "2px solid red" : "2px solid gray",
-                borderRadius: "5px",
-                padding: "5px",
-                width: "200px",
+                border: "2px solid gray", borderRadius: "5px",
+                padding: "5px", width: "200px",
               }}
             />
             <br />
           </>
         )}
-
         <br />
-
         <button className="withdrawal-button" onClick={handleWithdrawal} >
           {showPasswordInput ? '탈퇴하기' : '비밀번호 확인'}
         </button>
