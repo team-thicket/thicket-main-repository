@@ -8,7 +8,6 @@ import com.example.thicketmember.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Service
 @RequiredArgsConstructor
@@ -34,15 +33,15 @@ public class MemberServiceImpl implements MemberService{
         // 존재여부를 검사할 필요가 없어졌다.
         Member findMember = memberRepository.findByEmail(email);
 
-        if (!dto.getOldPw().equals(findMember.getPassword())) {
+        if (!dto.getCurrentPassword().equals(findMember.getPassword())) {
             throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
         }
 
-        if (dto.getOldPw().equals(dto.getNewPw())) {
+        if (dto.getCurrentPassword().equals(dto.getNewPassword())) {
             throw new IllegalArgumentException("새로운 비밀번호를 입력해 주세요.");
         }
 
-        findMember.changePassword(dto.getNewPw());
+        findMember.changePassword(dto.getNewPassword());
     }
 
     @Override
@@ -53,7 +52,7 @@ public class MemberServiceImpl implements MemberService{
         // 존재여부를 검사할 필요가 없어졌다.
         Member findMember = memberRepository.findByEmail(email);
 
-        if (!findMember.getPassword().equals(dto.getPswd())) {
+        if (!findMember.getPassword().equals(dto.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
@@ -65,7 +64,7 @@ public class MemberServiceImpl implements MemberService{
     public void setAdmin(String email, RequestInactiveDto dto) {
         Member findMember = memberRepository.findByEmail(email);
 
-        if (!findMember.getPassword().equals(dto.getPswd())) {
+        if (!findMember.getPassword().equals(dto.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 

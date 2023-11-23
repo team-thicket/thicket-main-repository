@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import '../../assets/css/setting/MemberMyPage.css';
-import Mypage from "../pages/Mypage";
-import {Route} from "react-router-dom";
 
 export const MemberMyPage = ({contentHandler}) => {
     // States to track passwords
@@ -13,47 +11,54 @@ export const MemberMyPage = ({contentHandler}) => {
     const [memberEmail, setMemberEmail] = useState("");
 
     // State to track password check result
-    const [passwordCheckResult, setPasswordCheckResult] = useState(null);
+    const [passwordCheckResult, setPasswordCheckResult] = useState(true);
     useEffect(() => {
         fetch('/members',{
             method: "GET",
             headers: {
-                "Email":'test123@gmail.com',
-            },
-            // cache: "no-cache"
+                "Email":'test123@gmail.com'
+            }
         })
-            .then(res => res.json())
-            .then(data => {
-                setMemberName(data.name);
-                setMemberBirth(data.birth);
-                setMemberEmail(data.email);
-            })
+        .then(res => res.json())
+        .then(data => {
+            setMemberName(data.name);
+            setMemberBirth(data.birth);
+            setMemberEmail(data.email);
+        })
     }, []);
 
-    // 비밀번호 일치 확인 함수
-    const handlePasswordCheck = () => {
-        // Implement the logic to check the current password
-        // For example, you can compare it with the actual current password
-        const isPasswordCorrect = true; // Replace with your password check logic
-        setPasswordCheckResult(isPasswordCorrect);
-        // 현재 코드에서는 isPasswordCorrect를 항상 true로 설정하고 있어서 실제 비밀번호 확인 로직이 구현되어 있지 않습니다.
-        // 이 부분을 실제로 사용자가 입력한 비밀번호와 실제 비밀번호를 비교하는 로직으로 수정해야 합니다.
-    };
+    useEffect(() => {
+        if (newPassword !=="" && confirmNewPassword !== "" && newPassword !== confirmNewPassword) {
+            setPasswordCheckResult(false)
+            return;
+        }
+        setPasswordCheckResult(true)
+    }, [newPassword,confirmNewPassword]);
 
     // 비밀번호 변경 함수
     const handlePasswordChange = () => {
-        // Implement the logic to update the password here
-        if (newPassword === confirmNewPassword) {
-            console.log('Current Password:', currentPassword);
-            console.log('New Password:', newPassword);
-            // You may want to send a request to the server to update the password
-            // Reset password check result
-            setPasswordCheckResult(null);
-        } else {
-            // Handle password mismatch
-            console.error('New passwords do not match');
-            // You may want to display an error message to the user
+        if (newPassword !== confirmNewPassword) {
+            alert("비밀 번호와 비밀번호 확인이 서로 다릅니다.")
+            return;
         }
+        if (currentPassword.trim() === "" || newPassword.trim() === "" || confirmNewPassword.trim() === "") {
+            alert("비밀 번호 변경란을 모두 입력해 주십시오.")
+            return;
+        }
+        fetch('/members',{
+            method: "PATCH",
+            headers: {
+                'Email':'test123@gmail.com',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({currentPassword,newPassword})
+        })
+        .then(res => res.text())
+        .then(data => alert(data));
+
+        setCurrentPassword("");
+        setConfirmNewPassword("");
+        setNewPassword("");
     };
 
     return (
@@ -116,6 +121,9 @@ export const MemberMyPage = ({contentHandler}) => {
                                    onChange={(e) => setConfirmNewPassword(e.target.value)}
                             />
                             <button className="custom" onClick={handlePasswordChange}>변경</button>
+                            {passwordCheckResult === false && (
+                                <p style={{ color: 'red', fontSize:'15px'}}>비밀번호가 일치하지 않습니다.</p>
+                            )}
                         </td>
                     </tr>
                     </tbody>

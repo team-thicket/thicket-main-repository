@@ -28,21 +28,22 @@ public class MemberApiController {
     public ResponseEntity<?> changePassword(HttpServletRequest req,
                                             @RequestBody @Valid RequestSetNewPasswordDto dto){
         memberService.setNewPassword(req.getHeader("Email"), dto);
-        return ResponseEntity.ok("");
+
+        return ResponseEntity.ok("비밀번호 변경에 성공하였습니다. 다시 로그인해주세요.");
     }
 
     @DeleteMapping("") // api 명세 => DELETE /members
     public ResponseEntity<?> withdraw(HttpServletRequest req,
                                       @RequestBody @Valid RequestInactiveDto dto){
         memberService.setInactive(req.getHeader("Email"), dto);
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok("정상적으로 탈퇴되었습니다.");
     }
 
     @PatchMapping("/change") // api 명세 => PATCH /members/change
     public ResponseEntity<?> changeAdmin(HttpServletRequest req,
                                          @RequestBody RequestInactiveDto dto){
         memberService.setAdmin(req.getHeader("Email"), dto);
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok("권한이 변경되었습니다.");
     }
 
     // @ExceptionHandler를 통해 AOP로 한번에 예외 처리
