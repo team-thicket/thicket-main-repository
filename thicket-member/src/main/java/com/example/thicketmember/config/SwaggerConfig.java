@@ -25,7 +25,7 @@ public class SwaggerConfig {
 
         return new OpenAPI()
             .components(new Components()
-                .addSecuritySchemes("ApiKey", securityScheme))
-                .addSecurityItem(new SecurityRequirement().addList("ApiKey"));
+            .addSecuritySchemes("ApiKey", securityScheme))
+            .addSecurityItem(new SecurityRequirement().addList("ApiKey"));
     }
 }

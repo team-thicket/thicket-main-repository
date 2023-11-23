@@ -16,7 +16,6 @@ import java.time.LocalDate;
 public class Init {
     private final InitService initService;
 
-
     @PostConstruct
     public void init(){
         initService.init();
@@ -37,6 +36,5 @@ public class Init {
                     MemberRole.USER);
             em.persist(member);
         }
-
     }
 }
