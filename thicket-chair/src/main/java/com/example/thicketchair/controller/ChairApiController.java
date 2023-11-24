@@ -10,9 +10,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,7 +42,7 @@ public class ChairApiController {
                                 description = "UUID of the chair to find",
                                    required = true,
                                          in = ParameterIn.PATH)})
-    public ResponseEntity<?> findByUuid(@PathVariable String uuid) {
+    public ResponseEntity<?> findByUuid(@PathVariable @NotBlank String uuid) {
         ResponseChairDto responseChairDto = chairService.findChairByByUuid(uuid);
         return new ResponseEntity<>(responseChairDto, HttpStatus.OK);
     }
@@ -58,10 +61,10 @@ public class ChairApiController {
                                 description = "UUID of the chair to update",
                                    required = true,
                                          in = ParameterIn.PATH)})
-    public ResponseEntity<?> updateChair(@PathVariable String uuid,
+    public ResponseEntity<?> updateChair(@PathVariable @NotBlank String uuid,
                                          @RequestBody @Valid RequestUpdateChairDto dto) {
         chairService.updateChair(uuid, dto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body("좌석 수정 완료");
     }
 
     @DeleteMapping("/{uuid}") // api 명세 => DELETE /chairs/{uuid}
@@ -71,13 +74,19 @@ public class ChairApiController {
                                description = "UUID of the chair to delete",
                                   required = true,
                                         in = ParameterIn.PATH)})
-    public ResponseEntity<?> deleteChair(@PathVariable String uuid) {
+    public ResponseEntity<?> deleteChair(@PathVariable @NotBlank String uuid) {
         chairService.deleteChair(uuid);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.OK).body("좌석 삭제 완료");
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> exceptionHandler(Exception e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> bindingHandler(BindingResult bindingResult) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
     }
 }
