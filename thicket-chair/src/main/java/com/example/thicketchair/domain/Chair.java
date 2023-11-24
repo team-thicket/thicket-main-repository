@@ -24,25 +24,33 @@ public class Chair extends TimeStamp {
     @Column(nullable = false)
     private int price;
 
+    @Column(nullable = false)
+    private Long stageId;
+
     // 테스트용 메서드
-    public static Chair createChair(String newChairType,
-                                    int newCount,
-                                    int newPrice) {
+    public static Chair createChair(String chairType,
+                                    int count,
+                                    int price,
+                                    Long stageId) {
         Chair chair = new Chair();
 
-        chair.chairType = newChairType;
-        chair.count = newCount;
-        chair.price = newPrice;
+        chair.chairType = chairType;
+        chair.count = count;
+        chair.price = price;
+        chair.stageId = stageId;
 
         return chair;
     }
 
     public void changeChair(String newChairType,
                             int newCount,
-                            int newPrice) {
+                            int newPrice,
+                            Long newStageId) {
 
         chairType = newChairType;
         count = newCount;
         price = newPrice;
+        stageId = newStageId;
+
     }
 }

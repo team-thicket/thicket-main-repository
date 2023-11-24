@@ -27,13 +27,17 @@ public class RequestCreateChairDto {
 
     @Min(value = 0, message = "가격은 음수로 들어올 수 없습니다.")
     @NotNull(message = "가격은 반드시 입력되어야 합니다.")
-    @Schema(description = "가격", example = "189_000")
+    @Schema(description = "가격", example = "189000")
     private int price;
+
+    @NotNull
+    private Long stageId;
 
     public Chair toEntity() {
         return Chair.builder()
                 .chairType(this.chairType)
                 .count(this.count)
-                .price(this.price).build();
+                .price(this.price)
+                .stageId(this.stageId).build();
     }
 }

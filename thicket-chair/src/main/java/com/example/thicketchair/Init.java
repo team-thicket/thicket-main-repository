@@ -28,7 +28,8 @@ public class Init {
             Chair chair = Chair.createChair(
                     "VIP",
                     100,
-                    189_000
+                    189_000,
+                    1L
                     );
             em.persist(chair);
         }

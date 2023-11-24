@@ -64,8 +64,8 @@ class ChairServiceImplTest {
     void 전체_좌석_조회() {
         // Given
         // Create test data and persist it to the database
-        Chair testChair1 = Chair.createChair("VIP",100, 189_000);
-        Chair testChair2 = Chair.createChair("Standard", 150, 200_000);
+        Chair testChair1 = Chair.createChair("VIP",100, 189_000, 2L);
+        Chair testChair2 = Chair.createChair("Standard", 150, 200_000, 3L);
         chairRepository.saveAll(List.of(testChair1, testChair2));
 
         // When
@@ -97,9 +97,9 @@ class ChairServiceImplTest {
 
         RequestUpdateChairDto dto = new RequestUpdateChairDto();
 
-        dto.setChairType("String");
-        dto.setCount(10);
-        dto.setPrice(5000);
+        dto.setNewChairType("String");
+        dto.setNewCount(10);
+        dto.setNewPrice(5000);
 
         // When
         chairService.updateChair(uuid, dto);

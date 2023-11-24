@@ -13,6 +13,8 @@ public class ResponseChairDto {
     private int count;
     @NotEmpty
     private int price;
+    @NotEmpty
+    private Long stageId;
 
     public static ResponseChairDto toDto(Chair chair) {
 
@@ -21,6 +23,7 @@ public class ResponseChairDto {
         dto.chairType = chair.getChairType();
         dto.count = chair.getCount();
         dto.price = chair.getPrice();
+        dto.stageId = chair.getStageId();
 
         return dto;
     }
