@@ -1,8 +1,7 @@
 package com.example.thicketpayment.enumerate;
 
-public enum HowReceive {
+public enum State {
     WAIT, // 결제 대기중
-    DIRECTLY,
-    MOBILE,
+    COMPLETED, // 결제 완료
     CANCEL // 결제 취소
 }
