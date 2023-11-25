@@ -1,7 +1,7 @@
 package com.example.thicketpayment.repository;
 
-import com.example.thicketpayment.domain.Payment;
-import org.assertj.core.api.Assertions;
+import com.example.thicketpayment.dto.response.ResponsePaymentForMemberDto;
+import com.example.thicketpayment.dto.response.ResponsePaymentForStageDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +26,7 @@ class PaymentRepositoryTest {
         String stageId = "stage1";
 
         //when
-        List<Payment> payments = paymentRepository.findAllByStageUuid(stageId);
+        List<ResponsePaymentForStageDto> payments = paymentRepository.findAllByStageId(stageId);
 
         //then
         assertThat(payments.size()).isEqualTo(5);
@@ -38,11 +38,12 @@ class PaymentRepositoryTest {
         String memberId = "member1";
 
         //when
-        List<Payment> payments = paymentRepository.findAllByMemberUuid(memberId);
+        List<ResponsePaymentForMemberDto> payments = paymentRepository.findAllByMemberId(memberId);
 
         //then
         assertThat(payments.size()).isEqualTo(4);
     }
+
 
     @Test
     void 공연_날짜_연기시_취소_가능_날짜_벌크_업데이트() {

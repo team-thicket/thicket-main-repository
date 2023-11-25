@@ -33,8 +33,11 @@ public class Init {
             em.persist(Payment
                     .createPayment("member1","thicket1","stage1"));
 
-            em.persist(Payment
-                    .createPayment("member1","thicket2","stage2"));
+            // 이미 결제 완료된 예약 테스트용
+            Payment payment2 = Payment
+                    .createPayment("member1", "thicket2", "stage2");
+            payment2.updateState(State.COMPLETED);
+            em.persist(payment2);
 
             em.persist(Payment
                     .createPayment("member1","thicket3","stage3"));
@@ -56,7 +59,7 @@ public class Init {
             paymentByMember5.updateState(State.COMPLETED);
             paymentByMember5.updateHowReceive(HowReceive.DIRECTLY);
             paymentByMember5.updateMethod(Method.KAKAO);
-            paymentByMember5.updateCancelDate(LocalDateTime.now());
+            paymentByMember5.updateCancelDeadline(LocalDateTime.now());
             em.persist(paymentByMember5);
 
             // 취소 가능한 결제 내역
@@ -64,7 +67,7 @@ public class Init {
             paymentByMember6.updateState(State.COMPLETED);
             paymentByMember6.updateHowReceive(HowReceive.DIRECTLY);
             paymentByMember6.updateMethod(Method.KAKAO);
-            paymentByMember6.updateCancelDate(LocalDateTime.of(LocalDate.of(2024,11,25), LocalTime.MIDNIGHT));
+            paymentByMember6.updateCancelDeadline(LocalDateTime.of(LocalDate.of(2024,11,25), LocalTime.MIDNIGHT));
             em.persist(paymentByMember6);
         }
     }

@@ -19,7 +19,7 @@ public class Payment extends TimeStamp {
     private Long id;
 
     @Column
-    private LocalDateTime cancelDate;
+    private LocalDateTime cancelDeadline;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -45,7 +45,7 @@ public class Payment extends TimeStamp {
     public static Payment createPayment(String memberUuid, String ticketUuid, String stageUuid){
         Payment newPayment = new Payment();
 
-        newPayment.cancelDate = null;
+        newPayment.cancelDeadline = null;
         newPayment.howReceive = HowReceive.WAIT;
         newPayment.method = Method.WAIT;
         newPayment.state = State.WAIT;
@@ -72,8 +72,8 @@ public class Payment extends TimeStamp {
     }
 
     // 취소 가능 일자 변경
-    public void updateCancelDate(LocalDateTime newCancelDate) {
-        cancelDate = newCancelDate;
+    public void updateCancelDeadline(LocalDateTime newCancelDeadline) {
+        cancelDeadline = newCancelDeadline;
     }
 
     // 결제 취소
