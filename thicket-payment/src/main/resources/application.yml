@@ -1,0 +1,28 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: thicket-member
+
+  profiles:
+    active: localDB
+
+  datasource:
+    driver-class-name: ${localDB.driver}
+    username: ${localDB.username_}
+    password: ${localDB.password}
+    url: ${localDB.url}
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+
