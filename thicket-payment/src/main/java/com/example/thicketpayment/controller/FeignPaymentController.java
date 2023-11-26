@@ -43,5 +43,4 @@ public class FeignPaymentController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
     }
-
 }

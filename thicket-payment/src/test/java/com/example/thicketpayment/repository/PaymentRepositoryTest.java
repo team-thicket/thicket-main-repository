@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.*;
 class PaymentRepositoryTest {
     @Autowired
     PaymentRepository paymentRepository;
-
     @Test
     void 공연별_전체_결제_내역_조회() {
         //given
@@ -44,7 +43,6 @@ class PaymentRepositoryTest {
         //then
         assertThat(payments.size()).isEqualTo(4);
     }
-
 
     @Test
     void 공연_날짜_연기시_취소_가능_날짜_벌크_업데이트() {

@@ -21,7 +21,7 @@ public class AdminPaymentController {
     private final PaymentService paymentService;
 
     // 공연별 전체 결제 목록 -> 추후 집계 함수 적용 예정
-    @GetMapping("")
+    @GetMapping("payments")
     public ResponseEntity<?> findAllPayment(@RequestParam @NotEmpty String stageId) {
         return ResponseEntity.ok(paymentService.findAllPaymentByStageId(stageId));
     }

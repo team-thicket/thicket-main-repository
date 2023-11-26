@@ -7,5 +7,4 @@ public enum Method {
     CREDIT, // 신용카드로 결제
     MOBILE, // 모바일 통신사 결제
     CANCEL // 결제 취소
-
 }

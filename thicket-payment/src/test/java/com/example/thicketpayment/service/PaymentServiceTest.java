@@ -145,7 +145,6 @@ class PaymentServiceTest {
 
         //then
         assertThat(findDtos.size()).isEqualTo(5);
-
     }
 
     @Test
@@ -174,6 +173,7 @@ class PaymentServiceTest {
         //then
         assertThat(result).isEqualTo(5);
     }
+
     @Test
     void 결제_취소_마감일_초과() {
         //given
@@ -183,7 +183,6 @@ class PaymentServiceTest {
         //when & then
         assertThrows(IllegalStateException.class,
                 () -> paymentService.cancelPayment(paymentId));
-
     }
 
     @Test
@@ -198,6 +197,4 @@ class PaymentServiceTest {
         //then
         assertThat(payment.getState()).isEqualTo(State.CANCEL);
     }
-
-
 }
