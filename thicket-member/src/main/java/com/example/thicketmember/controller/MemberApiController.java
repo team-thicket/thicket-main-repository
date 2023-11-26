@@ -28,7 +28,6 @@ public class MemberApiController {
     public ResponseEntity<?> changePassword(HttpServletRequest req,
                                             @RequestBody @Valid RequestSetNewPasswordDto dto){
         memberService.setNewPassword(req.getHeader("Email"), dto);
-
         return ResponseEntity.ok("비밀번호 변경에 성공하였습니다. 다시 로그인해주세요.");
     }
 
