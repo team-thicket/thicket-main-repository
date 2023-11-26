@@ -1,14 +1,14 @@
 package com.example.thicketpayment.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class RequestPaymentDto {
-    @NotBlank
+    @NotNull(message = "회원 아이디 누락")
     private String memberId;
-    @NotBlank
+    @NotNull(message = "공연 아이디 누락")
     private String stageId;
-    @NotBlank
+    @NotNull(message = "티켓 아이디 누락")
     private String ticketId;
 }

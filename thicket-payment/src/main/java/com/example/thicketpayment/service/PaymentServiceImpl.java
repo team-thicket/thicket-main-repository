@@ -1,18 +1,21 @@
 package com.example.thicketpayment.service;
 
 import com.example.thicketpayment.domain.Payment;
-import com.example.thicketpayment.dto.request.RequestCompletedDto;
+import com.example.thicketpayment.dto.request.RequestCompletedPaymentDto;
 import com.example.thicketpayment.dto.request.RequestExtendingOpenDateDto;
 import com.example.thicketpayment.dto.request.RequestPaymentDto;
+import com.example.thicketpayment.dto.response.ResponseCompletedPaymentDto;
 import com.example.thicketpayment.dto.response.ResponsePaymentForMemberDto;
 import com.example.thicketpayment.dto.response.ResponsePaymentForStageDto;
 import com.example.thicketpayment.enumerate.State;
 import com.example.thicketpayment.repository.PaymentRepository;
 import com.sun.jdi.request.DuplicateRequestException;
+import jakarta.ws.rs.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -34,7 +37,7 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     @Transactional
-    public Payment completedPayment(RequestCompletedDto dto) {
+    public ResponseCompletedPaymentDto completedPayment(RequestCompletedPaymentDto dto) {
         Payment findPayment = paymentRepository.findByUuid(dto.getPaymentId());
 
         if (!(findPayment.getState().equals(State.WAIT))) {
@@ -47,7 +50,7 @@ public class PaymentServiceImpl implements PaymentService{
         LocalDate cancelDeadline = dto.getStageOpenDate().minusDays(2);
         findPayment.updateCancelDeadline(cancelDeadline.atTime(LocalTime.MIDNIGHT));
 
-        return findPayment;
+        return ResponseCompletedPaymentDto.toDto(findPayment);
     }
 
     // paging 해야함
@@ -72,11 +75,12 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     public int extendingDeadline(RequestExtendingOpenDateDto dto) {
-        LocalDate cancelDeadline = dto.getStageOpenDate().minusDays(2);
+        // 이미 결제된 애들만 취급 해야함 -> State.COMPLETED
+        LocalDate tmp = dto.getStageOpenDate().minusDays(2);
+
         return paymentRepository
-                .updateCancelDateByStageUuid(
-                dto.getStageId(),
-                cancelDeadline.atTime(LocalTime.MIDNIGHT));
+                .updateCancelDateByStageUuid(dto.getStageId(),
+                tmp.atTime(LocalTime.MIDNIGHT), State.COMPLETED);
 
     }
 

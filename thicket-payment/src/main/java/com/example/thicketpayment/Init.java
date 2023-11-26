@@ -69,6 +69,33 @@ public class Init {
             paymentByMember6.updateMethod(Method.KAKAO);
             paymentByMember6.updateCancelDeadline(LocalDateTime.of(LocalDate.of(2024,11,25), LocalTime.MIDNIGHT));
             em.persist(paymentByMember6);
+
+            // 취소 마감일 업데이트 테스트용 더미데이터
+            Payment payment328 = Payment
+                    .createPayment("member78", "thicket328", "stage30");
+            payment328.updateState(State.COMPLETED);
+
+            Payment payment329 = Payment
+                    .createPayment("member1548", "thicket329", "stage30");
+            payment329.updateState(State.COMPLETED);
+
+            Payment payment330 = Payment
+                    .createPayment("member7778", "thicket330", "stage30");
+            payment330.updateState(State.COMPLETED);
+
+            Payment payment331 = Payment
+                    .createPayment("member156", "thicket331", "stage30");
+            payment331.updateState(State.COMPLETED);
+
+            Payment payment332 = Payment
+                    .createPayment("member7845", "thicket332", "stage30");
+            payment332.updateState(State.COMPLETED);
+
+            em.persist(payment328);
+            em.persist(payment329);
+            em.persist(payment330);
+            em.persist(payment331);
+            em.persist(payment332);
         }
     }
 }

@@ -3,21 +3,22 @@ package com.example.thicketpayment.dto.request;
 import com.example.thicketpayment.enumerate.HowReceive;
 import com.example.thicketpayment.enumerate.Method;
 import com.example.thicketpayment.enumerate.State;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
-public class RequestCompletedDto {
-    @NotBlank
+public class RequestCompletedPaymentDto {
+    @NotNull
     private String paymentId;
-    @NotBlank
+    @NotNull
     private State state;
-    @NotBlank
+    @NotNull
     private Method method;
-    @NotBlank
+    @NotNull
     private HowReceive howReceive;
-    @NotBlank
+    @Future @NotNull
     private LocalDate stageOpenDate;
 }

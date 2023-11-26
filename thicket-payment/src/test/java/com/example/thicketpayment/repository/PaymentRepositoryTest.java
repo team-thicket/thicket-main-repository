@@ -2,6 +2,7 @@ package com.example.thicketpayment.repository;
 
 import com.example.thicketpayment.dto.response.ResponsePaymentForMemberDto;
 import com.example.thicketpayment.dto.response.ResponsePaymentForStageDto;
+import com.example.thicketpayment.enumerate.State;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,11 +49,11 @@ class PaymentRepositoryTest {
     @Test
     void 공연_날짜_연기시_취소_가능_날짜_벌크_업데이트() {
         //given
-        String stageId = "stage1";
+        String stageId = "stage30";
         LocalDateTime newCancelDate = LocalDateTime.of(LocalDate.of(2024,11,25), LocalTime.MIDNIGHT);
 
         //when
-        int updateCnt = paymentRepository.updateCancelDateByStageUuid(stageId, newCancelDate);
+        int updateCnt = paymentRepository.updateCancelDateByStageUuid(stageId, newCancelDate, State.COMPLETED);
 
         //then
         assertThat(updateCnt).isEqualTo(5);

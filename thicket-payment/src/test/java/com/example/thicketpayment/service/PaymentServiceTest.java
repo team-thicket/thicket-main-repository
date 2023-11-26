@@ -1,9 +1,10 @@
 package com.example.thicketpayment.service;
 
 import com.example.thicketpayment.domain.Payment;
-import com.example.thicketpayment.dto.request.RequestCompletedDto;
+import com.example.thicketpayment.dto.request.RequestCompletedPaymentDto;
 import com.example.thicketpayment.dto.request.RequestExtendingOpenDateDto;
 import com.example.thicketpayment.dto.request.RequestPaymentDto;
+import com.example.thicketpayment.dto.response.ResponseCompletedPaymentDto;
 import com.example.thicketpayment.dto.response.ResponsePaymentForMemberDto;
 import com.example.thicketpayment.dto.response.ResponsePaymentForStageDto;
 import com.example.thicketpayment.enumerate.HowReceive;
@@ -48,9 +49,9 @@ class PaymentServiceTest {
         Payment findPayment = paymentRepository.findByUuid(result.getUuid());
 
         //then
-        assertThat(findPayment.getMemberUuid()).isEqualTo(dto.getMemberId());
-        assertThat(findPayment.getStageUuid()).isEqualTo(dto.getStageId());
-        assertThat(findPayment.getTicketUuid()).isEqualTo(dto.getTicketId());
+        assertThat(result.getMemberUuid()).isEqualTo(findPayment.getMemberUuid());
+        assertThat(result.getStageUuid()).isEqualTo(findPayment.getStageUuid());
+        assertThat(result.getTicketUuid()).isEqualTo(findPayment.getTicketUuid());
     }
 
     @Test
@@ -60,7 +61,7 @@ class PaymentServiceTest {
 
         Payment payment = allPayment.get(0);
 
-        RequestCompletedDto dto = new RequestCompletedDto();
+        RequestCompletedPaymentDto dto = new RequestCompletedPaymentDto();
         dto.setPaymentId(payment.getUuid());
         dto.setHowReceive(HowReceive.DIRECTLY);
         dto.setState(State.COMPLETED);
@@ -68,18 +69,27 @@ class PaymentServiceTest {
         dto.setStageOpenDate(LocalDate.of(2023,12,2));
 
         //when
-        Payment result = paymentService.completedPayment(dto);
+        ResponseCompletedPaymentDto result = paymentService.completedPayment(dto);
         em.flush();
         em.clear();
         Payment findPayment = paymentRepository.findByUuid(dto.getPaymentId());
 
         //then
-        assertThat(result.getHowReceive()).isEqualTo(HowReceive.DIRECTLY);
-        assertThat(result.getState()).isEqualTo(State.COMPLETED);
-        assertThat(result.getMethod()).isEqualTo(Method.KAKAO);
-        assertThat(result.getCancelDeadline().getYear()).isEqualTo(2023);
-        assertThat(result.getCancelDeadline().getMonthValue()).isEqualTo(11);
-        assertThat(result.getCancelDeadline().getDayOfMonth()).isEqualTo(30);
+        assertThat(result.getHowReceive()).isEqualTo(findPayment.getHowReceive());
+        assertThat(result.getState()).isEqualTo(findPayment.getState());
+        assertThat(result.getMethod()).isEqualTo(findPayment.getMethod());
+
+        // 년
+        assertThat(result.getCancelDeadline().getYear())
+                .isEqualTo(findPayment.getCancelDeadline().getYear());
+
+        // 월
+        assertThat(result.getCancelDeadline().getMonth())
+                .isEqualTo(findPayment.getCancelDeadline().getMonth());
+
+        // 일
+        assertThat(result.getCancelDeadline().getDayOfMonth())
+                .isEqualTo(findPayment.getCancelDeadline().getDayOfMonth());
     }
     
     @Test
@@ -89,7 +99,7 @@ class PaymentServiceTest {
 
         Payment payment = allPayment.get(1);
 
-        RequestCompletedDto dto = new RequestCompletedDto();
+        RequestCompletedPaymentDto dto = new RequestCompletedPaymentDto();
         dto.setPaymentId(payment.getUuid());
         dto.setHowReceive(HowReceive.DIRECTLY);
         dto.setState(State.COMPLETED);
@@ -145,13 +155,13 @@ class PaymentServiceTest {
 
         //when & then
         assertThrows(NoSuchElementException.class,
-                () -> paymentService.findAllPaymentByMemberId(stageId));
+                () -> paymentService.findAllPaymentByStageId(stageId));
     }
 
     @Test
     void 결제_취소_마감일_연장() {
         //given
-        String stageId = "stage1";
+        String stageId = "stage30";
 
         RequestExtendingOpenDateDto dto = new RequestExtendingOpenDateDto();
 
@@ -171,7 +181,8 @@ class PaymentServiceTest {
         String paymentId = allPayment.get(7).getUuid();
 
         //when & then
-        assertThrows(IllegalStateException.class, () -> paymentService.cancelPayment(paymentId));
+        assertThrows(IllegalStateException.class,
+                () -> paymentService.cancelPayment(paymentId));
 
     }
 
