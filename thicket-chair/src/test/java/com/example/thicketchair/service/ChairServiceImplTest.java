@@ -31,6 +31,7 @@ class ChairServiceImplTest {
         createChairDto.setChairType("Standard");
         createChairDto.setCount(50);
         createChairDto.setPrice(200_000);
+        createChairDto.setStageUuid("UUID");
 
         // When
         chairService.createChair(createChairDto);
@@ -43,6 +44,7 @@ class ChairServiceImplTest {
         assertEquals(createChairDto.getChairType(), savedChair.getChairType());
         assertEquals(createChairDto.getCount(), savedChair.getCount());
         assertEquals(createChairDto.getPrice(), savedChair.getPrice());
+        assertEquals(createChairDto.getStageUuid(), savedChair.getStageUuid());
     }
 
     @Test
@@ -64,8 +66,8 @@ class ChairServiceImplTest {
     void 전체_좌석_조회() {
         // Given
         // Create test data and persist it to the database
-        Chair testChair1 = Chair.createChair("VIP",100, 189_000, 2L);
-        Chair testChair2 = Chair.createChair("Standard", 150, 200_000, 3L);
+        Chair testChair1 = Chair.createChair("VIP",100, 189_000, "UUID2");
+        Chair testChair2 = Chair.createChair("Standard", 150, 200_000, "UUID3");
         chairRepository.saveAll(List.of(testChair1, testChair2));
 
         // When

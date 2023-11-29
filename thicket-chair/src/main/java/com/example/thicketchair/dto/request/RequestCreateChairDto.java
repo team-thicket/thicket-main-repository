@@ -31,13 +31,13 @@ public class RequestCreateChairDto {
     private int price;
 
     @NotNull
-    private Long stageId;
+    private String stageUuid;
 
     public Chair toEntity() {
         return Chair.builder()
                 .chairType(this.chairType)
                 .count(this.count)
                 .price(this.price)
-                .stageId(this.stageId).build();
+                .stageUuid(this.stageUuid).build();
     }
 }

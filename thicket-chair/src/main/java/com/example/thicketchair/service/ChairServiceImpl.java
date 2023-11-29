@@ -54,7 +54,7 @@ public class ChairServiceImpl implements ChairService {
             throw new IllegalArgumentException("해당 좌석이 없습니다.");
         }
 
-        findChair.changeChair(dto.getNewChairType(), dto.getNewCount(), dto.getNewPrice(), dto.getNewStageId());
+        findChair.changeChair(dto.getNewChairType(), dto.getNewCount(), dto.getNewPrice(), dto.getNewStageUuid());
     }
 
     @Override
