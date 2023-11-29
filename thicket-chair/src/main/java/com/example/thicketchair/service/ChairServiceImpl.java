@@ -22,7 +22,8 @@ public class ChairServiceImpl implements ChairService {
     @Override
     @Transactional // 등록
     public void createChair(RequestCreateChairDto dto) {
-        if (chairRepository.existsByChairType(dto.getChairType())) {
+        // Check if chairType already exists for the given stageUuid
+        if (chairRepository.existsByStageUuidAndChairType(dto.getStageUuid(), dto.getChairType())) {
             throw new IllegalArgumentException("이미 존재하는 좌석 타입입니다.");
         }
 

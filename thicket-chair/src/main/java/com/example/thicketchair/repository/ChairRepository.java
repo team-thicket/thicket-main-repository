@@ -7,5 +7,5 @@ public interface ChairRepository extends JpaRepository<Chair, Long> {
 
     Chair findChairByUuid(String uuid);
     void deleteChairByUuid(String uuid);
-    boolean existsByChairType(String chairType);
+    boolean existsByStageUuidAndChairType(String stageUuid, String chairType);
 }
