@@ -25,3 +25,12 @@ spring:
 logging:
   level:
     org.springframework.web: DEBUG
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true #유레카 서버에 등록하기
+    fetch-registry: true #유레카 서버에서 서버 사애 지속적 검사
+    service-url:
+      default-zone: localhost:8761/eureka # 유레카 서버의 주소
