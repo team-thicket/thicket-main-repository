@@ -39,13 +39,17 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    @Column(nullable = false)
+    private String phoneNumber;
+
     @Builder
-    public Member(String email, Password password, String name, LocalDate birthdate , Role role) {
+    public Member(String email, Password password, String name, LocalDate birthdate , Role role, String phoneNumber) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.birthdate = birthdate;
         this.role = role;
         this.status = UserStatus.ACTIVE;
+        this.phoneNumber = phoneNumber;
     }
 }

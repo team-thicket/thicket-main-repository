@@ -34,6 +34,7 @@ public class MemberSignupService {
                 .name(request.getName())
                 .role(role)
                 .birthdate(request.getBirthdate())
+                .phoneNumber(request.getPhoneNumber())
                 .build();
 
         memberRepository.save(member);
