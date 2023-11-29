@@ -21,7 +21,7 @@ public class RequestCreateChairDto {
     private String chairType;
 
     @Min(value = 0, message = "좌석을 음수로 등록할 수 없습니다.")
-    @Max(value = 99999, message = "좌석는 99999개 이상 설정할 수 없습니다.")
+    @Max(value = 99999, message = "좌석을 10만개 이상 설정할 수 없습니다.")
     @NotNull(message = "좌석 수량을 입력하세요.")
     @Schema(description = "수량", example = "100")
     private int count;
