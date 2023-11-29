@@ -22,6 +22,10 @@ public class ChairServiceImpl implements ChairService {
     @Override
     @Transactional // 등록
     public void createChair(RequestCreateChairDto dto) {
+        if (chairRepository.existsByChairType(dto.getChairType())) {
+            throw new IllegalArgumentException("이미 존재하는 좌석 타입입니다.");
+        }
+
         Chair chair = dto.toEntity();
         chairRepository.save(chair);
     }
