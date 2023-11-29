@@ -1,6 +1,5 @@
 package com.example.thicketchair.controller;
 
-
 import com.example.thicketchair.dto.request.RequestCreateChairDto;
 import com.example.thicketchair.dto.request.RequestUpdateChairDto;
 import com.example.thicketchair.dto.response.ResponseChairDto;
