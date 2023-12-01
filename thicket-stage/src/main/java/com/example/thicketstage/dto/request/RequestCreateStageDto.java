@@ -39,28 +39,23 @@ public class RequestCreateStageDto {
     private String ageLimit;
 
     @NotNull(message = "가격은 필수 입력 항목입니다.")
-    @NumberFormat(pattern = "#,###")
     @Positive(message = "가격은 0보다 커야 합니다.")
     private int price;
 
-//    @NotBlank(message = "공연 타입은 필수 입력 항목입니다. (PLAY, MUSICAL, CONCERT)")
-//    @Enumerated(EnumType.STRING)
     private StageType stageType;
 
-//    @NotBlank(message = "공연 상태는 필수 입력 항목입니다.")
-//    @Enumerated(EnumType.STRING)
     private StageStatus stageStatus;
 
     @NotNull(message = "공연 시작 시간은 필수 입력 항목입니다.")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime stageStart;
 
-
     private String posterImg;
 
     private String detailPosterImg;
 
     private String stageInfo;
+
 
     public Stage toEntity(){
         return Stage.builder()

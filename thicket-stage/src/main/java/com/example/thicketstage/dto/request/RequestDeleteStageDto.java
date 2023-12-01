@@ -9,5 +9,4 @@ public class RequestDeleteStageDto {
 
     @NotNull
     private Long id;
-
 }

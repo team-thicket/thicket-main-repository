@@ -36,6 +36,7 @@ public class ResponseStageDto {
 
     private String stageInfo;
 
+
     public ResponseStageDto(Stage stage) {
         this.name = stage.getName();
         this.place= stage.getPlace();

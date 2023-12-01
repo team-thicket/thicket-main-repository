@@ -8,5 +8,4 @@ import lombok.*;
 public class RequestSetNewStatusDto {
 
     private StageStatus newStatus;
-//            = StageStatus.BEFORE;
 }

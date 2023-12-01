@@ -60,7 +60,7 @@ public class Stage {
     private String stageInfo;
 
 
-
+    // 비즈니스 로직
     public void updateStageInfo(RequestUpdateInfoDto updateInfoDto) {
         this.name = updateInfoDto.getName();
         this.place = updateInfoDto.getPlace();
@@ -74,6 +74,10 @@ public class Stage {
         this.posterImg = updateInfoDto.getPosterImg();
         this.detailPosterImg = updateInfoDto.getDetailPosterImg();
         this.stageInfo = updateInfoDto.getStageInfo();
+    }
+
+    public void setStageStatus(StageStatus newStatus) {
+        stageStatus = newStatus;
     }
 
     // 테스트용 메서드
@@ -99,12 +103,5 @@ public class Stage {
         stage.stageInfo = newStageInfo;
 
         return stage;
-    }
-
-
-    // 비즈니스 로직
-
-    public void setStageStatus(StageStatus newStatus) {
-        stageStatus = newStatus;
     }
 }

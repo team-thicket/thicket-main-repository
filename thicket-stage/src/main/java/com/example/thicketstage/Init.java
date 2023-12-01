@@ -62,7 +62,5 @@ public class Init {
             );
             em.persist(stage2);
         }
-
     }
-
 }
