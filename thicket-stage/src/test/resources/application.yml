@@ -10,12 +10,12 @@ spring:
   datasource:
     driver-class-name: ${testDB.driver}
     username: ${testDB.username_}
-    password: # 테스트 DB는 비밀번호 없음.
+    password: ${testDB.password}
     url: ${testDB.url}
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
