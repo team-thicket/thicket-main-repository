@@ -1,6 +1,6 @@
 package com.example.thicketpayment.controller;
 
-import com.example.thicketpayment.dto.request.RequestPaymentDto;
+import com.example.thicketpayment.dto.request.RequestCreatePaymentDto;
 import com.example.thicketpayment.service.PaymentService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -21,7 +21,7 @@ public class FeignPaymentController {
 
     // 예매 완료 -> 결제 대기 상태로 결제 등록
     @PostMapping("payments")
-    public ResponseEntity<?> completedTicket(@RequestBody @Valid RequestPaymentDto dto) {
+    public ResponseEntity<?> completedTicket(@RequestBody @Valid RequestCreatePaymentDto dto) {
         paymentService.createPayment(dto);
         return ResponseEntity.ok("결제 대기");
     }

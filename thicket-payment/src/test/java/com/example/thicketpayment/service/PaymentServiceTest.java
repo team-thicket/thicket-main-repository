@@ -3,7 +3,7 @@ package com.example.thicketpayment.service;
 import com.example.thicketpayment.domain.Payment;
 import com.example.thicketpayment.dto.request.RequestCompletedPaymentDto;
 import com.example.thicketpayment.dto.request.RequestExtendingOpenDateDto;
-import com.example.thicketpayment.dto.request.RequestPaymentDto;
+import com.example.thicketpayment.dto.request.RequestCreatePaymentDto;
 import com.example.thicketpayment.dto.response.ResponseCompletedPaymentDto;
 import com.example.thicketpayment.dto.response.ResponsePaymentForMemberDto;
 import com.example.thicketpayment.dto.response.ResponsePaymentForStageDto;
@@ -37,7 +37,7 @@ class PaymentServiceTest {
     @Test
     void 결제_정보_등록() {
         //given
-        RequestPaymentDto dto = new RequestPaymentDto();
+        RequestCreatePaymentDto dto = new RequestCreatePaymentDto();
         dto.setMemberId("member10");
         dto.setTicketId("ticket20");
         dto.setStageId("stage30");
