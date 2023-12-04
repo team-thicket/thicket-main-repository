@@ -25,19 +25,19 @@ public class Chair extends TimeStamp {
     private int price;
 
     @Column(nullable = false)
-    private Long stageId;
+    private String stageUuid;
 
     // 테스트용 메서드
     public static Chair createChair(String chairType,
                                     int count,
                                     int price,
-                                    Long stageId) {
+                                    String stageUuid) {
         Chair chair = new Chair();
 
         chair.chairType = chairType;
         chair.count = count;
         chair.price = price;
-        chair.stageId = stageId;
+        chair.stageUuid = stageUuid;
 
         return chair;
     }
@@ -45,12 +45,11 @@ public class Chair extends TimeStamp {
     public void changeChair(String newChairType,
                             int newCount,
                             int newPrice,
-                            Long newStageId) {
+                            String newStageUuid) {
 
         chairType = newChairType;
         count = newCount;
         price = newPrice;
-        stageId = newStageId;
-
+        stageUuid = newStageUuid;
     }
 }

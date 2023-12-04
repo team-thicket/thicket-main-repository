@@ -29,7 +29,7 @@ public class Init {
                     "VIP",
                     100,
                     189_000,
-                    1L
+                    "UUID"
                     );
             em.persist(chair);
         }

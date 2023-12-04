@@ -25,5 +25,5 @@ public class RequestUpdateChairDto {
     private int newPrice;
 
     @NotNull
-    private Long newStageId;
+    private String newStageUuid;
 }
