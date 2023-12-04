@@ -29,26 +29,6 @@ class StageServiceImplTest {
     @Autowired
     StageService stageService;
 
-//    @BeforeEach
-//    public void beforeEach() {
-//        Stage stage = Stage.createStage(
-//                "뮤지컬<마리퀴리>",
-//                "홍익대 아트센터 대극장",
-//                LocalDateTime.of(2023,11,25,19,30),
-//                LocalDateTime.of(2024,2,7,19,30),
-//                "180분",
-//                "8세이상 관람가",
-//                140000,
-//                StageType.MUSICAL,
-//                StageStatus.BEFORE,
-//                LocalDateTime.of(2023,11,25,19,30),
-//                "포스터 링크",
-//                "상세 포스터 링크",
-//                "공연 상세 설명"
-//                );
-//        stageRepository.save(stage);
-//    }
-
     @Test
     @Transactional
     void createStage() {
@@ -134,8 +114,10 @@ class StageServiceImplTest {
 
         //then
         assertEquals(stageThumbnailList.size(),2);
-        List<String> nameList = stageThumbnailList.stream().map(ResponseStageThumbnailDto::getName).toList();
-        List<String> placeList = stageThumbnailList.stream().map(ResponseStageThumbnailDto::getPlace).toList();
+        List<String> nameList = stageThumbnailList.stream()
+                                .map(ResponseStageThumbnailDto::getName).toList();
+        List<String> placeList = stageThumbnailList.stream()
+                                .map(ResponseStageThumbnailDto::getPlace).toList();
         assertTrue(nameList.get(0).contains(search) && nameList.get(1).contains(search));
         assertFalse(placeList.get(0).contains(search) && placeList.get(1).contains(search));
     }

@@ -76,7 +76,7 @@ public class StageController {
     public ResponseEntity<?> deleteStage(@PathVariable @Valid Long id) {
         stageService.deleteStage(id);
 
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok("삭제가 완료되었습니다.");
     }
 
     // 예외 처리
