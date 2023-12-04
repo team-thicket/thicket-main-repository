@@ -10,7 +10,17 @@ const Wrapper = styled.a`
   border-radius: 5px;
   text-align: center;
   background-color: beige;
+  &:hover {
+    background-color: lightgray; /* 색상 */
+    cursor: pointer;
+  }
 `
-export default function Menu({name,link}) {
-    return<Wrapper href={link}>{name}</Wrapper>
-}
+const Menu = ({ name, link, onClick }) => {
+    return (
+        <Wrapper href={link} onClick={onClick} name={link}>
+            {name}
+        </Wrapper>
+    );
+};
+
+export default Menu;
