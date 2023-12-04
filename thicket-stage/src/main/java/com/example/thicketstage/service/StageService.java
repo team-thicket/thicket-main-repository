@@ -5,7 +5,6 @@ import com.example.thicketstage.dto.request.RequestSetNewStatusDto;
 import com.example.thicketstage.dto.request.RequestUpdateInfoDto;
 import com.example.thicketstage.dto.response.ResponseStageDto;
 import com.example.thicketstage.dto.response.ResponseStageThumbnailDto;
-import com.example.thicketstage.enumerate.StageStatus;
 import com.example.thicketstage.enumerate.StageType;
 
 import java.util.List;

@@ -2,7 +2,6 @@ package com.example.thicketstage.dto.response;
 
 import com.example.thicketstage.domain.Stage;
 import com.example.thicketstage.enumerate.StageStatus;
-import com.example.thicketstage.enumerate.StageType;
 import lombok.*;
 
 import java.time.LocalDateTime;
