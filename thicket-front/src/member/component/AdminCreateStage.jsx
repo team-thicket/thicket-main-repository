@@ -78,14 +78,11 @@ const AdminCreateStage = () => {
     const [seatValues, setSeatValues] = useState([]);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
-    const [showTimeSlots, setShowTimeSlots] = useState(false);
-    const [selectedHour, setSelectedHour] = useState(null);
-    const [selectedMinute, setSelectedMinute] = useState(null);
     const [selectedPerformanceType, setSelectedPerformanceType] = useState('');
     const [selectedPerformanceStatus, setSelectedPerformanceStatus] = useState('');
     const datePickerRef = useRef(null);
     const endDatePickerRef = useRef(null);
-    const [selectedAgeLimit, setSelectedAgeLimit] = useState('');
+    const [timeSlots, setTimeSlots] = useState([]);
 
     registerLocale('ko', ko);
 
@@ -169,32 +166,72 @@ const AdminCreateStage = () => {
         );
     };
 
-    const handleTimeSlotClick = (hour, minute) => {
-        setSelectedHour(hour);
-        setSelectedMinute(minute);
-        setShowTimeSlots(false);
-    };
+    const TimeSelection = ({ onConfirm }) => {
+        const [selectedHour, setSelectedHour] = useState('');
+        const [selectedMinute, setSelectedMinute] = useState('');
 
-    const renderTimeSlots = () => {
-        const timeSlots = [];
-
-        for (let hour = 0; hour <= 23; hour++) {
-            for (let minute = 0; minute < 60; minute += 30) {
-                const formattedHour = hour.toString().padStart(2, '0');
-                const formattedMinute = minute.toString().padStart(2, '0');
-                timeSlots.push(
-                    <div
-                        key={`${formattedHour}:${formattedMinute}`}
-                        onClick={() => handleTimeSlotClick(formattedHour, formattedMinute)}
-                    >
-                        {`${formattedHour}:${formattedMinute}`}
-                    </div>
-                );
+        const handleConfirm = () => {
+            if (selectedHour !== '' && selectedMinute !== '') {
+                onConfirm(`${selectedHour}시 ${selectedMinute}분`);
             }
-        }
+        };
 
-        return timeSlots;
+        return (
+            <div style={{ textAlign: 'center' }}>
+                <div
+                    style={{
+                        border: '1px solid #000',
+                        borderRadius: '5px',
+                        padding: '10px',
+                        display: 'inline-block',
+                    }}
+                >
+                    <h2 style={customH1Style}>시간 선택</h2>
+                    <div>
+                        <select
+                            style={customInputTimeStyle}
+                            value={selectedHour}
+                            onChange={(e) => setSelectedHour(e.target.value)}
+                        >
+                            <option value="">선택</option>
+                            {Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0')).map((hour) => (
+                                <option key={hour} value={hour}>
+                                    {hour}
+                                </option>
+                            ))}
+                        </select>시
+                        <select
+                            style={customInputTimeStyle}
+                            value={selectedMinute}
+                            onChange={(e) => setSelectedMinute(e.target.value)}
+                        >
+                            <option value="">선택</option>
+                            <option value="00">00</option>
+                            <option value="30">30</option>
+                        </select>분
+                    </div>
+                    <button type="button" onClick={handleConfirm}>
+                        확인
+                    </button>
+                </div>
+            </div>
+        );
     };
+
+    const handleAddTimeButtonClick = () => {
+        const newWindow = window.open('', '_blank', 'width=400,height=202,left=100,top=100');
+
+        ReactDOM.render(
+            <TimeSelection
+                onConfirm={(selectedTime) => {
+                    setTimeSlots((prevTimeSlots) => [...prevTimeSlots, selectedTime]);
+                    newWindow.close();
+                }}
+            />,
+            newWindow.document.body
+        );
+    };
+
 
     return (
         <div style={createContainerStyle} >
@@ -313,30 +350,20 @@ const AdminCreateStage = () => {
                         <th style={customThStyle}>시작시간</th>
                         <td style={customTdStyle}>
                             <div>
-                                <select
-                                    style={customInputTimeStyle}
-                                    value={selectedHour}
-                                    onChange={(e) => setSelectedHour(e.target.value)}
-                                >
-                                    <option value="">선택</option>
-                                    {Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0')).map((hour) => (
-                                        <option key={hour} value={hour}>
-                                            {hour}
-                                        </option>
-                                    ))}
-                                </select>시
-                                <select
-                                    style={{ ...customInputTimeStyle, marginLeft: '10px' }}
-                                    value={selectedMinute}
-                                    onChange={(e) => setSelectedMinute(e.target.value)}
-                                >
-                                    <option value="">선택</option>
-                                    <option value="00">00</option>
-                                    <option value="30">30</option>
-                                </select>분
+                                <button style={customButton_1Style} onClick={handleAddTimeButtonClick}>
+                                    시간 추가
+                                </button>
                             </div>
                         </td>
                     </tr>
+                    {timeSlots.map((time, index) => (
+                        <React.Fragment key={index}>
+                            <tr>
+                                <th style={customThStyle}>{`선택${index + 1}`}</th>
+                                <td style={customTdStyle}>{time}</td>
+                            </tr>
+                        </React.Fragment>
+                    ))}
                     <tr>
                         <th style={customThStyle}>공연시간</th>
                         <td style={customTdStyle}>
