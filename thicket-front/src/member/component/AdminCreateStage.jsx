@@ -51,6 +51,7 @@ const customInputTimeStyle = {
     width: '50px',
     height: '25px',
     boxSizing: 'border-box',
+    marginBottom: '10px',
 };
 
 const customButtonStyle = {
@@ -167,12 +168,14 @@ const AdminCreateStage = () => {
     };
 
     const TimeSelection = ({ onConfirm }) => {
+        const [selectedDate, setSelectedDate] = useState('');
         const [selectedHour, setSelectedHour] = useState('');
         const [selectedMinute, setSelectedMinute] = useState('');
 
         const handleConfirm = () => {
-            if (selectedHour !== '' && selectedMinute !== '') {
-                onConfirm(`${selectedHour}시 ${selectedMinute}분`);
+            if (selectedDate && selectedHour !== '' && selectedMinute !== '') {
+                const formattedDateTime = `${selectedDate} ${selectedHour}:${selectedMinute}`;
+                onConfirm(formattedDateTime);
             }
         };
 
@@ -186,7 +189,15 @@ const AdminCreateStage = () => {
                         display: 'inline-block',
                     }}
                 >
-                    <h2 style={customH1Style}>시간 선택</h2>
+                    <h2 style={customH1Style}>날짜 및 시간 선택</h2>
+                    <div>
+                        <input
+                            type="date"
+                            style={{ width: '136px', marginBottom: '10px' }}
+                            value={selectedDate}
+                            onChange={(e) => setSelectedDate(e.target.value)}
+                        />
+                    </div>
                     <div>
                         <select
                             style={customInputTimeStyle}
@@ -201,7 +212,7 @@ const AdminCreateStage = () => {
                             ))}
                         </select>시
                         <select
-                            style={customInputTimeStyle}
+                            style={{ ...customInputTimeStyle, marginLeft: '5px' }}
                             value={selectedMinute}
                             onChange={(e) => setSelectedMinute(e.target.value)}
                         >
@@ -248,21 +259,13 @@ const AdminCreateStage = () => {
                         </td>
                     </tr>
                     <tr>
-                        <th style={customThStyle}>공연장주소</th>
+                        <th style={customThStyle}>공연장 주소</th>
                         <td style={customTdStyle}>
                             <input style={customInputStyle} placeholder="  주소를 입력하세요." />
                         </td>
                     </tr>
                     <tr>
-                        <th style={customThStyle}>시작일 ver 1</th>
-                        <td style={customTdStyle}>
-                            <input
-                                type="date"
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style={customThStyle}>시작일</th>
+                        <th style={customThStyle}>전체 시작일</th>
                         <td style={customTdStyle}>
                             <div style={{ position: 'relative' }}>
                                 <StyledDatePicker
@@ -304,7 +307,7 @@ const AdminCreateStage = () => {
                         </td>
                     </tr>
                     <tr>
-                        <th style={customThStyle}>종료일</th>
+                        <th style={customThStyle}>전체 종료일</th>
                         <td style={customTdStyle}>
                             <div style={{ position: 'relative' }}>
                                 <StyledDatePicker
@@ -347,7 +350,13 @@ const AdminCreateStage = () => {
                         </td>
                     </tr>
                     <tr>
-                        <th style={customThStyle}>시작시간</th>
+                        <th style={customThStyle}>공연 시간</th>
+                        <td style={customTdStyle}>
+                            <input style={customInputStyle} placeholder="  시간을 입력하세요." />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style={customThStyle}>일별 시작 시간</th>
                         <td style={customTdStyle}>
                             <div>
                                 <button style={customButton_1Style} onClick={handleAddTimeButtonClick}>
@@ -365,19 +374,13 @@ const AdminCreateStage = () => {
                         </React.Fragment>
                     ))}
                     <tr>
-                        <th style={customThStyle}>공연시간</th>
-                        <td style={customTdStyle}>
-                            <input style={customInputStyle} placeholder="  시간을 입력하세요." />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style={customThStyle}>관람연령</th>
+                        <th style={customThStyle}>관람 연령</th>
                         <td style={customTdStyle}>
                             <input style={customInputStyle} placeholder="  연령제한을 입력하세요." />
                         </td>
                     </tr>
                     <tr>
-                        <th style={customThStyle}>공연종류</th>
+                        <th style={customThStyle}>공연 종류</th>
                         <td style={customTdStyle}>
                             <select
                                 style={customInputStyle}
@@ -388,6 +391,21 @@ const AdminCreateStage = () => {
                                 <option value="뮤지컬">뮤지컬</option>
                                 <option value="연극">연극</option>
                                 <option value="콘서트">콘서트</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style={customThStyle}>공연 상태</th>
+                        <td style={customTdStyle}>
+                            <select
+                                style={customInputStyle}
+                                value={selectedPerformanceStatus}
+                                onChange={(e) => setSelectedPerformanceStatus(e.target.value)}
+                            >
+                                <option value="">선택</option>
+                                <option value="공연전">공연전</option>
+                                <option value="공연중">공연중</option>
+                                <option value="공연완료">공연완료</option>
                             </select>
                         </td>
                     </tr>
@@ -407,21 +425,6 @@ const AdminCreateStage = () => {
                         <th style={customThStyle}>공연 상세 이미지 링크</th>
                         <td style={customTdStyle}>
                             <input style={customInputStyle} placeholder="  이미지 url 링크를 입력하세요." />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style={customThStyle}>공연 상태</th>
-                        <td style={customTdStyle}>
-                            <select
-                                style={customInputStyle}
-                                value={selectedPerformanceStatus}
-                                onChange={(e) => setSelectedPerformanceStatus(e.target.value)}
-                            >
-                                <option value="">선택</option>
-                                <option value="공연전">공연전</option>
-                                <option value="공연중">공연중</option>
-                                <option value="공연완료">공연완료</option>
-                            </select>
                         </td>
                     </tr>
                     <tr>
