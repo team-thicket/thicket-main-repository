@@ -4,7 +4,6 @@ import ko from 'date-fns/locale/ko';
 import 'react-datepicker/dist/react-datepicker.css';
 import ReactDOM from 'react-dom';
 import styled from "styled-components";
-import * as newWindow from "react-dom/test-utils";
 
 const createContainerStyle = {
     padding: '10px',
@@ -25,12 +24,16 @@ const customH1Style = {
 };
 
 const customThStyle = {
-    textAlign: 'left', // Changed to left alignment
+    textAlign: 'left',
     height: '29px',
     padding: '10px',
     borderBottom: '1px solid #ccc',
     background: '#f7f7f7',
-    width: '180px',
+    minWidth: '180px', // Use minWidth instead of width
+    maxWidth: '180px', // Use maxWidth to limit the width
+    whiteSpace: 'nowrap', // Prevent text from wrapping
+    overflow: 'hidden', // Hide overflow text
+    textOverflow: 'ellipsis', // Display ellipsis for overflow text
     borderTop: '1px solid #000',
 };
 
@@ -85,7 +88,6 @@ const AdminCreateStage = () => {
     const [selectedPerformanceType, setSelectedPerformanceType] = useState('');     // 공연 종류
     const [selectedPerformanceStatus, setSelectedPerformanceStatus] = useState(''); // 공연 상태
     const [seatValues, setSeatValues] = useState([]);   // 좌석
-
 
     // 달력 한글화
     registerLocale('ko', ko);
@@ -179,7 +181,7 @@ const AdminCreateStage = () => {
                         </select>분
                     </div>
                     <button type="button" onClick={handleConfirm}>
-                        확인
+                        등록
                     </button>
                 </div>
             </div>
@@ -231,6 +233,41 @@ const AdminCreateStage = () => {
             />,
             newWindow.document.body
         );
+    };
+
+    // 날짜 기준 일정 삭제
+    const handleRemoveDateTime = (dateToRemove) => {
+        // Filter out the selected date
+        const updatedTimeSlots = timeSlots.filter((dateTime) => dateTime.date !== dateToRemove);
+        setTimeSlots(updatedTimeSlots);
+    };
+
+    // 일별 시간 기준 일정 삭제
+    const handleRemoveTime = (dateToRemove, timeToRemove) => {
+        // Find the date index
+        const dateIndex = timeSlots.findIndex((dateTime) => dateTime.date === dateToRemove);
+
+        // Check if the date exists
+        if (dateIndex !== -1) {
+            const updatedTimeSlots = [...timeSlots];
+            const timeIndex = updatedTimeSlots[dateIndex].times.findIndex(
+                (time) => time.hour === timeToRemove.hour && time.minute === timeToRemove.minute
+            );
+
+            // Check if the time exists
+            if (timeIndex !== -1) {
+                // Remove the time
+                updatedTimeSlots[dateIndex].times.splice(timeIndex, 1);
+
+                // If there are no times left for the date, remove the entire date
+                if (updatedTimeSlots[dateIndex].times.length === 0) {
+                    updatedTimeSlots.splice(dateIndex, 1);
+                }
+
+                // Update the state
+                setTimeSlots(updatedTimeSlots);
+            }
+        }
     };
 
     // 좌석 추가
@@ -303,7 +340,7 @@ const AdminCreateStage = () => {
                                 <br />
                             </div>
                         ))}
-                        <button type="submit" >확인</button>
+                        <button type="submit" >등록</button>
                     </form>
                 </div>
             </div>
@@ -338,6 +375,12 @@ const AdminCreateStage = () => {
             />,
             newWindow.document.body
         );
+    };
+
+    // 좌석 삭제
+    const handleRemoveSeat = (typeToRemove) => {
+        const updatedSeatValues = seatValues.filter((seat) => seat[0].value !== typeToRemove);
+        setSeatValues(updatedSeatValues);
     };
 
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
@@ -469,13 +512,29 @@ const AdminCreateStage = () => {
                         <React.Fragment key={index}>
                             <tr>
                                 <th style={customThStyle}>
-                                    <div>{new Date(dateTime.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })}</div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div>
+                                            {new Date(dateTime.date).toLocaleDateString('ko-KR', {
+                                                year: 'numeric',
+                                                month: '2-digit',
+                                                day: '2-digit',
+                                            })}
+                                        </div>
+                                        {/* Add the remove button */}
+                                        <button onClick={() => handleRemoveDateTime(dateTime.date)}>
+                                            ｘ
+                                        </button>
+                                    </div>
                                 </th>
                                 <td style={customTdStyle}>
                                     <div style={{ display: 'flex' }}>
                                         {dateTime.times.map((time, timeIndex) => (
                                             <div key={timeIndex} style={{ marginRight: '20px' }}>
                                                 {`${time.hour}:${time.minute}`}
+                                                {/* Add the remove button for time */}
+                                                <button style={{ marginLeft: '5px' }} onClick={() => handleRemoveTime(dateTime.date, time)}>
+                                                    ｘ
+                                                </button>
                                             </div>
                                         ))}
                                     </div>
@@ -548,7 +607,14 @@ const AdminCreateStage = () => {
                     {seatValues.map((value, index) => (
                         <React.Fragment key={index}>
                             <tr>
-                                <th style={customThStyle}>{`타입 : ${value[0].value}석`}</th>
+                                <th style={{ ...customThStyle, position: 'relative' }}>{`타입 : ${value[0].value}석`}
+                                    <button
+                                        style={{ position: 'absolute', right: '10px' }}
+                                        onClick={() => handleRemoveSeat(value[0].value)}
+                                    >
+                                        ｘ
+                                    </button>
+                                </th>
                                 <td style={customTdStyle}>
                                     <div>{`개수 : ${value[1].value}개`}</div>
                                     <div>{`가격 : ${value[2].value}원`}</div>
