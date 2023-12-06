@@ -76,97 +76,19 @@ const StyledDatePicker = styled(DatePicker)`
 `;
 
 const AdminCreateStage = () => {
-    const [seatValues, setSeatValues] = useState([]);
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-    const [selectedPerformanceType, setSelectedPerformanceType] = useState('');
-    const [selectedPerformanceStatus, setSelectedPerformanceStatus] = useState('');
-    const datePickerRef = useRef(null);
-    const endDatePickerRef = useRef(null);
-    const [timeSlots, setTimeSlots] = useState([]);
+    const [startDate, setStartDate] = useState(null);   // 전체 시작일
+    const [endDate, setEndDate] = useState(null);       // 전체 종료일
+    const datePickerRef = useRef(null);     // 전체 시작일 달력
+    const endDatePickerRef = useRef(null);  // 전체 종료일 달력
+    const [timeSlots, setTimeSlots] = useState([]);        // 일별 시작 시간
+    const [selectedPerformanceType, setSelectedPerformanceType] = useState('');     // 공연 종류
+    const [selectedPerformanceStatus, setSelectedPerformanceStatus] = useState(''); // 공연 상태
+    const [seatValues, setSeatValues] = useState([]);   // 좌석
 
+    // 달력 한글화
     registerLocale('ko', ko);
 
-    const SeatModalContent = ({ onSubmit }) => {
-        const [inputValues, setInputValues] = useState([
-            { label: '타입', value: '' },
-            { label: '개수', value: '' },
-            { label: '가격', value: '' },
-        ]);
-
-        const handleInputChange = (index, value) => {
-            setInputValues((prevInputValues) => {
-                const newValues = [...prevInputValues];
-                newValues[index].value = value;
-                return newValues;
-            });
-        };
-
-        const handleSubmit = (e) => {
-            e.preventDefault();
-
-            const formattedValues = inputValues.reduce((acc, curr) => {
-                const formattedValue =
-                    curr.label === '타입' ? String(curr.value) : parseInt(curr.value, 10) || 0;
-                acc.push({ label: curr.label, value: formattedValue });
-                return acc;
-            }, []);
-
-            onSubmit(formattedValues);
-        };
-
-        return (
-            <div style={{ textAlign: 'center' }}>
-                <div style={{ border: '1px solid #000', borderRadius: '5px', padding: '10px', display: 'inline-block' }}>
-                    <h2 style={customH1Style} >좌석 등록</h2>
-                    <form onSubmit={handleSubmit} style={{ margin: 0 }}>
-                        {inputValues.map((field, index) => (
-                            <div key={index} style={{ marginBottom: '10px' }}>
-                                <label>{`${field.label} : `}</label>
-                                <input style={customInputStyle}
-                                       type="text"
-                                       value={field.value}
-                                       onChange={(e) => handleInputChange(index, e.target.value)}
-                                       placeholder={`${
-                                           field.label === '타입'
-                                               ? '좌석 이름을 입력하세요'
-                                               : field.label === '개수'
-                                                   ? '숫자만 입력하세요'
-                                                   : '숫자만 입력하세요'
-                                       }`}
-                                />
-                                <br />
-                            </div>
-                        ))}
-                        <button type="submit" >확인</button>
-                    </form>
-                </div>
-            </div>
-        );
-    };
-
-    const handleAddButtonClick = () => {
-        const newWindow = window.open('', '_blank', 'width=400,height=202,left=100,top=100');
-
-        ReactDOM.render(
-            <SeatModalContent
-                onSubmit={(enteredValues) => {
-                    const formattedValues = enteredValues.reduce((acc, curr) => {
-                        const formattedValue =
-                            curr.label === '타입' ? String(curr.value) : parseInt(curr.value, 10) || 0;
-                        acc.push({ label: curr.label, value: formattedValue });
-                        return acc;
-                    }, []);
-
-                    setSeatValues((prevSeatValues) => [...prevSeatValues, formattedValues]);
-                    setEndDate(null); // Clear end date when adding a new seat
-                    newWindow.close();
-                }}
-            />,
-            newWindow.document.body
-        );
-    };
-
+    // 일별 시작 시간 등록
     const TimeSelection = ({ onConfirm }) => {
         const [selectedDate, setSelectedDate] = useState('');
         const [selectedHour, setSelectedHour] = useState('');
@@ -229,6 +151,7 @@ const AdminCreateStage = () => {
         );
     };
 
+    // 일별 시작 시간 등록 버튼
     const handleAddTimeButtonClick = () => {
         const newWindow = window.open('', '_blank', 'width=400,height=202,left=100,top=100');
 
@@ -243,6 +166,91 @@ const AdminCreateStage = () => {
         );
     };
 
+    // 좌석 추가
+    const SeatModalContent = ({ onSubmit }) => {
+        const [inputValues, setInputValues] = useState([
+            { label: '타입', value: '' },
+            { label: '개수', value: '' },
+            { label: '가격', value: '' },
+        ]);
+
+        const handleInputChange = (index, value) => {
+            setInputValues((prevInputValues) => {
+                const newValues = [...prevInputValues];
+                newValues[index].value = value;
+                return newValues;
+            });
+        };
+
+        const handleSubmit = (e) => {
+            e.preventDefault();
+
+            const formattedValues = inputValues.reduce((acc, curr) => {
+                const formattedValue =
+                    curr.label === '타입' ? String(curr.value) : parseInt(curr.value, 10) || 0;
+                acc.push({ label: curr.label, value: formattedValue });
+                return acc;
+            }, []);
+
+            onSubmit(formattedValues);
+        };
+
+        return (
+            <div style={{ textAlign: 'center' }}>
+                <div style={{ border: '1px solid #000', borderRadius: '5px', padding: '10px', display: 'inline-block' }}>
+                    <h2 style={customH1Style} >좌석 등록</h2>
+                    <form onSubmit={handleSubmit} style={{ margin: 0 }}>
+                        {inputValues.map((field, index) => (
+                            <div key={index} style={{ marginBottom: '10px' }}>
+                                <label>{`${field.label} : `}</label>
+                                <input style={customInputStyle}
+                                       type="text"
+                                       value={field.value}
+                                       onChange={(e) => handleInputChange(index, e.target.value)}
+                                       placeholder={`${
+                                           field.label === '타입'
+                                               ? '좌석 이름을 입력하세요'
+                                               : field.label === '개수'
+                                                   ? '숫자만 입력하세요'
+                                                   : '숫자만 입력하세요'
+                                       }`}
+                                />
+                                <br />
+                            </div>
+                        ))}
+                        <button type="submit" >확인</button>
+                    </form>
+                </div>
+            </div>
+        );
+    };
+
+    // 좌석 추가 버튼
+    const handleAddButtonClick = () => {
+        const newWindow = window.open('', '_blank', 'width=400,height=202,left=100,top=100');
+
+        ReactDOM.render(
+            <SeatModalContent
+                onSubmit={(enteredValues) => {
+                    const formattedValues = enteredValues.reduce((acc, curr) => {
+                        const formattedValue =
+                            curr.label === '타입' ? String(curr.value) : parseInt(curr.value, 10) || 0;
+                        acc.push({ label: curr.label, value: formattedValue });
+                        return acc;
+                    }, []);
+
+                    setSeatValues((prevSeatValues) => [...prevSeatValues, formattedValues]);
+                    setEndDate(null); // Clear end date when adding a new seat
+                    newWindow.close();
+                }}
+            />,
+            newWindow.document.body
+        );
+    };
+
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
     return (
         <div style={createContainerStyle} >
