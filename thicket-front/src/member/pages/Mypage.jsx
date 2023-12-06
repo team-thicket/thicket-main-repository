@@ -25,7 +25,7 @@ const Main = styled.div`
   margin-top: 20px;
   border: black solid 1px;
   border-radius: 5px;
-  width: 70%;
+  width: 77%;
   height: 100%;
   display: inline-block;
 `

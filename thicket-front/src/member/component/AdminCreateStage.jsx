@@ -4,6 +4,7 @@ import ko from 'date-fns/locale/ko';
 import 'react-datepicker/dist/react-datepicker.css';
 import ReactDOM from 'react-dom';
 import styled from "styled-components";
+import * as newWindow from "react-dom/test-utils";
 
 const createContainerStyle = {
     padding: '10px',
@@ -88,6 +89,18 @@ const AdminCreateStage = () => {
 
     // 달력 한글화
     registerLocale('ko', ko);
+
+    // 달력 유효성 검사
+    const setStartDateWithValidation = (date) => {
+        // Check if endDate is set and if the selected startDate is after the endDate
+        if (endDate && date > endDate) {
+            // If so, alert the user and don't update the startDate
+            alert('시작일은 종료일 이후일 수 없습니다.');
+        } else {
+            // Otherwise, update the startDate
+            setStartDate(date);
+        }
+    };
 
     // 일별 시작 시간 등록
     const TimeSelection = ({ onConfirm }) => {
@@ -228,7 +241,17 @@ const AdminCreateStage = () => {
             { label: '가격', value: '' },
         ]);
 
+        const newWindowRef = useRef(null);
+
         const handleInputChange = (index, value) => {
+            if ((inputValues[index].label === '개수' || inputValues[index].label === '가격')) {
+                // Allow only numeric input for '개수' and '가격'
+                if (!/^\d*$/.test(value)) {
+                    // Replace the value with 0 if the input is not a number
+                    value = '0';
+                }
+            }
+
             setInputValues((prevInputValues) => {
                 const newValues = [...prevInputValues];
                 newValues[index].value = value;
@@ -239,14 +262,22 @@ const AdminCreateStage = () => {
         const handleSubmit = (e) => {
             e.preventDefault();
 
-            const formattedValues = inputValues.reduce((acc, curr) => {
-                const formattedValue =
-                    curr.label === '타입' ? String(curr.value) : parseInt(curr.value, 10) || 0;
-                acc.push({ label: curr.label, value: formattedValue });
-                return acc;
-            }, []);
+            const hasEmptyValues = inputValues.some((field) => field.value === '');
 
-            onSubmit(formattedValues);
+            if (hasEmptyValues) {
+                // If any values are empty, close the window using the ref
+                newWindowRef.current && newWindowRef.current.close();
+            } else {
+                // Process the entered values
+                const formattedValues = inputValues.reduce((acc, curr) => {
+                    const formattedValue =
+                        curr.label === '타입' ? String(curr.value) : parseInt(curr.value, 10) || 0;
+                    acc.push({ label: curr.label, value: formattedValue });
+                    return acc;
+                }, []);
+
+                onSubmit(formattedValues);
+            }
         };
 
         return (
@@ -293,9 +324,16 @@ const AdminCreateStage = () => {
                         return acc;
                     }, []);
 
-                    setSeatValues((prevSeatValues) => [...prevSeatValues, formattedValues]);
-                    setEndDate(null); // Clear end date when adding a new seat
-                    newWindow.close();
+                    const isDuplicateType = seatValues.some((values) => values[0].value === formattedValues[0].value);
+
+                    if (isDuplicateType) {
+                        alert('이미 동일한 타입의 좌석이 추가되었습니다.');
+                        newWindow.close(); // Close the window only if it's a duplicate type
+                    } else {
+                        setSeatValues((prevSeatValues) => [...prevSeatValues, formattedValues]);
+                        setEndDate(null); // Clear end date when adding a new seat
+                        newWindow.close(); // Close the window when it's not a duplicate type
+                    }
                 }}
             />,
             newWindow.document.body
@@ -333,7 +371,7 @@ const AdminCreateStage = () => {
                                 <StyledDatePicker
                                     ref={datePickerRef}
                                     selected={startDate}
-                                    onChange={(date) => setStartDate(date)}
+                                    onChange={(date) => setStartDateWithValidation(date)}
                                     dateFormat="yyyy년 MM월 dd일"
                                     placeholderText="  날짜를 선택하세요."
                                     locale="ko"
@@ -436,7 +474,7 @@ const AdminCreateStage = () => {
                                 <td style={customTdStyle}>
                                     <div style={{ display: 'flex' }}>
                                         {dateTime.times.map((time, timeIndex) => (
-                                            <div key={timeIndex} style={{ marginRight: '10px' }}>
+                                            <div key={timeIndex} style={{ marginRight: '20px' }}>
                                                 {`${time.hour}:${time.minute}`}
                                             </div>
                                         ))}
