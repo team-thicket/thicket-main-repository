@@ -70,9 +70,9 @@ const customButton_1Style = {
 };
 
 const StyledDatePicker = styled(DatePicker)`
-    width: 300px;
-    height: 25px;
-    box-sizing: border-box;
+  width: 300px;
+  height: 25px;
+  box-sizing: border-box;
 `;
 
 const AdminCreateStage = () => {
@@ -85,6 +85,7 @@ const AdminCreateStage = () => {
     const [selectedPerformanceStatus, setSelectedPerformanceStatus] = useState(''); // 공연 상태
     const [seatValues, setSeatValues] = useState([]);   // 좌석
 
+
     // 달력 한글화
     registerLocale('ko', ko);
 
@@ -96,8 +97,29 @@ const AdminCreateStage = () => {
 
         const handleConfirm = () => {
             if (selectedDate && selectedHour !== '' && selectedMinute !== '') {
-                const formattedDateTime = `${selectedDate} ${selectedHour}:${selectedMinute}`;
+                const formattedDateTime = {
+                    date: selectedDate,
+                    times: [{ hour: selectedHour, minute: selectedMinute }],
+                };
+
                 onConfirm(formattedDateTime);
+
+                setTimeSlots((prevTimeSlots) => {
+                    const updatedTimeSlots = [...prevTimeSlots];
+                    const existingDateIndex = updatedTimeSlots.findIndex((item) => item.date === formattedDateTime.date);
+
+                    if (existingDateIndex !== -1) {
+                        updatedTimeSlots[existingDateIndex].times.sort((a, b) => {
+                            const timeA = new Date(`1970-01-01T${a.hour}:${a.minute}`);
+                            const timeB = new Date(`1970-01-01T${b.hour}:${b.minute}`);
+                            return timeA - timeB;
+                        });
+                    }
+
+                    return updatedTimeSlots.sort((a, b) => new Date(a.date) - new Date(b.date));
+                });
+
+                console.log(formattedDateTime);
             }
         };
 
@@ -124,12 +146,12 @@ const AdminCreateStage = () => {
                         <select
                             style={customInputTimeStyle}
                             value={selectedHour}
-                            onChange={(e) => setSelectedHour(e.target.value)}
+                            onChange={(e) => setSelectedHour(e.target.value === '24' ? '00' : e.target.value)}
                         >
                             <option value="">선택</option>
                             {Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0')).map((hour) => (
                                 <option key={hour} value={hour}>
-                                    {hour}
+                                    {hour === '24' ? '00' : hour}
                                 </option>
                             ))}
                         </select>시
@@ -157,8 +179,40 @@ const AdminCreateStage = () => {
 
         ReactDOM.render(
             <TimeSelection
-                onConfirm={(selectedTime) => {
-                    setTimeSlots((prevTimeSlots) => [...prevTimeSlots, selectedTime]);
+                onConfirm={(selectedDateTime) => {
+
+                    const existingDateIndex = timeSlots.findIndex((item) => item.date === selectedDateTime.date);
+
+                    if (existingDateIndex !== -1) {
+
+                        const isDuplicateTime = timeSlots[existingDateIndex].times.some(
+                            (time) =>
+                                time.hour === selectedDateTime.times[0].hour &&
+                                time.minute === selectedDateTime.times[0].minute
+                        );
+
+                        if (isDuplicateTime) {
+                            alert('이미 동일한 시간이 추가되었습니다.');
+                        } else {
+                            setTimeSlots((prevTimeSlots) => {
+                                const updatedTimeSlots = [...prevTimeSlots];
+                                updatedTimeSlots[existingDateIndex].times.push({
+                                    hour: selectedDateTime.times[0].hour,
+                                    minute: selectedDateTime.times[0].minute,
+                                });
+                                return updatedTimeSlots;
+                            });
+                        }
+                    } else {
+                        const isDuplicateDate = timeSlots.some((item) => item.date === selectedDateTime.date);
+
+                        if (isDuplicateDate) {
+                            alert('이미 동일한 날짜가 추가되었습니다.');
+                        } else {
+                            setTimeSlots((prevTimeSlots) => [...prevTimeSlots, selectedDateTime]);
+                        }
+                    }
+
                     newWindow.close();
                 }}
             />,
@@ -368,16 +422,26 @@ const AdminCreateStage = () => {
                         <td style={customTdStyle}>
                             <div>
                                 <button style={customButton_1Style} onClick={handleAddTimeButtonClick}>
-                                    시간 추가
+                                    일정추가
                                 </button>
                             </div>
                         </td>
                     </tr>
-                    {timeSlots.map((time, index) => (
+                    {timeSlots.map((dateTime, index) => (
                         <React.Fragment key={index}>
                             <tr>
-                                <th style={customThStyle}>{`선택${index + 1}`}</th>
-                                <td style={customTdStyle}>{time}</td>
+                                <th style={customThStyle}>
+                                    <div>{new Date(dateTime.date).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })}</div>
+                                </th>
+                                <td style={customTdStyle}>
+                                    <div style={{ display: 'flex' }}>
+                                        {dateTime.times.map((time, timeIndex) => (
+                                            <div key={timeIndex} style={{ marginRight: '10px' }}>
+                                                {`${time.hour}:${time.minute}`}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </td>
                             </tr>
                         </React.Fragment>
                     ))}
