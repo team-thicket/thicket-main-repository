@@ -73,6 +73,12 @@ const customButton_1Style = {
     borderRadius: '5px',
 };
 
+const xButtonStyle = {
+    position: 'absolute',
+    right: '10px',
+    padding: '0px 3px',
+};
+
 const StyledDatePicker = styled(DatePicker)`
   width: 300px;
   height: 25px;
@@ -521,8 +527,8 @@ const AdminCreateStage = () => {
                                             })}
                                         </div>
                                         {/* Add the remove button */}
-                                        <button onClick={() => handleRemoveDateTime(dateTime.date)}>
-                                            ｘ
+                                        <button style={{ padding: '0px 3px' }} onClick={() => handleRemoveDateTime(dateTime.date)}>
+                                            ×
                                         </button>
                                     </div>
                                 </th>
@@ -532,8 +538,8 @@ const AdminCreateStage = () => {
                                             <div key={timeIndex} style={{ marginRight: '20px' }}>
                                                 {`${time.hour}:${time.minute}`}
                                                 {/* Add the remove button for time */}
-                                                <button style={{ marginLeft: '5px' }} onClick={() => handleRemoveTime(dateTime.date, time)}>
-                                                    ｘ
+                                                <button style={{ marginLeft: '5px', padding: '0px 3px' }} onClick={() => handleRemoveTime(dateTime.date, time)}>
+                                                    ×
                                                 </button>
                                             </div>
                                         ))}
@@ -609,10 +615,10 @@ const AdminCreateStage = () => {
                             <tr>
                                 <th style={{ ...customThStyle, position: 'relative' }}>{`타입 : ${value[0].value}석`}
                                     <button
-                                        style={{ position: 'absolute', right: '10px' }}
+                                        style={xButtonStyle}
                                         onClick={() => handleRemoveSeat(value[0].value)}
                                     >
-                                        ｘ
+                                        ×
                                     </button>
                                 </th>
                                 <td style={customTdStyle}>
