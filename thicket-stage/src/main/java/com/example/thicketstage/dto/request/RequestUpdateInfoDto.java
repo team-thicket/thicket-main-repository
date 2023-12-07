@@ -1,5 +1,6 @@
 package com.example.thicketstage.dto.request;
 
+import com.example.thicketstage.domain.StageStart;
 import com.example.thicketstage.enumerate.StageType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +9,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter @Setter @NoArgsConstructor
 @AllArgsConstructor @Builder @ToString
@@ -33,15 +35,10 @@ public class RequestUpdateInfoDto {
     @NotBlank(message = "연령 제한은 필수 입력 항목입니다.")
     private String ageLimit;
 
-    @NotNull(message = "가격은 필수 입력 항목입니다.")
-    @Positive(message = "가격은 0보다 커야 합니다.")
-    private int price;
-
     private StageType stageType;
 
     @NotNull(message = "공연 시작 시간은 필수 입력 항목입니다.")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime stageStart;
+    private List<StageStart> stageStart;
 
     private String posterImg;
 

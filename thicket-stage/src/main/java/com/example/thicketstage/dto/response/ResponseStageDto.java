@@ -1,11 +1,15 @@
 package com.example.thicketstage.dto.response;
 
 import com.example.thicketstage.domain.Stage;
+import com.example.thicketstage.domain.StageStart;
 import com.example.thicketstage.enumerate.StageStatus;
 import com.example.thicketstage.enumerate.StageType;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Data
 public class ResponseStageDto {
@@ -22,13 +26,11 @@ public class ResponseStageDto {
 
     private String ageLimit;
 
-    private int price;
-
     private StageType stageType;
 
     private StageStatus stageStatus;
 
-    private LocalDateTime stageStart;
+    private List<StageStart> stageStart;
 
     private String posterImg;
 
@@ -44,7 +46,6 @@ public class ResponseStageDto {
         this.stageClose = stage.getStageClose();
         this.runningTime = stage.getRunningTime();
         this.ageLimit = stage.getAgeLimit();
-        this.price = stage.getPrice();
         this.stageType = stage.getStageType();
         this.stageStatus = stage.getStageStatus();
         this.stageStart = stage.getStageStart();
@@ -52,4 +53,5 @@ public class ResponseStageDto {
         this.detailPosterImg = stage.getDetailPosterImg();
         this.stageInfo = stage.getStageInfo();
     }
+
 }

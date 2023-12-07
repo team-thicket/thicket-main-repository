@@ -7,11 +7,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
-@AllArgsConstructor
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Stage {
 
@@ -37,17 +37,14 @@ public class Stage {
     @Column(length = 100, nullable = false)
     private String ageLimit;
 
-    @Column(length = 100, nullable = false)
-    private int price;
-
     @Enumerated(EnumType.STRING)
     private StageType stageType;
 
     @Enumerated(EnumType.STRING)
     private StageStatus stageStatus;
 
-    @Column(length = 100, nullable = false)
-    private LocalDateTime stageStart;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "stage")
+    private List<StageStart> stageStart = new ArrayList<>();
 
     @Column(nullable = true)
     private String posterImg;
@@ -67,13 +64,13 @@ public class Stage {
         this.stageClose = updateInfoDto.getStageClose();
         this.runningTime = updateInfoDto.getRunningTime();
         this.ageLimit = updateInfoDto.getAgeLimit();
-        this.price = updateInfoDto.getPrice();
         this.stageType = updateInfoDto.getStageType();
         this.stageStart = updateInfoDto.getStageStart();
         this.posterImg = updateInfoDto.getPosterImg();
         this.detailPosterImg = updateInfoDto.getDetailPosterImg();
         this.stageInfo = updateInfoDto.getStageInfo();
     }
+
 
     public void setStageStatus(StageStatus newStatus) {
         stageStatus = newStatus;
@@ -82,9 +79,9 @@ public class Stage {
     // 테스트용 메서드
     public static Stage createStage(String newName, String newPlace, LocalDateTime newStageOpen,
                                     LocalDateTime newStageClose, String newRunningTime,
-                                    String newAgeLimit, int newPrice, StageType newStageType,
-                                    StageStatus newStageStatus, LocalDateTime newStageStart,
-                                    String newPosterImg, String newDetailPosterImg, String newStageInfo) {
+                                    String newAgeLimit, StageType newStageType,
+                                    StageStatus newStageStatus, String newPosterImg,
+                                    String newDetailPosterImg, String newStageInfo) {
         Stage stage = new Stage();
 
         stage.name = newName;
@@ -93,10 +90,8 @@ public class Stage {
         stage.stageClose = newStageClose;
         stage.runningTime = newRunningTime;
         stage.ageLimit = newAgeLimit;
-        stage.price = newPrice;
         stage.stageType = newStageType;
         stage.stageStatus = newStageStatus;
-        stage.stageStart = newStageStart;
         stage.posterImg = newPosterImg;
         stage.detailPosterImg = newDetailPosterImg;
         stage.stageInfo = newStageInfo;

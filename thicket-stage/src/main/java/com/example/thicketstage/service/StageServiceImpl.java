@@ -1,6 +1,7 @@
 package com.example.thicketstage.service;
 
 import com.example.thicketstage.domain.Stage;
+import com.example.thicketstage.dto.request.RequestCreateDateDto;
 import com.example.thicketstage.dto.request.RequestCreateStageDto;
 import com.example.thicketstage.dto.request.RequestSetNewStatusDto;
 import com.example.thicketstage.dto.request.RequestUpdateInfoDto;
@@ -26,25 +27,14 @@ public class StageServiceImpl implements StageService{
     private final StageRepository stageRepository;
     
     @Override
-    public RequestCreateStageDto createStage(RequestCreateStageDto stageDto) {
+    public RequestCreateStageDto createStage(RequestCreateStageDto stageDto,
+                                             List<RequestCreateDateDto> dateDto) {
         Stage stage = stageDto.toEntity();
-        Stage saveStage = stageRepository.save(stage);
+        dateDto.forEach(d -> d.toEntity(stage));
+
+        stageRepository.save(stage);
         
-        return RequestCreateStageDto.builder()
-                .name(saveStage.getName())
-                .place(saveStage.getPlace())
-                .stageOpen(saveStage.getStageOpen())
-                .stageClose(saveStage.getStageClose())
-                .runningTime(saveStage.getRunningTime())
-                .ageLimit(saveStage.getAgeLimit())
-                .price(saveStage.getPrice())
-                .stageType(saveStage.getStageType())
-                .stageStatus(saveStage.getStageStatus())
-                .stageStart(saveStage.getStageStart())
-                .posterImg(saveStage.getPosterImg())
-                .detailPosterImg(saveStage.getDetailPosterImg())
-                .stageInfo(saveStage.getStageInfo())
-                .build();
+        return RequestCreateStageDto.builder().build();
     }
     
     @Override

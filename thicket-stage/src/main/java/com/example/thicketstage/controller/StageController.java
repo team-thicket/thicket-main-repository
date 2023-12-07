@@ -1,5 +1,6 @@
 package com.example.thicketstage.controller;
 
+import com.example.thicketstage.dto.request.RequestCreateDateDto;
 import com.example.thicketstage.dto.request.RequestCreateStageDto;
 import com.example.thicketstage.dto.request.RequestSetNewStatusDto;
 import com.example.thicketstage.dto.request.RequestUpdateInfoDto;
@@ -22,8 +23,9 @@ public class StageController {
     private final StageService stageService;
 
     @PostMapping("") // api 명세 => POST /stages
-    public ResponseEntity<?> createStage(@RequestBody @Valid RequestCreateStageDto stageDto) {
-        RequestCreateStageDto createStageDto = stageService.createStage(stageDto);
+    public ResponseEntity<?> createStage(@RequestBody @Valid RequestCreateStageDto stageDto,
+                                         List<RequestCreateDateDto> dateDto) {
+        RequestCreateStageDto createStageDto = stageService.createStage(stageDto, dateDto);
 
         return new ResponseEntity<>(createStageDto, HttpStatus.CREATED);
     }

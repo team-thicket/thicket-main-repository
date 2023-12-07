@@ -10,6 +10,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter @Setter @NoArgsConstructor
 @AllArgsConstructor @Builder @ToString
@@ -35,17 +36,12 @@ public class RequestCreateStageDto {
     @NotBlank(message = "연령 제한은 필수 입력 항목입니다.")
     private String ageLimit;
 
-    @NotNull(message = "가격은 필수 입력 항목입니다.")
-    @Positive(message = "가격은 0보다 커야 합니다.")
-    private int price;
-
     private StageType stageType;
 
     private StageStatus stageStatus;
 
     @NotNull(message = "공연 시작 시간은 필수 입력 항목입니다.")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime stageStart;
+    private List<RequestCreateDateDto> stageStartDto;
 
     private String posterImg;
 
@@ -53,27 +49,19 @@ public class RequestCreateStageDto {
 
     private String stageInfo;
 
-
-    public Stage toEntity(){
-        return Stage.builder()
-                .name(this.name)
-                .place(this.place)
-                .stageOpen(this.stageOpen)
-                .stageClose(this.stageClose)
-                .runningTime(this.runningTime)
-                .ageLimit(this.ageLimit)
-                .price(this.price)
-                .stageType(this.stageType)
-                .stageStatus(this.stageStatus)
-                .stageStart(this.stageStart)
-                .posterImg(this.posterImg)
-                .detailPosterImg(this.detailPosterImg)
-                .stageInfo(this.stageInfo)
-                .build();
+    public Stage toEntity() {
+        return Stage.createStage(
+                name,place,
+                stageOpen,stageClose,
+                runningTime,ageLimit,
+                stageType,stageStatus,
+                posterImg,detailPosterImg,stageInfo);
     }
 
     // 테스트용 메서드
     public Long getId() {
         return 1L;
     }
+
+
 }
