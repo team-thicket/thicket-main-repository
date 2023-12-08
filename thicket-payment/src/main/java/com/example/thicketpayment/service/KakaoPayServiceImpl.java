@@ -1,7 +1,9 @@
 package com.example.thicketpayment.service;
 
 import com.example.thicketpayment.domain.Payment;
-import com.example.thicketpayment.dto.response.ResponseKakaopayDto;
+import com.example.thicketpayment.dto.request.RequestApproveKakaopayDto;
+import com.example.thicketpayment.dto.response.ResponseCompletedKakaopayDto;
+import com.example.thicketpayment.dto.response.ResponseReadyKakaopayDto;
 import com.example.thicketpayment.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,8 +14,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.nio.charset.StandardCharsets;
 
 @Service
 @PropertySource("classpath:secretKey.properties")
@@ -30,25 +30,23 @@ public class KakaoPayServiceImpl implements KakaopayService{
         this.paymentRepository = paymentRepository;
     }
 
+    // 카카오 페이 서버로 결제 준비 요청 보내기
     @Override
-    public ResponseKakaopayDto readyKakaopay(String paymentId){
+    public ResponseReadyKakaopayDto readyKakaopay(String paymentId){
+            MultiValueMap<String, String> readyForm = createReadyForm(
+                    paymentRepository.findByUuid(paymentId));
 
-        System.out.println("adminKey = " + adminKey);
-
-
-        return webClient.post().uri("/v1/payment/ready")
-                .header("Authorization", "KakaoAK " + adminKey)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .body(BodyInserters.fromFormData(createReadyForm(paymentRepository.findByUuid(paymentId))))
-                .retrieve()
-                .bodyToMono(ResponseKakaopayDto.class)
-                .block();
+            return webClient.post().uri("/v1/payment/ready")
+                    .header("Authorization", "KakaoAK " + adminKey)
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .body(BodyInserters.fromFormData(readyForm))
+                    .retrieve()
+                    .bodyToMono(ResponseReadyKakaopayDto.class)
+                    .block();
     }
 
+    // 카카오 페이 서버로 보낼 결제 준비 api 요청에 담을 form 정보 생성
     private static MultiValueMap<String, String> createReadyForm(Payment payment) {
-        System.out.println(payment.getUuid());
-        System.out.println(payment.getMemberUuid());
-        System.out.println(payment.getTicketUuid());
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("cid","TC0ONETIME");
         formData.add("partner_order_id",payment.getUuid());
@@ -56,15 +54,40 @@ public class KakaoPayServiceImpl implements KakaopayService{
         formData.add("item_name",payment.getTicketUuid());
         formData.add("quantity","1");
         formData.add("total_amount","200000");
-        formData.add("tax_free_amount","5000");
-        formData.add("approval_url","http://localhost:3000");
-        formData.add("cancel_url","http://localhost:3000");
-        formData.add("fail_url","http://localhost:3000");
+        formData.add("tax_free_amount","195000");
+        formData.add("approval_url","http://localhost:3000/paymentCallback");
+        formData.add("cancel_url","http://localhost:3000/paymentCallback");
+        formData.add("fail_url","http://localhost:3000/paymentCallback");
+
         return formData;
     }
 
+    // 카카오 페이 서버로 결제 완료 요청 보내기
     @Override
-    public void approveKakaopay() {
+    public ResponseCompletedKakaopayDto approveKakaopay(RequestApproveKakaopayDto dto) {
+        MultiValueMap<String, String> approveForm = createApproveForm(
+                paymentRepository.findByUuid(dto.getPaymentId()), dto.getTid(), dto.getPgToken());
 
+        return webClient.post().uri("/v1/payment/approve")
+                .header("Authorization", "KakaoAK " + adminKey)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(BodyInserters.fromFormData(approveForm))
+                .retrieve()
+                .bodyToMono(ResponseCompletedKakaopayDto.class)
+                .block();
+    }
+
+    // 카카오 페이 서버로 보낼 결제 완료 api 요청에 담을 form 정보 생성
+    private static MultiValueMap<String, String> createApproveForm(Payment payment,
+                                                                   String tid,
+                                                                   String token) {
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add("cid","TC0ONETIME");
+        formData.add("tid",tid);
+        formData.add("partner_order_id",payment.getUuid());
+        formData.add("partner_user_id",payment.getMemberUuid());
+        formData.add("pg_token",token);
+
+        return formData;
     }
 }
