@@ -56,4 +56,5 @@ class PaymentRepositoryTest {
         //then
         assertThat(updateCnt).isEqualTo(5);
     }
+
 }
