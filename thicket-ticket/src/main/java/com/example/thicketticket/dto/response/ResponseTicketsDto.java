@@ -29,7 +29,6 @@ public class ResponseTicketsDto {
     // Ticket 엔티티를 ResponseAllTicketsDto로 변환하는 메소드
     public static ResponseTicketsDto toDto(Ticket ticket) {
         ResponseTicketsDto responseTicketsDto = new ResponseTicketsDto();
-        responseTicketsDto.setTicketNumber(ticket.getTicketNumber());
         responseTicketsDto.setStageName(ticket.getStageName());
         responseTicketsDto.setDate(ticket.getDate());
         responseTicketsDto.setChairType(ticket.getChairType());

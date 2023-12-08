@@ -36,7 +36,7 @@ public class TicketServiceImpl implements TicketService{
     @Override
     @Transactional
     public ResponseTicketDto findTicketByTicketNumber(String ticketNumber) {
-        Ticket findTicket = ticketRepository.findTicketByTicketNumber(ticketNumber);
+        Ticket findTicket = ticketRepository.findTicketByUuid(ticketNumber);
 
         if (findTicket == null) {
             throw new IllegalArgumentException("존재하지 않는 티켓.");
@@ -58,7 +58,7 @@ public class TicketServiceImpl implements TicketService{
     @Override
     @Transactional
     public void deleteTicket(String ticketNumber) {
-        Ticket findTicket = ticketRepository.findTicketByTicketNumber(ticketNumber);
+        Ticket findTicket = ticketRepository.findTicketByUuid(ticketNumber);
 
         if (findTicket == null) {
             throw new IllegalArgumentException("존재하지 않는 티켓.");

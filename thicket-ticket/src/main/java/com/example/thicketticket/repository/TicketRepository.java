@@ -11,7 +11,7 @@ import java.util.List;
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     //티켓
-    Ticket findTicketByTicketNumber(String ticketNumber);
+    Ticket findTicketByUuid(String uuid);
 
     //티켓 전체조회 by memberId
     List<Ticket> findAllByMemberIdAndDeletedFalse(Long memberId);

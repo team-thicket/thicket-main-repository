@@ -35,16 +35,16 @@
         private int price;
 
         @Column(nullable = false)
-        private String ticketNumber;
-
-        @Column(nullable = false)
         private Long stageId;
 
         @Column(nullable = false)
         private Long memberId;
 
         @Column(nullable = false)
-        private boolean deleted = false;
+        private boolean deleted;
+
+        @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+        private Payment payment;
 
         // 테스트용 메서드
         public static Ticket createTicket(String stageName,
@@ -57,13 +57,13 @@
                                           long stageId,
                                           long memberId) {
             Ticket ticket = new Ticket();
+            ticket.deleted = false;
             ticket.stageName = "Test Stage";
             ticket.date = "2023-11-30";
             ticket.place = "Test Place";
             ticket.chairType = "VIP";
             ticket.memberName = "Test Member";
             ticket.price = 50000;
-            ticket.ticketNumber = "T123456";
             ticket.stageId = 100L;
             ticket.memberId = 200L;
 

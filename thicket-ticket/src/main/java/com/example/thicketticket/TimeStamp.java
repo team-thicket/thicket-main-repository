@@ -20,10 +20,13 @@ import java.util.UUID;
 public class TimeStamp {
     @CreatedDate
     private LocalDateTime createAt;
+
+    @LastModifiedDate
+    private LocalDateTime updateAt;
+
+    private String uuid;
     @PrePersist
     private void createUuid(){
-
-        createAt = LocalDateTime.now();
-
+        uuid = UUID.randomUUID().toString();
     }
 }
