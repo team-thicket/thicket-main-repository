@@ -10,7 +10,7 @@ const createContainerStyle = {
 };
 
 const customDivStyle = {
-    paddingTop: '40px',
+    padding: '20px 0px 60px 0',
 };
 
 const infoTableStyle = {
@@ -19,7 +19,7 @@ const infoTableStyle = {
 };
 
 const customH1Style = {
-    margin: '0 0 10px 0',
+    margin: '0 0 20px 0',
     paddingLeft: '5px',
 };
 
@@ -196,7 +196,7 @@ const AdminCreateStage = () => {
 
     // 일별 시작 시간 등록 버튼
     const handleAddTimeButtonClick = () => {
-        const newWindow = window.open('', '_blank', 'width=400,height=202,left=100,top=100');
+        const newWindow = window.open('', '_blank', 'width=240,height=190,left=100,top=100');
 
         ReactDOM.render(
             <TimeSelection
@@ -355,7 +355,7 @@ const AdminCreateStage = () => {
 
     // 좌석 추가 버튼
     const handleAddButtonClick = () => {
-        const newWindow = window.open('', '_blank', 'width=400,height=202,left=100,top=100');
+        const newWindow = window.open('', '_blank', 'width=400,height=220,left=100,top=100');
 
         ReactDOM.render(
             <SeatModalContent
@@ -505,50 +505,6 @@ const AdminCreateStage = () => {
                         </td>
                     </tr>
                     <tr>
-                        <th style={customThStyle}>일별 시작 시간</th>
-                        <td style={customTdStyle}>
-                            <div>
-                                <button style={customButton_1Style} onClick={handleAddTimeButtonClick}>
-                                    일정추가
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    {timeSlots.map((dateTime, index) => (
-                        <React.Fragment key={index}>
-                            <tr>
-                                <th style={customThStyle}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <div>
-                                            {new Date(dateTime.date).toLocaleDateString('ko-KR', {
-                                                year: 'numeric',
-                                                month: '2-digit',
-                                                day: '2-digit',
-                                            })}
-                                        </div>
-                                        {/* Add the remove button */}
-                                        <button style={{ padding: '0px 3px' }} onClick={() => handleRemoveDateTime(dateTime.date)}>
-                                            ×
-                                        </button>
-                                    </div>
-                                </th>
-                                <td style={customTdStyle}>
-                                    <div style={{ display: 'flex' }}>
-                                        {dateTime.times.map((time, timeIndex) => (
-                                            <div key={timeIndex} style={{ marginRight: '20px' }}>
-                                                {`${time.hour}:${time.minute}`}
-                                                {/* Add the remove button for time */}
-                                                <button style={{ marginLeft: '5px', padding: '0px 3px' }} onClick={() => handleRemoveTime(dateTime.date, time)}>
-                                                    ×
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </td>
-                            </tr>
-                        </React.Fragment>
-                    ))}
-                    <tr>
                         <th style={customThStyle}>관람 연령</th>
                         <td style={customTdStyle}>
                             <input style={customInputStyle} placeholder="  연령제한을 입력하세요." />
@@ -602,8 +558,76 @@ const AdminCreateStage = () => {
                             <input style={customInputStyle} placeholder="  이미지 url 링크를 입력하세요." />
                         </td>
                     </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style={customDivStyle}>
+                <button style={customButtonStyle}>공연 등록</button>
+            </div>
+            <div>
+                <h1 style={customH1Style} >
+                    일정 등록
+                </h1>
+                <table style={infoTableStyle} >
+                    <tbody>
                     <tr>
-                        <th style={customThStyle}>좌석</th>
+                        <th style={{ ...customThStyle, width: '180px' }}>일별 시작 시간</th>
+                        <td style={customTdStyle}>
+                            <div>
+                                <button style={customButton_1Style} onClick={handleAddTimeButtonClick}>
+                                    일정추가
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {timeSlots.map((dateTime, index) => (
+                        <React.Fragment key={index}>
+                            <tr>
+                                <th style={customThStyle}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div>
+                                            {new Date(dateTime.date).toLocaleDateString('ko-KR', {
+                                                year: 'numeric',
+                                                month: '2-digit',
+                                                day: '2-digit',
+                                            })}
+                                        </div>
+                                        {/* Add the remove button */}
+                                        <button style={{ padding: '0px 3px' }} onClick={() => handleRemoveDateTime(dateTime.date)}>
+                                            ✕
+                                        </button>
+                                    </div>
+                                </th>
+                                <td style={customTdStyle}>
+                                    <div style={{ display: 'flex' }}>
+                                        {dateTime.times.map((time, timeIndex) => (
+                                            <div key={timeIndex} style={{ marginRight: '20px' }}>
+                                                {`${time.hour}:${time.minute}`}
+                                                {/* Add the remove button for time */}
+                                                <button style={{ marginLeft: '5px', padding: '0px 3px' }} onClick={() => handleRemoveTime(dateTime.date, time)}>
+                                                    ✕
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </td>
+                            </tr>
+                        </React.Fragment>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
+            <div style={customDivStyle}>
+                <button style={customButtonStyle}>일정 등록</button>
+            </div>
+            <div>
+                <h1 style={customH1Style} >
+                    좌석 등록
+                </h1>
+                <table style={infoTableStyle} >
+                    <tbody>
+                    <tr>
+                        <th style={{ ...customThStyle, width: '180px' }}>좌석</th>
                         <td style={customTdStyle}>
                             <button style={customButton_1Style} onClick={handleAddButtonClick}>
                                 추가
@@ -618,7 +642,7 @@ const AdminCreateStage = () => {
                                         style={xButtonStyle}
                                         onClick={() => handleRemoveSeat(value[0].value)}
                                     >
-                                        ×
+                                        ✕
                                     </button>
                                 </th>
                                 <td style={customTdStyle}>
@@ -631,8 +655,8 @@ const AdminCreateStage = () => {
                     </tbody>
                 </table>
             </div>
-            <div style={customDivStyle}>
-                <button style={customButtonStyle}>등록</button>
+            <div style={{ padding: '20px 0 0 0' }}>
+                <button style={customButtonStyle}>좌석 등록</button>
             </div>
         </div>
     );

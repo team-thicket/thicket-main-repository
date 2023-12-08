@@ -8,7 +8,7 @@ const infoTableStyle = {
 };
 
 const customH1Style = {
-    margin: '0 0 10px 0',
+    margin: '0 0 20px 0',
     paddingLeft: '5px',
 };
 
@@ -48,9 +48,9 @@ export const AdminAllStageList = () => {
                     <tbody>
                     <tr>
                         <th style={{ ...customThStyle, width: '6%' }}>번호</th>
-                        <th style={{ ...customThStyle, width: '6%' }}>구분</th>
+                        <th style={{ ...customThStyle, width: '8%' }}>구분</th>
                         <th style={{ ...customThStyle, width: 'auto' }}>제목</th>
-                        <th style={{ ...customThStyle, width: '6%' }}>상태</th>
+                        <th style={{ ...customThStyle, width: '8%' }}>상태</th>
                         <th style={{ ...customThStyle, width: '10%' }}>오픈일</th>
                         <th style={{ ...customThStyle, width: '10%' }}>마감일</th>
                     </tr>
@@ -64,7 +64,276 @@ export const AdminAllStageList = () => {
                         <td style={customTdStyle}>2023.12.08.</td>
                         <td style={customTdStyle}>2023.12.10.</td>
                     </tr>
-
+                    <tr>
+                        <td style={customTdStyle}>2</td>
+                        <td style={customTdStyle}>연극</td>
+                        <td style={customTdNotCenterStyle}>
+                            4D공포연극
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2022.02.11.</td>
+                        <td style={customTdStyle}>2023.12.31.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>1</td>
+                        <td style={customTdStyle}>뮤지컬</td>
+                        <td style={customTdNotCenterStyle}>
+                            2023 푸에르자부르타 웨이라 인 서울
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2023.11.17.</td>
+                        <td style={customTdStyle}>2024.02.15.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>3</td>
+                        <td style={customTdStyle}>콘서트</td>
+                        <td style={customTdNotCenterStyle}>
+                            임영웅 콘서트 IM HERO TOUR 2023 - 부산
+                        </td>
+                        <td style={customTdStyle}>오픈전</td>
+                        <td style={customTdStyle}>2023.12.08.</td>
+                        <td style={customTdStyle}>2023.12.10.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>2</td>
+                        <td style={customTdStyle}>연극</td>
+                        <td style={customTdNotCenterStyle}>
+                            4D공포연극
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2022.02.11.</td>
+                        <td style={customTdStyle}>2023.12.31.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>1</td>
+                        <td style={customTdStyle}>뮤지컬</td>
+                        <td style={customTdNotCenterStyle}>
+                            2023 푸에르자부르타 웨이라 인 서울
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2023.11.17.</td>
+                        <td style={customTdStyle}>2024.02.15.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>3</td>
+                        <td style={customTdStyle}>콘서트</td>
+                        <td style={customTdNotCenterStyle}>
+                            임영웅 콘서트 IM HERO TOUR 2023 - 부산
+                        </td>
+                        <td style={customTdStyle}>오픈전</td>
+                        <td style={customTdStyle}>2023.12.08.</td>
+                        <td style={customTdStyle}>2023.12.10.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>2</td>
+                        <td style={customTdStyle}>연극</td>
+                        <td style={customTdNotCenterStyle}>
+                            4D공포연극
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2022.02.11.</td>
+                        <td style={customTdStyle}>2023.12.31.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>1</td>
+                        <td style={customTdStyle}>뮤지컬</td>
+                        <td style={customTdNotCenterStyle}>
+                            2023 푸에르자부르타 웨이라 인 서울
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2023.11.17.</td>
+                        <td style={customTdStyle}>2024.02.15.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>3</td>
+                        <td style={customTdStyle}>콘서트</td>
+                        <td style={customTdNotCenterStyle}>
+                            임영웅 콘서트 IM HERO TOUR 2023 - 부산
+                        </td>
+                        <td style={customTdStyle}>오픈전</td>
+                        <td style={customTdStyle}>2023.12.08.</td>
+                        <td style={customTdStyle}>2023.12.10.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>2</td>
+                        <td style={customTdStyle}>연극</td>
+                        <td style={customTdNotCenterStyle}>
+                            4D공포연극
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2022.02.11.</td>
+                        <td style={customTdStyle}>2023.12.31.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>1</td>
+                        <td style={customTdStyle}>뮤지컬</td>
+                        <td style={customTdNotCenterStyle}>
+                            2023 푸에르자부르타 웨이라 인 서울
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2023.11.17.</td>
+                        <td style={customTdStyle}>2024.02.15.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>3</td>
+                        <td style={customTdStyle}>콘서트</td>
+                        <td style={customTdNotCenterStyle}>
+                            임영웅 콘서트 IM HERO TOUR 2023 - 부산
+                        </td>
+                        <td style={customTdStyle}>오픈전</td>
+                        <td style={customTdStyle}>2023.12.08.</td>
+                        <td style={customTdStyle}>2023.12.10.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>2</td>
+                        <td style={customTdStyle}>연극</td>
+                        <td style={customTdNotCenterStyle}>
+                            4D공포연극
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2022.02.11.</td>
+                        <td style={customTdStyle}>2023.12.31.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>1</td>
+                        <td style={customTdStyle}>뮤지컬</td>
+                        <td style={customTdNotCenterStyle}>
+                            2023 푸에르자부르타 웨이라 인 서울
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2023.11.17.</td>
+                        <td style={customTdStyle}>2024.02.15.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>3</td>
+                        <td style={customTdStyle}>콘서트</td>
+                        <td style={customTdNotCenterStyle}>
+                            임영웅 콘서트 IM HERO TOUR 2023 - 부산
+                        </td>
+                        <td style={customTdStyle}>오픈전</td>
+                        <td style={customTdStyle}>2023.12.08.</td>
+                        <td style={customTdStyle}>2023.12.10.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>2</td>
+                        <td style={customTdStyle}>연극</td>
+                        <td style={customTdNotCenterStyle}>
+                            4D공포연극
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2022.02.11.</td>
+                        <td style={customTdStyle}>2023.12.31.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>1</td>
+                        <td style={customTdStyle}>뮤지컬</td>
+                        <td style={customTdNotCenterStyle}>
+                            2023 푸에르자부르타 웨이라 인 서울
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2023.11.17.</td>
+                        <td style={customTdStyle}>2024.02.15.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>3</td>
+                        <td style={customTdStyle}>콘서트</td>
+                        <td style={customTdNotCenterStyle}>
+                            임영웅 콘서트 IM HERO TOUR 2023 - 부산
+                        </td>
+                        <td style={customTdStyle}>오픈전</td>
+                        <td style={customTdStyle}>2023.12.08.</td>
+                        <td style={customTdStyle}>2023.12.10.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>2</td>
+                        <td style={customTdStyle}>연극</td>
+                        <td style={customTdNotCenterStyle}>
+                            4D공포연극
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2022.02.11.</td>
+                        <td style={customTdStyle}>2023.12.31.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>1</td>
+                        <td style={customTdStyle}>뮤지컬</td>
+                        <td style={customTdNotCenterStyle}>
+                            2023 푸에르자부르타 웨이라 인 서울
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2023.11.17.</td>
+                        <td style={customTdStyle}>2024.02.15.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>3</td>
+                        <td style={customTdStyle}>콘서트</td>
+                        <td style={customTdNotCenterStyle}>
+                            임영웅 콘서트 IM HERO TOUR 2023 - 부산
+                        </td>
+                        <td style={customTdStyle}>오픈전</td>
+                        <td style={customTdStyle}>2023.12.08.</td>
+                        <td style={customTdStyle}>2023.12.10.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>2</td>
+                        <td style={customTdStyle}>연극</td>
+                        <td style={customTdNotCenterStyle}>
+                            4D공포연극
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2022.02.11.</td>
+                        <td style={customTdStyle}>2023.12.31.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>1</td>
+                        <td style={customTdStyle}>뮤지컬</td>
+                        <td style={customTdNotCenterStyle}>
+                            2023 푸에르자부르타 웨이라 인 서울
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2023.11.17.</td>
+                        <td style={customTdStyle}>2024.02.15.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>3</td>
+                        <td style={customTdStyle}>콘서트</td>
+                        <td style={customTdNotCenterStyle}>
+                            임영웅 콘서트 IM HERO TOUR 2023 - 부산
+                        </td>
+                        <td style={customTdStyle}>오픈전</td>
+                        <td style={customTdStyle}>2023.12.08.</td>
+                        <td style={customTdStyle}>2023.12.10.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>2</td>
+                        <td style={customTdStyle}>연극</td>
+                        <td style={customTdNotCenterStyle}>
+                            4D공포연극
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2022.02.11.</td>
+                        <td style={customTdStyle}>2023.12.31.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>1</td>
+                        <td style={customTdStyle}>뮤지컬</td>
+                        <td style={customTdNotCenterStyle}>
+                            2023 푸에르자부르타 웨이라 인 서울
+                        </td>
+                        <td style={customTdStyle}>진행중</td>
+                        <td style={customTdStyle}>2023.11.17.</td>
+                        <td style={customTdStyle}>2024.02.15.</td>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>3</td>
+                        <td style={customTdStyle}>콘서트</td>
+                        <td style={customTdNotCenterStyle}>
+                            임영웅 콘서트 IM HERO TOUR 2023 - 부산
+                        </td>
+                        <td style={customTdStyle}>오픈전</td>
+                        <td style={customTdStyle}>2023.12.08.</td>
+                        <td style={customTdStyle}>2023.12.10.</td>
+                    </tr>
                     <tr>
                         <td style={customTdStyle}>2</td>
                         <td style={customTdStyle}>연극</td>

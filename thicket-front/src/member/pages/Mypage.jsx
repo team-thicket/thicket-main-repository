@@ -7,6 +7,7 @@ import React, {useState} from "react";
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
+  justify-content: center;
 `
 const ASide = styled.div`
   align-items: center;
@@ -14,7 +15,7 @@ const ASide = styled.div`
   margin: 20px;
   border: black solid 1px;
   border-radius: 5px;
-  width: 15%;
+  width: 160px;
   height: 100%;
   display: inline-block;
 `
@@ -25,7 +26,7 @@ const Main = styled.div`
   margin-top: 20px;
   border: black solid 1px;
   border-radius: 5px;
-  width: 77%;
+  width: 1016px;
   height: 100%;
   display: inline-block;
 `

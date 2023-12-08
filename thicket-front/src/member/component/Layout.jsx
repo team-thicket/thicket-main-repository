@@ -1,5 +1,4 @@
 import Nav from "./Nav";
-import Footer from "./Footer";
 import Main from "../pages/Main";
 import Header from "./Header";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
@@ -19,7 +18,6 @@ function Layout() {
                     <Route path="admin" element={<AdminPage />} />
                 </Routes>
             </Router>
-            <Footer />
         </>
     );
 }

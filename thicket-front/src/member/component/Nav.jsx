@@ -1,27 +1,41 @@
 import styled from "styled-components";
-import Menu from "./Menu";
-const Menubar = styled.div`
-  border-bottom: black solid 1px;
-  padding: 1rem;
-  display: grid;
-  grid-column-gap: 10px; 
-  grid-template-columns: repeat(8,1fr);
+import HeaderMenu from "./HeaderMenu";
+import { FaSearch } from "react-icons/fa"; // Import search icon from react-icons library
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
   background-color: antiquewhite;
+`
+
+const Menubar = styled.div`
+  max-width: 1280px;
+  display: flex;
 `
 
 function Nav() {
     return(
-        <Menubar>
-            <input/>
-            <Menu name={"검색"} />
-            <Menu name={"뮤지컬"} />
-            <Menu name={"연극"} />
-            <Menu name={"콘서트"} />
-            <Menu name={"티켓오픈"} />
-            <Menu name={"마이페이지"} link={"/mypage"} />
-            <Menu name={"임시어드민"} link={"/admin"} />
-            <Menu name={"로그아웃"} />
-        </Menubar>
+        <Wrapper>
+            <Menubar>
+                <div style={{ width: "20px" }}></div>
+                <div style={{ display: "flex", alignItems: "center", width: "850px" }}>
+                    <input style={{ height: "30px", width: "185px", marginRight: "5px" }} />
+                    <FaSearch />
+                    <div style={{ width: "20px" }}></div>
+                    <HeaderMenu name={"뮤지컬"} />
+                    <HeaderMenu name={"연극"} />
+                    <HeaderMenu name={"콘서트"} />
+                    <HeaderMenu name={"티켓오픈"} />
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', width: '400px' }}>
+                    <HeaderMenu name={"마이페이지"} link={"/mypage"} />
+                    <HeaderMenu name={"임시어드민"} link={"/admin"} />
+                    <HeaderMenu name={"로그아웃"} />
+                </div>
+                <div style={{ width: "10px" }}></div>
+            </Menubar>
+        </Wrapper>
+
     )
 }
 
