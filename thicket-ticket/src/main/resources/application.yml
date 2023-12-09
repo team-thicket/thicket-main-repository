@@ -1,6 +1,5 @@
 server:
-  port: 8000
-
+  port: 0
 
 spring:
   application:
@@ -17,13 +16,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: true
     show-sql: true
-
-logging:
-  level:
-    org.springframework.web: DEBUG
-

@@ -5,11 +5,13 @@ import lombok.Data;
 
 @Data
 public class ResponsePaymentForMemberDto {
+    private String paymentId;
     private String paymentState;
     private String stageId;
 
     public ResponsePaymentForMemberDto(Payment payment) {
-        this.paymentState = payment.getState().toString();
-        this.stageId = payment.getStageUuid();
+        paymentId = payment.getUuid();
+        paymentState = payment.getState().toString();
+        stageId = payment.getStageUuid();
     }
 }

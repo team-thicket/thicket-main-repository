@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class RequestPaymentDto {
+public class RequestCreatePaymentDto {
     @NotNull(message = "회원 아이디 누락")
     private String memberId;
     @NotNull(message = "공연 아이디 누락")

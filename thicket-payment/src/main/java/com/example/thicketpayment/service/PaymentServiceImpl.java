@@ -3,19 +3,17 @@ package com.example.thicketpayment.service;
 import com.example.thicketpayment.domain.Payment;
 import com.example.thicketpayment.dto.request.RequestCompletedPaymentDto;
 import com.example.thicketpayment.dto.request.RequestExtendingOpenDateDto;
-import com.example.thicketpayment.dto.request.RequestPaymentDto;
+import com.example.thicketpayment.dto.request.RequestCreatePaymentDto;
 import com.example.thicketpayment.dto.response.ResponseCompletedPaymentDto;
 import com.example.thicketpayment.dto.response.ResponsePaymentForMemberDto;
 import com.example.thicketpayment.dto.response.ResponsePaymentForStageDto;
 import com.example.thicketpayment.enumerate.State;
 import com.example.thicketpayment.repository.PaymentRepository;
 import com.sun.jdi.request.DuplicateRequestException;
-import jakarta.ws.rs.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -29,7 +27,7 @@ public class PaymentServiceImpl implements PaymentService{
     private final PaymentRepository paymentRepository;
     @Override
     @Transactional
-    public Payment createPayment(RequestPaymentDto dto) {
+    public Payment createPayment(RequestCreatePaymentDto dto) {
         // 멤버, 티켓, 공연 순서
         return paymentRepository.save(Payment
                 .createPayment(dto.getMemberId(), dto.getTicketId(), dto.getStageId()));
