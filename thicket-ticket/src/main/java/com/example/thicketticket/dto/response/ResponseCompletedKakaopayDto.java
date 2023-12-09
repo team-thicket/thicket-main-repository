@@ -2,18 +2,16 @@ package com.example.thicketticket.dto.response;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class ResponseCompletedKakaopayDto {
     private String tid;
-    private String paymentId;
     private String payment_method_type;
     private Amount amount;
     private CardInfo card_info;
     private String item_name;
     private String item_code;
-    private Integer quantity;
-    private String create_at;
-    private String approved_at;
 
     @Data
     public class Amount {
