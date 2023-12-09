@@ -45,7 +45,6 @@ public class ResponseTicketDto {
         responseTicketDto.setChairType(ticket.getChairType());
         responseTicketDto.setMemberName(ticket.getMemberName());
         responseTicketDto.setPrice(ticket.getPrice());
-        responseTicketDto.setTicketNumber(ticket.getTicketNumber());
         responseTicketDto.setStageId(ticket.getStageId());
         responseTicketDto.setMemberId(ticket.getMemberId());
         return responseTicketDto;

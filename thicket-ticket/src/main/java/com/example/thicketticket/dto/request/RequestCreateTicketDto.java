@@ -50,7 +50,6 @@ public class RequestCreateTicketDto {
                 .chairType(this.chairType)
                 .memberName(this.memberName)
                 .price(this.price)
-                .ticketNumber(UUID.randomUUID().toString())
                 .stageId(this.stageId)
                 .memberId(this.memberId)
                 .build();
