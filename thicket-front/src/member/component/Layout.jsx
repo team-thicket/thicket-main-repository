@@ -1,4 +1,3 @@
-import Nav from "./Nav";
 import Main from "../pages/Main";
 import Header from "./Header";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
@@ -10,7 +9,6 @@ function Layout() {
     return (
         <>
             <Header />
-            <Nav />
             <Router>
                 <Routes>
                     <Route index element={<Main />} />

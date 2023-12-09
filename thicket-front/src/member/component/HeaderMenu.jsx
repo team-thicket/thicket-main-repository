@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const Wrapper = styled.a`
-  //padding-top: 5px;
   height: 30px;
   line-height: 30px; /* 텍스트의 높이에 따라 상하 가운데 정렬 */
   margin: 10px;

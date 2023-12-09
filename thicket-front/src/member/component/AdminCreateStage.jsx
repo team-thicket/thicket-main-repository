@@ -7,6 +7,8 @@ import styled from "styled-components";
 
 const createContainerStyle = {
     padding: '10px',
+    overflowY: 'auto', // Add overflow property for vertical scrollbar
+    maxHeight: '80vh', // Set a max height to trigger scrollbar
 };
 
 const customDivStyle = {
@@ -86,6 +88,7 @@ const StyledDatePicker = styled(DatePicker)`
 `;
 
 const AdminCreateStage = () => {
+
     const [startDate, setStartDate] = useState(null);   // 전체 시작일
     const [endDate, setEndDate] = useState(null);       // 전체 종료일
     const datePickerRef = useRef(null);     // 전체 시작일 달력
@@ -100,12 +103,9 @@ const AdminCreateStage = () => {
 
     // 달력 유효성 검사
     const setStartDateWithValidation = (date) => {
-        // Check if endDate is set and if the selected startDate is after the endDate
         if (endDate && date > endDate) {
-            // If so, alert the user and don't update the startDate
             alert('시작일은 종료일 이후일 수 없습니다.');
         } else {
-            // Otherwise, update the startDate
             setStartDate(date);
         }
     };
@@ -250,27 +250,21 @@ const AdminCreateStage = () => {
 
     // 일별 시간 기준 일정 삭제
     const handleRemoveTime = (dateToRemove, timeToRemove) => {
-        // Find the date index
         const dateIndex = timeSlots.findIndex((dateTime) => dateTime.date === dateToRemove);
 
-        // Check if the date exists
         if (dateIndex !== -1) {
             const updatedTimeSlots = [...timeSlots];
             const timeIndex = updatedTimeSlots[dateIndex].times.findIndex(
                 (time) => time.hour === timeToRemove.hour && time.minute === timeToRemove.minute
             );
 
-            // Check if the time exists
             if (timeIndex !== -1) {
-                // Remove the time
                 updatedTimeSlots[dateIndex].times.splice(timeIndex, 1);
 
-                // If there are no times left for the date, remove the entire date
                 if (updatedTimeSlots[dateIndex].times.length === 0) {
                     updatedTimeSlots.splice(dateIndex, 1);
                 }
 
-                // Update the state
                 setTimeSlots(updatedTimeSlots);
             }
         }
@@ -288,9 +282,8 @@ const AdminCreateStage = () => {
 
         const handleInputChange = (index, value) => {
             if ((inputValues[index].label === '개수' || inputValues[index].label === '가격')) {
-                // Allow only numeric input for '개수' and '가격'
-                if (!/^\d*$/.test(value)) {
-                    // Replace the value with 0 if the input is not a number
+                if (!/^\d+$/.test(value)) {
+                    // 숫자로만 구성되지 않은 경우, 입력값을 '0'으로 설정
                     value = '0';
                 }
             }
@@ -553,9 +546,9 @@ const AdminCreateStage = () => {
                         </td>
                     </tr>
                     <tr>
-                        <th style={customThStyle}>공연 상세 이미지 링크</th>
+                        <th style={customThStyle}>상세페이지 텍스트 </th>
                         <td style={customTdStyle}>
-                            <input style={customInputStyle} placeholder="  이미지 url 링크를 입력하세요." />
+                            <input style={customInputStyle} placeholder="  이미지 외 추가설명을 입력하세요." />
                         </td>
                     </tr>
                     </tbody>

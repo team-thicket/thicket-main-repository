@@ -1,5 +1,7 @@
 const adminContainerStyle = {
     padding: '10px',
+    overflowY: 'auto', // Add overflow property for vertical scrollbar
+    maxHeight: '80vh', // Set a max height to trigger scrollbar
 };
 
 const infoTableStyle = {
@@ -47,12 +49,22 @@ export const AdminAllStageList = () => {
                 <table style={infoTableStyle} >
                     <tbody>
                     <tr>
-                        <th style={{ ...customThStyle, width: '6%' }}>번호</th>
-                        <th style={{ ...customThStyle, width: '8%' }}>구분</th>
+                        <th style={{ ...customThStyle, width: '60px' }}>번호</th>
+                        <th style={{ ...customThStyle, width: '60px' }}>구분</th>
                         <th style={{ ...customThStyle, width: 'auto' }}>제목</th>
-                        <th style={{ ...customThStyle, width: '8%' }}>상태</th>
-                        <th style={{ ...customThStyle, width: '10%' }}>오픈일</th>
-                        <th style={{ ...customThStyle, width: '10%' }}>마감일</th>
+                        <th style={{ ...customThStyle, width: '60px' }}>상태</th>
+                        <th style={{ ...customThStyle, width: '102px' }}>오픈일</th>
+                        <th style={{ ...customThStyle, width: '102px' }}>마감일</th>
+                    </tr>
+                    <tr>
+                        <td style={customTdStyle}>4</td>
+                        <td style={customTdStyle}>콘서트</td>
+                        <td style={customTdNotCenterStyle}>
+                            임영웅 콘서트 IM HERO TOUR 2023 - 부산
+                        </td>
+                        <td style={customTdStyle}>오픈전</td>
+                        <td style={customTdStyle}>2023.00.08.</td>
+                        <td style={customTdStyle}>2023.02.00.</td>
                     </tr>
                     <tr>
                         <td style={customTdStyle}>3</td>
