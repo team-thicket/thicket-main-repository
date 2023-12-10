@@ -12,8 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000/")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberSignupController {
 
@@ -25,7 +26,6 @@ public class MemberSignupController {
         ResponseMemberSignup response = memberSignupService.signup(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
 
     @ExceptionHandler(EmailDuplicateException.class)
     public ResponseEntity<String> handleEmailDuplicateException(EmailDuplicateException e) {

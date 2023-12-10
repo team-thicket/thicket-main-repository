@@ -31,6 +31,9 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @EnableWebSecurity(debug = true)
 @Configuration
@@ -49,6 +52,7 @@ public class SecurityConfiguration {
         this.objectPostProcessor = objectPostProcessor;
     }
 
+
     @Bean
     @ConditionalOnProperty(name = "spring.h2.console.enabled", havingValue = "true")
     public WebSecurityCustomizer configureH2ConsoleEnable() {
@@ -58,9 +62,12 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http
+                .cors() // Enable CORS
+                .and()
+                .authorizeRequests()
                 .requestMatchers(
-                        new AntPathRequestMatcher("/members/join", HttpMethod.POST.name()))
+                        new AntPathRequestMatcher("/**", HttpMethod.POST.name()))
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -69,10 +76,12 @@ public class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterAt(loginProcessingFilter(authenticationManager(), authenticationSuccessHandler(jwtTokenProvider), authenticationFailureHandler()), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(loginProcessingFilter(authenticationManager(), authenticationSuccessHandler(jwtTokenProvider), authenticationFailureHandler()), JwtAuthenticationFilter.class); // 변경된 부분
 
         return http.build();
     }
+
+
 
     @Bean
     public AbstractAuthenticationProcessingFilter loginProcessingFilter(
@@ -94,6 +103,23 @@ public class SecurityConfiguration {
         builder.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
         return builder.build();
     }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedMethod("OPTIONS");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

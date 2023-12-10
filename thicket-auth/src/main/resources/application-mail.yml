@@ -1,0 +1,5 @@
+mail:
+  host: smtp.gmail.com
+  port: 587
+  username: kjmu18@gmail.com
+  password: sznuwoqgrqcevjag
