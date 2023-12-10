@@ -154,7 +154,6 @@ class StageServiceImplTest {
     @Transactional
     void getAllStage() {
     //given
-
         Stage stage1 = Stage.createStage(
                 "뮤지컬<마리퀴리>",
                 "홍익대 아트센터 대극장",

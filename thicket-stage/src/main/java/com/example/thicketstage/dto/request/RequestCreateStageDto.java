@@ -55,7 +55,7 @@ public class RequestCreateStageDto {
     }
 
     // 테스트용 메서드
-//    public Long getId() {
-//        return 1L;
-//    }
+    public Long getId() {
+        return 1L;
+    }
 }
