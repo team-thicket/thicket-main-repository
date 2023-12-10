@@ -3,6 +3,7 @@ import Header from "./Header";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Mypage from "../pages/Mypage";
 import React from "react";
+import AdminPage from "../pages/AdminPage";
 import ReadyKakaopay from "../pages/ReadyKakaopay";
 import ApproveKakaopay from "../pages/ApproveKakaopay";
 // import AdminPage from "../pages/AdminPage";
