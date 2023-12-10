@@ -15,7 +15,7 @@ function Layout() {
                 <Routes>
                     <Route index element={<Main />} />
                     <Route path="mypage" element={<Mypage />} />
-                    {/*<Route path="admin" element={<AdminPage />} />*/}
+                    <Route path="admin" element={<AdminPage />} />
                     <Route path="payment" element={<ReadyKakaopay />} />
                     <Route path="paymentCallback" element={<ApproveKakaopay />}/>
                 </Routes>
