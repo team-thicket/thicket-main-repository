@@ -17,7 +17,7 @@ public class KakaoPaymentController {
         return ResponseEntity.ok(kakaopayService.readyKakaopay(paymentId));
     }
 
-    @GetMapping("approve")
+    @PostMapping("approve")
     public ResponseEntity<?> approve(@RequestBody RequestApproveKakaopayDto dto){
         return ResponseEntity.ok(kakaopayService.approveKakaopay(dto));
     }

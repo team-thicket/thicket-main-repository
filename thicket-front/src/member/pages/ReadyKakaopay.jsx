@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 
 export default function ReadyKakaopay(){
     const [tid, setTid] = useState("");
-    const paymentId = "439ff30f-6ed2-48e4-9a8d-c529cb6c0597";
+    const paymentId = "870cb3da-1e57-4b67-87ec-2a74c5025544";
     useEffect(() => {
         fetch(`/ready?paymentId=${paymentId}`,{
             method: "GET",
@@ -11,6 +11,8 @@ export default function ReadyKakaopay(){
         })
         .then(res => res.json())
         .then(data => {
+            window.tid = data.tid;
+            window.paymentId = paymentId;
             const width = 430;
             const height = 500;
             const left = window.screenX + (window.outerWidth - width) / 2;

@@ -6,6 +6,7 @@ import React from "react";
 import AdminPage from "../pages/AdminPage";
 import ReadyKakaopay from "../pages/ReadyKakaopay";
 import ApproveKakaopay from "../pages/ApproveKakaopay";
+// import AdminPage from "../pages/AdminPage";
 
 function Layout() {
     return (

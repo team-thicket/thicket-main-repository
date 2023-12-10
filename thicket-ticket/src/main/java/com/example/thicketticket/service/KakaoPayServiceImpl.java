@@ -4,16 +4,21 @@ import com.example.thicketticket.domain.Payment;
 import com.example.thicketticket.dto.request.RequestApproveKakaopayDto;
 import com.example.thicketticket.dto.response.ResponseCompletedKakaopayDto;
 import com.example.thicketticket.dto.response.ResponseReadyKakaopayDto;
+import com.example.thicketticket.enumerate.Method;
+import com.example.thicketticket.enumerate.State;
 import com.example.thicketticket.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.time.LocalDateTime;
 
 @Service
 @PropertySource("classpath:secretKey.properties")
@@ -64,10 +69,11 @@ public class KakaoPayServiceImpl implements KakaopayService{
 
     // 카카오 페이 서버로 결제 완료 요청 보내기
     @Override
+    @Transactional
     public ResponseCompletedKakaopayDto approveKakaopay(RequestApproveKakaopayDto dto) {
+        Payment findPayment = paymentRepository.findByUuid(dto.getPaymentId());
         MultiValueMap<String, String> approveForm = createApproveForm(
-                paymentRepository.findByUuid(dto.getPaymentId()), dto.getTid(), dto.getPgToken());
-
+                findPayment, dto.getTid(), dto.getPgToken());
         return webClient.post().uri("/v1/payment/approve")
                 .header("Authorization", "KakaoAK " + adminKey)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
