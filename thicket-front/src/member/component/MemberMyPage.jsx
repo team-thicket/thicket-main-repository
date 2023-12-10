@@ -19,12 +19,12 @@ export const MemberMyPage = ({contentHandler}) => {
                 "Email":'test123@gmail.com'
             }
         })
-        .then(res => res.json())
-        .then(data => {
-            setMemberName(data.name);
-            setMemberBirth(data.birth);
-            setMemberEmail(data.email);
-        })
+            .then(res => res.json())
+            .then(data => {
+                setMemberName(data.name);
+                setMemberBirth(data.birth);
+                setMemberEmail(data.email);
+            })
     }, []);
 
     useEffect(() => {
@@ -53,8 +53,8 @@ export const MemberMyPage = ({contentHandler}) => {
             },
             body: JSON.stringify({currentPassword,newPassword})
         })
-        .then(res => res.text())
-        .then(data => alert(data));
+            .then(res => res.text())
+            .then(data => alert(data));
 
         setCurrentPassword("");
         setConfirmNewPassword("");
@@ -82,6 +82,7 @@ export const MemberMyPage = ({contentHandler}) => {
                     </tbody>
                 </table>
             </div>
+            <br />
             <div className="custom">
                 <h1 className="custom">비밀번호 변경</h1>
                 <table className="password-table">

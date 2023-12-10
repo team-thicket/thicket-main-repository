@@ -1,22 +1,22 @@
 import styled from "styled-components";
 
 const Wrapper = styled.a`
-  height: 40px;
-  margin: 10px 10px 10px 10px;
-  font-size: 20px;
-  display: flex; /* Flex 컨테이너로 설정 */
-  align-items: center; /* 수직 가운데 정렬 */
-  justify-content: center; /* 수평 가운데 정렬 */
+  height: 30px;
+  line-height: 30px; /* 텍스트의 높이에 따라 상하 가운데 정렬 */
+  margin: 10px;
+  padding: 0px 10px;
+  font-size: 16px;
+  display: block;
   border: black solid 1px;
   border-radius: 5px;
   text-align: center;
   background-color: beige;
   &:hover {
-    background-color: lightgray;
+    background-color: lightgray; /* 색상 */
     cursor: pointer;
   }
-`;
-const Menu = ({ name, link, onClick }) => {
+`
+const HeaderMenu = ({ name, link, onClick }) => {
     return (
         <Wrapper href={link} onClick={onClick} name={link}>
             {name}
@@ -24,4 +24,4 @@ const Menu = ({ name, link, onClick }) => {
     );
 };
 
-export default Menu;
+export default HeaderMenu;
