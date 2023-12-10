@@ -1,10 +1,13 @@
 package com.example.thicketstage.domain;
 
+import com.example.thicketstage.TimeStamp;
 import com.example.thicketstage.dto.request.RequestUpdateInfoDto;
 import com.example.thicketstage.enumerate.StageStatus;
 import com.example.thicketstage.enumerate.StageType;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Stage {
+public class Stage extends TimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,23 +68,23 @@ public class Stage {
         this.runningTime = updateInfoDto.getRunningTime();
         this.ageLimit = updateInfoDto.getAgeLimit();
         this.stageType = updateInfoDto.getStageType();
-        this.stageStart = updateInfoDto.getStageStart();
+//        if (updateInfoDto.getStageStart() != null) {
+//        this.stageStart = updateInfoDto.toStageStartEntity(this); }
         this.posterImg = updateInfoDto.getPosterImg();
         this.detailPosterImg = updateInfoDto.getDetailPosterImg();
         this.stageInfo = updateInfoDto.getStageInfo();
     }
 
-
     public void setStageStatus(StageStatus newStatus) {
         stageStatus = newStatus;
     }
 
-    // 테스트용 메서드
     public static Stage createStage(String newName, String newPlace, LocalDateTime newStageOpen,
                                     LocalDateTime newStageClose, String newRunningTime,
                                     String newAgeLimit, StageType newStageType,
-                                    StageStatus newStageStatus, String newPosterImg,
-                                    String newDetailPosterImg, String newStageInfo) {
+                                    StageStatus newStageStatus,
+                                    String newPosterImg, String newDetailPosterImg,
+                                    String newStageInfo) {
         Stage stage = new Stage();
 
         stage.name = newName;
@@ -92,6 +95,7 @@ public class Stage {
         stage.ageLimit = newAgeLimit;
         stage.stageType = newStageType;
         stage.stageStatus = newStageStatus;
+//        stage.stageStart = newStageStart.stream().map(d -> d.toEntity(stage)).toList();
         stage.posterImg = newPosterImg;
         stage.detailPosterImg = newDetailPosterImg;
         stage.stageInfo = newStageInfo;

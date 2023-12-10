@@ -1,7 +1,6 @@
 package com.example.thicketstage.service;
 
 import com.example.thicketstage.domain.Stage;
-import com.example.thicketstage.dto.request.RequestCreateDateDto;
 import com.example.thicketstage.dto.request.RequestCreateStageDto;
 import com.example.thicketstage.dto.request.RequestSetNewStatusDto;
 import com.example.thicketstage.dto.request.RequestUpdateInfoDto;
@@ -27,14 +26,12 @@ public class StageServiceImpl implements StageService{
     private final StageRepository stageRepository;
     
     @Override
-    public RequestCreateStageDto createStage(RequestCreateStageDto stageDto,
-                                             List<RequestCreateDateDto> dateDto) {
+    public RequestCreateStageDto createStage(RequestCreateStageDto stageDto) {
         Stage stage = stageDto.toEntity();
-        dateDto.forEach(d -> d.toEntity(stage));
 
         stageRepository.save(stage);
         
-        return RequestCreateStageDto.builder().build();
+        return new RequestCreateStageDto();
     }
     
     @Override

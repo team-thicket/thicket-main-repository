@@ -1,6 +1,5 @@
 package com.example.thicketstage.service;
 
-import com.example.thicketstage.dto.request.RequestCreateDateDto;
 import com.example.thicketstage.dto.request.RequestCreateStageDto;
 import com.example.thicketstage.dto.request.RequestSetNewStatusDto;
 import com.example.thicketstage.dto.request.RequestUpdateInfoDto;
@@ -12,8 +11,7 @@ import java.util.List;
 
 public interface StageService {
 
-    public RequestCreateStageDto createStage(RequestCreateStageDto stageDto,
-                                             List<RequestCreateDateDto> dateDto);
+    public RequestCreateStageDto createStage(RequestCreateStageDto stageDto);
 
     List<ResponseStageThumbnailDto> getAllStage();
 

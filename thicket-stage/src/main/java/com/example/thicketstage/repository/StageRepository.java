@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StageRepository extends JpaRepository<Stage, Long> {
 
@@ -14,4 +15,6 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
     List<Stage> searchByNameOrPlace(@Param("keyword") String keyword);
 
     List<Stage> findByStageType(StageType stageType);
+
+    Optional<Stage> findByUuid(String uuid);
 }

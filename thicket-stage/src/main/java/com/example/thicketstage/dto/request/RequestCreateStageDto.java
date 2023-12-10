@@ -5,15 +5,14 @@ import com.example.thicketstage.enumerate.StageStatus;
 import com.example.thicketstage.enumerate.StageType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Getter @Setter @NoArgsConstructor
-@AllArgsConstructor @Builder @ToString
+@Data
+@NoArgsConstructor
 public class RequestCreateStageDto {
 
     @NotBlank(message = "공연명은 필수 입력 항목입니다.")
@@ -40,9 +39,6 @@ public class RequestCreateStageDto {
 
     private StageStatus stageStatus;
 
-    @NotNull(message = "공연 시작 시간은 필수 입력 항목입니다.")
-    private List<RequestCreateDateDto> stageStartDto;
-
     private String posterImg;
 
     private String detailPosterImg;
@@ -55,13 +51,11 @@ public class RequestCreateStageDto {
                 stageOpen,stageClose,
                 runningTime,ageLimit,
                 stageType,stageStatus,
-                posterImg,detailPosterImg,stageInfo);
+                posterImg, detailPosterImg,stageInfo);
     }
 
     // 테스트용 메서드
-    public Long getId() {
-        return 1L;
-    }
-
-
+//    public Long getId() {
+//        return 1L;
+//    }
 }

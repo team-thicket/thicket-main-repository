@@ -1,15 +1,12 @@
 package com.example.thicketstage.dto.request;
 
-import com.example.thicketstage.domain.StageStart;
 import com.example.thicketstage.enumerate.StageType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter @Setter @NoArgsConstructor
 @AllArgsConstructor @Builder @ToString
@@ -37,12 +34,15 @@ public class RequestUpdateInfoDto {
 
     private StageType stageType;
 
-    @NotNull(message = "공연 시작 시간은 필수 입력 항목입니다.")
-    private List<StageStart> stageStart;
-
     private String posterImg;
 
     private String detailPosterImg;
 
     private String stageInfo;
+
+//    public List<StageStart> toStageStartEntity(Stage stage) {
+//        return stageStart.stream()
+//                .map(dto -> dto.toEntity(stage))
+//                .collect(Collectors.toList());
+//    }
 }
