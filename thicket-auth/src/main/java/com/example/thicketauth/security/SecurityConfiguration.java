@@ -21,6 +21,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -32,6 +33,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
@@ -52,7 +54,6 @@ public class SecurityConfiguration {
         this.objectPostProcessor = objectPostProcessor;
     }
 
-
     @Bean
     @ConditionalOnProperty(name = "spring.h2.console.enabled", havingValue = "true")
     public WebSecurityCustomizer configureH2ConsoleEnable() {
@@ -63,25 +64,26 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors() // Enable CORS
-                .and()
-                .authorizeRequests()
-                .requestMatchers(
-                        new AntPathRequestMatcher("/**", HttpMethod.POST.name()))
-                .permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .csrf().disable()
-                .requestCache().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers(
+                                        new AntPathRequestMatcher("/**", HttpMethod.POST.name()))
+                                .permitAll()
+                                .anyRequest().authenticated()
+                )
+                .csrf(AbstractHttpConfigurer::disable)
+                .requestCache(requestCache -> requestCache.disable())
+                .sessionManagement(sessionManagement ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                );
 
         http.addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(loginProcessingFilter(authenticationManager(), authenticationSuccessHandler(jwtTokenProvider), authenticationFailureHandler()), JwtAuthenticationFilter.class); // 변경된 부분
+        http.addFilterBefore(loginProcessingFilter(authenticationManager(), authenticationSuccessHandler(jwtTokenProvider), authenticationFailureHandler()), JwtAuthenticationFilter.class);
 
-        return http.build();
+        return http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .build();
     }
-
-
 
     @Bean
     public AbstractAuthenticationProcessingFilter loginProcessingFilter(
@@ -95,6 +97,7 @@ public class SecurityConfiguration {
         jsonLoginProcessingFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/members/login", HttpMethod.POST.name()));
         return jsonLoginProcessingFilter;
     }
+
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
         AuthenticationManagerBuilder builder = new AuthenticationManagerBuilder(objectPostProcessor);
@@ -105,21 +108,18 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:3000");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("GET");
-        config.addAllowedMethod("POST");
-        config.addAllowedMethod("PUT");
-        config.addAllowedMethod("DELETE");
-        config.addAllowedMethod("OPTIONS");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost:3000"); // 프론트엔드 주소
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
 
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

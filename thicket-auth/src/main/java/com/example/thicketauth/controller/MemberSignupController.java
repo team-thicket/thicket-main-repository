@@ -12,9 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000/")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("/members")
 public class MemberSignupController {
 
