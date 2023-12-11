@@ -10,10 +10,6 @@ import java.util.List;
 @AllArgsConstructor @Builder @ToString
 public class RequestStageStartUpdateDto {
 
-//    private LocalDate date;
-//
-//    private List<LocalTime> times = new ArrayList<>();
-
     private String stageUuid;
     private List<StageStartUpdateDto> stageStartUpdateDtos;
 

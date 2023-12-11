@@ -1,7 +1,7 @@
 package com.example.thicketstage;
 
 import com.example.thicketstage.domain.Stage;
-import com.example.thicketstage.dto.request.RequestCreateStageStartDto;
+import com.example.thicketstage.domain.StageStart;
 import com.example.thicketstage.enumerate.StageStatus;
 import com.example.thicketstage.enumerate.StageType;
 import jakarta.annotation.PostConstruct;
@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -47,16 +48,12 @@ public class Init {
                     "공연 상세 설명"
             );
             em.persist(stage1);
-//
-//            RequestCreateStageStartDto Dto1 = new RequestCreateStageStartDto();
-//            Dto1.setStageUuid(stage1.getUuid());
-//
-//            RequestCreateStageStartDto.StageStartDto stageStart1 = new RequestCreateStageStartDto.StageStartDto();
-//            stageStart1.setDate(LocalDate.of(2023, 11, 25));
-//            stageStart1.setTimes(Arrays.asList(LocalTime.of(19, 30),
-//                                                LocalTime.of(21, 30)));
-//
-//            Dto1.setStageStartDtos(Arrays.asList(stageStart1));
+
+            initStageStart(stage1, LocalDate.of(2023, 11, 25),
+                                    Arrays.asList(LocalTime.of(19, 30),
+                                                   LocalTime.of(21, 30)));
+            initStageStart(stage1, LocalDate.of(2023, 11, 27),
+                                    Arrays.asList(LocalTime.of(14, 30)));
 
             Stage stage2 = Stage.createStage(
                     "청소년극<#버킷리스트>",
@@ -73,15 +70,14 @@ public class Init {
             );
             em.persist(stage2);
 
-//            RequestCreateStageStartDto Dto2 = new RequestCreateStageStartDto();
-//            Dto2.setStageUuid(stage2.getUuid());
-//
-//            RequestCreateStageStartDto.StageStartDto stageStart2 = new RequestCreateStageStartDto.StageStartDto();
-//            stageStart2.setDate(LocalDate.of(2023, 11, 25));
-//            stageStart2.setTimes(Arrays.asList(LocalTime.of(19, 30),
-//                    LocalTime.of(21, 30)));
-//
-//            Dto2.setStageStartDtos(Arrays.asList(stageStart2));
+            initStageStart(stage2, LocalDate.of(2023, 11, 25),
+                                      Arrays.asList(LocalTime.of(19, 30),
+                                                    LocalTime.of(21, 30)));
+        }
+
+        private void initStageStart(Stage stage, LocalDate date, List<LocalTime> times) {
+            StageStart stageStart = StageStart.createStageStart(date, times, stage);
+            em.persist(stageStart);
         }
     }
 }

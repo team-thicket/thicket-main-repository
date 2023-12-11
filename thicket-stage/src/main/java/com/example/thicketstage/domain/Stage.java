@@ -68,8 +68,6 @@ public class Stage extends TimeStamp {
         this.runningTime = updateInfoDto.getRunningTime();
         this.ageLimit = updateInfoDto.getAgeLimit();
         this.stageType = updateInfoDto.getStageType();
-//        if (updateInfoDto.getStageStart() != null) {
-//        this.stageStart = updateInfoDto.toStageStartEntity(this); }
         this.posterImg = updateInfoDto.getPosterImg();
         this.detailPosterImg = updateInfoDto.getDetailPosterImg();
         this.stageInfo = updateInfoDto.getStageInfo();
@@ -95,7 +93,6 @@ public class Stage extends TimeStamp {
         stage.ageLimit = newAgeLimit;
         stage.stageType = newStageType;
         stage.stageStatus = newStageStatus;
-//        stage.stageStart = newStageStart.stream().map(d -> d.toEntity(stage)).toList();
         stage.posterImg = newPosterImg;
         stage.detailPosterImg = newDetailPosterImg;
         stage.stageInfo = newStageInfo;

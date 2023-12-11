@@ -66,7 +66,8 @@ public class StageServiceImpl implements StageService{
             throw new EntityNotFoundException("해당 공연이 존재하지 않습니다");
         }
 
-        return stages.stream().map(ResponseStageThumbnailDto::new).collect(Collectors.toList());
+        return stages.stream().map(ResponseStageThumbnailDto::new)
+                                .collect(Collectors.toList());
     }
 
     @Override

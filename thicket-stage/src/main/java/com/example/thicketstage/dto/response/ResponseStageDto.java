@@ -26,8 +26,6 @@ public class ResponseStageDto {
 
     private StageStatus stageStatus;
 
-//    private List<RequestCreateStageStartDto> stageStart;
-
     private String posterImg;
 
     private String detailPosterImg;
@@ -44,8 +42,6 @@ public class ResponseStageDto {
         this.ageLimit = stage.getAgeLimit();
         this.stageType = stage.getStageType();
         this.stageStatus = stage.getStageStatus();
-//        this.stageStart = stage.getStageStart().stream()
-//                        .map(RequestCreateStageStartDto::fromEntity).collect(Collectors.toList());
         this.posterImg = stage.getPosterImg();
         this.detailPosterImg = stage.getDetailPosterImg();
         this.stageInfo = stage.getStageInfo();

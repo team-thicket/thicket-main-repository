@@ -19,7 +19,8 @@ public class StageStartController {
     private final StageStartService stageStartService;
 
     @PostMapping("") // api 명세 => POST /stageStarts
-    public ResponseEntity<?> createStageStart(@RequestBody @Valid RequestCreateStageStartDto stageStartDto) {
+    public ResponseEntity<?> createStageStart(@RequestBody
+                                              @Valid RequestCreateStageStartDto stageStartDto) {
         List<StageStart> stageStart = stageStartService.createStageStart(stageStartDto);
 
         return new ResponseEntity<>("공연 일자 등록 성공!!", HttpStatus.CREATED);

@@ -35,7 +35,8 @@ public class StageStart extends TimeStamp {
     }
 
     // 비즈니스 로직 //
-    public static StageStart createStageStart(LocalDate newDate, List<LocalTime> newTime, Stage stage) {
+    public static StageStart createStageStart(LocalDate newDate,
+                                              List<LocalTime> newTime, Stage stage) {
         StageStart stageStart = new StageStart();
         stageStart.date = newDate;
         stageStart.times.addAll(newTime);
