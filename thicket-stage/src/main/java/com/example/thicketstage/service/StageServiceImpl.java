@@ -102,7 +102,7 @@ public class StageServiceImpl implements StageService{
         Optional<Stage> optionalStage = stageRepository.findByUuid(uuid);
 
         if(optionalStage.isEmpty()){
-            throw new EntityNotFoundException("해당 Id값의 공연이 없습니다.");
+            throw new EntityNotFoundException("공연을 찾을 수 없습니다.");
         }
         Stage stage = optionalStage.get();
         StageStatus newStatus = setNewStatusDto.getNewStatus();
@@ -116,7 +116,7 @@ public class StageServiceImpl implements StageService{
         Optional<Stage> optionalStage = stageRepository.findByUuid(uuid);
 
         if(optionalStage.isEmpty()){
-            throw new EntityNotFoundException("해당 Id값의 공연이 없습니다.");
+            throw new EntityNotFoundException("공연을 찾을 수 없습니다.");
         }
         Stage stage = optionalStage.get();
         stageRepository.delete(stage);

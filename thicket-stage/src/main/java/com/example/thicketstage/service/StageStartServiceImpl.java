@@ -26,7 +26,7 @@ public class StageStartServiceImpl implements StageStartService {
     public List<StageStart> createStageStart(RequestCreateStageStartDto dto) {
 
         Stage stage = stageRepository.findByUuid(dto.getStageUuid())
-                .orElseThrow(() -> new EntityNotFoundException("해당 UUID의 Stage를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("해당 공연을 찾을 수 없습니다."));
 
         List<StageStart> stageStarts = dto.getStageStartDtos().stream()
                 .map(ss -> StageStart.createStageStart(ss.getDate(), ss.getTimes(), stage))
@@ -60,7 +60,7 @@ public class StageStartServiceImpl implements StageStartService {
         Optional<StageStart> optionalStageStart = stageStartRepository.findByUuid(uuid);
 
         if(optionalStageStart.isEmpty()){
-            throw new EntityNotFoundException("해당 UUID의 일정이 없습니다.");
+            throw new EntityNotFoundException("해당 공연을 찾을 수 없습니다.");
         }
 
         StageStart stageStart = optionalStageStart.get();
