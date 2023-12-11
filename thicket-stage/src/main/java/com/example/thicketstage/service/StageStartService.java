@@ -14,6 +14,6 @@ public interface StageStartService {
     // 회차 정보 수정은 추후 고도화 구현시 구현 예정
 //    void updateStageStart(Long id, RequestStageStartUpdateDto stageStartUpdateDto);
 
-    void deleteStageStart(Long id);
+    void deleteStageStart(String uuid);
 
 }

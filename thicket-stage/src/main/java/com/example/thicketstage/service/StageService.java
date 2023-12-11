@@ -15,16 +15,15 @@ public interface StageService {
 
     List<ResponseStageThumbnailDto> getAllStage();
 
-    public ResponseStageDto stageDetail(Long id);
+    public ResponseStageDto stageDetail(String uuid);
 
     public List<ResponseStageThumbnailDto> getStageTypeList(StageType stageType);
 
     List<ResponseStageThumbnailDto> searchStage(String keyword);
 
-    public void updateInfo(Long id, RequestUpdateInfoDto updateInfoDto);
+    public void updateInfo(String uuid, RequestUpdateInfoDto updateInfoDto);
 
-    public void changeStatus(Long id, RequestSetNewStatusDto setNewStatusDto);
+    public void changeStatus(String uuid, RequestSetNewStatusDto setNewStatusDto);
 
-    public void deleteStage(Long id);
-    // 추후 삭제할 때 사용자 확인 로직 추가하면 Long id와 RequestDeleteStageDto 함께 사용
+    public void deleteStage(String uuid);
 }

@@ -3,7 +3,6 @@ package com.example.thicketstage.service;
 import com.example.thicketstage.domain.Stage;
 import com.example.thicketstage.domain.StageStart;
 import com.example.thicketstage.dto.request.RequestCreateStageStartDto;
-import com.example.thicketstage.dto.request.RequestStageStartUpdateDto;
 import com.example.thicketstage.dto.response.ResponseStageStartDto;
 import com.example.thicketstage.repository.StageRepository;
 import com.example.thicketstage.repository.StageStartRepository;
@@ -84,7 +83,7 @@ class StageStartServiceImplTest {
 
         // then
         assertNotNull(allDate);
-        assertEquals(2, allDate.size());
+        assertEquals(5, allDate.size());
     }
     // 회차 정보 수정은 추후 고도화 구현시 구현 예정
 //    @Test
@@ -125,9 +124,9 @@ class StageStartServiceImplTest {
         stageStartRepository.save(stageStart);
 
         // when
-        stageStartService.deleteStageStart(stageStart.getId());
+        stageStartService.deleteStageStart(stageStart.getUuid());
 
         // then
-        assertFalse(stageStartRepository.existsById(stageStart.getId()));
+        assertFalse(stageStartRepository.findByUuid(stageStart.getUuid()).isPresent());
     }
 }

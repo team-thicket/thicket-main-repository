@@ -56,11 +56,11 @@ public class StageStartServiceImpl implements StageStartService {
 //    }
 
     @Override
-    public void deleteStageStart(Long id) {
-        Optional<StageStart> optionalStageStart = stageStartRepository.findById(id);
+    public void deleteStageStart(String uuid) {
+        Optional<StageStart> optionalStageStart = stageStartRepository.findByUuid(uuid);
 
         if(optionalStageStart.isEmpty()){
-            throw new EntityNotFoundException("해당 Id값의 일정이 없습니다.");
+            throw new EntityNotFoundException("해당 UUID의 일정이 없습니다.");
         }
 
         StageStart stageStart = optionalStageStart.get();

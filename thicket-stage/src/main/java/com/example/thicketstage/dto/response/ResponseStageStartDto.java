@@ -10,11 +10,14 @@ import java.util.List;
 @Data
 public class ResponseStageStartDto {
 
+    private String stageUuid;
+
     private LocalDate date;
 
     private List<LocalTime> times;
 
     public ResponseStageStartDto(StageStart stageStart) {
+        this.stageUuid = stageStart.getUuid();
         this.date = stageStart.getDate();
         this.times = stageStart.getTimes();
     }

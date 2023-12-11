@@ -34,9 +34,9 @@ public class StageController {
     }
 
     // 공연 하나 선택 했을 때 상세 페이지 조회 되게
-    @GetMapping("stageDetail/{id}") // api 명세 => GET /stages/stageDetail/{id}
-    public ResponseEntity<?> getStageDetail(@PathVariable @Valid Long id) {
-        return ResponseEntity.ok(stageService.stageDetail(id));
+    @GetMapping("stageDetail/{uuid}") // api 명세 => GET /stages/stageDetail/{id}
+    public ResponseEntity<?> getStageDetail(@PathVariable @Valid String uuid) {
+        return ResponseEntity.ok(stageService.stageDetail(uuid));
     }
 
     // StageType별로 줄세우기
@@ -56,25 +56,25 @@ public class StageController {
         return new ResponseEntity<>(stageThumbnailDtos, HttpStatus.OK);
     }
 
-    @PatchMapping("update/{id}") // api 명세 => PATCH /stages/update/{id}
-    public ResponseEntity<?> updateInfo(@PathVariable Long id,
+    @PatchMapping("update/{uuid}") // api 명세 => PATCH /stages/update/{id}
+    public ResponseEntity<?> updateInfo(@PathVariable String uuid,
                                         @RequestBody @Valid RequestUpdateInfoDto updateInfoDto) {
-        stageService.updateInfo(id, updateInfoDto);
+        stageService.updateInfo(uuid, updateInfoDto);
 
         return ResponseEntity.ok("수정이 완료되었습니다.");
     }
 
-    @PatchMapping("changeStatus/{id}") // api 명세 => PATCH /stages/changeStatus/{id}
-    public ResponseEntity<?> changeStatus(@PathVariable Long id,
+    @PatchMapping("changeStatus/{uuid}") // api 명세 => PATCH /stages/changeStatus/{id}
+    public ResponseEntity<?> changeStatus(@PathVariable String uuid,
                                           @RequestBody @Valid RequestSetNewStatusDto setNewStatusDto) {
-        stageService.changeStatus(id, setNewStatusDto);
+        stageService.changeStatus(uuid, setNewStatusDto);
 
         return ResponseEntity.ok("수정이 완료되었습니다.");
     }
 
-    @DeleteMapping("{id}") // api 명세 => DELETE /stages/{id}
-    public ResponseEntity<?> deleteStage(@PathVariable @Valid Long id) {
-        stageService.deleteStage(id);
+    @DeleteMapping("{uuid}") // api 명세 => DELETE /stages/{id}
+    public ResponseEntity<?> deleteStage(@PathVariable @Valid String uuid) {
+        stageService.deleteStage(uuid);
 
         return ResponseEntity.ok("삭제가 완료되었습니다.");
     }

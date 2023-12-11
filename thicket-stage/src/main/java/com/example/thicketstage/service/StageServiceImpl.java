@@ -46,8 +46,8 @@ public class StageServiceImpl implements StageService{
 
     // 공연 하나 선택 했을 때 상세 페이지 조회 되게
     @Override
-    public ResponseStageDto stageDetail(Long id) {
-        Optional<Stage> optionalStage = stageRepository.findById(id);
+    public ResponseStageDto stageDetail(String uuid) {
+        Optional<Stage> optionalStage = stageRepository.findByUuid(uuid);
 
         if(optionalStage.isEmpty()){
             throw new EntityNotFoundException("해당 공연이 존재하지 않습니다");
@@ -90,21 +90,16 @@ public class StageServiceImpl implements StageService{
 
     @Override
     @Transactional
-    public void updateInfo(Long id, RequestUpdateInfoDto updateInfoDto) {
+    public void updateInfo(String uuid, RequestUpdateInfoDto updateInfoDto) {
 
-        Optional<Stage> optionalStage = stageRepository.findById(id);
-
-        if(optionalStage.isEmpty()){
-            throw new EntityNotFoundException("해당 Id값의 공연이 없습니다.");
-        }
-        Stage stage = optionalStage.get();
-
+        Stage stage = stageRepository.findByUuid(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("공연을 찾을 수 없습니다."));
         stage.updateStageInfo(updateInfoDto);
     }
 
     @Override
-    public void changeStatus(Long id, RequestSetNewStatusDto setNewStatusDto) {
-        Optional<Stage> optionalStage = stageRepository.findById(id);
+    public void changeStatus(String uuid, RequestSetNewStatusDto setNewStatusDto) {
+        Optional<Stage> optionalStage = stageRepository.findByUuid(uuid);
 
         if(optionalStage.isEmpty()){
             throw new EntityNotFoundException("해당 Id값의 공연이 없습니다.");
@@ -117,8 +112,8 @@ public class StageServiceImpl implements StageService{
     }
 
     @Override
-    public void deleteStage(Long id) {
-        Optional<Stage> optionalStage = stageRepository.findById(id);
+    public void deleteStage(String uuid) {
+        Optional<Stage> optionalStage = stageRepository.findByUuid(uuid);
 
         if(optionalStage.isEmpty()){
             throw new EntityNotFoundException("해당 Id값의 공연이 없습니다.");

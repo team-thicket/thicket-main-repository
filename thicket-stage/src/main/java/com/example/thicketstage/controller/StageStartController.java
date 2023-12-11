@@ -1,6 +1,5 @@
 package com.example.thicketstage.controller;
 
-import com.example.thicketstage.domain.StageStart;
 import com.example.thicketstage.dto.request.RequestCreateStageStartDto;
 import com.example.thicketstage.service.StageStartService;
 import jakarta.persistence.EntityNotFoundException;
@@ -9,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("stageStarts")
@@ -21,7 +18,7 @@ public class StageStartController {
     @PostMapping("") // api 명세 => POST /stageStarts
     public ResponseEntity<?> createStageStart(@RequestBody
                                               @Valid RequestCreateStageStartDto stageStartDto) {
-        List<StageStart> stageStart = stageStartService.createStageStart(stageStartDto);
+        stageStartService.createStageStart(stageStartDto);
 
         return new ResponseEntity<>("공연 일자 등록 성공!!", HttpStatus.CREATED);
     }
@@ -40,9 +37,9 @@ public class StageStartController {
 //        return ResponseEntity.ok("수정이 완료되었습니다.");
 //    }
 
-    @DeleteMapping("{id}") // api 명세 => DELETE /stageStarts/{id}
-    public ResponseEntity<?> deleteStageStart(@PathVariable @Valid Long id) {
-        stageStartService.deleteStageStart(id);
+    @DeleteMapping("{uuid}") // api 명세 => DELETE /stageStarts/{uuid}
+    public ResponseEntity<?> deleteStageStart(@PathVariable @Valid String uuid) {
+        stageStartService.deleteStageStart(uuid);
 
         return ResponseEntity.ok("삭제가 완료되었습니다.");
     }

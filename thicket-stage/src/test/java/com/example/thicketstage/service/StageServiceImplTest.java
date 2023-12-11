@@ -110,7 +110,7 @@ class StageServiceImplTest {
 
         //then
 
-        assertEquals(stageThumbnailList.size(),2);
+        assertEquals(stageThumbnailList.size(),3);
         List<String> nameList = stageThumbnailList.stream()
                                 .map(ResponseStageThumbnailDto::getName).toList();
         List<String> placeList = stageThumbnailList.stream()
@@ -156,7 +156,7 @@ class StageServiceImplTest {
     //when
         List<ResponseStageThumbnailDto> allStage = stageService.getAllStage();
     //then
-        assertEquals(2, allStage.size());
+        assertEquals(4, allStage.size());
         assertTrue(allStage.stream().anyMatch(dto -> dto.getName().equals("뮤지컬<마리퀴리>")));
         assertTrue(allStage.stream().anyMatch(dto -> dto.getName().equals("청소년극<#버킷리스트>")));
     }
@@ -179,10 +179,10 @@ class StageServiceImplTest {
                 "공연 상세 설명"
         );
         stageRepository.save(savedStage);
-        Long id = savedStage.getId();
+        String uuid = savedStage.getUuid();
 
         // when
-        ResponseStageDto findResponseStageDto = stageService.stageDetail(id);
+        ResponseStageDto findResponseStageDto = stageService.stageDetail(uuid);
 
         //then
         assertNotNull(findResponseStageDto);
@@ -196,7 +196,6 @@ class StageServiceImplTest {
         assertEquals("8세이상 관람가", findResponseStageDto.getAgeLimit());
         assertEquals(StageType.MUSICAL, findResponseStageDto.getStageType());
         assertEquals(StageStatus.BEFORE, findResponseStageDto.getStageStatus());
-//        assertEquals(List.of(stageStart1, stageStart2).toString(), findResponseStageDto.getStageStart().toString());
         assertEquals("포스터 링크", findResponseStageDto.getPosterImg());
         assertEquals("상세 포스터 링크", findResponseStageDto.getDetailPosterImg());
         assertEquals("공연 상세 설명", findResponseStageDto.getStageInfo());
@@ -239,7 +238,7 @@ class StageServiceImplTest {
         //when
         List<ResponseStageThumbnailDto> stageTypeList = stageService.getStageTypeList(StageType.PLAY);
         //then
-        assertEquals(1, stageTypeList.size());
+        assertEquals(2, stageTypeList.size());
         assertTrue(stageTypeList.stream().allMatch(dto -> dto.getName().equals("청소년극<#버킷리스트>")));
     }
 
@@ -247,7 +246,19 @@ class StageServiceImplTest {
     @Transactional
     void updateInfo() {
         //given
-        Stage savedStage = Stage.createStage(
+        String newName = "청소년극<#버킷리스트>n";
+        String newPlace = "국립극단 소극장 판";
+        LocalDateTime newOpen = LocalDateTime.of(2023, 11, 25, 19, 30);
+        LocalDateTime newClose = LocalDateTime.of(2024, 2, 7, 19, 30);
+        String newRunningTime = "100분";
+        String newAgeLimit = "전체 관람가";
+        StageType newType = StageType.PLAY;
+        StageStatus newStatus = StageStatus.ENDED;
+        String newPoster = "포스터 링크";
+        String newDetailPoster = "상세 포스터 링크";
+        String newInfo = "공연 상세 설명";
+
+        Stage createStage = Stage.createStage(
                 "뮤지컬<마리퀴리>",
                 "홍익대 아트센터 대극장",
                 LocalDateTime.of(2023,11,25,19,30),
@@ -260,21 +271,29 @@ class StageServiceImplTest {
                 "상세 포스터 링크",
                 "공연 상세 설명"
         );
-        stageRepository.save(savedStage);
-        Long id = savedStage.getId();
+        Stage savedStage = stageRepository.save(createStage);
+        String uuid = savedStage.getUuid();
 
-        String newStageName = "뮤지컬<렌트>";
-        RequestUpdateInfoDto updateInfoDto = new RequestUpdateInfoDto();
-        updateInfoDto.setName(newStageName);
+        RequestUpdateInfoDto.RequestUpdateInfoDtoBuilder update = RequestUpdateInfoDto.builder()
+                .name(newName)
+                .place(newPlace)
+                .stageOpen(newOpen)
+                .stageClose(newClose)
+                .runningTime(newRunningTime)
+                .ageLimit(newAgeLimit)
+                .stageType(newType)
+                .posterImg(newPoster)
+                .detailPosterImg(newDetailPoster)
+                .stageInfo(newInfo);
 
         //when
-        stageService.updateInfo(id, updateInfoDto);
+        stageService.updateInfo(uuid, update.build());
 
         //then
-        Stage updatedStage = stageRepository.findById(id)
+        Stage updatedStage = stageRepository.findByUuid(uuid)
                 .orElseThrow(() -> new AssertionError("업데이트된 정보가 없습니다."));
 
-        assertEquals(newStageName, updatedStage.getName());
+        assertEquals(newName, updatedStage.getName());
     }
 
     @Test
@@ -296,16 +315,16 @@ class StageServiceImplTest {
         );
 
         stageRepository.save(savedStage);
-        Long id = savedStage.getId();
+        String uuid = savedStage.getUuid();
 
         RequestSetNewStatusDto setNewStatusDto = new RequestSetNewStatusDto();
         setNewStatusDto.setNewStatus(StageStatus.ONGOING);
 
         //when
-        stageService.changeStatus(id, setNewStatusDto);
+        stageService.changeStatus(uuid, setNewStatusDto);
 
         //then
-        Stage updatedStage = stageRepository.findById(id)
+        Stage updatedStage = stageRepository.findByUuid(uuid)
                 .orElseThrow(() -> new AssertionError("상태 변경된 공연이 없습니다."));
 
         assertEquals(StageStatus.ONGOING, updatedStage.getStageStatus());
@@ -330,15 +349,15 @@ class StageServiceImplTest {
         );
 
         stageRepository.save(savedStage);
-        Long id = savedStage.getId();
+        String uuid = savedStage.getUuid();
 
         RequestDeleteStageDto deleteStageDto = new RequestDeleteStageDto();
 
         //when
-        stageService.deleteStage(id);
+        stageService.deleteStage(uuid);
 
         //then
         assertThrows(EntityNotFoundException.class,
-                () -> stageRepository.findById(id).orElseThrow(EntityNotFoundException::new));
+                () -> stageRepository.findByUuid(uuid).orElseThrow(EntityNotFoundException::new));
     }
 }

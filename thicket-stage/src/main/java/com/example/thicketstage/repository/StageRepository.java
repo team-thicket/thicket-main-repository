@@ -17,4 +17,5 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
     List<Stage> findByStageType(StageType stageType);
 
     Optional<Stage> findByUuid(String uuid);
+
 }

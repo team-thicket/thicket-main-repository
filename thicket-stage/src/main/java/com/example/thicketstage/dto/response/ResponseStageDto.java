@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @Data
 public class ResponseStageDto {
 
+    private String stageUuid;
+
     private String name;
 
     private String place;
@@ -34,6 +36,7 @@ public class ResponseStageDto {
 
 
     public ResponseStageDto(Stage stage) {
+        this.stageUuid = stage.getUuid();
         this.name = stage.getName();
         this.place= stage.getPlace();
         this.stageOpen = stage.getStageOpen();
