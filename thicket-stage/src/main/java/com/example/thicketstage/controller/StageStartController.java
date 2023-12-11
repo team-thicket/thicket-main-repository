@@ -31,6 +31,7 @@ public class StageStartController {
         return ResponseEntity.ok(stageStartService.getAllDate());
     }
 
+    // 회차 정보 수정은 추후 고도화 구현시 구현 예정
 //    @PatchMapping("update/{id}")
 //    public ResponseEntity<?> updateStageStart(@PathVariable Long id,
 //                                              @RequestBody @Valid RequestStageStartUpdateDto updateDto) {

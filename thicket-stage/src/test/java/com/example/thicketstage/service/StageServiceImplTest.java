@@ -34,8 +34,6 @@ class StageServiceImplTest {
     void createStage() {
         //given
         RequestCreateStageDto createDto = new RequestCreateStageDto();
-//        List<RequestCreateStageStartDto> createDateDtos = new ArrayList<>();
-//        RequestCreateStageStartDto createDateDto = new RequestCreateStageStartDto();
 
         createDto.setName("뮤지컬<마리퀴리>");
         createDto.setPlace("홍익대 아트센터 대극장");
@@ -49,11 +47,6 @@ class StageServiceImplTest {
         createDto.setDetailPosterImg("상세 포스터 링크");
         createDto.setStageInfo("공연 상세 설명");
 
-//        createDateDto.setDate(LocalDate.of(2023, 11, 30));
-
-//        List<LocalTime> times = List.of(LocalTime.of(14, 30), LocalTime.of(19, 30));
-//        createDateDto.setTimes(times);
-//        createDateDtos.add(createDateDto);
 
         //when
         RequestCreateStageDto createStageDto = stageService.createStage(createDto);
@@ -70,9 +63,6 @@ class StageServiceImplTest {
         assertEquals(createDto.getAgeLimit(), savedStage.getAgeLimit());
         assertEquals(createDto.getStageType(), savedStage.getStageType());
         assertEquals(createDto.getStageStatus(), savedStage.getStageStatus());
-//        assertEquals(createDateDto.getDate(), savedStage.getStageStart().get(0).getDate());
-//        assertEquals(createDateDto.getTimes().get(0), savedStage.getStageStart().get(0).getTimes().get(0));
-//        assertEquals(createDateDto.getTimes().get(1), savedStage.getStageStart().get(1).getTimes().get(1));
         assertEquals(createDto.getPosterImg(), savedStage.getPosterImg());
         assertEquals(createDto.getDetailPosterImg(), savedStage.getDetailPosterImg());
         assertEquals(createDto.getStageInfo(), savedStage.getStageInfo());
@@ -82,17 +72,6 @@ class StageServiceImplTest {
     @Transactional
     void searchStage() {
         //given
-//        List<LocalTime> times = new ArrayList<>(List.of(LocalTime.of(14, 30),
-//                                                        LocalTime.of(19, 30)));
-//        List<LocalTime> times1 = new ArrayList<>(List.of(LocalTime.of(19, 30)));
-//
-//        RequestCreateStageStartDto stageStart1 = new RequestCreateStageStartDto();
-//        stageStart1.setDate(LocalDate.of(2023, 11, 30));
-//        stageStart1.setTimes(times);
-//
-//        RequestCreateStageStartDto stageStart2 = new RequestCreateStageStartDto();
-//        stageStart2.setDate(LocalDate.of(2023, 12, 1));
-//        stageStart2.setTimes(times);
 
         Stage stage1 = Stage.createStage(
                 "뮤지컬<마리퀴리>",
@@ -103,20 +82,11 @@ class StageServiceImplTest {
                 "8세이상 관람가",
                 StageType.MUSICAL,
                 StageStatus.BEFORE,
-//                List.of(stageStart1,stageStart2),
                 "포스터 링크",
                 "상세 포스터 링크",
                 "공연 상세 설명"
         );
         stageRepository.save(stage1);
-
-//        RequestCreateStageStartDto stageStart3 = new RequestCreateStageStartDto();
-//        stageStart3.setDate(LocalDate.of(2023, 12, 5));
-//        stageStart3.setTimes(times1);
-//
-//        RequestCreateStageStartDto stageStart4 = new RequestCreateStageStartDto();
-//        stageStart4.setDate(LocalDate.of(2023, 12, 30));
-//        stageStart4.setTimes(times);
 
         Stage stage2 = Stage.createStage(
                 "뮤지컬<#버킷리스트>",
@@ -127,7 +97,6 @@ class StageServiceImplTest {
                 "전체 관람가",
                 StageType.PLAY,
                 StageStatus.ENDED,
-//                List.of(stageStart3, stageStart4),
                 "포스터 링크",
                 "상세 포스터 링크",
                 "공연 상세 설명"
@@ -325,11 +294,7 @@ class StageServiceImplTest {
                 "상세 포스터 링크",
                 "공연 상세 설명"
         );
-//        List<LocalTime> times = new ArrayList<>(List.of(LocalTime.of(14, 30), LocalTime.of(19, 30)));
-//        StageStart.createStageStart(savedStage,
-//                LocalDate.of(2023, 11, 30), times);
-//        StageStart.createStageStart(savedStage,
-//                LocalDate.of(2023, 12, 1), times);
+
         stageRepository.save(savedStage);
         Long id = savedStage.getId();
 
@@ -363,11 +328,7 @@ class StageServiceImplTest {
                 "상세 포스터 링크",
                 "공연 상세 설명"
         );
-//        List<LocalTime> times = new ArrayList<>(List.of(LocalTime.of(14, 30), LocalTime.of(19, 30)));
-//        StageStart.createStageStart(savedStage,
-//                LocalDate.of(2023, 11, 30), times);
-//        StageStart.createStageStart(savedStage,
-//                LocalDate.of(2023, 12, 1), times);
+
         stageRepository.save(savedStage);
         Long id = savedStage.getId();
 

@@ -86,7 +86,7 @@ class StageStartServiceImplTest {
         assertNotNull(allDate);
         assertEquals(2, allDate.size());
     }
-
+    // 회차 정보 수정은 추후 고도화 구현시 구현 예정
 //    @Test
 //    @Transactional
 //    void updateStageStart() {

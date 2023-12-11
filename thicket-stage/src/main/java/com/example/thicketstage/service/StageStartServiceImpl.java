@@ -40,7 +40,7 @@ public class StageStartServiceImpl implements StageStartService {
         List<StageStart> findStageStarts = stageStartRepository.findAll();
         return findStageStarts.stream().map(ResponseStageStartDto::new).toList();
     }
-
+    // 회차 정보 수정은 추후 고도화 구현시 구현 예정
 //    @Override
 //    @Transactional
 //    public void updateStageStart(Long id, RequestStageStartUpdateDto stageStartUpdateDto){
