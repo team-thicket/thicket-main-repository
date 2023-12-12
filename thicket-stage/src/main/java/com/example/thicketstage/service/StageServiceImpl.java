@@ -11,8 +11,11 @@ import com.example.thicketstage.enumerate.StageType;
 import com.example.thicketstage.repository.StageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,28 +31,16 @@ public class StageServiceImpl implements StageService{
     @Override
     public RequestCreateStageDto createStage(RequestCreateStageDto stageDto) {
         Stage stage = stageDto.toEntity();
-        Stage saveStage = stageRepository.save(stage);
+
+        stageRepository.save(stage);
         
-        return RequestCreateStageDto.builder()
-                .name(saveStage.getName())
-                .place(saveStage.getPlace())
-                .stageOpen(saveStage.getStageOpen())
-                .stageClose(saveStage.getStageClose())
-                .runningTime(saveStage.getRunningTime())
-                .ageLimit(saveStage.getAgeLimit())
-                .price(saveStage.getPrice())
-                .stageType(saveStage.getStageType())
-                .stageStatus(saveStage.getStageStatus())
-                .stageStart(saveStage.getStageStart())
-                .posterImg(saveStage.getPosterImg())
-                .detailPosterImg(saveStage.getDetailPosterImg())
-                .stageInfo(saveStage.getStageInfo())
-                .build();
+        return new RequestCreateStageDto();
     }
-    
+
     @Override
     public List<ResponseStageThumbnailDto> getAllStage(){
         List<Stage> all = stageRepository.findAll();
+
         ArrayList<ResponseStageThumbnailDto> dtos = new ArrayList<>();
         for (Stage stage : all) {
             dtos.add(new ResponseStageThumbnailDto(stage));
@@ -57,10 +48,23 @@ public class StageServiceImpl implements StageService{
         return dtos;
     }
 
+    // STATUS.ONGOING 인 공연 모두 최신 순으로 - 작성중
+//    @Override
+//    public Page<ResponseStageThumbnailDto> getOngoingList(StageStatus stageStatus,
+//                                                          Pageable pageable) {
+//        Page<Stage> stages
+//                = stageRepository.findByStageStatusOrderByCreateAtDesc(StageStatus.ONGOING,
+//                                                                        pageable);
+//        if(stages.isEmpty()){
+//            throw new EntityNotFoundException("해당 공연이 존재하지 않습니다");
+//        }
+//        return stages.map(ResponseStageThumbnailDto::new);
+//    }
+
     // 공연 하나 선택 했을 때 상세 페이지 조회 되게
     @Override
-    public ResponseStageDto stageDetail(Long id) {
-        Optional<Stage> optionalStage = stageRepository.findById(id);
+    public ResponseStageDto stageDetail(String uuid) {
+        Optional<Stage> optionalStage = stageRepository.findByUuid(uuid);
 
         if(optionalStage.isEmpty()){
             throw new EntityNotFoundException("해당 공연이 존재하지 않습니다");
@@ -70,7 +74,7 @@ public class StageServiceImpl implements StageService{
         return new ResponseStageDto(stage);
     }
 
-    // StageType별로 줄 세우기
+    // StageType 별로 줄 세우기
     @Override
     public List<ResponseStageThumbnailDto> getStageTypeList(StageType stageType) {
         List<Stage> stages = stageRepository.findByStageType(stageType);
@@ -79,7 +83,21 @@ public class StageServiceImpl implements StageService{
             throw new EntityNotFoundException("해당 공연이 존재하지 않습니다");
         }
 
-        return stages.stream().map(ResponseStageThumbnailDto::new).collect(Collectors.toList());
+        return stages.stream().map(ResponseStageThumbnailDto::new)
+                                .collect(Collectors.toList());
+    }
+
+    // stageStatus 별로 줄 세우기
+    @Override
+    public List<ResponseStageThumbnailDto> getStageStatusList(StageStatus stageStatus){
+        List<Stage> stages = stageRepository.findByStageStatus(stageStatus);
+
+        if(stages.isEmpty()){
+            throw new EntityNotFoundException("해당 공연이 존재하지 않습니다");
+        }
+
+        return stages.stream().map(ResponseStageThumbnailDto::new)
+                                .collect(Collectors.toList());
     }
 
     @Override
@@ -102,24 +120,19 @@ public class StageServiceImpl implements StageService{
 
     @Override
     @Transactional
-    public void updateInfo(Long id, RequestUpdateInfoDto updateInfoDto) {
+    public void updateInfo(String uuid, RequestUpdateInfoDto updateInfoDto) {
 
-        Optional<Stage> optionalStage = stageRepository.findById(id);
-
-        if(optionalStage.isEmpty()){
-            throw new EntityNotFoundException("해당 Id값의 공연이 없습니다.");
-        }
-        Stage stage = optionalStage.get();
-
+        Stage stage = stageRepository.findByUuid(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("공연을 찾을 수 없습니다."));
         stage.updateStageInfo(updateInfoDto);
     }
 
     @Override
-    public void changeStatus(Long id, RequestSetNewStatusDto setNewStatusDto) {
-        Optional<Stage> optionalStage = stageRepository.findById(id);
+    public void changeStatus(String uuid, RequestSetNewStatusDto setNewStatusDto) {
+        Optional<Stage> optionalStage = stageRepository.findByUuid(uuid);
 
         if(optionalStage.isEmpty()){
-            throw new EntityNotFoundException("해당 Id값의 공연이 없습니다.");
+            throw new EntityNotFoundException("공연을 찾을 수 없습니다.");
         }
         Stage stage = optionalStage.get();
         StageStatus newStatus = setNewStatusDto.getNewStatus();
@@ -129,11 +142,11 @@ public class StageServiceImpl implements StageService{
     }
 
     @Override
-    public void deleteStage(Long id) {
-        Optional<Stage> optionalStage = stageRepository.findById(id);
+    public void deleteStage(String uuid) {
+        Optional<Stage> optionalStage = stageRepository.findByUuid(uuid);
 
         if(optionalStage.isEmpty()){
-            throw new EntityNotFoundException("해당 Id값의 공연이 없습니다.");
+            throw new EntityNotFoundException("공연을 찾을 수 없습니다.");
         }
         Stage stage = optionalStage.get();
         stageRepository.delete(stage);
