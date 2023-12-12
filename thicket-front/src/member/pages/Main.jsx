@@ -1,5 +1,10 @@
 import styled from "styled-components";
 
+const MainContainer = styled.main`
+  max-width: 1280px;
+  margin: 70px auto 0; // 헤더 위치에 따라 수동 조절
+`;
+
 const Poster = styled.div`
   display: inline-block;
   width: 200px;
@@ -28,7 +33,7 @@ function Main(){
     }
 
     return(
-        <main>
+        <MainContainer>
             <h2> 뮤지컬 Top5.</h2>
             <RankCard rank={1}/>
             <RankCard rank={2}/>
@@ -53,7 +58,7 @@ function Main(){
             <OpenCard date={"2023-12-16"}/>
             <OpenCard date={"2023-11-30"}/>
             <OpenCard date={"2023-12-7"}/>
-        </main>
+        </MainContainer>
     )
 }
 

@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 const ASide = styled.div`
   align-items: center;
   padding: 10px;
-  margin: 90px 1078px 20px 20px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
+  margin: 70px 1078px 20px 20px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
   border: black solid 1px;
   border-radius: 5px;
   width: 160px;
@@ -21,7 +21,7 @@ const ASide = styled.div`
 `
 const Main = styled.div`
   padding: 10px;
-  margin: 90px 20px 20px 222px;
+  margin: 70px 20px 20px 222px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
   border: black solid 1px;
   border-radius: 5px;
   width: 1016px;
