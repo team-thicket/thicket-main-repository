@@ -53,7 +53,7 @@ export const AdminBeforeList = ({ contentHandler }) => {
                     <h1 style={customH1Style} >
                         공연 예정
                     </h1>
-                    <p style={{ marginLeft: '10px', fontSize: '15px', color: '#555', lineHeight: '1.7' }}>
+                    <p style={{ margin: '0px 0px 10px 10px', fontSize: '15px', color: '#555', lineHeight: '1.7' }}>
                         제목을 클릭하면 일부 내용을 수정할 수 있습니다.
                     </p>
                 </div>
