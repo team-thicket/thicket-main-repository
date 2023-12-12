@@ -27,6 +27,9 @@ public class Stage extends TimeStamp {
 
     @Column(length = 300, nullable = false)
     private String place;
+//
+//    @Column(length = 100, nullable = false)
+//    private LocalDateTime ticketOpen;
 
     @Column(length = 100, nullable = false)
     private LocalDateTime stageOpen;

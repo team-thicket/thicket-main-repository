@@ -244,6 +244,47 @@ class StageServiceImplTest {
 
     @Test
     @Transactional
+    void getStageStatusList() {
+        //given
+        Stage stage1 = Stage.createStage(
+                "뮤지컬<마리퀴리>",
+                "홍익대 아트센터 대극장",
+                LocalDateTime.of(2023,11,25,19,30),
+                LocalDateTime.of(2024,2,7,19,30),
+                "180분",
+                "8세이상 관람가",
+                StageType.MUSICAL,
+                StageStatus.ONGOING,
+                "포스터 링크",
+                "상세 포스터 링크",
+                "공연 상세 설명"
+        );
+        stageRepository.save(stage1);
+
+        Stage stage2 = Stage.createStage(
+                "청소년극<#버킷리스트>",
+                "국립극단 소극장 판",
+                LocalDateTime.of(2023,11,25,19,30),
+                LocalDateTime.of(2024,2,7,19,30),
+                "100분",
+                "전체 관람가",
+                StageType.PLAY,
+                StageStatus.ENDED,
+                "포스터 링크",
+                "상세 포스터 링크",
+                "공연 상세 설명"
+        );
+        stageRepository.save(stage2);
+
+        //when
+        List<ResponseStageThumbnailDto> stageStatusList = stageService.getStageStatusList(StageStatus.ONGOING);
+        //then
+        assertEquals(1, stageStatusList.size());
+        assertTrue(stageStatusList.stream().allMatch(dto -> dto.getName().equals("뮤지컬<마리퀴리>")));
+    }
+
+    @Test
+    @Transactional
     void updateInfo() {
         //given
         String newName = "청소년극<#버킷리스트>n";
