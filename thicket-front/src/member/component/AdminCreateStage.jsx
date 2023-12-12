@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import DatePicker, {registerLocale} from 'react-datepicker';
 import ko from 'date-fns/locale/ko';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -53,6 +53,13 @@ const customInputStyle = {
     boxSizing: 'border-box',
 };
 
+const customTextareaStyle = {
+    width: '300px',
+    height: '25px',
+    boxSizing: 'border-box',
+    padding: '5px 0px 0px 1px',
+};
+
 const customInputTimeStyle = {
     width: '50px',
     height: '25px',
@@ -91,23 +98,37 @@ const AdminCreateStage = () => {
 
     const [startDate, setStartDate] = useState(null);   // 전체 시작일
     const [endDate, setEndDate] = useState(null);       // 전체 종료일
-    const datePickerRef = useRef(null);     // 전체 시작일 달력
-    const endDatePickerRef = useRef(null);  // 전체 종료일 달력
+    const startDatePickerRef = useRef(null);    // 전체 시작일 달력
+    const endDatePickerRef = useRef(null);       // 전체 종료일 달력
+    const [hasExistingSchedules, setHasExistingSchedules] = useState(false); // 달력 비활성화
     const [timeSlots, setTimeSlots] = useState([]);        // 일별 시작 시간
     const [selectedPerformanceType, setSelectedPerformanceType] = useState('');     // 공연 종류
     const [selectedPerformanceStatus, setSelectedPerformanceStatus] = useState(''); // 공연 상태
+    const [uploadedFiles, setUploadedFiles] = useState([]);    // 공연포스터 이미지
+    const fileInputRef = useRef(null);          // 공연포스터 이미지
+    const [selectedImage, setSelectedImage] = useState(null);         // 공연포스터 이미지
+    const [uploadedDetailImages, setUploadedDetailImages] = useState([]); // 상세페이지 이미지
+    const detailImageInputRef = useRef(null);              // 상세페이지 이미지
+    const [selectedDetailImage, setSelectedDetailImage] = useState(null);        // 상세페이지 이미지
     const [seatValues, setSeatValues] = useState([]);   // 좌석
 
     // 달력 한글화
     registerLocale('ko', ko);
 
-    // 달력 유효성 검사
-    const setStartDateWithValidation = (date) => {
-        if (endDate && date > endDate) {
-            alert('시작일은 종료일 이후일 수 없습니다.');
+    // 달력 부분 비활성화
+    useEffect(() => {
+        if (timeSlots.length > 0) {
+            setHasExistingSchedules(true);
         } else {
-            setStartDate(date);
+            setHasExistingSchedules(false);
         }
+    }, [timeSlots]);
+
+    // 일정 등록 날짜 조정
+    const addDays = (date, days) => {
+        const result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
     };
 
     // 일별 시작 시간 등록
@@ -161,6 +182,8 @@ const AdminCreateStage = () => {
                             style={{ width: '136px', marginBottom: '10px' }}
                             value={selectedDate}
                             onChange={(e) => setSelectedDate(e.target.value)}
+                            min={startDate ? addDays(startDate, 1).toISOString().split('T')[0] : undefined}
+                            max={endDate ? addDays(endDate, 1).toISOString().split('T')[0] : undefined}
                         />
                     </div>
                     <div>
@@ -194,22 +217,42 @@ const AdminCreateStage = () => {
         );
     };
 
-    // 일별 시작 시간 등록 버튼
+    // 일별 시작 시간 일정추가 버튼 (유효성 검사 포함)
     const handleAddTimeButtonClick = () => {
+        if (!startDate || !endDate || startDate === 'Invalid Date' || endDate === 'Invalid Date') {
+            alert('전체 시작일과 전체 종료일을 먼저 선택하세요.');
+            return;
+        }
         const newWindow = window.open('', '_blank', 'width=240,height=190,left=100,top=100');
 
         ReactDOM.render(
             <TimeSelection
                 onConfirm={(selectedDateTime) => {
+                    const { date, times } = selectedDateTime;
 
-                    const existingDateIndex = timeSlots.findIndex((item) => item.date === selectedDateTime.date);
+                    // 각 시간 항목의 유효성 검사
+                    const isValidTime = times.every((time) => {
+                        const hour = parseInt(time.hour, 10);
+                        const minute = parseInt(time.minute, 10);
+
+                        return (hour >= 0 && hour <= 23) && (minute === 0 || minute === 30);
+                    });
+
+                    if (!isValidTime) {
+                        alert('유효하지 않은 시간입니다.');
+                        newWindow.close();
+                        return;
+                    }
+
+                    // 기존 날짜 인덱스 찾기
+                    const existingDateIndex = timeSlots.findIndex((item) => item.date === date);
 
                     if (existingDateIndex !== -1) {
-
+                        /// 동일한 날짜 내 중복 시간 확인
                         const isDuplicateTime = timeSlots[existingDateIndex].times.some(
                             (time) =>
-                                time.hour === selectedDateTime.times[0].hour &&
-                                time.minute === selectedDateTime.times[0].minute
+                                time.hour === times[0].hour &&
+                                time.minute === times[0].minute
                         );
 
                         if (isDuplicateTime) {
@@ -218,19 +261,20 @@ const AdminCreateStage = () => {
                             setTimeSlots((prevTimeSlots) => {
                                 const updatedTimeSlots = [...prevTimeSlots];
                                 updatedTimeSlots[existingDateIndex].times.push({
-                                    hour: selectedDateTime.times[0].hour,
-                                    minute: selectedDateTime.times[0].minute,
+                                    hour: times[0].hour,
+                                    minute: times[0].minute,
                                 });
                                 return updatedTimeSlots;
                             });
                         }
                     } else {
-                        const isDuplicateDate = timeSlots.some((item) => item.date === selectedDateTime.date);
+                        // 동일한 날짜 확인
+                        const isDuplicateDate = timeSlots.some((item) => item.date === date);
 
                         if (isDuplicateDate) {
                             alert('이미 동일한 날짜가 추가되었습니다.');
                         } else {
-                            setTimeSlots((prevTimeSlots) => [...prevTimeSlots, selectedDateTime]);
+                            setTimeSlots((prevTimeSlots) => [...prevTimeSlots, { date, times }]);
                         }
                     }
 
@@ -270,6 +314,97 @@ const AdminCreateStage = () => {
         }
     };
 
+    // 일정 전체 삭제
+    const handleRemoveAllTimeSlots = () => {
+        setTimeSlots([]);
+    };
+
+    // 이미지 설정
+    const ImageViewerModal = ({ imageUrl, onClose }) => {
+        return (
+            <div
+                style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+                onClick={onClose}
+            >
+                <img
+                    src={imageUrl}
+                    alt="Enlarged"
+                    style={{ maxWidth: '95%', maxHeight: '95%', objectFit: 'contain' }}
+                />
+            </div>
+        );
+    };
+
+    // 공연포스터 이미지 업로드
+    const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+
+        // Check if the limit (1 file) has been reached
+        if (uploadedFiles.length >= 1) {
+            alert('공연포스터 이미지는 1개만 등록 가능합니다. 삭제 후 등록해 주세요.');
+            return;
+        }
+
+        setUploadedFiles((prevFiles) => [...prevFiles, file]);
+    };
+
+    // 공연포스터 이미지 삭제
+    const handleRemoveFile = (index) => {
+        setUploadedFiles((prevFiles) => {
+            const newFiles = [...prevFiles];
+            newFiles.splice(index, 1);
+            return newFiles;
+        });
+    };
+
+    // 공연포스터 이미지 클릭 시 모달 열기
+    const handleImageClick = (imageUrl) => {
+        setSelectedImage(imageUrl);
+    };
+
+    // 공연 포스터 모달 닫기
+    const handleCloseModal = () => {
+        setSelectedImage(null);
+    };
+
+    // 상세페이지 이미지 파일 업로드
+    const handleDetailImageUpload = (e) => {
+        // 상세페이지 이미지 업로드 로직 추가
+        const file = e.target.files[0];
+        // 상세페이지 이미지 파일을 uploadedDetailImages 상태에 추가
+        setUploadedDetailImages((prevImages) => [...prevImages, file]);
+    };
+
+    // 상세페이지 이미지 삭제
+    const handleRemoveDetailImage = (index) => {
+        // 상세페이지 이미지 삭제 로직 추가
+        setUploadedDetailImages((prevImages) => {
+            const newImages = [...prevImages];
+            newImages.splice(index, 1);
+            return newImages;
+        });
+    };
+
+    // 상세페이지 이미지 클릭 시 모달 열기
+    const handleDetailImageClick = (imageUrl) => {
+        setSelectedDetailImage(imageUrl);
+    };
+
+    // 상세페이지 이미지 모달 닫기
+    const handleCloseDetailImageModal = () => {
+        setSelectedDetailImage(null);
+    };
+
     // 좌석 추가
     const SeatModalContent = ({ onSubmit }) => {
         const [inputValues, setInputValues] = useState([
@@ -301,10 +436,8 @@ const AdminCreateStage = () => {
             const hasEmptyValues = inputValues.some((field) => field.value === '');
 
             if (hasEmptyValues) {
-                // If any values are empty, close the window using the ref
                 newWindowRef.current && newWindowRef.current.close();
             } else {
-                // Process the entered values
                 const formattedValues = inputValues.reduce((acc, curr) => {
                     const formattedValue =
                         curr.label === '타입' ? String(curr.value) : parseInt(curr.value, 10) || 0;
@@ -330,10 +463,10 @@ const AdminCreateStage = () => {
                                        onChange={(e) => handleInputChange(index, e.target.value)}
                                        placeholder={`${
                                            field.label === '타입'
-                                               ? '좌석 이름을 입력하세요'
+                                               ? '좌석 이름을 입력하세요.'
                                                : field.label === '개수'
-                                                   ? '숫자만 입력하세요'
-                                                   : '숫자만 입력하세요'
+                                                   ? '숫자만 입력하세요.'
+                                                   : '숫자만 입력하세요.'
                                        }`}
                                 />
                                 <br />
@@ -382,9 +515,9 @@ const AdminCreateStage = () => {
         setSeatValues(updatedSeatValues);
     };
 
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
     return (
         <div style={createContainerStyle} >
@@ -409,14 +542,16 @@ const AdminCreateStage = () => {
                     <tr>
                         <th style={customThStyle}>전체 시작일</th>
                         <td style={customTdStyle}>
-                            <div style={{ position: 'relative' }}>
+                            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                                 <StyledDatePicker
-                                    ref={datePickerRef}
+                                    ref={startDatePickerRef}
                                     selected={startDate}
-                                    onChange={(date) => setStartDateWithValidation(date)}
+                                    onChange={(date) => setStartDate(date)}
                                     dateFormat="yyyy년 MM월 dd일"
                                     placeholderText="  날짜를 선택하세요."
                                     locale="ko"
+                                    maxDate={endDate} // 종료일 이후로 선택 불가능
+                                    disabled={hasExistingSchedules} // 일정이 있으면 비활성화
                                 />
                                 <div
                                     style={{
@@ -425,7 +560,7 @@ const AdminCreateStage = () => {
                                         top: '5px',
                                         cursor: 'pointer',
                                     }}
-                                    onClick={() => datePickerRef.current && datePickerRef.current.setOpen(true)}
+                                    onClick={() => startDatePickerRef.current && startDatePickerRef.current.setOpen(true)}
                                 >
                                     {/* Calendar Icon */}
                                     <svg
@@ -445,13 +580,16 @@ const AdminCreateStage = () => {
                                         <line x1="3" y1="10" x2="21" y2="10"></line>
                                     </svg>
                                 </div>
+                                <p style={{ marginLeft: '10px', fontSize: '15px', color: '#555', lineHeight: '1.7' }}>
+                                    하단의 일정을 등록한 상태에서는 달력이 비활성화 됩니다.
+                                </p>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <th style={customThStyle}>전체 종료일</th>
                         <td style={customTdStyle}>
-                            <div style={{ position: 'relative' }}>
+                            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                                 <StyledDatePicker
                                     ref={endDatePickerRef}
                                     selected={endDate}
@@ -459,7 +597,8 @@ const AdminCreateStage = () => {
                                     dateFormat="yyyy년 MM월 dd일"
                                     placeholderText="  날짜를 선택하세요."
                                     locale="ko"
-                                    minDate={startDate} // Set minDate to start date
+                                    minDate={startDate} // 시작일 이전으로 설정 불가능
+                                    disabled={hasExistingSchedules} // 일정이 있으면 비활성화
                                 />
                                 <div
                                     style={{
@@ -488,6 +627,12 @@ const AdminCreateStage = () => {
                                         <line x1="3" y1="10" x2="21" y2="10"></line>
                                     </svg>
                                 </div>
+                                <p style={{ marginLeft: '10px', fontSize: '15px', color: '#555', lineHeight: '1.7' }}>
+                                    수정이 필요할 경우 일정을 전부 삭제해주세요.
+                                    <button style={{ ...customButton_1Style, marginLeft: '10px' }} onClick={handleRemoveAllTimeSlots}>
+                                        일정전체삭제
+                                    </button>
+                                </p>
                             </div>
                         </td>
                     </tr>
@@ -534,21 +679,125 @@ const AdminCreateStage = () => {
                         </td>
                     </tr>
                     <tr>
-                        <th style={customThStyle}>공연포스터 이미지 링크</th>
+                        <th style={customThStyle}>공연포스터 이미지</th>
                         <td style={customTdStyle}>
-                            <input style={customInputStyle} placeholder="  이미지 url 링크를 입력하세요." />
+                            <input
+                                type="file"
+                                id="imageFile"
+                                ref={fileInputRef}
+                                style={{ display: 'none' }}
+                                onChange={handleFileUpload}
+                            />
+                            <button
+                                style={customButton_1Style}
+                                onClick={() => fileInputRef.current.click()}
+                            >
+                                파일선택
+                            </button>
                         </td>
                     </tr>
+                    {uploadedFiles.map((file, index) => (
+                        <tr key={index}>
+                            <th style={customThStyle}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    {`썸네일`}
+                                    {/* Add a delete button next to each uploaded image */}
+                                    <button
+                                        style={{ padding: '0px 3px' }}
+                                        onClick={() => handleRemoveFile(index)}
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            </th>
+                            <td style={customTdStyle}>
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <img
+                                        src={URL.createObjectURL(file)}
+                                        alt={`File ${index + 1}`}
+                                        style={{ maxWidth: '100px', maxHeight: '100px', cursor: 'pointer' }}
+                                        onClick={() => handleImageClick(URL.createObjectURL(file))}
+                                    />
+                                    <p style={{ marginLeft: '10px', fontSize: '15px', color: '#555', lineHeight: '1.7' }}>
+                                        {file.name}
+                                        <br />
+                                        (클릭하여 이미지를 크게 보기)
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                    {selectedImage && ReactDOM.createPortal(
+                        <ImageViewerModal
+                            imageUrl={selectedImage}
+                            onClose={handleCloseModal}
+                        />,
+                        document.body
+                    )}
                     <tr>
-                        <th style={customThStyle}>상세페이지 이미지 링크</th>
+                        <th style={customThStyle}>상세페이지 이미지</th>
                         <td style={customTdStyle}>
-                            <input style={customInputStyle} placeholder="  이미지 url 링크를 입력하세요." />
+                            <input
+                                type="file"
+                                id="detailImageFile"
+                                ref={detailImageInputRef}
+                                style={{ display: 'none' }}
+                                onChange={handleDetailImageUpload}
+                            />
+                            <button
+                                style={customButton_1Style}
+                                onClick={() => detailImageInputRef.current.click()}
+                            >
+                                파일선택
+                            </button>
                         </td>
                     </tr>
+                    {uploadedDetailImages.map((image, index) => (
+                        <tr key={index}>
+                            <th style={customThStyle}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    {`썸네일`}
+                                    <button
+                                        style={{ padding: '0px 3px' }}
+                                        onClick={() => handleRemoveDetailImage(index)}
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                            </th>
+                            <td style={customTdStyle}>
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <img
+                                        src={URL.createObjectURL(image)}
+                                        alt={`File ${index + 1}`}
+                                        style={{ maxWidth: '100px', maxHeight: '100px', cursor: 'pointer' }}
+                                        onClick={() => handleDetailImageClick(URL.createObjectURL(image))}
+                                    />
+                                    <p style={{ marginLeft: '10px', fontSize: '15px', color: '#555', lineHeight: '1.7' }}>
+                                        {image.name}
+                                        <br />
+                                        (클릭하여 이미지를 크게 보기)
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                    {selectedDetailImage && ReactDOM.createPortal(
+                        <ImageViewerModal
+                            imageUrl={selectedDetailImage}
+                            onClose={handleCloseDetailImageModal}
+                        />,
+                        document.body
+                    )}
                     <tr>
                         <th style={customThStyle}>상세페이지 텍스트 </th>
                         <td style={customTdStyle}>
-                            <input style={customInputStyle} placeholder="  이미지 외 추가설명을 입력하세요." />
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <textarea style={customTextareaStyle} placeholder="  이미지 외 추가설명을 입력하세요." />
+                                <p style={{ marginLeft: '10px', fontSize: '15px', color: '#555', lineHeight: '1.7' }}>
+                                    텍스트 상자의 오른쪽 하단을 클릭해서 입력창을 조절할 수 있습니다.
+                                </p>
+                            </div>
                         </td>
                     </tr>
                     </tbody>

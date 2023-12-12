@@ -4,12 +4,11 @@ import HeaderMenu from "./HeaderMenu";
 
 const LogoHeader = styled.header`
   width: 100%;
+  height: 18px;
   top: 0;
   left: 0;
   display: flex;
   justify-content: center;
-  background-color: antiquewhite;
-  z-index: 1000;
 `
 
 const Wrapper = styled.div`
@@ -23,8 +22,7 @@ const Menubar = styled.div`
   background-color: antiquewhite;
   display: flex;
   position: fixed;
-  top: 17px; // 로고 위치에 따라 수동 조절
-  z-index: 999;
+  top: 18px; // 로고 위치에 따라 수동 조절
 `
 export default function Header() {
     return (

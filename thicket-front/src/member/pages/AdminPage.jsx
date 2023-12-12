@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 const ASide = styled.div`
   align-items: center; // 자식 요소를 수직으로 중앙 정렬
   padding: 10px; // 모든 측면에 10px의 안쪽 여백 적용
-  margin: 90px 1078px 20px 20px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
+  margin: 70px 1078px 20px 20px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
   border: black solid 1px; // 1px 두께의 검은색 실선 테두리
   border-radius: 5px; // 5px의 테두리를 둥글게 처리
   width: 160px;
@@ -24,7 +24,7 @@ const ASide = styled.div`
 `
 const Main = styled.div`
   padding: 10px; // 모든 측면에 10px의 안쪽 여백 적용
-  margin: 90px 20px 20px 222px;
+  margin: 70px 20px 20px 222px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
   border: black solid 1px; // 1px 두께의 검은색 실선 테두리
   border-radius: 5px; // 5px의 테두리를 둥글게 처리
   width: 1016px;
