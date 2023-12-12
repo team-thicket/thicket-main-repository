@@ -39,12 +39,12 @@ const customTdNotCenterStyle = {
     borderTop: '1px solid #000',
 };
 
-export const AdminPlayList = () => {
+export const AdminOngoingList = () => {
     return (
         <div style={adminContainerStyle} >
             <div>
                 <h1 style={customH1Style} >
-                    공연 목록
+                    공 연 중
                 </h1>
                 <table style={infoTableStyle} >
                     <tbody>
@@ -52,7 +52,7 @@ export const AdminPlayList = () => {
                         <th style={{ ...customThStyle, width: '60px' }}>번호</th>
                         <th style={{ ...customThStyle, width: '60px' }}>구분</th>
                         <th style={{ ...customThStyle, width: 'auto' }}>제목</th>
-                        <th style={{ ...customThStyle, width: '60px' }}>상태</th>
+                        <th style={{ ...customThStyle, width: '70px' }}>상태</th>
                         <th style={{ ...customThStyle, width: '102px' }}>오픈일</th>
                         <th style={{ ...customThStyle, width: '102px' }}>마감일</th>
                     </tr>
@@ -63,7 +63,7 @@ export const AdminPlayList = () => {
                             4D공포연극
                         </td>
                         <td style={customTdStyle}>진행중</td>
-                        <td style={customTdStyle}>2022.02.11.</td>
+                        <td style={customTdStyle}>2022.12.01.</td>
                         <td style={customTdStyle}>2023.12.31.</td>
                     </tr>
                     </tbody>

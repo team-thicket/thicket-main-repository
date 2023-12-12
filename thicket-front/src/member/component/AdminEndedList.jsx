@@ -39,12 +39,12 @@ const customTdNotCenterStyle = {
     borderTop: '1px solid #000',
 };
 
-export const AdminMusicalList = () => {
+export const AdminEndedList = () => {
     return (
         <div style={adminContainerStyle} >
             <div>
                 <h1 style={customH1Style} >
-                    뮤지컬 목록
+                    공연 종료
                 </h1>
                 <table style={infoTableStyle} >
                     <tbody>
@@ -52,19 +52,19 @@ export const AdminMusicalList = () => {
                         <th style={{ ...customThStyle, width: '60px' }}>번호</th>
                         <th style={{ ...customThStyle, width: '60px' }}>구분</th>
                         <th style={{ ...customThStyle, width: 'auto' }}>제목</th>
-                        <th style={{ ...customThStyle, width: '60px' }}>상태</th>
+                        <th style={{ ...customThStyle, width: '70px' }}>상태</th>
                         <th style={{ ...customThStyle, width: '102px' }}>오픈일</th>
                         <th style={{ ...customThStyle, width: '102px' }}>마감일</th>
                     </tr>
                     <tr>
                         <td style={customTdStyle}>1</td>
-                        <td style={customTdStyle}>뮤지컬</td>
+                        <td style={customTdStyle}>콘서트</td>
                         <td style={customTdNotCenterStyle}>
-                            2023 푸에르자부르타 웨이라 인 서울
+                            임영웅 콘서트 IM HERO TOUR 2023 - 부산
                         </td>
-                        <td style={customTdStyle}>진행중</td>
-                        <td style={customTdStyle}>2023.11.17.</td>
-                        <td style={customTdStyle}>2024.02.15.</td>
+                        <td style={customTdStyle}>공연종료</td>
+                        <td style={customTdStyle}>2023.11.08.</td>
+                        <td style={customTdStyle}>2023.11.10.</td>
                     </tr>
                     </tbody>
                 </table>

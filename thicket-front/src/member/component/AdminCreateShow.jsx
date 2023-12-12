@@ -94,7 +94,7 @@ const StyledDatePicker = styled(DatePicker)`
   box-sizing: border-box;
 `;
 
-const AdminCreateStage = () => {
+const AdminCreateShow = () => {
 
     const [startDate, setStartDate] = useState(null);   // 전체 시작일
     const [endDate, setEndDate] = useState(null);       // 전체 종료일
@@ -904,4 +904,4 @@ const AdminCreateStage = () => {
     );
 };
 
-export default AdminCreateStage;
+export default AdminCreateShow;
