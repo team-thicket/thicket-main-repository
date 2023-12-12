@@ -1,3 +1,5 @@
+import React from "react";
+
 const adminContainerStyle = {
     padding: '10px',
     overflowY: 'auto', // Add overflow property for vertical scrollbar
@@ -39,13 +41,22 @@ const customTdNotCenterStyle = {
     borderTop: '1px solid #000',
 };
 
-export const AdminBeforeList = () => {
+export const AdminBeforeList = ({ contentHandler }) => {
+    const handleTitleClick = () => {
+        // contentHandler에 선택한 내용을 전달합니다.
+        contentHandler("editShow");
+    };
     return (
         <div style={adminContainerStyle} >
             <div>
-                <h1 style={customH1Style} >
-                    공연 예정
-                </h1>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <h1 style={customH1Style} >
+                        공연 예정
+                    </h1>
+                    <p style={{ marginLeft: '10px', fontSize: '15px', color: '#555', lineHeight: '1.7' }}>
+                        제목을 클릭하면 일부 내용을 수정할 수 있습니다.
+                    </p>
+                </div>
                 <table style={infoTableStyle} >
                     <tbody>
                     <tr>
@@ -59,7 +70,7 @@ export const AdminBeforeList = () => {
                     <tr>
                         <td style={customTdStyle}>3</td>
                         <td style={customTdStyle}>뮤지컬</td>
-                        <td style={customTdNotCenterStyle}>
+                        <td style={{ ...customTdNotCenterStyle, cursor: 'pointer' }} onClick={handleTitleClick}>
                             2023 푸에르자부르타 웨이라 인 서울
                         </td>
                         <td style={customTdStyle}>공연예정</td>

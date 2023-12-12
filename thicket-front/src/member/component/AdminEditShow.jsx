@@ -94,12 +94,12 @@ const StyledDatePicker = styled(DatePicker)`
   box-sizing: border-box;
 `;
 
-const AdminCreateShow = () => {
+const AdminEditShow = () => {
 
     const [startDate, setStartDate] = useState(null);   // 전체 시작일
     const [endDate, setEndDate] = useState(null);       // 전체 종료일
     const startDatePickerRef = useRef(null);    // 전체 시작일 달력
-    const endDatePickerRef = useRef(null);       // 전체 종료일 달력
+    const endDatePickerRef = useRef(null);      // 전체 종료일 달력
     const [hasExistingSchedules, setHasExistingSchedules] = useState(false); // 달력 비활성화
     const [timeSlots, setTimeSlots] = useState([]);        // 일별 시작 시간
     const [selectedPerformanceType, setSelectedPerformanceType] = useState('');     // 공연 종류
@@ -523,7 +523,7 @@ const AdminCreateShow = () => {
         <div style={createContainerStyle} >
             <div>
                 <h1 style={customH1Style} >
-                    공연 등록
+                    공연 수정
                 </h1>
                 <table style={infoTableStyle} >
                     <tbody>
@@ -551,7 +551,7 @@ const AdminCreateShow = () => {
                                     placeholderText="  날짜를 선택하세요."
                                     locale="ko"
                                     maxDate={endDate} // 종료일 이후로 선택 불가능
-                                    disabled={hasExistingSchedules} // 일정이 있으면 비활성화
+                                    disabled={true}
                                 />
                                 <div
                                     style={{
@@ -581,7 +581,7 @@ const AdminCreateShow = () => {
                                     </svg>
                                 </div>
                                 <p style={{ marginLeft: '10px', fontSize: '15px', color: '#555', lineHeight: '1.7' }}>
-                                    하단의 일정을 등록한 상태에서는 달력이 비활성화 됩니다.
+                                    수정할 수 없습니다.
                                 </p>
                             </div>
                         </td>
@@ -598,7 +598,7 @@ const AdminCreateShow = () => {
                                     placeholderText="  날짜를 선택하세요."
                                     locale="ko"
                                     minDate={startDate} // 시작일 이전으로 설정 불가능
-                                    disabled={hasExistingSchedules} // 일정이 있으면 비활성화
+                                    disabled={true}
                                 />
                                 <div
                                     style={{
@@ -628,10 +628,7 @@ const AdminCreateShow = () => {
                                     </svg>
                                 </div>
                                 <p style={{ marginLeft: '10px', fontSize: '15px', color: '#555', lineHeight: '1.7' }}>
-                                    수정이 필요할 경우 일정을 전부 삭제해주세요.
-                                    <button style={{ ...customButton_1Style, marginLeft: '10px' }} onClick={handleRemoveAllTimeSlots}>
-                                        일정전체삭제
-                                    </button>
+                                    수정할 수 없습니다.
                                 </p>
                             </div>
                         </td>
@@ -672,9 +669,9 @@ const AdminCreateShow = () => {
                                 onChange={(e) => setSelectedPerformanceStatus(e.target.value)}
                             >
                                 <option value="">선택</option>
-                                <option value="공연예정">공연예정</option>
-                                <option value="진행중">진행중</option>
-                                <option value="공연종료">공연종료</option>
+                                <option value="공연전">공연전</option>
+                                <option value="공연중">공연중</option>
+                                <option value="공연완료">공연완료</option>
                             </select>
                         </td>
                     </tr>
@@ -804,23 +801,17 @@ const AdminCreateShow = () => {
                 </table>
             </div>
             <div style={customDivStyle}>
-                <button style={customButtonStyle}>공연 등록</button>
+                <button style={customButtonStyle}>공연 수정</button>
             </div>
             <div>
                 <h1 style={customH1Style} >
-                    일정 등록
+                    일정
                 </h1>
                 <table style={infoTableStyle} >
                     <tbody>
                     <tr>
                         <th style={{ ...customThStyle, width: '180px' }}>일별 시작 시간</th>
-                        <td style={customTdStyle}>
-                            <div>
-                                <button style={customButton_1Style} onClick={handleAddTimeButtonClick}>
-                                    일정추가
-                                </button>
-                            </div>
-                        </td>
+                        <td style={customTdStyle}>수정할 수 없습니다.</td>
                     </tr>
                     {timeSlots.map((dateTime, index) => (
                         <React.Fragment key={index}>
@@ -834,10 +825,6 @@ const AdminCreateShow = () => {
                                                 day: '2-digit',
                                             })}
                                         </div>
-                                        {/* Add the remove button */}
-                                        <button style={{ padding: '0px 3px' }} onClick={() => handleRemoveDateTime(dateTime.date)}>
-                                            ✕
-                                        </button>
                                     </div>
                                 </th>
                                 <td style={customTdStyle}>
@@ -845,10 +832,6 @@ const AdminCreateShow = () => {
                                         {dateTime.times.map((time, timeIndex) => (
                                             <div key={timeIndex} style={{ marginRight: '20px' }}>
                                                 {`${time.hour}:${time.minute}`}
-                                                {/* Add the remove button for time */}
-                                                <button style={{ marginLeft: '5px', padding: '0px 3px' }} onClick={() => handleRemoveTime(dateTime.date, time)}>
-                                                    ✕
-                                                </button>
                                             </div>
                                         ))}
                                     </div>
@@ -859,33 +842,20 @@ const AdminCreateShow = () => {
                     </tbody>
                 </table>
             </div>
-            <div style={customDivStyle}>
-                <button style={customButtonStyle}>일정 등록</button>
-            </div>
             <div>
-                <h1 style={customH1Style} >
-                    좌석 등록
+                <h1 style={{ margin: '60px 0 20px 0', paddingLeft: '5px' }}>
+                    좌석
                 </h1>
                 <table style={infoTableStyle} >
                     <tbody>
                     <tr>
                         <th style={{ ...customThStyle, width: '180px' }}>좌석</th>
-                        <td style={customTdStyle}>
-                            <button style={customButton_1Style} onClick={handleAddButtonClick}>
-                                추가
-                            </button>
-                        </td>
+                        <td style={customTdStyle}>수정할 수 없습니다.</td>
                     </tr>
                     {seatValues.map((value, index) => (
                         <React.Fragment key={index}>
                             <tr>
                                 <th style={{ ...customThStyle, position: 'relative' }}>{`타입 : ${value[0].value}석`}
-                                    <button
-                                        style={xButtonStyle}
-                                        onClick={() => handleRemoveSeat(value[0].value)}
-                                    >
-                                        ✕
-                                    </button>
                                 </th>
                                 <td style={customTdStyle}>
                                     <div>{`개수 : ${value[1].value}개`}</div>
@@ -897,11 +867,8 @@ const AdminCreateShow = () => {
                     </tbody>
                 </table>
             </div>
-            <div style={{ padding: '20px 0 0 0' }}>
-                <button style={customButtonStyle}>좌석 등록</button>
-            </div>
         </div>
     );
 };
 
-export default AdminCreateShow;
+export default AdminEditShow;

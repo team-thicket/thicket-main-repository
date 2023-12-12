@@ -3,9 +3,10 @@ import Menu from "../component/Menu";
 import React, {useState} from "react";
 import {AdminAllStageList} from "../component/AdminAllStageList";
 import AdminCreateShow from "../component/AdminCreateShow";
-import {AdminBeforeList} from "../component/AdminBeforeList";
+import { AdminBeforeList } from "../component/AdminBeforeList";
 import {AdminOngoingList} from "../component/AdminOngoingList";
 import {AdminEndedList} from "../component/AdminEndedList";
+import AdminEditShow from "../component/AdminEditShow";
 
 const Wrapper = styled.div`
   display: flex; // Flex 컨테이너로 설정하여 자식 요소들을 플렉스 방향으로 배치
@@ -45,6 +46,7 @@ const AdminPage = () => {
         before: <AdminBeforeList contentHandler={contentHandler} />,
         ongoing: <AdminOngoingList contentHandler={contentHandler} />,
         ended: <AdminEndedList contentHandler={contentHandler} />,
+        editShow: <AdminEditShow />,
     };
 
     return (
