@@ -26,17 +26,6 @@ class MemberServiceImplTest {
     @Autowired
     MemberRepository memberRepository;
 
-    @BeforeEach
-    public void beforeEach() {
-        Member member = Member.createMember(
-                "홍길동",
-                LocalDate.of(2023,11,14),
-                "test123@gmail.com",
-                "1234",
-                MemberStatus.ACTIVE,
-                MemberRole.USER);
-        memberRepository.save(member);
-    }
     @Test
     void 회원_조회() {
         //given
@@ -95,7 +84,7 @@ class MemberServiceImplTest {
         //given
         String email = "test123@gmail.com";
         RequestInactiveDto dto = new RequestInactiveDto();
-        dto.setPswd("1234");
+        dto.setPassword("1234");
 
         //when
         memberService.setInactive(email, dto);
@@ -111,7 +100,7 @@ class MemberServiceImplTest {
         //given
         String email = "test123@gmail.com";
         RequestInactiveDto dto = new RequestInactiveDto();
-        dto.setPswd("4567");
+        dto.setPassword("4567");
 
         //when //then
         assertThrows(IllegalArgumentException.class, () -> memberService.setInactive(email, dto));

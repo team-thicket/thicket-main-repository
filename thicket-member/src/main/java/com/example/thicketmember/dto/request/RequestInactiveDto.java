@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Data
+@NoArgsConstructor
 public class RequestInactiveDto {
 
     @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}",

@@ -1,12 +1,8 @@
-package com.example.thicketauth.smtp.domain;
+package com.example.thicketmember.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@Data
 public class EmailMessage {
 
     private String to;

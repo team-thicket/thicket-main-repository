@@ -10,12 +10,8 @@ import java.time.LocalDate;
 @Data
 public class ResponseMemberDto {
 
-    @NotEmpty
     private String name;
-    
     private LocalDate birth;
-
-    @Email
     private String email;
 
     public static ResponseMemberDto toDto(Member member) {
