@@ -14,11 +14,17 @@ public class ResponseStageStartDto {
 
     private LocalDate date;
 
-    private List<LocalTime> times;
+    private LocalTime time;
+//    private List<LocalTime> times;
 
-    public ResponseStageStartDto(StageStart stageStart) {
-        this.stageUuid = stageStart.getUuid();
-        this.date = stageStart.getDate();
-        this.times = stageStart.getTimes();
-    }
+//    public ResponseStageStartDto(StageStart stageStart) {
+//        this.stageUuid = stageStart.getUuid();
+//        this.date = stageStart.getDate();
+//        this.times = stageStart.getTimes();
+//    }
+public ResponseStageStartDto(StageStart stageStart) {
+    this.stageUuid = stageStart.getUuid();
+    this.date = stageStart.getDate();
+    this.time = stageStart.getTime();
+}
 }

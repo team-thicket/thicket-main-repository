@@ -29,7 +29,7 @@ public class StageStartServiceImpl implements StageStartService {
                 .orElseThrow(() -> new EntityNotFoundException("해당 공연을 찾을 수 없습니다."));
 
         List<StageStart> stageStarts = dto.getStageStartDtos().stream()
-                .map(ss -> StageStart.createStageStart(ss.getDate(), ss.getTimes(), stage))
+                .map(ss -> StageStart.createStageStart(ss.getDate(), ss.getTime(), stage))
                 .toList();
 
         return stageStartRepository.saveAll(stageStarts);

@@ -17,7 +17,7 @@ public class RequestStageStartUpdateDto {
     @NoArgsConstructor
     public static class StageStartUpdateDto {
         private LocalDate date;
-        private List<LocalTime> times;
+        private LocalTime time;
     }
 
 }

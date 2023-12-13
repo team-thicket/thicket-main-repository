@@ -22,8 +22,9 @@ public class StageStart extends TimeStamp {
 
     private LocalDate date;
 
-    @ElementCollection
-    private List<LocalTime> times = new ArrayList<>();
+    private LocalTime time;
+//    @ElementCollection
+//    private List<LocalTime> times = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Stage stage;
@@ -35,11 +36,20 @@ public class StageStart extends TimeStamp {
     }
 
     // 비즈니스 로직 //
+//    public static StageStart createStageStart(LocalDate newDate,
+//                                              List<LocalTime> newTime, Stage stage) {
+//        StageStart stageStart = new StageStart();
+//        stageStart.date = newDate;
+//        stageStart.times.addAll(newTime);
+//        stageStart.foreignKey(stage);
+//
+//        return stageStart;
+//    }
     public static StageStart createStageStart(LocalDate newDate,
-                                              List<LocalTime> newTime, Stage stage) {
+                                              LocalTime newTime, Stage stage) {
         StageStart stageStart = new StageStart();
         stageStart.date = newDate;
-        stageStart.times.addAll(newTime);
+        stageStart.time = newTime;
         stageStart.foreignKey(stage);
 
         return stageStart;

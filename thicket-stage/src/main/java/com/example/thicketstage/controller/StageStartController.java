@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class StageStartController {
     private final StageStartService stageStartService;
 
-    @PostMapping("") // api 명세 => POST /stageStarts
+    @PostMapping("") // api 명세 => POST /tickets
     public ResponseEntity<?> createStageStart(@RequestBody
                                               @Valid RequestCreateStageStartDto stageStartDto) {
         stageStartService.createStageStart(stageStartDto);
@@ -24,7 +24,7 @@ public class StageStartController {
     }
 
     // stageuuid 받아와서 stage별 stageStart all list 뽑아주는 메서드로 수정
-    @GetMapping("all") // api 명세 => GET /stageStarts/all
+    @GetMapping("all") // api 명세 => GET /tickets/all
     public ResponseEntity<?> getAllDate() {
         return ResponseEntity.ok(stageStartService.getAllDate());
     }
@@ -39,7 +39,7 @@ public class StageStartController {
 //    }
 
     // 추후 고도화 구현시 구현 예정
-//    @DeleteMapping("{uuid}") // api 명세 => DELETE /stageStarts/{uuid}
+//    @DeleteMapping("{uuid}") // api 명세 => DELETE /tickets/{uuid}
 //    public ResponseEntity<?> deleteStageStart(@PathVariable @Valid String uuid) {
 //        stageStartService.deleteStageStart(uuid);
 //

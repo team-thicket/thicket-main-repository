@@ -1,5 +1,6 @@
 package com.example.thicketstage;
 
+import com.example.thicketstage.domain.Chair;
 import com.example.thicketstage.domain.Stage;
 import com.example.thicketstage.domain.StageStart;
 import com.example.thicketstage.enumerate.StageStatus;
@@ -23,7 +24,7 @@ public class Init {
     private final InitService initService;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         initService.init();
     }
 
@@ -32,15 +33,16 @@ public class Init {
     @RequiredArgsConstructor
     static class InitService {
         private final EntityManager em;
+
         public void init() {
 
             Stage stage1 = Stage.createStage(
                     "뮤지컬<마리퀴리>",
                     "홍익대 아트센터 대극장",
                     LocalDateTime.of(2023, 10, 25, 14, 0),
-                    LocalDateTime.of(2023,11,25,19,30),
-                    LocalDateTime.of(2024,2,7,19,30),
-                    LocalDateTime.of(2024, 2, 6, 0,0 ),
+                    LocalDateTime.of(2023, 11, 25, 19, 30),
+                    LocalDateTime.of(2024, 2, 7, 19, 30),
+                    LocalDateTime.of(2024, 2, 6, 0, 0),
                     "180분",
                     "8세이상 관람가",
                     StageType.MUSICAL,
@@ -52,18 +54,19 @@ public class Init {
             em.persist(stage1);
 
             initStageStart(stage1, LocalDate.of(2023, 11, 25),
-                                    Arrays.asList(LocalTime.of(19, 30),
-                                                   LocalTime.of(21, 30)));
+                                    LocalTime.of(14, 30));
+            initStageStart(stage1, LocalDate.of(2023, 11, 25),
+                                    LocalTime.of(19, 30));
             initStageStart(stage1, LocalDate.of(2023, 11, 27),
-                                    Arrays.asList(LocalTime.of(14, 30)));
+                                     LocalTime.of(14, 30));
 
             Stage stage2 = Stage.createStage(
                     "청소년극<#버킷리스트>",
                     "국립극단 소극장 판",
                     LocalDateTime.of(2023, 10, 25, 14, 0),
-                    LocalDateTime.of(2023,11,25,19,30),
-                    LocalDateTime.of(2024,2,7,19,30),
-                    LocalDateTime.of(2024, 2, 6, 0,0 ),
+                    LocalDateTime.of(2023, 11, 25, 19, 30),
+                    LocalDateTime.of(2024, 2, 7, 19, 30),
+                    LocalDateTime.of(2024, 2, 6, 0, 0),
                     "100분",
                     "전체 관람가",
                     StageType.PLAY,
@@ -75,13 +78,28 @@ public class Init {
             em.persist(stage2);
 
             initStageStart(stage2, LocalDate.of(2023, 11, 25),
-                                      Arrays.asList(LocalTime.of(19, 30),
-                                                    LocalTime.of(21, 30)));
+                                    LocalTime.of(14, 30));
+            initStageStart(stage2, LocalDate.of(2023, 11, 25),
+                                    LocalTime.of(19, 30));
         }
 
-        private void initStageStart(Stage stage, LocalDate date, List<LocalTime> times) {
-            StageStart stageStart = StageStart.createStageStart(date, times, stage);
+        private void initStageStart(Stage stage, LocalDate date, LocalTime time) {
+            StageStart stageStart = StageStart.createStageStart(date, time, stage);
             em.persist(stageStart);
+        }
+//        private void initStageStart(Stage stage, LocalDate date, List<LocalTime> times) {
+//            StageStart stageStart = StageStart.createStageStart(date, times, stage);
+//            em.persist(stageStart);
+//        }
+
+        public void chairInit() {
+            Chair chair = Chair.createChair(
+                    "VIP",
+                    100,
+                    189_000,
+                    "UUID"
+            );
+            em.persist(chair);
         }
     }
 }

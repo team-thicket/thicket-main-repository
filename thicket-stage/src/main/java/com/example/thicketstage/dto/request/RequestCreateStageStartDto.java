@@ -21,6 +21,10 @@ public class RequestCreateStageStartDto {
     @NoArgsConstructor
     public static class StageStartDto {
         private LocalDate date;
-        private List<LocalTime> times;
+        private LocalTime time;
     }
+//    public static class StageStartDto {
+//        private LocalDate date;
+//        private List<LocalTime> times;
+//    }
 }
