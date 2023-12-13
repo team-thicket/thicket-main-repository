@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("stageStarts")
+@RequestMapping("tickets")
 @RequiredArgsConstructor
 public class StageStartController {
     private final StageStartService stageStartService;

@@ -37,8 +37,10 @@ class StageServiceImplTest {
 
         createDto.setName("뮤지컬<마리퀴리>");
         createDto.setPlace("홍익대 아트센터 대극장");
+        createDto.setTicketOpen(LocalDateTime.of(2023, 10, 25, 14, 0));
         createDto.setStageOpen(LocalDateTime.of(2023, 11, 25, 19, 30));
         createDto.setStageClose(LocalDateTime.of(2024, 2, 7, 19, 30));
+        createDto.setLastTicket(LocalDateTime.of(2024, 2, 6, 0,0 ));
         createDto.setRunningTime("180분");
         createDto.setAgeLimit("8세이상 관람가");
         createDto.setStageType(StageType.MUSICAL);
@@ -57,8 +59,10 @@ class StageServiceImplTest {
 
         assertEquals(createDto.getName(), savedStage.getName());
         assertEquals(createDto.getPlace(), savedStage.getPlace());
+        assertEquals(createDto.getTicketOpen(), savedStage.getTicketOpen());
         assertEquals(createDto.getStageOpen(), savedStage.getStageOpen());
         assertEquals(createDto.getStageClose(), savedStage.getStageClose());
+        assertEquals(createDto.getLastTicket(), savedStage.getLastTicket());
         assertEquals(createDto.getRunningTime(), savedStage.getRunningTime());
         assertEquals(createDto.getAgeLimit(), savedStage.getAgeLimit());
         assertEquals(createDto.getStageType(), savedStage.getStageType());
@@ -76,8 +80,10 @@ class StageServiceImplTest {
         Stage stage1 = Stage.createStage(
                 "뮤지컬<마리퀴리>",
                 "홍익대 아트센터 대극장",
+                LocalDateTime.of(2023, 10, 25, 14, 0),
                 LocalDateTime.of(2023,11,25,19,30),
                 LocalDateTime.of(2024,2,7,19,30),
+                LocalDateTime.of(2024, 2, 6, 0,0 ),
                 "180분",
                 "8세이상 관람가",
                 StageType.MUSICAL,
@@ -91,8 +97,10 @@ class StageServiceImplTest {
         Stage stage2 = Stage.createStage(
                 "뮤지컬<#버킷리스트>",
                 "국립극단 소극장 판",
+                LocalDateTime.of(2023, 10, 25, 14, 0),
                 LocalDateTime.of(2023,11,25,19,30),
                 LocalDateTime.of(2024,2,7,19,30),
+                LocalDateTime.of(2024, 2, 6, 0,0 ),
                 "100분",
                 "전체 관람가",
                 StageType.PLAY,
@@ -126,8 +134,10 @@ class StageServiceImplTest {
         Stage stage1 = Stage.createStage(
                 "뮤지컬<마리퀴리>",
                 "홍익대 아트센터 대극장",
+                LocalDateTime.of(2023, 10, 25, 14, 0),
                 LocalDateTime.of(2023,11,25,19,30),
                 LocalDateTime.of(2024,2,7,19,30),
+                LocalDateTime.of(2024, 2, 6, 0,0 ),
                 "180분",
                 "8세이상 관람가",
                 StageType.MUSICAL,
@@ -141,8 +151,10 @@ class StageServiceImplTest {
         Stage stage2 = Stage.createStage(
                 "청소년극<#버킷리스트>",
                 "국립극단 소극장 판",
+                LocalDateTime.of(2023, 10, 25, 14, 0),
                 LocalDateTime.of(2023,11,25,19,30),
                 LocalDateTime.of(2024,2,7,19,30),
+                LocalDateTime.of(2024, 2, 6, 0,0 ),
                 "100분",
                 "전체 관람가",
                 StageType.PLAY,
@@ -168,8 +180,10 @@ class StageServiceImplTest {
         Stage savedStage = Stage.createStage(
                 "뮤지컬<마리퀴리>",
                 "홍익대 아트센터 대극장",
+                LocalDateTime.of(2023, 10, 25, 14, 0),
                 LocalDateTime.of(2023,11,25,19,30),
                 LocalDateTime.of(2024,2,7,19,30),
+                LocalDateTime.of(2024, 2, 6, 0,0 ),
                 "180분",
                 "8세이상 관람가",
                 StageType.MUSICAL,
@@ -188,10 +202,14 @@ class StageServiceImplTest {
         assertNotNull(findResponseStageDto);
         assertEquals("뮤지컬<마리퀴리>", findResponseStageDto.getName());
         assertEquals("홍익대 아트센터 대극장", findResponseStageDto.getPlace());
+        assertEquals(LocalDateTime.of(2023, 10, 25, 14, 0),
+                                        findResponseStageDto.getTicketOpen());
         assertEquals(LocalDateTime.of(2023, 11, 25, 19, 30),
                                         findResponseStageDto.getStageOpen());
         assertEquals(LocalDateTime.of(2024,2,7,19,30),
                                         findResponseStageDto.getStageClose());
+        assertEquals(LocalDateTime.of(2024, 2, 6, 0, 0),
+                                        findResponseStageDto.getLastTicket());
         assertEquals("180분", findResponseStageDto.getRunningTime());
         assertEquals("8세이상 관람가", findResponseStageDto.getAgeLimit());
         assertEquals(StageType.MUSICAL, findResponseStageDto.getStageType());
@@ -208,8 +226,10 @@ class StageServiceImplTest {
         Stage stage1 = Stage.createStage(
                 "뮤지컬<마리퀴리>",
                 "홍익대 아트센터 대극장",
+                LocalDateTime.of(2023, 10, 25, 14, 0),
                 LocalDateTime.of(2023,11,25,19,30),
                 LocalDateTime.of(2024,2,7,19,30),
+                LocalDateTime.of(2024, 2, 6, 0,0 ),
                 "180분",
                 "8세이상 관람가",
                 StageType.MUSICAL,
@@ -223,8 +243,10 @@ class StageServiceImplTest {
         Stage stage2 = Stage.createStage(
                 "청소년극<#버킷리스트>",
                 "국립극단 소극장 판",
+                LocalDateTime.of(2023, 10, 25, 14, 0),
                 LocalDateTime.of(2023,11,25,19,30),
                 LocalDateTime.of(2024,2,7,19,30),
+                LocalDateTime.of(2024, 2, 6, 0,0 ),
                 "100분",
                 "전체 관람가",
                 StageType.PLAY,
@@ -249,8 +271,10 @@ class StageServiceImplTest {
         Stage stage1 = Stage.createStage(
                 "뮤지컬<마리퀴리>",
                 "홍익대 아트센터 대극장",
+                LocalDateTime.of(2023, 10, 25, 14, 0),
                 LocalDateTime.of(2023,11,25,19,30),
                 LocalDateTime.of(2024,2,7,19,30),
+                LocalDateTime.of(2024, 2, 6, 0,0 ),
                 "180분",
                 "8세이상 관람가",
                 StageType.MUSICAL,
@@ -264,8 +288,10 @@ class StageServiceImplTest {
         Stage stage2 = Stage.createStage(
                 "청소년극<#버킷리스트>",
                 "국립극단 소극장 판",
+                LocalDateTime.of(2023, 10, 25, 14, 0),
                 LocalDateTime.of(2023,11,25,19,30),
                 LocalDateTime.of(2024,2,7,19,30),
+                LocalDateTime.of(2024, 2, 6, 0,0 ),
                 "100분",
                 "전체 관람가",
                 StageType.PLAY,
@@ -289,8 +315,10 @@ class StageServiceImplTest {
         //given
         String newName = "청소년극<#버킷리스트>n";
         String newPlace = "국립극단 소극장 판";
+        LocalDateTime newTicketOpen = LocalDateTime.of(2023, 10, 25, 14, 0);
         LocalDateTime newOpen = LocalDateTime.of(2023, 11, 25, 19, 30);
         LocalDateTime newClose = LocalDateTime.of(2024, 2, 7, 19, 30);
+        LocalDateTime newLastTicket = LocalDateTime.of(2024,2,6,0,0);
         String newRunningTime = "100분";
         String newAgeLimit = "전체 관람가";
         StageType newType = StageType.PLAY;
@@ -302,8 +330,10 @@ class StageServiceImplTest {
         Stage createStage = Stage.createStage(
                 "뮤지컬<마리퀴리>",
                 "홍익대 아트센터 대극장",
+                LocalDateTime.of(2023, 10, 25, 14, 0),
                 LocalDateTime.of(2023,11,25,19,30),
                 LocalDateTime.of(2024,2,7,19,30),
+                LocalDateTime.of(2024, 2, 6, 0,0 ),
                 "180분",
                 "8세이상 관람가",
                 StageType.MUSICAL,
@@ -318,8 +348,10 @@ class StageServiceImplTest {
         RequestUpdateInfoDto.RequestUpdateInfoDtoBuilder update = RequestUpdateInfoDto.builder()
                 .name(newName)
                 .place(newPlace)
+                .ticketOpen(newTicketOpen)
                 .stageOpen(newOpen)
                 .stageClose(newClose)
+                .lastTicket(newLastTicket)
                 .runningTime(newRunningTime)
                 .ageLimit(newAgeLimit)
                 .stageType(newType)
@@ -344,8 +376,10 @@ class StageServiceImplTest {
         Stage savedStage =Stage.createStage(
                 "뮤지컬<마리퀴리>",
                 "홍익대 아트센터 대극장",
+                LocalDateTime.of(2023, 10, 25, 14, 0),
                 LocalDateTime.of(2023,11,25,19,30),
                 LocalDateTime.of(2024,2,7,19,30),
+                LocalDateTime.of(2024, 2, 6, 0,0 ),
                 "180분",
                 "8세이상 관람가",
                 StageType.MUSICAL,
@@ -378,8 +412,10 @@ class StageServiceImplTest {
         Stage savedStage =Stage.createStage(
                 "뮤지컬<마리퀴리>",
                 "홍익대 아트센터 대극장",
+                LocalDateTime.of(2023, 10, 25, 14, 0),
                 LocalDateTime.of(2023,11,25,19,30),
                 LocalDateTime.of(2024,2,7,19,30),
+                LocalDateTime.of(2024, 2, 6, 0,0 ),
                 "180분",
                 "8세이상 관람가",
                 StageType.MUSICAL,

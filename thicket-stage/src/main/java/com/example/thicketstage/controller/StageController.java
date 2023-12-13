@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("stages")
+@RequestMapping("shows")
 @RequiredArgsConstructor
 public class StageController {
     private final StageService stageService;
@@ -45,13 +45,13 @@ public class StageController {
 //    }
 
     // 공연 하나 선택 했을 때 상세 페이지 조회 되게
-    @GetMapping("stageDetail/{uuid}") // api 명세 => GET /stages/stageDetail/{id}
+    @GetMapping("stagedetail/{uuid}") // api 명세 => GET /stages/stageDetail/{id}
     public ResponseEntity<?> getStageDetail(@PathVariable @Valid String uuid) {
         return ResponseEntity.ok(stageService.stageDetail(uuid));
     }
 
     // StageType별로 줄세우기 -> ONGOING + 최신순 수정해야함
-    @GetMapping("all/stagetype/{stagetype}") // api 명세 => GET /stages/all/{stagetype}
+    @GetMapping("stagetype/{stagetype}") // api 명세 => GET /stages//{stagetype}
     public ResponseEntity<?> getStageTypeList(@PathVariable("stagetype")
                                               @Valid StageType stageType){
         List<ResponseStageThumbnailDto> stageTypeList = stageService.getStageTypeList(stageType);
@@ -60,7 +60,7 @@ public class StageController {
     }
 
     // StageStatus별로 줄 세우기 -> ONGOING과 BEFORE로 나누기
-    @GetMapping("all/{stagestatus}") // api 명세 => GET /stages/all/{stagestatus}
+    @GetMapping("stagestatus/{stagestatus}") // api 명세 => GET /stages/stagestatus/{stagestatus}
     public ResponseEntity<?> getStageStatusList(@PathVariable("stagestatus")
                                                 @Valid StageStatus stageStatus) {
         List<ResponseStageThumbnailDto> stageStatusList = stageService.getStageStatusList(stageStatus);
@@ -84,7 +84,7 @@ public class StageController {
         return ResponseEntity.ok("수정이 완료되었습니다.");
     }
 
-    @PatchMapping("changeStatus/{uuid}") // api 명세 => PATCH /stages/changeStatus/{id}
+    @PatchMapping("changestatus/{uuid}") // api 명세 => PATCH /stages/changeStatus/{id}
     public ResponseEntity<?> changeStatus(@PathVariable String uuid,
                                           @RequestBody @Valid RequestSetNewStatusDto setNewStatusDto) {
         stageService.changeStatus(uuid, setNewStatusDto);

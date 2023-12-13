@@ -37,8 +37,10 @@ public class Init {
             Stage stage1 = Stage.createStage(
                     "뮤지컬<마리퀴리>",
                     "홍익대 아트센터 대극장",
+                    LocalDateTime.of(2023, 10, 25, 14, 0),
                     LocalDateTime.of(2023,11,25,19,30),
                     LocalDateTime.of(2024,2,7,19,30),
+                    LocalDateTime.of(2024, 2, 6, 0,0 ),
                     "180분",
                     "8세이상 관람가",
                     StageType.MUSICAL,
@@ -58,8 +60,10 @@ public class Init {
             Stage stage2 = Stage.createStage(
                     "청소년극<#버킷리스트>",
                     "국립극단 소극장 판",
+                    LocalDateTime.of(2023, 10, 25, 14, 0),
                     LocalDateTime.of(2023,11,25,19,30),
                     LocalDateTime.of(2024,2,7,19,30),
+                    LocalDateTime.of(2024, 2, 6, 0,0 ),
                     "100분",
                     "전체 관람가",
                     StageType.PLAY,

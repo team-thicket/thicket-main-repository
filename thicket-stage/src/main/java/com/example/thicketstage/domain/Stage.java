@@ -27,15 +27,18 @@ public class Stage extends TimeStamp {
 
     @Column(length = 300, nullable = false)
     private String place;
-//
-//    @Column(length = 100, nullable = false)
-//    private LocalDateTime ticketOpen;
+
+    @Column(length = 100, nullable = false)
+    private LocalDateTime ticketOpen;
 
     @Column(length = 100, nullable = false)
     private LocalDateTime stageOpen;
 
     @Column(length = 100, nullable = false)
     private LocalDateTime stageClose;
+
+    @Column(length = 100, nullable = false)
+    private LocalDateTime lastTicket;
 
     @Column(length = 100, nullable = false)
     private String runningTime;
@@ -66,8 +69,10 @@ public class Stage extends TimeStamp {
     public void updateStageInfo(RequestUpdateInfoDto updateInfoDto) {
         this.name = updateInfoDto.getName();
         this.place = updateInfoDto.getPlace();
+        this.ticketOpen = updateInfoDto.getTicketOpen();
         this.stageOpen = updateInfoDto.getStageOpen();
         this.stageClose = updateInfoDto.getStageClose();
+        this.lastTicket = updateInfoDto.getLastTicket();
         this.runningTime = updateInfoDto.getRunningTime();
         this.ageLimit = updateInfoDto.getAgeLimit();
         this.stageType = updateInfoDto.getStageType();
@@ -80,8 +85,9 @@ public class Stage extends TimeStamp {
         stageStatus = newStatus;
     }
 
-    public static Stage createStage(String newName, String newPlace, LocalDateTime newStageOpen,
-                                    LocalDateTime newStageClose, String newRunningTime,
+    public static Stage createStage(String newName, String newPlace, LocalDateTime newTicketOpen,
+                                    LocalDateTime newStageOpen, LocalDateTime newStageClose,
+                                    LocalDateTime newLastTicket, String newRunningTime,
                                     String newAgeLimit, StageType newStageType,
                                     StageStatus newStageStatus,
                                     String newPosterImg, String newDetailPosterImg,
@@ -90,8 +96,10 @@ public class Stage extends TimeStamp {
 
         stage.name = newName;
         stage.place = newPlace;
+        stage.ticketOpen = newTicketOpen;
         stage.stageOpen = newStageOpen;
         stage.stageClose = newStageClose;
+        stage.lastTicket = newLastTicket;
         stage.runningTime = newRunningTime;
         stage.ageLimit = newAgeLimit;
         stage.stageType = newStageType;

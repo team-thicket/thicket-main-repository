@@ -16,9 +16,13 @@ public class ResponseStageDto {
 
     private String place;
 
+    private LocalDateTime ticketOpen;
+
     private LocalDateTime stageOpen;
 
     private LocalDateTime stageClose;
+
+    private LocalDateTime lastTicket;
 
     private String runningTime;
 
@@ -39,8 +43,10 @@ public class ResponseStageDto {
         this.stageUuid = stage.getUuid();
         this.name = stage.getName();
         this.place= stage.getPlace();
+        this.ticketOpen = stage.getTicketOpen();
         this.stageOpen = stage.getStageOpen();
         this.stageClose = stage.getStageClose();
+        this.lastTicket = stage.getLastTicket();
         this.runningTime = stage.getRunningTime();
         this.ageLimit = stage.getAgeLimit();
         this.stageType = stage.getStageType();
