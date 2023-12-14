@@ -47,15 +47,9 @@
         private Payment payment;
 
         // 테스트용 메서드
-        public static Ticket createTicket(String stageName,
-                                          String date,
-                                          String place,
-                                          String chairType,
-                                          String memberName,
-                                          int price,
-                                          String ticketNumber,
-                                          long stageId,
-                                          long memberId) {
+        public static Ticket createTicket(String stageName, String date, String place,
+                                          String chairType, String memberName, int price,
+                                          String ticketNumber, long stageId, long memberId) {
             Ticket ticket = new Ticket();
             ticket.deleted = false;
             ticket.stageName = "Test Stage";
