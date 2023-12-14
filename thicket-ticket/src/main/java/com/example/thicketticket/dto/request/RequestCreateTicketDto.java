@@ -6,19 +6,23 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 public class RequestCreateTicketDto {
+
+    private Long id;
 
     @NotBlank(message = "stageName cannot be empty")
     private String stageName;
 
     @NotNull(message = "DATE cannot be null")
-    private String date;
+    private LocalDateTime date;
 
     @NotBlank(message = "place cannot be empty")
     private String place;
@@ -26,14 +30,19 @@ public class RequestCreateTicketDto {
     @NotBlank(message = "chairType cannot be empty")
     private String chairType;
 
+    @NotNull(message = "count cannot be empty")
+    private int count;
+
     @NotBlank(message = "memberName cannot be empty")
     private String memberName;
 
     @Min(value = 0, message = "price must be greater than or equal to 0")
     private int price;
 
+    private int sequence;
 
-    private String ticketNumber;
+    @NotNull(message = "cancelDate cannot be null")
+    private LocalDateTime cancelDate;
 
     @NotNull(message = "stageId cannot be null")
     private Long stageId;
@@ -43,15 +52,16 @@ public class RequestCreateTicketDto {
 
 
     public Ticket toEntity() {
-        return Ticket.builder()
-                .stageName(this.stageName)
-                .date(this.date)
-                .place(this.place)
-                .chairType(this.chairType)
-                .memberName(this.memberName)
-                .price(this.price)
-                .stageId(this.stageId)
-                .memberId(this.memberId)
-                .build();
+        return Ticket.createTicket(
+                stageName,date,place,
+                chairType,count,
+                memberName,price,sequence,
+                cancelDate,stageId,memberId
+               );
+    }
+
+
+    public Long getId(){
+        return 1L;
     }
 }

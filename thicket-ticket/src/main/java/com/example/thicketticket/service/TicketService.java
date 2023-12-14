@@ -10,7 +10,7 @@ import java.util.List;
 public interface TicketService {
 
     //티켓 예매
-    void createTicket(RequestCreateTicketDto dto);
+    RequestCreateTicketDto createTicket(RequestCreateTicketDto ticketDto);
 
     // 티켓 상세 조회
     ResponseTicketDto findTicketByTicketNumber(String ticketNumber);

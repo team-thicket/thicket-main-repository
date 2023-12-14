@@ -25,12 +25,15 @@ public class TicketController {
 
     private final TicketService ticketService;
 
-    @PostMapping
-    public ResponseEntity<Void> createTicket(@RequestBody @Valid RequestCreateTicketDto dto) {
-        ticketService.createTicket(dto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    //티켓 예매id
+    @PostMapping("")
+    public ResponseEntity<?> createTicket(@RequestBody @Valid RequestCreateTicketDto ticketDto) {
+        RequestCreateTicketDto createTicketDto = ticketService.createTicket(ticketDto);
+
+        return new ResponseEntity<>(createTicketDto,HttpStatus.CREATED);
     }
 
+    //티켓
     @GetMapping("/{ticketNumber}")
     public ResponseEntity<ResponseTicketDto> getTicketByUuid(@PathVariable String ticketNumber) {
         ResponseTicketDto resTicketDto = ticketService.findTicketByTicketNumber(ticketNumber);

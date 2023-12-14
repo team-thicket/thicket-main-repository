@@ -21,16 +21,20 @@ import java.util.stream.Collectors;
 public class TicketServiceImpl implements TicketService{
 
     private final TicketRepository ticketRepository;
-    @PersistenceContext
-    private EntityManager entityManager;
-
 
     //생성
     @Override
     @Transactional
-    public void createTicket(RequestCreateTicketDto dto) {
-        Ticket ticket = dto.toEntity();
-        ticketRepository.save(ticket);
+    public RequestCreateTicketDto createTicket(RequestCreateTicketDto ticketDto) {
+        Ticket ticket = ticketDto.toEntity();
+        // 엔터티를 저장하고 저장된 엔터티를 받아옴
+        Ticket savedTicket = ticketRepository.save(ticket);
+
+        // ID 값을 DTO에 설정
+        ticketDto.setId(savedTicket.getId());
+
+        // 저장된 DTO 반환
+        return ticketDto;
     }
     //단일 티켓 조회
     @Override

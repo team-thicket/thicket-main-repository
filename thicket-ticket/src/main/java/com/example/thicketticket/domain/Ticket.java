@@ -5,6 +5,8 @@
     import lombok.*;
     import org.hibernate.annotations.SQLDelete;
 
+    import java.time.LocalDateTime;
+
     @Entity
     @Getter
     @Builder
@@ -20,7 +22,7 @@
         private String stageName;
 
         @Column(nullable = false)
-        private String date;
+        private LocalDateTime date;
 
         @Column(nullable = false)
         private String place;
@@ -29,10 +31,28 @@
         private String chairType;
 
         @Column(nullable = false)
+        private int count;
+
+        @Column(nullable = false)
         private String memberName;
 
         @Column(nullable = false)
         private int price;
+
+        @Column
+        private int sequence;
+
+        @Column(nullable = false)
+        private LocalDateTime cancelDate;
+
+        @Column
+        private String howReceive;
+
+        @Column
+        private String method;
+
+        @Column
+        private String status;
 
         @Column(nullable = false)
         private Long stageId;
@@ -47,19 +67,24 @@
         private Payment payment;
 
         // 테스트용 메서드
-        public static Ticket createTicket(String stageName, String date, String place,
-                                          String chairType, String memberName, int price,
-                                          String ticketNumber, long stageId, long memberId) {
+        public static Ticket createTicket(String newStageName, LocalDateTime newDate, String newPlace,
+                                          String newChairType, int newCount, String newMemberName,
+                                          int newPrice, int newSequence, LocalDateTime newCancelDate,
+                                           long newStageId, long newMemberId) {
             Ticket ticket = new Ticket();
+
             ticket.deleted = false;
-            ticket.stageName = "Test Stage";
-            ticket.date = "2023-11-30";
-            ticket.place = "Test Place";
-            ticket.chairType = "VIP";
-            ticket.memberName = "Test Member";
-            ticket.price = 50000;
-            ticket.stageId = 100L;
-            ticket.memberId = 200L;
+            ticket.stageName = newStageName;
+            ticket.date = newDate;
+            ticket.place = newPlace;
+            ticket.chairType = newChairType;
+            ticket.count = newCount;
+            ticket.memberName = newMemberName;
+            ticket.price = newPrice;
+            ticket.sequence = newSequence;
+            ticket.cancelDate = newCancelDate;
+            ticket.stageId = newStageId;
+            ticket.memberId = newMemberId;
 
             return ticket;
         }

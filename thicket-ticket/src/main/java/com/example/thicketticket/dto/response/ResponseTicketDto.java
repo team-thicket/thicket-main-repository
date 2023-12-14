@@ -4,6 +4,9 @@ import com.example.thicketticket.domain.Ticket;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.time.LocalDateTime;
+
 @Data
 public class ResponseTicketDto {
 
@@ -14,7 +17,7 @@ public class ResponseTicketDto {
     private String stageName;
 
     @NotBlank
-    private String date;
+    private LocalDateTime date;
 
     @NotBlank
     private String place;
