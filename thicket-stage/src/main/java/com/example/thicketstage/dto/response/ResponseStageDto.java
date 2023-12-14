@@ -38,7 +38,6 @@ public class ResponseStageDto {
 
     private String stageInfo;
 
-
     public ResponseStageDto(Stage stage) {
         this.stageUuid = stage.getUuid();
         this.name = stage.getName();

@@ -118,7 +118,7 @@ class StageServiceImplTest {
 
         //then
 
-        assertEquals(stageThumbnailList.size(),3);
+        assertEquals(3, stageThumbnailList.size());
         List<String> nameList = stageThumbnailList.stream()
                                 .map(ResponseStageThumbnailDto::getName).toList();
         List<String> placeList = stageThumbnailList.stream()

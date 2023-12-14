@@ -1,6 +1,7 @@
 package com.example.thicketstage.domain;
 
 import com.example.thicketstage.TimeStamp;
+import com.example.thicketstage.dto.request.RequestStageStartUpdateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,6 +30,10 @@ public class StageStart extends TimeStamp {
     @ManyToOne(fetch = FetchType.LAZY)
     private Stage stage;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "stageStart")
+    private List<Chair> chair = new ArrayList<>();
+
+
 //    // 연관관계 메서드 //
     public void foreignKey(Stage stage){
         this.stage = stage;
@@ -36,17 +41,9 @@ public class StageStart extends TimeStamp {
     }
 
     // 비즈니스 로직 //
-//    public static StageStart createStageStart(LocalDate newDate,
-//                                              List<LocalTime> newTime, Stage stage) {
-//        StageStart stageStart = new StageStart();
-//        stageStart.date = newDate;
-//        stageStart.times.addAll(newTime);
-//        stageStart.foreignKey(stage);
-//
-//        return stageStart;
-//    }
     public static StageStart createStageStart(LocalDate newDate,
-                                              LocalTime newTime, Stage stage) {
+                                              LocalTime newTime,
+                                              Stage stage) {
         StageStart stageStart = new StageStart();
         stageStart.date = newDate;
         stageStart.time = newTime;
