@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { H2, Input, } from './Styles1';
 
-const SeatModalContent = ({ onSubmit }) => {
+const RegistrationSeat = ({ onSubmit }) => {
     const [inputValues, setInputValues] = useState([
         { label: '타입', value: '' },
         { label: '개수', value: '' },
@@ -74,4 +74,4 @@ const SeatModalContent = ({ onSubmit }) => {
     );
 };
 
-export default SeatModalContent;
+export default RegistrationSeat;

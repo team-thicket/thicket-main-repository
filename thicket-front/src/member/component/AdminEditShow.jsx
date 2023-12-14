@@ -11,9 +11,8 @@ import {
     H1, Img,
     Input, InputFile, P, RelativeDiv, Select,
     StyledDatePicker,
-    Table,
-    Td, Textarea,
-    Th
+    Table, Th,  Td,
+    Textarea,
 } from "../../assets/css/setting/admin/Styles1";
 
 const AdminEditShow = () => {

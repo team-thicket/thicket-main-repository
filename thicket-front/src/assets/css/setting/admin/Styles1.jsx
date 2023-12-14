@@ -79,7 +79,7 @@ export const Th = styled.th`
     border-top: 1px solid #000;
     border-bottom: 1px solid #ccc;
     background: #f7f7f7;
-    min-width: 180px;
+    width: 180px;
     max-width: 180px;
     white-space: nowrap;
     overflow: hidden;

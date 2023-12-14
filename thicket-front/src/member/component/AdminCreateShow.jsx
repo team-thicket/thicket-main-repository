@@ -3,35 +3,42 @@ import {registerLocale} from 'react-datepicker';
 import ko from 'date-fns/locale/ko';
 import 'react-datepicker/dist/react-datepicker.css';
 import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import {
-    Container,
-    CustomDiv, RelativeDiv, FlexCenterDiv, BetweenDiv, TimeDiv, WidthDiv, CalenderDiv,
-    H1, H2, P,
-    Input, InputFile, Textarea, Select,
-    StyledDatePicker, Img,
+    Container, CustomDiv, RelativeDiv, FlexCenterDiv, BetweenDiv, TimeDiv, WidthDiv, CalenderDiv,
+    Table, Th, Td, H1, P, Input, InputFile, Textarea, Select,
     Button, Button1, Button2, ButtonX,
-    Table, Th, Td,
-    CalendarSVG, ImageViewerModal,
+    StyledDatePicker, Img, CalendarSVG, ImageViewerModal,
 } from '../../assets/css/setting/admin/Styles1';
-import SeatModalContent from "../../assets/css/setting/admin/SeatModalContent";
+import ImageFileHandling from "../../assets/css/setting/admin/ImageFileHandling";
+import RegistrationSchedule from "../../assets/css/setting/admin/RegistrationSchedule";
+import RegistrationSeat from "../../assets/css/setting/admin/RegistrationSeat";
+import DeleteSchedule from "../../assets/css/setting/admin/DeleteSchedule";
+import DeleteSeat from "../../assets/css/setting/admin/DeleteSeat";
 
 const AdminCreateShow = () => {
 
     const [startDate, setStartDate] = useState(null);   // 전체 시작일
     const [endDate, setEndDate] = useState(null);       // 전체 종료일
     const startDatePickerRef = useRef(null);    // 전체 시작일 달력
-    const endDatePickerRef = useRef(null);       // 전체 종료일 달력
+    const endDatePickerRef = useRef(null);      // 전체 종료일 달력
     const [hasExistingSchedules, setHasExistingSchedules] = useState(false); // 달력 비활성화
-    const [timeSlots, setTimeSlots] = useState([]);        // 일별 시작 시간
     const [selectedPerformanceType, setSelectedPerformanceType] = useState('');     // 공연 종류
     const [selectedPerformanceStatus, setSelectedPerformanceStatus] = useState(''); // 공연 상태
-    const [uploadedFiles, setUploadedFiles] = useState([]);    // 공연포스터 이미지
-    const fileInputRef = useRef(null);          // 공연포스터 이미지
-    const [selectedImage, setSelectedImage] = useState(null);         // 공연포스터 이미지
-    const [uploadedDetailImages, setUploadedDetailImages] = useState([]); // 상세페이지 이미지
-    const detailImageInputRef = useRef(null);              // 상세페이지 이미지
-    const [selectedDetailImage, setSelectedDetailImage] = useState(null);        // 상세페이지 이미지
-    const [seatValues, setSeatValues] = useState([]);   // 좌석
+    const { // 공연포스터 이미지, 상세페이지 이미지
+        uploadedFiles, selectedImage, fileInputRef,
+        handleFileUpload, handleRemoveFile, handleImageClick, handleCloseModal,
+        uploadedDetailImages, selectedDetailImage, detailImageInputRef,
+        handleDetailImageUpload, handleRemoveDetailImage, handleDetailImageClick, handleCloseDetailImageModal,
+    } = ImageFileHandling();
+    const { // 일별 시작 시간
+        timeSlots, setTimeSlots,
+        handleRemoveDateTime, handleRemoveTime, handleRemoveAllTimeSlots,
+    } = DeleteSchedule();
+    const  { // 좌석
+        seatValues, setSeatValues,
+        handleRemoveSeat,
+    } = DeleteSeat();
 
     // 달력 한글화
     registerLocale('ko', ko);
@@ -45,120 +52,21 @@ const AdminCreateShow = () => {
         }
     }, [timeSlots]);
 
-    // 일정 등록 날짜 조정
-    const addDays = (date, days) => {
-        const result = new Date(date);
-        result.setDate(result.getDate() + days);
-        return result;
-    };
-
-    // 일별 시작 시간 등록
-    const TimeSelection = ({ onConfirm }) => {
-        const [selectedDate, setSelectedDate] = useState('');
-        const [selectedHour, setSelectedHour] = useState('');
-        const [selectedMinute, setSelectedMinute] = useState('');
-
-        const handleConfirm = () => {
-            if (selectedDate && selectedHour !== '' && selectedMinute !== '') {
-                const formattedDateTime = {
-                    date: selectedDate,
-                    times: [{ hour: selectedHour, minute: selectedMinute }],
-                };
-
-                onConfirm(formattedDateTime);
-
-                setTimeSlots((prevTimeSlots) => {
-                    const updatedTimeSlots = [...prevTimeSlots];
-                    const existingDateIndex = updatedTimeSlots.findIndex((item) => item.date === formattedDateTime.date);
-
-                    if (existingDateIndex !== -1) {
-                        updatedTimeSlots[existingDateIndex].times.sort((a, b) => {
-                            const timeA = new Date(`1970-01-01T${a.hour}:${a.minute}`);
-                            const timeB = new Date(`1970-01-01T${b.hour}:${b.minute}`);
-                            return timeA - timeB;
-                        });
-                    }
-
-                    return updatedTimeSlots.sort((a, b) => new Date(a.date) - new Date(b.date));
-                });
-
-                console.log(formattedDateTime);
-            }
-        };
-
-        return (
-            <div style={{ textAlign: 'center' }}>
-                <div
-                    style={{
-                        border: '1px solid #000',
-                        borderRadius: '5px',
-                        padding: '10px',
-                        display: 'inline-block',
-                    }}
-                >
-                    <H2>날짜 및 시간 선택</H2>
-                    <div>
-                        <input
-                            type="date"
-                            style={{ width: '136px', marginBottom: '10px' }}
-                            value={selectedDate}
-                            onChange={(e) => setSelectedDate(e.target.value)}
-                            min={startDate ? addDays(startDate, 1).toISOString().split('T')[0] : undefined}
-                            max={endDate ? addDays(endDate, 1).toISOString().split('T')[0] : undefined}
-                        />
-                    </div>
-                    <div>
-                        <select
-                            style={{
-                                width: '50px',
-                                height: '25px',
-                                boxSizing: 'border-box',
-                                marginBottom: '10px',
-                            }}
-                            value={selectedHour}
-                            onChange={(e) => setSelectedHour(e.target.value === '24' ? '00' : e.target.value)}
-                        >
-                            <option value="">선택</option>
-                            {Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0')).map((hour) => (
-                                <option key={hour} value={hour}>
-                                    {hour === '24' ? '00' : hour}
-                                </option>
-                            ))}
-                        </select>시
-                        <select
-                            style={{
-                                width: '50px',
-                                height: '25px',
-                                boxSizing: 'border-box',
-                                marginBottom: '10px',
-                                marginLeft: '5px',
-                            }}
-                            value={selectedMinute}
-                            onChange={(e) => setSelectedMinute(e.target.value)}
-                        >
-                            <option value="">선택</option>
-                            <option value="00">00</option>
-                            <option value="30">30</option>
-                        </select>분
-                    </div>
-                    <button type="button" onClick={handleConfirm}>
-                        등록
-                    </button>
-                </div>
-            </div>
-        );
-    };
-
     // 일별 시작 시간 일정추가 버튼 (유효성 검사 포함)
     const handleAddTimeButtonClick = () => {
         if (!startDate || !endDate || startDate === 'Invalid Date' || endDate === 'Invalid Date') {
             alert('전체 시작일과 전체 종료일을 먼저 선택하세요.');
             return;
         }
+        const newRoot = document.createElement('div'); // 새로운 루트 엘리먼트 생성
+        const newRootInstance = createRoot(newRoot); // 새로운 루트 인스턴스 생성
         const newWindow = window.open('', '_blank', 'width=240,height=220,left=100,top=100');
+        newWindow.document.body.appendChild(newRoot); // 새 창에 추가
 
-        ReactDOM.render(
-            <TimeSelection
+        newRootInstance.render(
+            <RegistrationSchedule
+                startDate={startDate}
+                endDate={endDate}
                 onConfirm={(selectedDateTime) => {
                     const { date, times } = selectedDateTime;
 
@@ -172,7 +80,7 @@ const AdminCreateShow = () => {
 
                     if (!isValidTime) {
                         alert('유효하지 않은 시간입니다.');
-                        newWindow.close();
+                        newWindow.close(); // 새 창 닫기
                         return;
                     }
 
@@ -209,114 +117,21 @@ const AdminCreateShow = () => {
                             setTimeSlots((prevTimeSlots) => [...prevTimeSlots, { date, times }]);
                         }
                     }
-
-                    newWindow.close();
+                    newWindow.close(); // 새 창 닫기
                 }}
-            />,
-            newWindow.document.body
+            />
         );
-    };
-
-    // 날짜 기준 일정 삭제
-    const handleRemoveDateTime = (dateToRemove) => {
-        // Filter out the selected date
-        const updatedTimeSlots = timeSlots.filter((dateTime) => dateTime.date !== dateToRemove);
-        setTimeSlots(updatedTimeSlots);
-    };
-
-    // 일별 시간 기준 일정 삭제
-    const handleRemoveTime = (dateToRemove, timeToRemove) => {
-        const dateIndex = timeSlots.findIndex((dateTime) => dateTime.date === dateToRemove);
-
-        if (dateIndex !== -1) {
-            const updatedTimeSlots = [...timeSlots];
-            const timeIndex = updatedTimeSlots[dateIndex].times.findIndex(
-                (time) => time.hour === timeToRemove.hour && time.minute === timeToRemove.minute
-            );
-
-            if (timeIndex !== -1) {
-                updatedTimeSlots[dateIndex].times.splice(timeIndex, 1);
-
-                if (updatedTimeSlots[dateIndex].times.length === 0) {
-                    updatedTimeSlots.splice(dateIndex, 1);
-                }
-
-                setTimeSlots(updatedTimeSlots);
-            }
-        }
-    };
-
-    // 일정 전체 삭제
-    const handleRemoveAllTimeSlots = () => {
-        setTimeSlots([]);
-    };
-
-    // 공연포스터 이미지 업로드
-    const handleFileUpload = (e) => {
-        const file = e.target.files[0];
-
-        // Check if the limit (1 file) has been reached
-        if (uploadedFiles.length >= 1) {
-            alert('공연포스터 이미지는 1개만 등록 가능합니다. 삭제 후 등록해 주세요.');
-            return;
-        }
-
-        setUploadedFiles((prevFiles) => [...prevFiles, file]);
-    };
-
-    // 공연포스터 이미지 삭제
-    const handleRemoveFile = (index) => {
-        setUploadedFiles((prevFiles) => {
-            const newFiles = [...prevFiles];
-            newFiles.splice(index, 1);
-            return newFiles;
-        });
-    };
-
-    // 공연포스터 이미지 클릭 시 모달 열기
-    const handleImageClick = (imageUrl) => {
-        setSelectedImage(imageUrl);
-    };
-
-    // 공연 포스터 모달 닫기
-    const handleCloseModal = () => {
-        setSelectedImage(null);
-    };
-
-    // 상세페이지 이미지 파일 업로드
-    const handleDetailImageUpload = (e) => {
-        // 상세페이지 이미지 업로드 로직 추가
-        const file = e.target.files[0];
-        // 상세페이지 이미지 파일을 uploadedDetailImages 상태에 추가
-        setUploadedDetailImages((prevImages) => [...prevImages, file]);
-    };
-
-    // 상세페이지 이미지 삭제
-    const handleRemoveDetailImage = (index) => {
-        // 상세페이지 이미지 삭제 로직 추가
-        setUploadedDetailImages((prevImages) => {
-            const newImages = [...prevImages];
-            newImages.splice(index, 1);
-            return newImages;
-        });
-    };
-
-    // 상세페이지 이미지 클릭 시 모달 열기
-    const handleDetailImageClick = (imageUrl) => {
-        setSelectedDetailImage(imageUrl);
-    };
-
-    // 상세페이지 이미지 모달 닫기
-    const handleCloseDetailImageModal = () => {
-        setSelectedDetailImage(null);
     };
 
     // 좌석 추가 버튼
     const handleAddButtonClick = () => {
+        const newRoot = document.createElement('div'); // 새로운 루트 엘리먼트 생성
+        const newRootInstance = createRoot(newRoot); // 새로운 루트 인스턴스 생성
         const newWindow = window.open('', '_blank', 'width=400,height=240,left=100,top=100');
+        newWindow.document.body.appendChild(newRoot); // 새 창에 루트 엘리먼트 추가
 
-        ReactDOM.render(
-            <SeatModalContent
+        newRootInstance.render(
+            <RegistrationSeat
                 onSubmit={(enteredValues) => {
                     const formattedValues = enteredValues.reduce((acc, curr) => {
                         const formattedValue =
@@ -329,21 +144,14 @@ const AdminCreateShow = () => {
 
                     if (isDuplicateType) {
                         alert('이미 동일한 타입의 좌석이 추가되었습니다.');
-                        newWindow.close(); // Close the window only if it's a duplicate type
+                        newWindow.close(); // 새 창 닫기
                     } else {
                         setSeatValues((prevSeatValues) => [...prevSeatValues, formattedValues]);
-                        newWindow.close(); // Close the window when it's not a duplicate type
+                        newWindow.close(); // 새 창 닫기
                     }
                 }}
-            />,
-            newWindow.document.body
+            />
         );
-    };
-
-    // 좌석 삭제
-    const handleRemoveSeat = (typeToRemove) => {
-        const updatedSeatValues = seatValues.filter((seat) => seat[0].value !== typeToRemove);
-        setSeatValues(updatedSeatValues);
     };
 
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
@@ -567,7 +375,7 @@ const AdminCreateShow = () => {
                 <Table>
                     <tbody>
                     <tr>
-                        <Th width="1">일별 시작 시간</Th>
+                        <Th>일별 시작 시간</Th>
                         <Td>
                             <div>
                                 <Button1 onClick={handleAddTimeButtonClick}>
@@ -619,7 +427,7 @@ const AdminCreateShow = () => {
                 <Table>
                     <tbody>
                     <tr>
-                        <Th width="1">좌석</Th>
+                        <Th>좌석</Th>
                         <Td>
                             <Button1 onClick={handleAddButtonClick}>
                                 추가
