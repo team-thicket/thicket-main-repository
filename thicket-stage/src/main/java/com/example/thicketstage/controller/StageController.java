@@ -45,7 +45,7 @@ public class StageController {
 //    }
 
     // 공연 하나 선택 했을 때 상세 페이지 조회 되게
-    @GetMapping("stagedetail/{uuid}") // API 명세 => GET /shows/stageDetail/{uuid}
+    @GetMapping("stagedetail/{uuid}") // API 명세 => GET /shows/stagedetail/{uuid}
     public ResponseEntity<?> getStageDetail(@PathVariable @Valid String uuid) {
         return ResponseEntity.ok(stageService.stageDetail(uuid));
     }
@@ -59,7 +59,7 @@ public class StageController {
         return new ResponseEntity<>(stageTypeList, HttpStatus.OK);
     }
 
-    // StageStatus별로 줄 세우기 -> ONGOING과 BEFORE로 나누기
+    // StageStatus별로 줄 세우기 -> BEFORE(관리자페이지 + memberuuid)로 나누기
     @GetMapping("stagestatus/{stagestatus}") // API 명세 => GET /shows/stagestatus/{stagestatus}
     public ResponseEntity<?> getStageStatusList(@PathVariable("stagestatus")
                                                 @Valid StageStatus stageStatus) {
