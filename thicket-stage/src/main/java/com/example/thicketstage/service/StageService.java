@@ -7,6 +7,8 @@ import com.example.thicketstage.dto.response.ResponseStageDto;
 import com.example.thicketstage.dto.response.ResponseStageThumbnailDto;
 import com.example.thicketstage.enumerate.StageStatus;
 import com.example.thicketstage.enumerate.StageType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ public interface StageService {
 
     List<ResponseStageThumbnailDto> getAllStage();
 
-//    Page<ResponseStageThumbnailDto> getOngoingList(StageStatus stageStatus, Pageable pageable);
+    Page<ResponseStageThumbnailDto> getOngoingList(StageStatus stageStatus, Pageable pageable);
 
     public ResponseStageDto stageDetail(String uuid);
 

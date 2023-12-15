@@ -173,6 +173,8 @@ class StageServiceImplTest {
         assertTrue(allStage.stream().anyMatch(dto -> dto.getName().equals("청소년극<#버킷리스트>")));
     }
 
+    // getOngoingList
+
     @Test
     @Transactional
     void StageDetail() {

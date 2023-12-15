@@ -11,6 +11,8 @@ import com.example.thicketstage.enumerate.StageType;
 import com.example.thicketstage.repository.StageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,17 +48,17 @@ public class StageServiceImpl implements StageService{
     }
 
     // STATUS.ONGOING 인 공연 모두 최신 순으로 - 작성중
-//    @Override
-//    public Page<ResponseStageThumbnailDto> getOngoingList(StageStatus stageStatus,
-//                                                          Pageable pageable) {
-//        Page<Stage> stages
-//                = stageRepository.findByStageStatusOrderByCreateAtDesc(StageStatus.ONGOING,
-//                                                                        pageable);
-//        if(stages.isEmpty()){
-//            throw new EntityNotFoundException("해당 공연이 존재하지 않습니다");
-//        }
-//        return stages.map(ResponseStageThumbnailDto::new);
-//    }
+    @Override
+    public Page<ResponseStageThumbnailDto> getOngoingList(StageStatus stageStatus,
+                                                          Pageable pageable) {
+        Page<Stage> stages
+                = stageRepository.findByStageStatusOrderByCreateAtDesc(StageStatus.ONGOING,
+                                                                        pageable);
+        if(stages.isEmpty()){
+            throw new EntityNotFoundException("해당 공연이 존재하지 않습니다");
+        }
+        return stages.map(ResponseStageThumbnailDto::new);
+    }
 
     // 공연 하나 선택 했을 때 상세 페이지 조회 되게
     @Override

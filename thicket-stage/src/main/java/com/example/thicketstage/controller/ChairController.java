@@ -3,6 +3,7 @@ package com.example.thicketstage.controller;
 import com.example.thicketstage.dto.request.RequestCreateChairDto;
 import com.example.thicketstage.dto.request.RequestUpdateChairDto;
 import com.example.thicketstage.service.ChairService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,5 +49,11 @@ public class ChairController {
         chairService.deleteChair(uuid);
 
         return ResponseEntity.ok("삭제가 완료되었습니다");
+    }
+
+    // 예외 처리
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> exceptionHandler(Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }
