@@ -3,7 +3,6 @@ package com.example.thicketstage;
 import com.example.thicketstage.domain.Chair;
 import com.example.thicketstage.domain.Stage;
 import com.example.thicketstage.domain.StageStart;
-import com.example.thicketstage.enumerate.StageStatus;
 import com.example.thicketstage.enumerate.StageType;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
@@ -45,7 +44,7 @@ public class Init {
                     "180분",
                     "8세이상 관람가",
                     StageType.MUSICAL,
-                    StageStatus.BEFORE,
+//                    StageStatus.BEFORE,
                     "포스터 링크",
                     "상세 포스터 링크",
                     "공연 상세 설명"
@@ -79,7 +78,7 @@ public class Init {
                     "100분",
                     "전체 관람가",
                     StageType.PLAY,
-                    StageStatus.ENDED,
+//                    StageStatus.ENDED,
                     "포스터 링크",
                     "상세 포스터 링크",
                     "공연 상세 설명"

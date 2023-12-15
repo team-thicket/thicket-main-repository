@@ -13,7 +13,7 @@ public class ResponseStageThumbnailDto {
     private String place;
     private LocalDateTime stageOpen;
     private LocalDateTime stageClose;
-    private StageStatus stageStatus;
+//    private StageStatus stageStatus;
     private String posterImg;
 
     public ResponseStageThumbnailDto(Stage findStage) {
@@ -21,7 +21,7 @@ public class ResponseStageThumbnailDto {
         this.place = findStage.getPlace();
         this.stageOpen = findStage.getStageOpen();
         this.stageClose = findStage.getStageClose();
-        this.stageStatus = findStage.getStageStatus();
+//        this.stageStatus = findStage.getStageStatus();
         this.posterImg = findStage.getPosterImg();
     }
 }

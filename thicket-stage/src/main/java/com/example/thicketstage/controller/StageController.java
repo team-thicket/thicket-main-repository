@@ -1,10 +1,8 @@
 package com.example.thicketstage.controller;
 
 import com.example.thicketstage.dto.request.RequestCreateStageDto;
-import com.example.thicketstage.dto.request.RequestSetNewStatusDto;
 import com.example.thicketstage.dto.request.RequestUpdateInfoDto;
 import com.example.thicketstage.dto.response.ResponseStageThumbnailDto;
-import com.example.thicketstage.enumerate.StageStatus;
 import com.example.thicketstage.enumerate.StageType;
 import com.example.thicketstage.service.StageService;
 import jakarta.persistence.EntityNotFoundException;
@@ -34,7 +32,7 @@ public class StageController {
         return ResponseEntity.ok(stageService.getAllStage());
     }
 
-    // STATUS.ONGOING 인 공연 모두 최신 순으로 ->작성중
+    // 진행중인 공연 모두 최신 순으로 ->작성중
 //    @GetMapping("ongoing") // API 명세 => GET /shows/ongoing
 //    public ResponseEntity<?> getOngoingList(@RequestParam(defaultValue = "0") int page,
 //                                           @RequestParam(defaultValue = "6") int size) {
@@ -59,14 +57,18 @@ public class StageController {
         return new ResponseEntity<>(stageTypeList, HttpStatus.OK);
     }
 
-    // StageStatus별로 줄 세우기 -> BEFORE(관리자페이지 + memberuuid)로 나누기
-    @GetMapping("stagestatus/{stagestatus}") // API 명세 => GET /shows/stagestatus/{stagestatus}
-    public ResponseEntity<?> getStageStatusList(@PathVariable("stagestatus")
-                                                @Valid StageStatus stageStatus) {
-        List<ResponseStageThumbnailDto> stageStatusList = stageService.getStageStatusList(stageStatus);
+    // todo stagestatus 삭제되며 생긴 수정사항 + 앤드포인드
+    // ticketOpen 시간 비교해 이전인 것만 줄 세우기 - mainpage 커밍순 ( /shows/before)
+    // stageClose 시간 비교해 이후인 것 줄 세우기 - 관리자 page - 공연 종료 (/shows/ended)
 
-        return new ResponseEntity<>(stageStatusList, HttpStatus.OK);
-    }
+    // StageStatus별로 줄 세우기 -> // todo BEFORE(관리자페이지 + memberuuid)로 나누기 아래 코드는 /shows/before로 변경 (삭제) ( shows/before-티켓오픈 /
+//    @GetMapping("stagestatus/{stagestatus}") // API 명세 => GET /shows/before/{stagestatus}
+//    public ResponseEntity<?> getStageStatusList(@PathVariable("stagestatus")
+//                                                @Valid StageStatus stageStatus) {
+//        List<ResponseStageThumbnailDto> stageStatusList = stageService.getStageStatusList(stageStatus);
+//
+//        return new ResponseEntity<>(stageStatusList, HttpStatus.OK);
+//    }
 
     // keyword로 검색
     @GetMapping("search/{keyword}") // API 명세 => GET /shows/search/{keyword}
@@ -84,13 +86,13 @@ public class StageController {
         return ResponseEntity.ok("수정이 완료되었습니다.");
     }
 
-    @PatchMapping("changestatus/{uuid}") // API 명세 => PATCH /shows/changeStatus/{uuid}
-    public ResponseEntity<?> changeStatus(@PathVariable String uuid,
-                                          @RequestBody @Valid RequestSetNewStatusDto setNewStatusDto) {
-        stageService.changeStatus(uuid, setNewStatusDto);
-
-        return ResponseEntity.ok("수정이 완료되었습니다.");
-    }
+//    @PatchMapping("changestatus/{uuid}") // API 명세 => PATCH /shows/changeStatus/{uuid}
+//    public ResponseEntity<?> changeStatus(@PathVariable String uuid,
+//                                          @RequestBody @Valid RequestSetNewStatusDto setNewStatusDto) {
+//        stageService.changeStatus(uuid, setNewStatusDto);
+//
+//        return ResponseEntity.ok("수정이 완료되었습니다.");
+//    }
 
     @DeleteMapping("{uuid}") // API 명세 => DELETE /shows/{uuid}
     public ResponseEntity<?> deleteStage(@PathVariable @Valid String uuid) {
