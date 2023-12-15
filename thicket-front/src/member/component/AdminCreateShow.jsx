@@ -9,7 +9,7 @@ import {
     Table, Th, Td, H1, P, Input, InputFile, Textarea, Select,
     Button, Button1, Button2, ButtonX,
     StyledDatePicker, Img, CalendarSVG, ImageViewerModal,
-} from '../../assets/css/setting/admin/Styles1';
+} from '../../assets/css/setting/admin/StylesOfCreate';
 import ImageFileHandling from "../../assets/css/setting/admin/ImageFileHandling";
 import RegistrationSchedule from "../../assets/css/setting/admin/RegistrationSchedule";
 import RegistrationSeat from "../../assets/css/setting/admin/RegistrationSeat";

@@ -1,9 +1,9 @@
 import React from "react";
-import {Container, H1, Table, Td, TdNotCenterAnd, P, TableHeaderRow} from '../../assets/css/setting/admin/Styles2';
+import {Container, H1, Table, Td, TdNotCenterAnd, P, TableHeaderRow} from '../../assets/css/setting/admin/StylesOfList';
 
 export const AdminBeforeList = ({ contentHandler }) => {
     const handleTitleClick = () => {
-        contentHandler("editShow");
+        contentHandler("edit");
     };
 
     return (

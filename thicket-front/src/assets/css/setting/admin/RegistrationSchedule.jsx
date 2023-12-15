@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { H2 } from "./Styles1";
+import { H2 } from "./StylesOfCreate";
 import DeleteSchedule from "./DeleteSchedule";
 
 const RegistrationSchedule = ({ startDate, endDate, onConfirm, }) => {

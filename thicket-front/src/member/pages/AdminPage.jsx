@@ -41,12 +41,12 @@ const AdminPage = () => {
     };
 
     const selectComponent = {
-        all: <AdminAllStageList contentHandler={contentHandler} />,
-        create: <AdminCreateShow contentHandler={contentHandler} />,
+        all: <AdminAllStageList />,
+        create: <AdminCreateShow />,
         before: <AdminBeforeList contentHandler={contentHandler} />,
-        ongoing: <AdminOngoingList contentHandler={contentHandler} />,
-        ended: <AdminEndedList contentHandler={contentHandler} />,
-        editShow: <AdminEditShow />,
+        ongoing: <AdminOngoingList />,
+        ended: <AdminEndedList />,
+        edit: <AdminEditShow />,
     };
 
     return (

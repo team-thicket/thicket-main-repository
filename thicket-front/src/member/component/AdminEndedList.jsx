@@ -1,4 +1,4 @@
-import {Container, H1, Table, TableHeaderRow, Td, TdNotCenter} from '../../assets/css/setting/admin/Styles2';
+import {Container, H1, Table, TableHeaderRow, Td, TdNotCenter} from '../../assets/css/setting/admin/StylesOfList';
 
 export const AdminEndedList = () => {
     return (

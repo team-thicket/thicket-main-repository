@@ -12,6 +12,10 @@ export const CustomDiv = styled.div`
   padding: 20px 0 60px 0;
 `;
 
+export const PaddingTopDiv = styled.div`
+  padding-top: 40px;
+`;
+
 export const FlexCenterDiv = styled.div`
   display: flex;
   align-items: center;
@@ -38,11 +42,21 @@ export const WidthDiv = styled.div`
   width: 60px;
 `;
 
+export const RightDiv = styled.div`
+  padding-top: 20px;
+  text-align: right;
+`;
+
 export const CalenderDiv = styled.div`
     position: absolute;
     left: 280px;
     top: 5px;
     cursor: pointer;
+  
+`;export const CalenderDiv2 = styled.div`
+  position: absolute;
+  left: 280px;
+  top: 5px;
 `;
 
 export const H1 = styled.h1`
@@ -151,6 +165,12 @@ export const Img = styled.img`
 `;
 
 export const StyledDatePicker = styled(DatePicker)`
+  width: 300px;
+  height: 25px;
+  box-sizing: border-box;
+  cursor: pointer;
+`;
+export const StyledDatePicker2 = styled(DatePicker)`
   width: 300px;
   height: 25px;
   box-sizing: border-box;

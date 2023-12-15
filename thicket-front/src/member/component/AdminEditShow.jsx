@@ -6,14 +6,17 @@ import ReactDOM from 'react-dom';
 import {
     BetweenDiv, Button,
     Button1, ButtonX,
-    CalendarSVG, CalenderDiv,
+    CalendarSVG, CalenderDiv2,
     Container, CustomDiv, CustomH1, FlexCenterDiv,
     H1, Img,
     Input, InputFile, P, RelativeDiv, Select,
-    StyledDatePicker,
-    Table, Th,  Td,
-    Textarea,
-} from "../../assets/css/setting/admin/Styles1";
+    StyledDatePicker2,
+    Table, Th, Td,
+    Textarea, ImageViewerModal,
+} from "../../assets/css/setting/admin/StylesOfCreate";
+import ImageFileHandling from "../../assets/css/setting/admin/ImageFileHandling";
+import DeleteSchedule from "../../assets/css/setting/admin/DeleteSchedule";
+import DeleteSeat from "../../assets/css/setting/admin/DeleteSeat";
 
 const AdminEditShow = () => {
 
@@ -21,17 +24,21 @@ const AdminEditShow = () => {
     const [endDate, setEndDate] = useState(null);       // 전체 종료일
     const startDatePickerRef = useRef(null);    // 전체 시작일 달력
     const endDatePickerRef = useRef(null);      // 전체 종료일 달력
-    const [hasExistingSchedules, setHasExistingSchedules] = useState(false); // 달력 비활성화
-    const [timeSlots, setTimeSlots] = useState([]);        // 일별 시작 시간
+    const [, setHasExistingSchedules] = useState(false); // 달력 비활성화
     const [selectedPerformanceType, setSelectedPerformanceType] = useState('');     // 공연 종류
     const [selectedPerformanceStatus, setSelectedPerformanceStatus] = useState(''); // 공연 상태
-    const [uploadedFiles, setUploadedFiles] = useState([]);    // 공연포스터 이미지
-    const fileInputRef = useRef(null);          // 공연포스터 이미지
-    const [selectedImage, setSelectedImage] = useState(null);         // 공연포스터 이미지
-    const [uploadedDetailImages, setUploadedDetailImages] = useState([]); // 상세페이지 이미지
-    const detailImageInputRef = useRef(null);              // 상세페이지 이미지
-    const [selectedDetailImage, setSelectedDetailImage] = useState(null);        // 상세페이지 이미지
-    const [seatValues, setSeatValues] = useState([]);   // 좌석
+    const { // 공연포스터 이미지, 상세페이지 이미지
+        uploadedFiles, selectedImage, fileInputRef,
+        handleFileUpload, handleRemoveFile, handleImageClick, handleCloseModal,
+        uploadedDetailImages, selectedDetailImage, detailImageInputRef,
+        handleDetailImageUpload, handleRemoveDetailImage, handleDetailImageClick, handleCloseDetailImageModal,
+    } = ImageFileHandling();
+    const { // 일별 시작 시간
+        timeSlots,
+    } = DeleteSchedule();
+    const  { // 좌석
+        seatValues,
+    } = DeleteSeat();
 
     // 달력 한글화
     registerLocale('ko', ko);
@@ -44,91 +51,6 @@ const AdminEditShow = () => {
             setHasExistingSchedules(false);
         }
     }, [timeSlots]);
-
-    const ImageViewerModal = ({ imageUrl, onClose }) => {
-        return (
-            <div
-                style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-                onClick={onClose}
-            >
-                <img
-                    src={imageUrl}
-                    alt="Enlarged"
-                    style={{ maxWidth: '95%', maxHeight: '95%', objectFit: 'contain' }}
-                />
-            </div>
-        );
-    };
-
-    // 공연포스터 이미지 업로드
-    const handleFileUpload = (e) => {
-        const file = e.target.files[0];
-
-        // Check if the limit (1 file) has been reached
-        if (uploadedFiles.length >= 1) {
-            alert('공연포스터 이미지는 1개만 등록 가능합니다. 삭제 후 등록해 주세요.');
-            return;
-        }
-
-        setUploadedFiles((prevFiles) => [...prevFiles, file]);
-    };
-
-    // 공연포스터 이미지 삭제
-    const handleRemoveFile = (index) => {
-        setUploadedFiles((prevFiles) => {
-            const newFiles = [...prevFiles];
-            newFiles.splice(index, 1);
-            return newFiles;
-        });
-    };
-
-    // 공연포스터 이미지 클릭 시 모달 열기
-    const handleImageClick = (imageUrl) => {
-        setSelectedImage(imageUrl);
-    };
-
-    // 공연 포스터 모달 닫기
-    const handleCloseModal = () => {
-        setSelectedImage(null);
-    };
-
-    // 상세페이지 이미지 파일 업로드
-    const handleDetailImageUpload = (e) => {
-        // 상세페이지 이미지 업로드 로직 추가
-        const file = e.target.files[0];
-        // 상세페이지 이미지 파일을 uploadedDetailImages 상태에 추가
-        setUploadedDetailImages((prevImages) => [...prevImages, file]);
-    };
-
-    // 상세페이지 이미지 삭제
-    const handleRemoveDetailImage = (index) => {
-        // 상세페이지 이미지 삭제 로직 추가
-        setUploadedDetailImages((prevImages) => {
-            const newImages = [...prevImages];
-            newImages.splice(index, 1);
-            return newImages;
-        });
-    };
-
-    // 상세페이지 이미지 클릭 시 모달 열기
-    const handleDetailImageClick = (imageUrl) => {
-        setSelectedDetailImage(imageUrl);
-    };
-
-    // 상세페이지 이미지 모달 닫기
-    const handleCloseDetailImageModal = () => {
-        setSelectedDetailImage(null);
-    };
 
     return (
         <Container>
@@ -152,7 +74,7 @@ const AdminEditShow = () => {
                         <Th>전체 시작일</Th>
                         <Td>
                             <RelativeDiv>
-                                <StyledDatePicker
+                                <StyledDatePicker2
                                     ref={startDatePickerRef}
                                     selected={startDate}
                                     onChange={(date) => setStartDate(date)}
@@ -162,9 +84,9 @@ const AdminEditShow = () => {
                                     maxDate={endDate} // 종료일 이후로 선택 불가능
                                     disabled={true} // 비활성화
                                 />
-                                <CalenderDiv onClick={() => startDatePickerRef.current && startDatePickerRef.current.setOpen(true)}>
+                                <CalenderDiv2>
                                     <CalendarSVG />
-                                </CalenderDiv>
+                                </CalenderDiv2>
                                 <P>수정할 수 없습니다.</P>
                             </RelativeDiv>
                         </Td>
@@ -173,7 +95,7 @@ const AdminEditShow = () => {
                         <Th>전체 종료일</Th>
                         <Td>
                             <RelativeDiv>
-                                <StyledDatePicker
+                                <StyledDatePicker2
                                     ref={endDatePickerRef}
                                     selected={endDate}
                                     onChange={(date) => setEndDate(date)}
@@ -183,9 +105,9 @@ const AdminEditShow = () => {
                                     minDate={startDate} // 시작일 이전으로 설정 불가능
                                     disabled={true} // 비활성화
                                 />
-                                <CalenderDiv onClick={() => endDatePickerRef.current && endDatePickerRef.current.setOpen(true)}>
+                                <CalenderDiv2>
                                     <CalendarSVG />
-                                </CalenderDiv>
+                                </CalenderDiv2>
                                 <P>수정할 수 없습니다.</P>
                             </RelativeDiv>
                         </Td>

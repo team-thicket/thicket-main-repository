@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { H2, Input, } from './Styles1';
+import { H2, Input, } from './StylesOfCreate';
 
 const RegistrationSeat = ({ onSubmit }) => {
     const [inputValues, setInputValues] = useState([

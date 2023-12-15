@@ -1,7 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import '../../assets/css/setting/MemberMyPage.css';
+import {
+    Button,
+    Container,
+    H1, Input, PaddingTopDiv,
+    RightDiv,
+    Table,
+    Td,
+    Th
+} from "../../assets/css/setting/admin/StylesOfCreate";
 
 export const MemberMyPage = ({contentHandler}) => {
+
+    const handleWithdrawalClick = () => {
+        contentHandler("withdraw");
+    };
+
     // States to track passwords
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -62,77 +75,77 @@ export const MemberMyPage = ({contentHandler}) => {
     };
 
     return (
-        <div className="member-page-container">
+        <Container>
             <div>
-                <h1 className="custom">기본정보</h1>
-                <table className="info-table">
+                <H1>기본정보</H1>
+                <Table>
                     <tbody>
                     <tr>
-                        <th className="custom">이름</th>
-                        <td className="custom">{memberName}</td>
+                        <Th>이름</Th>
+                        <Td>{memberName}</Td>
                     </tr>
                     <tr>
-                        <th className="custom" >생년월일</th>
-                        <td className="custom" >{memberBirth}</td>
+                        <Th>생년월일</Th>
+                        <Td>{memberBirth}</Td>
                     </tr>
                     <tr>
-                        <th className="custom" >이메일</th>
-                        <td className="custom" >{memberEmail}</td>
+                        <Th>이메일</Th>
+                        <Td>{memberEmail}</Td>
                     </tr>
                     </tbody>
-                </table>
+                </Table>
             </div>
             <br />
-            <div className="custom">
-                <h1 className="custom">비밀번호 변경</h1>
-                <table className="password-table">
+            <PaddingTopDiv>
+                <H1>비밀번호 변경</H1>
+                <Table>
                     <tbody>
                     <tr>
-                        <th className="custom">기존 비밀번호</th>
-                        <td className="custom">
-                            <input className="custom"
+                        <Th>기존 비밀번호</Th>
+                        <Td>
+                            <Input
                                    type="password"
                                    id="currentPassword"
                                    placeholder="  비밀번호를 입력하세요."
                                    value={currentPassword}
                                    onChange={(e) => setCurrentPassword(e.target.value)}
                             />
-                        </td>
+                        </Td>
                     </tr>
                     <tr>
-                        <th className="custom">신규 비밀번호</th>
-                        <td className="custom">
-                            <input className="custom"
+                        <Th>신규 비밀번호</Th>
+                        <Td>
+                            <Input
                                    type="password"
                                    id="newPassword"
                                    placeholder="  비밀번호를 입력하세요."
                                    value={newPassword}
                                    onChange={(e) => setNewPassword(e.target.value)}
                             />
-                        </td>
+                        </Td>
                     </tr>
                     <tr>
-                        <th className="custom">신규 비밀번호 재확인</th>
-                        <td className="custom">
-                            <input className="custom"
+                        <Th>신규 비밀번호 재확인</Th>
+                        <Td>
+                            <Input
                                    type="password"
                                    id="confirmNewPassword"
                                    placeholder="  비밀번호를 입력하세요."
                                    value={confirmNewPassword}
                                    onChange={(e) => setConfirmNewPassword(e.target.value)}
                             />
-                            <button className="custom" onClick={handlePasswordChange}>변경</button>
+                            <Button onClick={handlePasswordChange}>변경</Button>
                             {passwordCheckResult === false && (
                                 <p style={{ color: 'red', fontSize:'15px'}}>비밀번호가 일치하지 않습니다.</p>
                             )}
-                        </td>
+                        </Td>
                     </tr>
                     </tbody>
-                </table>
-            </div>
-            <div className="custom-right">
-                <button className="withdrawal-btn" onClick={contentHandler} name={"withdraw"}>회원탈퇴</button>
-            </div>
-        </div>
+                </Table>
+            </PaddingTopDiv>
+            <RightDiv>
+                <Button onClick={handleWithdrawalClick}>회원탈퇴</Button>
+            </RightDiv>
+        </Container>
     );
 };
