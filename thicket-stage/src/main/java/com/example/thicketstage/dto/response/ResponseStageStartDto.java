@@ -5,7 +5,6 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @Data
 public class ResponseStageStartDto {
@@ -14,11 +13,12 @@ public class ResponseStageStartDto {
 
     private LocalDate date;
 
-    private List<LocalTime> times;
+    private LocalTime time;
 
-    public ResponseStageStartDto(StageStart stageStart) {
-        this.stageUuid = stageStart.getUuid();
-        this.date = stageStart.getDate();
-        this.times = stageStart.getTimes();
-    }
+
+public ResponseStageStartDto(StageStart stageStart) {
+    this.stageUuid = stageStart.getUuid();
+    this.date = stageStart.getDate();
+    this.time = stageStart.getTime();
+}
 }
