@@ -14,5 +14,5 @@ public interface MemberService {
     List<ResponseMemberDtoForAdmin> findMembers();
     void changePassword(String id, RequestChangePasswordDto dto);
     void withdraw(String id, RequestWithdrawDto dto);
-    void changeMemberRole(String id, RequestChangeMemberRoleDto dto);
+    void changeMemberRole(RequestChangeMemberRoleDto dto);
 }

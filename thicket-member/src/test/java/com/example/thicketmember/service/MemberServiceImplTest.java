@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -104,7 +105,7 @@ class MemberServiceImplTest {
         dto.setPassword(password);
 
         //when & then
-        assertThrows(IllegalArgumentException.class, () -> memberService.signin(dto));
+        assertThrows(NotFoundException.class, () -> memberService.signin(dto));
     }
 
     @Test
@@ -145,6 +146,17 @@ class MemberServiceImplTest {
         //then
         assertThat(members.size()).isEqualTo(3);
 
+    }
+    
+    @Test
+    void 회원_목록_조회시_회원_없음() {
+        //given & when
+        memberRepository.deleteAll();
+
+        //then
+        assertThrows(NotFoundException.class, () -> memberService.findMembers());
+
+    
     }
 
     @Test
@@ -244,15 +256,16 @@ class MemberServiceImplTest {
     void 관리자로_승급() {
         //given
         Member member = memberRepository.findAll().get(0);
-        String findId = String.valueOf(member.getId());
 
         String businessCode = "123-45-67891";
         RequestChangeMemberRoleDto dto = new RequestChangeMemberRoleDto();
+        UUID findId = member.getId();
+        dto.setId(findId);
         dto.setBusinessCode(businessCode);
 
         //when
-        memberService.changeMemberRole(findId, dto);
-        Member findMember = memberRepository.findById(UUID.fromString(findId)).get();
+        memberService.changeMemberRole(dto);
+        Member findMember = memberRepository.findById(findId).get();
 
         //then
         assertThat(findMember.getBusinessCode()).isEqualTo(businessCode);

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +52,7 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public Member signin(RequestMemberSigninDto dto) {
         Member member = memberRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("계정 정보를 확인해주세요."));
+                .orElseThrow(() -> new NotFoundException("계정 정보를 확인해주세요."));
 
         if (!pe.matches(dto.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("계정 정보를 확인해주세요.");
@@ -59,7 +60,6 @@ public class MemberServiceImpl implements MemberService{
 
         return member;
     }
-
 
     @Override
     @Transactional(readOnly = true)
@@ -72,7 +72,12 @@ public class MemberServiceImpl implements MemberService{
     @Override
     @Transactional(readOnly = true)
     public List<ResponseMemberDtoForAdmin> findMembers() {
-        return memberRepository.findAllByMemberRole(MemberRole.USER).stream()
+
+        List<Member> members = memberRepository.findAllByMemberRole(MemberRole.USER);
+        if (members.isEmpty()) {
+            throw new NotFoundException("회원 정보가 없습니다.");
+        }
+        return members.stream()
                 .map(ResponseMemberDtoForAdmin::toDto).toList();
     }
 
@@ -81,11 +86,13 @@ public class MemberServiceImpl implements MemberService{
     public void changePassword(String id, RequestChangePasswordDto dto) {
         Member findMember = memberRepository.findMemberById(UUID.fromString(id));
 
-        if (pe.matches(findMember.getPassword(), dto.getCurrentPassword())) {
+        // 서로 다를때 예외 발생이므로 부정 연산(!) O
+        if (!pe.matches(dto.getCurrentPassword(), findMember.getPassword())) {
             throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
         }
 
-        if (pe.matches(findMember.getPassword(), dto.getNewPassword())) {
+        // 서로 같을때 예외 발생이므로 부정 연산(!) X
+        if (pe.matches(dto.getNewPassword(),findMember.getPassword())) {
             throw new IllegalArgumentException("이전 비밀번호와 다른 비밀번호를 입력해 주세요.");
         }
 
@@ -105,8 +112,8 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void changeMemberRole(String id, RequestChangeMemberRoleDto dto) {
-        Member findMember = memberRepository.findMemberById(UUID.fromString(id));
+    public void changeMemberRole(RequestChangeMemberRoleDto dto) {
+        Member findMember = memberRepository.findMemberById(dto.getId());
         findMember.changeAdmin(dto.getBusinessCode());
     }
 }
