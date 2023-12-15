@@ -1,7 +1,6 @@
 package com.example.thicketstage.domain;
 
 import com.example.thicketstage.TimeStamp;
-import com.example.thicketstage.dto.request.RequestStageStartUpdateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,9 +20,12 @@ public class StageStart extends TimeStamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 100, nullable = false)
     private LocalDate date;
 
+    @Column(length = 100, nullable = false)
     private LocalTime time;
+
 //    @ElementCollection
 //    private List<LocalTime> times = new ArrayList<>();
 

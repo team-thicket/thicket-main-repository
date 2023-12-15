@@ -63,26 +63,6 @@ class StageStartServiceImplTest {
         assertNotNull(stageStart);
         assertEquals(stageStartDto.getDate(), stageStart.getDate());
         assertEquals(stageStartDto.getTime(), stageStart.getTime());
-
-//        RequestCreateStageStartDto.StageStartDto stageStartDto = new RequestCreateStageStartDto.StageStartDto();
-//        stageStartDto.setDate(LocalDate.of(2023, 11, 25));
-//        stageStartDto.setTimes(Arrays.asList(LocalTime.of(19, 30),
-//                                            LocalTime.of(21, 30)));
-//
-//        createStageStartDto.setStageStartDtos(Arrays.asList(stageStartDto));
-//
-//        // when
-//        List<StageStart> createdStageStarts = stageStartService.createStageStart(createStageStartDto);
-//
-//        // then
-//        assertNotNull(createdStageStarts);
-//
-//        assertEquals(1, createdStageStarts.size());
-//
-//        StageStart stageStart = createdStageStarts.get(0);
-//        assertNotNull(stageStart);
-//        assertEquals(stageStartDto.getDate(), stageStart.getDate());
-//        assertEquals(stageStartDto.getTimes(), stageStart.getTimes());
     }
 
     @Test

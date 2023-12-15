@@ -3,7 +3,9 @@ package com.example.thicketstage.domain;
 import com.example.thicketstage.TimeStamp;
 import com.example.thicketstage.dto.request.RequestUpdateChairDto;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -22,7 +24,7 @@ public class Chair extends TimeStamp {
 
     @Column(nullable = false)
     private int price;
-//
+
 //    @Column(nullable = false)
 //    private String stageUuid;
 
@@ -67,16 +69,4 @@ public class Chair extends TimeStamp {
             stageStart = null;
         }
     }
-//    public void changeChair(String newChairType,
-//                            int newCount,
-//                            int newPrice,
-//                            String newStageUuid,
-//                            StageStart newStageStart) {
-//
-//        chairType = newChairType;
-//        count = newCount;
-//        price = newPrice;
-//        stageUuid = newStageUuid;
-//        stageStart = newStageStart;
-//    }
 }

@@ -23,8 +23,4 @@ public class RequestCreateStageStartDto {
         private LocalDate date;
         private LocalTime time;
     }
-//    public static class StageStartDto {
-//        private LocalDate date;
-//        private List<LocalTime> times;
-//    }
 }
