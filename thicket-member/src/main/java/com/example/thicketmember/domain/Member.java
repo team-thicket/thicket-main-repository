@@ -5,6 +5,7 @@ import com.example.thicketmember.enumerate.MemberRole;
 import com.example.thicketmember.enumerate.MemberStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -18,17 +19,23 @@ public class Member extends TimeStamp {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(length = 11, nullable = false)
+    @Column(length = 20, nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(length = 20,nullable = false)
     private LocalDate birth;
 
-    @Column(length = 225, nullable = false)
+    @Column(length = 50, nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(length = 100, nullable = false)
     private String password;
+
+    @Column(length = 20, nullable = false)
+    private String phone;
+
+    @Column(length = 20, unique = true)
+    private String businessCode;
 
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
@@ -36,12 +43,12 @@ public class Member extends TimeStamp {
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
-    // 테스트용 메서드
+    //비즈니스 메서드
     public static Member createMember(String newName,
                                       LocalDate newBirth,
                                       String newEmail,
                                       String newPassword,
-                                      MemberStatus newStatus,
+                                      String newPhone,
                                       MemberRole newMemberRole) {
         Member member = new Member();
 
@@ -49,19 +56,23 @@ public class Member extends TimeStamp {
         member.birth = newBirth;
         member.email = newEmail;
         member.password = newPassword;
-        member.status = newStatus;
+        member.phone = newPhone;
+        member.status = MemberStatus.ACTIVE;
         member.memberRole = newMemberRole;
 
         return member;
     }
-    //비즈니스 메서드
+
     public void changePassword(String newPassword) {
         password = newPassword;
     }
 
-    public void inactive() {
-        status = MemberStatus.INACTIVE;
+    public void changeStatus(MemberStatus newStatus) {
+        status = newStatus;
     }
 
-    public void changeAdmin() { memberRole = MemberRole.ADMIN; }
+    public void changeAdmin(String newBusinessCode) {
+        memberRole = MemberRole.ADMIN;
+        businessCode = newBusinessCode;
+    }
 }

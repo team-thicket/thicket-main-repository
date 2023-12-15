@@ -1,20 +1,22 @@
 package com.example.thicketmember.service;
 
 
-import com.example.thicketmember.dto.request.RequestEmailDto;
+import com.example.thicketmember.domain.Verification;
 import com.example.thicketmember.dto.request.RequestVerificationDto;
-import com.example.thicketmember.repository.VerificationCodeRepository;
+import com.example.thicketmember.exception.ExpiredVerificationCodeException;
+import com.example.thicketmember.repository.VerificationRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import java.util.Random;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -23,10 +25,11 @@ public class EmailServiceImpl implements EmailService{
 
     private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine templateEngine;
-    private final VerificationCodeRepository codeRepository;
+    private final VerificationRepository codeRepository;
 
-    public void sendMail(RequestEmailDto dto) {
-        String verificationCode = createCode();
+    public String sendMail(String email) {
+        Verification verification = Verification.createCode(email);
+        String code = verification.getCode();
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         try {
@@ -34,49 +37,40 @@ public class EmailServiceImpl implements EmailService{
                     new MimeMessageHelper(mimeMessage, false, "UTF-8");
 
             // 메일 수신자
-            mimeMessageHelper.setTo(dto.getEmail());
+            mimeMessageHelper.setTo(email);
             // 메일 제목
             mimeMessageHelper.setSubject("이메일 인증을 위한 인증 코드 발송");
             // 메일 내용
-            mimeMessageHelper.setText(setContext(verificationCode, "email"), true);
+            mimeMessageHelper.setText(setContext(code, "email"), true);
             // 메일 본문 내용, HTML 여부
             javaMailSender.send(mimeMessage);
-            log.info("Code Send Success");
 
-        } catch (MessagingException e) {
-            log.info("Code Send Fail");
-            throw new RuntimeException("인증메일 전송에 실패하였습니다.");
+        } catch (MessagingException | MailSendException e) {
+            log.info(e.getMessage());
+            throw new IllegalArgumentException("메일주소를 확인해주세요.");
         }
 
-        codeRepository.save(dto.getEmail(), verificationCode);
+        codeRepository.save(verification);
+
+        return code;
     }
 
     @Override
     public String verifyCode(RequestVerificationDto dto) {
-        String email = dto.getEmail();
 
-        if(!dto.getCode().equals(codeRepository.find(email))) {
-            throw new IllegalArgumentException("인증에 실패하였습니다.");
+        Verification findVerification = codeRepository.findById(dto.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("인증정보가 없습니다."));
+
+        if (findVerification.getExpirationDate().isBefore(LocalDateTime.now())) {
+            throw new ExpiredVerificationCodeException("인증 코드가 만료되었습니다.");
         }
 
-        codeRepository.delete(email);
+        if(!dto.getCode().equals(findVerification.getCode())) {
+            throw new IllegalArgumentException("인증에 실패했습니다.");
+        }
+
+        codeRepository.delete(findVerification);
         return "인증에 성공하였습니다.";
-    }
-
-    // 인증번호 생성 메서드
-    private String createCode() {
-        Random random = new Random();
-        StringBuilder key = new StringBuilder();
-
-        for (int i = 0; i < 8; i++) {
-            int index = random.nextInt(4);
-            switch (index) {
-                case 0: key.append((char) (random.nextInt(26) + 97)); break;
-                case 1: key.append((char) (random.nextInt(26) + 65)); break;
-                default: key.append(random.nextInt(9));
-            }
-        }
-        return key.toString();
     }
 
     // thymeleaf를 이용해 메일의 html에 인증코드를 삽입

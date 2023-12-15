@@ -13,6 +13,7 @@ public class ResponseMemberDto {
     private String name;
     private LocalDate birth;
     private String email;
+    private String phoneNumber;
 
     public static ResponseMemberDto toDto(Member member) {
 
@@ -21,6 +22,7 @@ public class ResponseMemberDto {
         dto.name = member.getName();
         dto.birth = member.getBirth();
         dto.email = member.getEmail();
+        dto.phoneNumber = member.getPhone();
 
         return dto;
     }

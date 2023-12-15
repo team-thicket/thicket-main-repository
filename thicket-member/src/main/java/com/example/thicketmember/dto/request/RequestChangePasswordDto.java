@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class RequestSetNewPasswordDto {
+public class RequestChangePasswordDto {
 
     @NotBlank(message = "현재 비밀번호는 비워둘 수 없습니다.")
     @Pattern(regexp="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,20}",
