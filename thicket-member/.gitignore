@@ -38,4 +38,5 @@ out/
 
 src/main/resources/application-deployDB.yml
 src/main/resources/application-localDB.yml
+src/main/resources/application-mail.yml
 src/test/resources/application-testDB.yml

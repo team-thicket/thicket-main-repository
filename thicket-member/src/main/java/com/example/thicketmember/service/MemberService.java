@@ -1,12 +1,18 @@
 package com.example.thicketmember.service;
 
-import com.example.thicketmember.dto.request.RequestInactiveDto;
-import com.example.thicketmember.dto.request.RequestSetNewPasswordDto;
+import com.example.thicketmember.domain.Member;
+import com.example.thicketmember.dto.request.*;
 import com.example.thicketmember.dto.response.ResponseMemberDto;
+import com.example.thicketmember.dto.response.ResponseMemberDtoForAdmin;
+
+import java.util.List;
 
 public interface MemberService {
-    ResponseMemberDto getMemberByToken(String email);
-    void setNewPassword(String email, RequestSetNewPasswordDto dto);
-    void setInactive(String email, RequestInactiveDto dto);
-    void setAdmin(String email, RequestInactiveDto dto);
+    Member signup(RequestMemberSignupDto dto);
+    Member signin(RequestMemberSigninDto dto);
+    ResponseMemberDto findMember(String id);
+    List<ResponseMemberDtoForAdmin> findMembers();
+    void changePassword(String id, RequestChangePasswordDto dto);
+    void withdraw(String id, RequestWithdrawDto dto);
+    void changeMemberRole(RequestChangeMemberRoleDto dto);
 }
