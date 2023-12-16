@@ -1,7 +1,7 @@
 import Main from "../pages/Main";
 import Header from "./Header";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import Mypage from "../pages/Mypage";
+import MyPage from "../pages/MyPage";
 import React, {createContext, useState} from "react";
 import AdminPage from "../pages/AdminPage";
 import ReadyKakaopay from "../pages/ReadyKakaopay";
@@ -30,7 +30,7 @@ function Layout() {
                         <Route path="play" element={<MainPlayList />} />
                         <Route path="concert" element={<MainConcertList />} />
                         <Route path="soon" element={<MainOpeningSoon />} />
-                        <Route path="mypage" element={<Mypage />} />
+                        <Route path="mypage" element={<MyPage />} />
                         <Route path="admin" element={<AdminPage />} />
                         <Route path="payment" element={<ReadyKakaopay />} />
                         <Route path="paymentCallback" element={<ApproveKakaopay />} />

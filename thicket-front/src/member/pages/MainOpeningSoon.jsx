@@ -1,37 +1,41 @@
-import styled from "styled-components";
+import {Wrapper, InvisibleScroll, MainContainer, OpenCard } from "../../assets/css/setting/MainStyleCSS";
+import { H1 } from "../../assets/css/setting/admin/StylesOfList";
 
-const MainContainer = styled.main`
-  max-width: 1280px;
-  margin: 70px auto 0; // 헤더 위치에 따라 수동 조절
-`;
-
-const Poster = styled.div`
-  display: inline-block;
-  width: 200px;
-  height: 200px;
-`
-function MainOpeningSoon(){
-    const OpenCard = ({date}) => {
-        return (
-            <Poster>
-                <img/>
-                <div>{date}</div>
-                <div>제목</div>
-                <div>살려주세요</div>
-            </Poster>
-        )
-    }
-
-    return(
-        <MainContainer>
-            <h2>티켓오픈</h2>
-            <OpenCard date={"2023-11-16"}/>
-            <OpenCard date={"2023-11-17"}/>
-            <OpenCard date={"2023-12-16"}/>
-            <OpenCard date={"2023-11-30"}/>
-            <OpenCard date={"2023-12-7"}/>
-        </MainContainer>
-    )
-}
+function MainOpeningSoon() {
+    return (
+        <Wrapper>
+            <InvisibleScroll>
+                <MainContainer>
+                    <H1>티켓오픈</H1>
+                    <OpenCard date={"2023-11-16"}/>
+                    <OpenCard date={"2023-11-17"}/>
+                    <OpenCard date={"2023-12-16"}/>
+                    <OpenCard date={"2023-11-30"}/>
+                    <OpenCard date={"2023-12-7"}/>
+                    <OpenCard date={"2023-11-16"}/>
+                    <OpenCard date={"2023-11-17"}/>
+                    <OpenCard date={"2023-12-16"}/>
+                    <OpenCard date={"2023-11-30"}/>
+                    <OpenCard date={"2023-12-7"}/>
+                    <OpenCard date={"2023-11-16"}/>
+                    <OpenCard date={"2023-11-17"}/>
+                    <OpenCard date={"2023-12-16"}/>
+                    <OpenCard date={"2023-11-30"}/>
+                    <OpenCard date={"2023-12-7"}/>
+                    <OpenCard date={"2023-11-16"}/>
+                    <OpenCard date={"2023-11-17"}/>
+                    <OpenCard date={"2023-12-16"}/>
+                    <OpenCard date={"2023-11-30"}/>
+                    <OpenCard date={"2023-12-7"}/>
+                    <OpenCard date={"2023-11-16"}/>
+                    <OpenCard date={"2023-11-17"}/>
+                    <OpenCard date={"2023-12-16"}/>
+                    <OpenCard date={"2023-11-30"}/>
+                    <OpenCard date={"2023-12-7"}/>
+                </MainContainer>
+            </InvisibleScroll>
+        </Wrapper>
+    );
+};
 
 export default MainOpeningSoon;

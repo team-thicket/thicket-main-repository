@@ -76,7 +76,8 @@ function SignUp() {
     try {
       const response = await axios.post('http://localhost:8000/members/join', formData); // 수정된 부분
       console.log(response.data);
-      navigate('/');
+      alert("회원가입 성공. 로그인 페이지로 이동합니다.")
+      navigate('/login');
     } catch (error) {
       console.error('회원가입 실패:', error);
     }
@@ -145,7 +146,9 @@ function SignUp() {
               />
             </label>
             <br />
-            <button type="submit" style={inlineStyles.button} onMouseOver={(e) => e.target.style.backgroundColor = inlineStyles.buttonHover.backgroundColor} onMouseOut={(e) => e.target.style.backgroundColor = inlineStyles.button.backgroundColor}>
+            <button type="submit" style={inlineStyles.button}
+                    onMouseOver={(e) => e.target.style.backgroundColor = inlineStyles.buttonHover.backgroundColor}
+                    onMouseOut={(e) => e.target.style.backgroundColor = inlineStyles.button.backgroundColor}>
               가입하기
             </button>
           </form>

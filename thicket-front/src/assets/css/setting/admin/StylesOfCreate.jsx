@@ -61,7 +61,7 @@ export const CalenderDiv = styled.div`
 
 export const H1 = styled.h1`
     margin: 0 0 20px 0;
-    padding-left: 5px;
+    padding-left: 10px;
 `;
 
 export const CustomH1 = styled.h1`

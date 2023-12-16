@@ -39,7 +39,7 @@ export default function Header() {
                 <Menubar>
                     <div style={{ display: "flex", margin: "auto" }}>
                         <div style={{ display: "flex", alignItems: "center", width: "650px" }}>
-                            <div style={{ width: "20px" }}></div>
+                            <div style={{ width: "10px" }}></div>
                             <input style={{ height: "30px", width: "185px", marginRight: "5px" }} />
                             <FaSearch />
                             <div style={{ width: "20px" }}></div>
@@ -54,7 +54,6 @@ export default function Header() {
                             <HeaderMenu name={"마이페이지"} link={"/mypage"} />
                             <HeaderMenu name={"임시어드민"} link={"/admin"} />
                             <HeaderMenu name={"로그아웃"} />
-                            <div style={{ width: "10px" }}></div>
                         </div>
                     </div>
                 </Menubar>
