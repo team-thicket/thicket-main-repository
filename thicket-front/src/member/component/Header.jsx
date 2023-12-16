@@ -43,10 +43,10 @@ export default function Header() {
                             <input style={{ height: "30px", width: "185px", marginRight: "5px" }} />
                             <FaSearch />
                             <div style={{ width: "20px" }}></div>
-                            <HeaderMenu name={"뮤지컬"} />
-                            <HeaderMenu name={"연극"} />
-                            <HeaderMenu name={"콘서트"} />
-                            <HeaderMenu name={"티켓오픈"} />
+                            <HeaderMenu name={"뮤지컬"} link={"/musical"} />
+                            <HeaderMenu name={"연극"} link={"/play"} />
+                            <HeaderMenu name={"콘서트"} link={"/concert"} />
+                            <HeaderMenu name={"티켓오픈"} link={"/soon"} />
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'flex-end', width: "630px" }}>
                             <HeaderMenu name={"로그인"} link={"/login"} />
