@@ -1,12 +1,19 @@
-import { Wrapper, InvisibleScroll, MainContainer, DivList, RankCard, OpenCard, H1 } from "../../assets/css/setting/MainStyleCSS";
+import {
+    Wrapper,
+    InvisibleScroll,
+    MainContainer,
+    DivList,
+    RankCard,
+    OpenCard,
+    H1,
+    Advertisement,
+    AdvertisementInfo
+} from "../../assets/css/setting/MainStyleCSS";
 
 function MainAllList() {
 
     return (
         <Wrapper>
-            <div>
-                광고주님 광고 부탁드립니다
-            </div>
             <InvisibleScroll>
                 <MainContainer>
                     <H1> 뮤지컬 Top5.</H1>
@@ -44,9 +51,11 @@ function MainAllList() {
                     </DivList>
                 </MainContainer>
             </InvisibleScroll>
-            <div>
-                광고주님 광고 부탁드립니다
-            </div>
+            <Advertisement>
+                <AdvertisementInfo>광고 ㅋㅋㅋㅋ</AdvertisementInfo>
+                <div style={{ width: "1280px" }}></div>
+                <AdvertisementInfo>ㅋㅋㅋㅋ 광고</AdvertisementInfo>
+            </Advertisement>
         </Wrapper>
     )
 }

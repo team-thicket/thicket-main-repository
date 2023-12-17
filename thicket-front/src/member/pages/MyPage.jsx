@@ -5,7 +5,7 @@ import React, {useState} from "react";
 import {MemberTicketingList} from "../component/MemberTicketingList";
 import {MemberViewingList} from "../component/MemberViewingList";
 import {MemberCouponList} from "../component/MemberCouponList";
-import {ASide, Main, Wrapper} from "../../assets/css/setting/MainStyleCSS";
+import { Wrapper, MarginTop, Container, ASide, Main } from "../../assets/css/setting/MainStyleCSS";
 
 const MyPage = () => {
     const [content, setContent] = useState("mypage");
@@ -23,13 +23,17 @@ const MyPage = () => {
 
     return (
         <Wrapper>
-            <ASide>
-                <Menu name={"회원 정보"} onClick={() => contentHandler("mypage")} />
-                <Menu name={"예매 내역"} onClick={() => contentHandler("ticketing")} />
-                <Menu name={"관람 내역"} onClick={() => contentHandler("viewing")} />
-                <Menu name={"보유 쿠폰"} onClick={() => contentHandler("coupon")} />
-            </ASide>
-            {content && <Main>{selectComponent[content]}</Main>}
+            <MarginTop>
+                <Container>
+                    <ASide>
+                        <Menu name={"회원 정보"} onClick={() => contentHandler("mypage")} />
+                        <Menu name={"예매 내역"} onClick={() => contentHandler("ticketing")} />
+                        <Menu name={"관람 내역"} onClick={() => contentHandler("viewing")} />
+                        <Menu name={"보유 쿠폰"} onClick={() => contentHandler("coupon")} />
+                    </ASide>
+                    <Main>{selectComponent[content]}</Main>
+                </Container>
+            </MarginTop>
         </Wrapper>
     );
 };

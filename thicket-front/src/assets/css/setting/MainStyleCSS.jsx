@@ -4,30 +4,31 @@ export const Wrapper = styled.div`
   display: flex; // Flex 컨테이너로 설정하여 자식 요소들을 플렉스 방향으로 배치
   width: 100%; // 부모 요소에 대해 100%의 너비를 차지
   justify-content: center;
-`
-export const ASide = styled.div`
-  align-items: center; // 자식 요소를 수직으로 중앙 정렬
-  padding: 10px; // 모든 측면에 10px의 안쪽 여백 적용
-  margin: 70px 1098px 20px 0; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
-  border: black solid 1px; // 1px 두께의 검은색 실선 테두리
-  border-radius: 5px; // 5px의 테두리를 둥글게 처리
-  width: 160px;
-  display: inline-block; // 인라인-블록 요소로 설정
+`;
+
+export const Advertisement = styled.main`
+  margin-top: 60px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
   position: fixed; // 위치 고정
-`
-export const Main = styled.div`
-  padding: 10px; // 모든 측면에 10px의 안쪽 여백 적용
-  margin: 70px 0 20px 202px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
-  border: black solid 1px; // 1px 두께의 검은색 실선 테두리
-  border-radius: 5px; // 5px의 테두리를 둥글게 처리
-  width: 1056px;
-  height: auto; // 부모 요소 대비 100%의 높이 할당
-  display: inline-block; // 인라인-블록 요소로 설정
-  position: fixed; // 위치 고정
-`
+  display: flex;
+  justify-content:center;
+  align-items : center;
+`;
+export const AdvertisementInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 700px;
+  padding: 10px;
+  margin: 70px;
+  border: 1px solid #000;
+  border-radius: 10px;
+  background-color: #ccc;
+`;
 
 export const InvisibleScroll = styled.main`
-  margin-top: 70px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
+  margin-top: 51px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
   width: 1280px;
   height: auto;
   position: fixed; // 위치 고정
@@ -39,11 +40,9 @@ export const InvisibleScroll = styled.main`
   }
   //border: black solid 1px; // 1px 두께의 검은색 실선 테두리, 사이즈 확인용
 `;
-
 export const MainContainer = styled.div`
     overflow-y: auto; // 내부 수직 스크롤바
-    max-height: 85vh; // 
-    width: 100%;
+    max-height: 85.7vh; // 
 `;
 
 export const DivList = styled.div`
@@ -152,4 +151,31 @@ export const OpenCard = ({date}) => {
 
 export const H1 = styled.h1`
     margin: 20px 0 20px 0;
+`;
+
+export const MarginTop = styled.main`
+  margin-top: 70px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
+  width: 1280px;
+  position: fixed; // 위치 고정
+`;
+
+export const Container = styled.div`
+  display: flex;
+  align-items: flex-start;
+`;
+
+export const ASide = styled.div`
+  align-items: center; // 자식 요소를 수직으로 중앙 정렬
+  width: 160px;
+  padding: 10px; // 모든 측면에 10px의 안쪽 여백 적용
+  border: black solid 1px; // 1px 두께의 검은색 실선 테두리
+  border-radius: 5px; // 5px의 테두리를 둥글게 처리
+`;
+
+export const Main = styled.div`
+  width: 1056px;
+  padding: 10px; // 모든 측면에 10px의 안쪽 여백 적용
+  margin-left: 20px; 
+  border: black solid 1px; // 1px 두께의 검은색 실선 테두리
+  border-radius: 5px; // 5px의 테두리를 둥글게 처리
 `;
