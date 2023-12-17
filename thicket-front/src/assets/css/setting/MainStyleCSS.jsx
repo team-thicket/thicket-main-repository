@@ -37,39 +37,119 @@ export const InvisibleScroll = styled.main`
   ::-webkit-scrollbar {
     display: none;
   }
+  //border: black solid 1px; // 1px 두께의 검은색 실선 테두리, 사이즈 확인용
 `;
 
 export const MainContainer = styled.div`
     overflow-y: auto; // 내부 수직 스크롤바
     max-height: 85vh; // 
+    width: 100%;
 `;
 
-export const Poster = styled.div`
+export const DivList = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+`;
+
+export const Poster1 = styled.div`
   display: inline-block;
-  width: 252px;
-  height: 200px;
-  margin: 1px 1px 40px 1px;
-  border: black solid 1px; // 1px 두께의 검은색 실선 테두리, 사이즈 확인
+  margin-bottom: 20px;
+`;
+
+export const Img1 = styled.img`
+  width: 240px;
+  height: 320px;
+  border-radius: 10px 10px 0 0;
+`;
+
+export const ImgDiv1 = styled.div`
+  width: 240px;
+  height: 320px;
+  border-radius: 10px 10px 0 0;
+  background-color: grey;  // 여기부터 아래까지는
+  display: flex;           // 빼도 됨
+  align-items: center;     // 글자 가운데 보려고
+  justify-content: center; // 넣은거임
+`;
+
+export const ImgDivInfo1 = styled.div`
+  width: 218px;
+  padding: 10px;
+  border: 1px solid;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
 `;
 
 export const RankCard = ({rank}) => {
     return (
-        <Poster>
-            <img/>
-            <div>{rank}</div>
-            <div>제목</div>
-            <div>살려주세요</div>
-        </Poster>
+        <div style={{ display: "inline-block"  }}>
+            <Poster1>
+                {/*<Img1 />*/}
+                <ImgDiv1>이미지</ImgDiv1>
+                <ImgDivInfo1>
+                    <div>{rank}</div>
+                    <div>제목</div>
+                    <div>살려주세요</div>
+                </ImgDivInfo1>
+            </Poster1>
+        </div>
     )
 };
 
+export const Poster2 = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+export const Img2 = styled.img`
+  width: 140px;
+  height: 186px;
+  border-radius: 10px 0 0 10px;
+`;
+
+export const ImgDiv2 = styled.div`
+  width: 140px;
+  height: 186px;
+  border-radius: 10px 0 0 10px;
+  background-color: grey;  // 여기부터 아래까지는
+  display: flex;           // 빼도 됨
+  align-items: center;     // 글자 가운데 보려고
+  justify-content: center; // 넣은거임
+`;
+
+export const ImgDivInfo2 = styled.div`
+  width: 232px;
+  height: 184px;
+  padding: 0 20px;
+  border: 1px solid;
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+`;
+
 export const OpenCard = ({date}) => {
     return (
-        <Poster>
-            <img/>
-            <div>{date}</div>
-            <div>제목</div>
-            <div>살려주세요</div>
-        </Poster>
+        <Poster2>
+            <ImgDiv2>이미지</ImgDiv2>
+            <ImgDivInfo2>
+                <div>{date}</div>
+                <div>제목</div>
+                <div>살려주세요</div>
+            </ImgDivInfo2>
+        </Poster2>
     )
 };
+
+export const H1 = styled.h1`
+    margin: 20px 0 20px 0;
+`;

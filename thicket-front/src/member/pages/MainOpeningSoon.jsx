@@ -1,37 +1,38 @@
-import {Wrapper, InvisibleScroll, MainContainer, OpenCard } from "../../assets/css/setting/MainStyleCSS";
-import { H1 } from "../../assets/css/setting/admin/StylesOfList";
+import {Wrapper, InvisibleScroll, MainContainer, OpenCard, H1, DivList} from "../../assets/css/setting/MainStyleCSS";
 
 function MainOpeningSoon() {
+
     return (
         <Wrapper>
             <InvisibleScroll>
                 <MainContainer>
-                    <H1>티켓오픈</H1>
-                    <OpenCard date={"2023-11-16"}/>
-                    <OpenCard date={"2023-11-17"}/>
-                    <OpenCard date={"2023-12-16"}/>
-                    <OpenCard date={"2023-11-30"}/>
-                    <OpenCard date={"2023-12-7"}/>
-                    <OpenCard date={"2023-11-16"}/>
-                    <OpenCard date={"2023-11-17"}/>
-                    <OpenCard date={"2023-12-16"}/>
-                    <OpenCard date={"2023-11-30"}/>
-                    <OpenCard date={"2023-12-7"}/>
-                    <OpenCard date={"2023-11-16"}/>
-                    <OpenCard date={"2023-11-17"}/>
-                    <OpenCard date={"2023-12-16"}/>
-                    <OpenCard date={"2023-11-30"}/>
-                    <OpenCard date={"2023-12-7"}/>
-                    <OpenCard date={"2023-11-16"}/>
-                    <OpenCard date={"2023-11-17"}/>
-                    <OpenCard date={"2023-12-16"}/>
-                    <OpenCard date={"2023-11-30"}/>
-                    <OpenCard date={"2023-12-7"}/>
-                    <OpenCard date={"2023-11-16"}/>
-                    <OpenCard date={"2023-11-17"}/>
-                    <OpenCard date={"2023-12-16"}/>
-                    <OpenCard date={"2023-11-30"}/>
-                    <OpenCard date={"2023-12-7"}/>
+                    <H1>티켓오픈 목록</H1>
+                    <DivList>
+                        <OpenCard date={"2023-11-16"}/>
+                        <OpenCard date={"2023-11-17"}/>
+                        <OpenCard date={"2023-12-18"}/>
+                        <OpenCard date={"2023-11-19"}/>
+                        <OpenCard date={"2023-11-20"}/>
+                        <OpenCard date={"2023-12-21"}/>
+                        <OpenCard date={"2023-11-16"}/>
+                        <OpenCard date={"2023-11-17"}/>
+                        <OpenCard date={"2023-12-18"}/>
+                        <OpenCard date={"2023-11-19"}/>
+                        <OpenCard date={"2023-11-20"}/>
+                        <OpenCard date={"2023-12-21"}/>
+                        <OpenCard date={"2023-11-16"}/>
+                        <OpenCard date={"2023-11-17"}/>
+                        <OpenCard date={"2023-12-18"}/>
+                        <OpenCard date={"2023-11-19"}/>
+                        <OpenCard date={"2023-11-20"}/>
+                        <OpenCard date={"2023-12-21"}/>
+                        <OpenCard date={"2023-11-16"}/>
+                        <OpenCard date={"2023-11-17"}/>
+                        <OpenCard date={"2023-12-18"}/>
+                        <OpenCard date={"2023-11-19"}/>
+                        <OpenCard date={"2023-11-20"}/>
+                        <OpenCard date={"2023-12-21"}/>
+                    </DivList>
                 </MainContainer>
             </InvisibleScroll>
         </Wrapper>

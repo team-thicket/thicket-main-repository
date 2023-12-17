@@ -1,4 +1,4 @@
-import Main from "../pages/Main";
+import MainAllList from "../pages/MainAllList";
 import Header from "./Header";
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import MyPage from "../pages/MyPage";
@@ -25,7 +25,7 @@ function Layout() {
                 <Header />
                 <Router>
                     <Routes>
-                        <Route index element={<Main />} />
+                        <Route index element={<MainAllList />} />
                         <Route path="musical" element={<MainMusicalList />} />
                         <Route path="play" element={<MainPlayList />} />
                         <Route path="concert" element={<MainConcertList />} />

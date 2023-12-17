@@ -85,6 +85,7 @@ function AuthPage() {
   return (
       <div style={inlineStyles.authPageContainer}>
         <div style={{ border: '1px solid #000', borderRadius: '5px', padding: '10px', display: 'inline-block' }}>
+          <H1>회원가입</H1>
           <H1>인증 부탁드립니다</H1>
           <form onSubmit={handleSubmit}>
             <div style={inlineStyles.formRow}>
