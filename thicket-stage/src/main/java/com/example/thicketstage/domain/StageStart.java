@@ -20,13 +20,21 @@ public class StageStart extends TimeStamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 100, nullable = false)
     private LocalDate date;
 
-    @ElementCollection
-    private List<LocalTime> times = new ArrayList<>();
+    @Column(length = 100, nullable = false)
+    private LocalTime time;
+
+//    @ElementCollection
+//    private List<LocalTime> times = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Stage stage;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "stageStart")
+    private List<Chair> chair = new ArrayList<>();
+
 
 //    // 연관관계 메서드 //
     public void foreignKey(Stage stage){
@@ -36,10 +44,11 @@ public class StageStart extends TimeStamp {
 
     // 비즈니스 로직 //
     public static StageStart createStageStart(LocalDate newDate,
-                                              List<LocalTime> newTime, Stage stage) {
+                                              LocalTime newTime,
+                                              Stage stage) {
         StageStart stageStart = new StageStart();
         stageStart.date = newDate;
-        stageStart.times.addAll(newTime);
+        stageStart.time = newTime;
         stageStart.foreignKey(stage);
 
         return stageStart;
