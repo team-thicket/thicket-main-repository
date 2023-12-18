@@ -1,4 +1,11 @@
-import {Wrapper, InvisibleScroll, MainContainer, RankCard, H1, DivList} from "../../assets/css/setting/MainStyleCSS";
+import {
+    Wrapper,
+    InvisibleScroll,
+    MainContainer,
+    H1,
+    DivList,
+    RankCard,
+} from "../../assets/css/setting/MainStyleCSS";
 
 function MainPlayList() {
 

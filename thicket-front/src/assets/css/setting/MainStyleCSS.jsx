@@ -6,27 +6,6 @@ export const Wrapper = styled.div`
   justify-content: center;
 `;
 
-export const Advertisement = styled.main`
-  margin-top: 60px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
-  position: fixed; // 위치 고정
-  display: flex;
-  justify-content:center;
-  align-items : center;
-`;
-export const AdvertisementInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 150px;
-  height: 700px;
-  padding: 10px;
-  margin: 70px;
-  border: 1px solid #000;
-  border-radius: 10px;
-  background-color: #ccc;
-`;
-
 export const InvisibleScroll = styled.main`
   margin-top: 51px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
   width: 1280px;
@@ -42,7 +21,7 @@ export const InvisibleScroll = styled.main`
 `;
 export const MainContainer = styled.div`
     overflow-y: auto; // 내부 수직 스크롤바
-    max-height: 85.7vh; // 
+    max-height: 88vh; // 
 `;
 
 export const DivList = styled.div`
@@ -178,4 +157,27 @@ export const Main = styled.div`
   margin-left: 20px; 
   border: black solid 1px; // 1px 두께의 검은색 실선 테두리
   border-radius: 5px; // 5px의 테두리를 둥글게 처리
+`;
+
+export const 왼쪽광고 = styled.div`
+  width: 100px;
+  height: 513px;
+  margin: 126px 655px 0 0;
+  border: 1px solid #000;
+  border-radius: 10px;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+export const 오른쪽광고 = styled.div`
+  width: 100px;
+  height: 513px;
+  margin: 126px 0 0 655px;
+  border: 1px solid #000;
+  border-radius: 10px;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

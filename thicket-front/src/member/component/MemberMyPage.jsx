@@ -30,7 +30,7 @@ export const MemberMyPage = ({contentHandler}) => {
         fetch('/members',{
             method: "GET",
             headers: {
-                "Authorization":'5190321b-4f74-4953-8ed2-a2789cd83042'
+                "Authorization":'c8fced4f-e838-4804-b5e1-0e9995784179'
             }
         })
             .then(res => res.json())

@@ -1,4 +1,12 @@
-import {Wrapper, InvisibleScroll, MainContainer, OpenCard, H1, DivList} from "../../assets/css/setting/MainStyleCSS";
+import {
+    Wrapper,
+    InvisibleScroll,
+    MainContainer,
+    H1,
+    DivList,
+    OpenCard,
+    왼쪽광고, 오른쪽광고
+} from "../../assets/css/setting/MainStyleCSS";
 
 function MainOpeningSoon() {
 
@@ -35,6 +43,8 @@ function MainOpeningSoon() {
                     </DivList>
                 </MainContainer>
             </InvisibleScroll>
+            <왼쪽광고>광고</왼쪽광고>
+            <오른쪽광고>광고</오른쪽광고>
         </Wrapper>
     );
 };

@@ -2,12 +2,10 @@ import {
     Wrapper,
     InvisibleScroll,
     MainContainer,
+    H1,
     DivList,
     RankCard,
     OpenCard,
-    H1,
-    Advertisement,
-    AdvertisementInfo
 } from "../../assets/css/setting/MainStyleCSS";
 
 function MainAllList() {
@@ -51,11 +49,6 @@ function MainAllList() {
                     </DivList>
                 </MainContainer>
             </InvisibleScroll>
-            <Advertisement>
-                <AdvertisementInfo>광고 ㅋㅋㅋㅋ</AdvertisementInfo>
-                <div style={{ width: "1280px" }}></div>
-                <AdvertisementInfo>ㅋㅋㅋㅋ 광고</AdvertisementInfo>
-            </Advertisement>
         </Wrapper>
     )
 }
