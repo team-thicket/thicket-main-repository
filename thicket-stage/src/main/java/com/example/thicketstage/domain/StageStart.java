@@ -26,9 +26,6 @@ public class StageStart extends TimeStamp {
     @Column(length = 100, nullable = false)
     private LocalTime time;
 
-//    @ElementCollection
-//    private List<LocalTime> times = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Stage stage;
 

@@ -44,8 +44,6 @@ public class RequestCreateStageDto {
 
     private StageType stageType;
 
-//    private StageStatus stageStatus;
-
     private String posterImg;
 
     private String detailPosterImg;
@@ -58,13 +56,12 @@ public class RequestCreateStageDto {
                 stageOpen,stageClose,
                 lastTicket, runningTime,
                 ageLimit, stageType,
-//                stageStatus,
                 posterImg,
                 detailPosterImg,stageInfo);
     }
 
     // 테스트용 메서드
-    public Long getId() {
-        return 1L;
-    }
+//    public Long getId() {
+//        return 1L;
+//    }
 }

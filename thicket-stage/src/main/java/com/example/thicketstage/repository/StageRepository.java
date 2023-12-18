@@ -11,16 +11,11 @@ import java.util.Optional;
 
 public interface StageRepository extends JpaRepository<Stage, Long> {
 
-//    Page<Stage> findByStageStatusOrderByCreateAtDesc(StageStatus stageStatus, Pageable pageable);
-
     @Query("SELECT s FROM Stage s WHERE s.name LIKE :keyword OR s.place LIKE :keyword")
     List<Stage> searchByNameOrPlace(@Param("keyword") String keyword);
 
     List<Stage> findByStageType(StageType stageType);
-//    List<Stage> findByStageTypeOrderByCreateAtDesc(StageType stageType);
 
     Optional<Stage> findByUuid(String uuid);
-
-//    List<Stage> findByStageStatus(StageStatus stageStatus);
 
 }

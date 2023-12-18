@@ -8,6 +8,10 @@ import com.example.thicketstage.service.StageService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,15 +36,14 @@ public class StageController {
         return ResponseEntity.ok(stageService.getAllStage());
     }
 
-    // 진행중인 공연 모두 최신 순으로 ->작성중
-//    @GetMapping("ongoing") // API 명세 => GET /shows/ongoing
-//    public ResponseEntity<?> getOngoingList(@RequestParam(defaultValue = "0") int page,
-//                                           @RequestParam(defaultValue = "6") int size) {
-//        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-//        Page<ResponseStageThumbnailDto> ongoingList = stageService.getOngoingList(StageStatus.ONGOING,
-//                                                                                pageable);
-//        return ResponseEntity.ok(ongoingList.getContent());
-//    }
+    // 진행중인 공연 모두 최신 순으로
+    @GetMapping("ongoing") // API 명세 => GET /shows/ongoing
+    public ResponseEntity<?> getOngoingList(@RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "6") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<ResponseStageThumbnailDto> ongoingList = stageService.getOngoingList(pageable);
+        return ResponseEntity.ok(ongoingList.getContent());
+    }
 
     // 공연 하나 선택 했을 때 상세 페이지 조회 되게
     @GetMapping("stagedetail/{uuid}") // API 명세 => GET /shows/stagedetail/{uuid}
@@ -48,34 +51,46 @@ public class StageController {
         return ResponseEntity.ok(stageService.stageDetail(uuid));
     }
 
-    // StageType별로 줄세우기 -> ONGOING + 최신순 수정해야함
+    // StageType별로 줄세우기 -> ONGOING + 최신순
     @GetMapping("stagetype/{stagetype}") // API 명세 => GET /shows/stagetype/{stagetype}
     public ResponseEntity<?> getStageTypeList(@PathVariable("stagetype")
-                                              @Valid StageType stageType){
-        List<ResponseStageThumbnailDto> stageTypeList = stageService.getStageTypeList(stageType);
+                                              @Valid StageType stageType,
+                                              @RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "6") int size){
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<ResponseStageThumbnailDto> stageTypeList = stageService.getStageTypeList(stageType, pageable);
 
-        return new ResponseEntity<>(stageTypeList, HttpStatus.OK);
+        return ResponseEntity.ok(stageTypeList.getContent());
     }
 
     // todo stagestatus 삭제되며 생긴 수정사항 + 앤드포인드
+    // BEFORE(관리자페이지 + memberuuid)로 나누기
     // ticketOpen 시간 비교해 이전인 것만 줄 세우기 - mainpage 커밍순 ( /shows/before)
-    // stageClose 시간 비교해 이후인 것 줄 세우기 - 관리자 page - 공연 종료 (/shows/ended)
+    @GetMapping("before") // API 명세 => GET /shows/before
+    public ResponseEntity<?> getComingSoonList(@RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "4") int size){
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<ResponseStageThumbnailDto> comingSoonList = stageService.getComingSoonList(pageable);
 
-    // StageStatus별로 줄 세우기 -> // todo BEFORE(관리자페이지 + memberuuid)로 나누기 아래 코드는 /shows/before로 변경 (삭제) ( shows/before-티켓오픈 /
-//    @GetMapping("stagestatus/{stagestatus}") // API 명세 => GET /shows/before/{stagestatus}
-//    public ResponseEntity<?> getStageStatusList(@PathVariable("stagestatus")
-//                                                @Valid StageStatus stageStatus) {
-//        List<ResponseStageThumbnailDto> stageStatusList = stageService.getStageStatusList(stageStatus);
-//
-//        return new ResponseEntity<>(stageStatusList, HttpStatus.OK);
-//    }
+        return ResponseEntity.ok(comingSoonList.getContent());
+    }
+
+    // stageClose 시간 비교해 이후인 것 줄 세우기 - 관리자 page - 공연 종료 (/shows/ended)
+    @GetMapping("ended") // API 명세 => GET /shows/ended
+    public ResponseEntity<?> getEndedList(@RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "6") int size){
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<ResponseStageThumbnailDto> endedList = stageService.getEndedList(pageable);
+
+        return ResponseEntity.ok(endedList.getContent());
+    }
 
     // keyword로 검색
     @GetMapping("search/{keyword}") // API 명세 => GET /shows/search/{keyword}
     public ResponseEntity<?> searchStage(@PathVariable @Valid String keyword) {
         List<ResponseStageThumbnailDto> stageThumbnailDtos = stageService.searchStage(keyword);
 
-        return new ResponseEntity<>(stageThumbnailDtos, HttpStatus.OK);
+        return ResponseEntity.ok(stageThumbnailDtos);
     }
 
     @PatchMapping("update/{uuid}") // API 명세 => PATCH /shows/update/{uuid}
@@ -85,14 +100,6 @@ public class StageController {
 
         return ResponseEntity.ok("수정이 완료되었습니다.");
     }
-
-//    @PatchMapping("changestatus/{uuid}") // API 명세 => PATCH /shows/changeStatus/{uuid}
-//    public ResponseEntity<?> changeStatus(@PathVariable String uuid,
-//                                          @RequestBody @Valid RequestSetNewStatusDto setNewStatusDto) {
-//        stageService.changeStatus(uuid, setNewStatusDto);
-//
-//        return ResponseEntity.ok("수정이 완료되었습니다.");
-//    }
 
     @DeleteMapping("{uuid}") // API 명세 => DELETE /shows/{uuid}
     public ResponseEntity<?> deleteStage(@PathVariable @Valid String uuid) {

@@ -11,7 +11,7 @@ public interface ChairService {
 
     public List<Chair> createChair(RequestCreateChairDto dto);
 
-    // 단일 조회 - 필요할까?
+    // 단일 조회
     public ResponseChairDto findChairByUuid(String uuid);
 
     // 전체 조회
