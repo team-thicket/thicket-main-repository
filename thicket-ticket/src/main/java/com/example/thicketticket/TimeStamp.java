@@ -19,10 +19,10 @@ import java.util.UUID;
 @Getter
 public class TimeStamp {
     @CreatedDate
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
 
     private String uuid;
     @PrePersist

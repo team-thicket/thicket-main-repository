@@ -16,10 +16,13 @@ import java.util.UUID;
 @NoArgsConstructor
 public class RequestCreateTicketDto {
 
-    private Long id;
+    private UUID id;
 
     @NotBlank(message = "stageName cannot be empty")
     private String stageName;
+
+    @NotBlank(message = "stageType cannot be empty")
+    private String stageType;
 
     @NotNull(message = "DATE cannot be null")
     private LocalDateTime date;
@@ -39,29 +42,31 @@ public class RequestCreateTicketDto {
     @Min(value = 0, message = "price must be greater than or equal to 0")
     private int price;
 
-    private int sequence;
+    private String phone;
 
     @NotNull(message = "cancelDate cannot be null")
     private LocalDateTime cancelDate;
 
     @NotNull(message = "stageId cannot be null")
-    private Long stageId;
+    private String stageId;
 
     @NotNull(message = "memberId cannot be null")
-    private Long memberId;
+    private String memberId;
+
+    @NotNull
+    private boolean deleted;
 
 
     public Ticket toEntity() {
         return Ticket.createTicket(
-                stageName,date,place,
+                stageName,place,date,
                 chairType,count,
-                memberName,price,sequence,
-                cancelDate,stageId,memberId
+                memberName,phone,price,
+                cancelDate,stageId,memberId,
+                stageType
                );
     }
 
 
-    public Long getId(){
-        return 1L;
-    }
+
 }

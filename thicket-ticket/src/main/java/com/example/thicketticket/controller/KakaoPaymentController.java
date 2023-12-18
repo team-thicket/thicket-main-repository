@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping()
+@RequestMapping("")
 public class KakaoPaymentController {
     private final KakaopayService kakaopayService;
 
     @GetMapping("ready")
-    public ResponseEntity<?> ready(@RequestParam String paymentId){
+    public ResponseEntity<?> ready(@RequestParam(name = "paymentId") String paymentId){
         return ResponseEntity.ok(kakaopayService.readyKakaopay(paymentId));
     }
 
