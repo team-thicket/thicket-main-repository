@@ -5,7 +5,19 @@ spring:
     name: thicket-member
 
   profiles:
-    active: testDB
+    active: testDB, mail
+
+  mail:
+    host: ${mail.host}
+    port: ${mail.port}
+    username: ${mail.username}
+    password: ${mail.password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
   datasource:
     driver-class-name: ${testDB.driver}

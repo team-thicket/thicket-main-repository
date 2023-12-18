@@ -10,13 +10,10 @@ import java.time.LocalDate;
 @Data
 public class ResponseMemberDto {
 
-    @NotEmpty
     private String name;
-    
     private LocalDate birth;
-
-    @Email
     private String email;
+    private String phoneNumber;
 
     public static ResponseMemberDto toDto(Member member) {
 
@@ -25,6 +22,7 @@ public class ResponseMemberDto {
         dto.name = member.getName();
         dto.birth = member.getBirth();
         dto.email = member.getEmail();
+        dto.phoneNumber = member.getPhone();
 
         return dto;
     }

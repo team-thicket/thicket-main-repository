@@ -16,7 +16,6 @@ public class ResponseStageThumbnailDto {
     private StageStatus stageStatus;
     private String posterImg;
 
-
     public ResponseStageThumbnailDto(Stage findStage) {
         this.name = findStage.getName();
         this.place = findStage.getPlace();

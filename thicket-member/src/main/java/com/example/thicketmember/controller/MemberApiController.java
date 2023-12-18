@@ -1,16 +1,14 @@
 package com.example.thicketmember.controller;
 
-import com.example.thicketmember.dto.request.RequestInactiveDto;
-import com.example.thicketmember.dto.request.RequestSetNewPasswordDto;
+import com.example.thicketmember.dto.request.*;
 import com.example.thicketmember.service.MemberService;
+import com.sun.jdi.request.DuplicateRequestException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.webjars.NotFoundException;
 
 @RestController
 @RequestMapping("members")
@@ -18,40 +16,54 @@ import org.springframework.web.bind.annotation.*;
 public class MemberApiController {
     private final MemberService memberService;
 
-
-    @GetMapping("") // api 명세 => GET /members
-    public ResponseEntity<?> findMember(HttpServletRequest req){
-        return ResponseEntity.ok(memberService.getMemberByToken(req.getHeader("Email")));
+    @PostMapping("join")
+    public ResponseEntity<?> signup(@RequestBody RequestMemberSignupDto dto) {
+        memberService.signup(dto);
+        return ResponseEntity.ok("회원가입 성공");
     }
 
-    @PatchMapping("") // api 명세 => PATCH /members
+    @PostMapping("{role}") //토큰 반환
+    public ResponseEntity<?> signin(@RequestBody RequestMemberSigninDto dto) {
+        memberService.signin(dto);
+        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).body("로그인 성공");
+    }
+
+    @GetMapping("master")
+    public ResponseEntity<?> memberList(HttpServletRequest req) {
+        if (!req.getHeader("Role").equals("MASTER")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("접근 불가능");
+        }
+        return ResponseEntity.ok(memberService.findMembers());
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> memberDetail(HttpServletRequest req) {
+        return ResponseEntity.ok(memberService.findMember(req.getHeader("Authorization")));
+    }
+
+    @PostMapping("master")
+    public ResponseEntity<?> changeMemberRole(HttpServletRequest req, @RequestBody RequestChangeMemberRoleDto dto) {
+        if (!req.getHeader("Role").equals("MASTER")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("접근 불가능");
+        }
+        memberService.changeMemberRole(dto);
+        return ResponseEntity.ok("권한 승급 성공");
+    }
+
+    @PatchMapping()
     public ResponseEntity<?> changePassword(HttpServletRequest req,
-                                            @RequestBody @Valid RequestSetNewPasswordDto dto){
-        memberService.setNewPassword(req.getHeader("Email"), dto);
-        return ResponseEntity.ok("비밀번호 변경에 성공하였습니다. 다시 로그인해주세요.");
+                                            @RequestBody RequestChangePasswordDto dto) {
+        memberService.changePassword(req.getHeader("Authorization"),dto);
+        return ResponseEntity.ok("비밀번호 변경 성공");
     }
 
-    @DeleteMapping("") // api 명세 => DELETE /members
-    public ResponseEntity<?> withdraw(HttpServletRequest req,
-                                      @RequestBody @Valid RequestInactiveDto dto){
-        memberService.setInactive(req.getHeader("Email"), dto);
-        return ResponseEntity.ok("정상적으로 탈퇴되었습니다.");
+    @DeleteMapping
+    public ResponseEntity<?> withdraw(HttpServletRequest req, @RequestBody RequestWithdrawDto dto) {
+        memberService.withdraw(req.getHeader("Authorization"),dto);
+        return ResponseEntity.ok("회원 탈퇴 성공");
     }
-
-    @PatchMapping("/change") // api 명세 => PATCH /members/change
-    public ResponseEntity<?> changeAdmin(HttpServletRequest req,
-                                         @RequestBody RequestInactiveDto dto){
-        memberService.setAdmin(req.getHeader("Email"), dto);
-        return ResponseEntity.ok("권한이 변경되었습니다.");
-    }
-
-    // @ExceptionHandler를 통해 AOP로 한번에 예외 처리
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> bindingHandler(BindingResult bindingResult) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
-    }
-    @ExceptionHandler(IllegalArgumentException.class)
+    @PostMapping()
+    @ExceptionHandler({IllegalArgumentException.class, DuplicateRequestException.class, NotFoundException.class})
     public ResponseEntity<?> exceptionHandler(Exception e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
