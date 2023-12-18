@@ -62,7 +62,7 @@ public class StageServiceImpl implements StageService{
         }
 
         return new PageImpl<>(ongoingStages, pageable, ongoingStages.size())
-                .map(ResponseStageThumbnailDto::new);
+                                        .map(ResponseStageThumbnailDto::new);
     }
 
     // 공연 하나 선택 했을 때 상세 페이지 조회 되게
@@ -78,14 +78,15 @@ public class StageServiceImpl implements StageService{
         return new ResponseStageDto(stage);
     }
 
-    // StageType 별로 줄 세우기 - 진행 중인 공연 최신 등록 순으로 정렬 + 페이징처리
+    // StageType 별로 줄 세우기 - 진행 중인 공연 최신 등록 순으로 정렬
     @Override
     public Page<ResponseStageThumbnailDto> getStageTypeList(StageType stageType, Pageable pageable) {
         LocalDateTime now = LocalDateTime.now();
 
         List<Stage> stages = stageRepository.findByStageType(stageType);
         List<Stage> ongoingStages = stages.stream()
-                .filter(stage -> stage.getStageOpen().isBefore(now) && stage.getStageClose().isAfter(now))
+                .filter(stage -> stage.getStageOpen().isBefore(now)
+                                    && stage.getStageClose().isAfter(now))
                 .toList();
 
         if(ongoingStages.isEmpty()){
@@ -93,10 +94,10 @@ public class StageServiceImpl implements StageService{
         }
 
         return new PageImpl<>(ongoingStages, pageable, ongoingStages.size())
-                .map(ResponseStageThumbnailDto::new);
+                                        .map(ResponseStageThumbnailDto::new);
     }
 
-    // -> /shows/before - ticketopen시간 비교해서 이전인것만 - 커밍순 main
+    // ticketOpen시간 비교해서 이전인것만 - 커밍순 main /shows/before
     @Override
     public Page<ResponseStageThumbnailDto> getComingSoonList(Pageable pageable){
         LocalDateTime now = LocalDateTime.now();
@@ -111,10 +112,10 @@ public class StageServiceImpl implements StageService{
         }
 
         return new PageImpl<>(comingSoonStages, pageable, comingSoonStages.size())
-                .map(ResponseStageThumbnailDto::new);
+                                             .map(ResponseStageThumbnailDto::new);
     }
 
-    // -> /shows/ended - stageClose보다 이후 - 관리자 page -- 타입을 가져와서 나눠야하나???
+    // stageClose보다 이후 - 관리자 page -> /shows/ended
     @Override
     public Page<ResponseStageThumbnailDto> getEndedList(Pageable pageable){
         LocalDateTime now = LocalDateTime.now();
@@ -129,16 +130,12 @@ public class StageServiceImpl implements StageService{
         }
 
         return new PageImpl<>(endedStages, pageable, endedStages.size())
-                .map(ResponseStageThumbnailDto::new);
+                                    .map(ResponseStageThumbnailDto::new);
     }
 
     @Override
     public List<ResponseStageThumbnailDto> searchStage(String keyword) {
         List<Stage> searchResults = stageRepository.searchByNameOrPlace("%"+keyword+"%");
-
-        if(searchResults.isEmpty()){
-            throw new EntityNotFoundException("해당 검색어의 검색 결과가 없습니다.");
-        }
 
         ArrayList<ResponseStageThumbnailDto> stageInfoList = new ArrayList<>();
 

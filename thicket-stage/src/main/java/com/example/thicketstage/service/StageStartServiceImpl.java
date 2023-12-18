@@ -40,6 +40,16 @@ public class StageStartServiceImpl implements StageStartService {
         List<StageStart> findStageStarts = stageStartRepository.findAll();
         return findStageStarts.stream().map(ResponseStageStartDto::new).toList();
     }
+
+    @Override
+    public List<ResponseStageStartDto> getStageAllStageStart(String stageUuid) {
+        Stage findStage = stageRepository.findByUuid(stageUuid)
+                .orElseThrow(() -> new EntityNotFoundException("해당 UUID의 Stage가 존재하지 않습니다."));
+        List<StageStart> allStageStarts = stageStartRepository.findByStage(findStage);
+
+        return allStageStarts.stream().map(ResponseStageStartDto::new).toList();
+    }
+
     // 회차 정보 수정은 추후 고도화 구현시 구현 예정
 //    @Override
 //    @Transactional

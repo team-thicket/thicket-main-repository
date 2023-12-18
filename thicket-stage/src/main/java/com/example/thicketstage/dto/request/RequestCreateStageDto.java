@@ -59,9 +59,4 @@ public class RequestCreateStageDto {
                 posterImg,
                 detailPosterImg,stageInfo);
     }
-
-    // 테스트용 메서드
-//    public Long getId() {
-//        return 1L;
-//    }
 }

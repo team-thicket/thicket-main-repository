@@ -36,7 +36,7 @@ public class StageController {
         return ResponseEntity.ok(stageService.getAllStage());
     }
 
-    // 진행중인 공연 모두 최신 순으로
+    // 진행중인 공연 모두 최신 순으로 => main + 관리자
     @GetMapping("ongoing") // API 명세 => GET /shows/ongoing
     public ResponseEntity<?> getOngoingList(@RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "6") int size) {
@@ -51,7 +51,7 @@ public class StageController {
         return ResponseEntity.ok(stageService.stageDetail(uuid));
     }
 
-    // StageType별로 줄세우기 -> ONGOING + 최신순
+    // StageType별로 줄세우기 -> ONGOING + 최신순 => main
     @GetMapping("stagetype/{stagetype}") // API 명세 => GET /shows/stagetype/{stagetype}
     public ResponseEntity<?> getStageTypeList(@PathVariable("stagetype")
                                               @Valid StageType stageType,
@@ -65,7 +65,7 @@ public class StageController {
 
     // todo stagestatus 삭제되며 생긴 수정사항 + 앤드포인드
     // BEFORE(관리자페이지 + memberuuid)로 나누기
-    // ticketOpen 시간 비교해 이전인 것만 줄 세우기 - mainpage 커밍순 ( /shows/before)
+    // ticketOpen 시간 비교해 이전인 것만 줄 세우기 - main 커밍순 + 관리자
     @GetMapping("before") // API 명세 => GET /shows/before
     public ResponseEntity<?> getComingSoonList(@RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "4") int size){
@@ -75,7 +75,7 @@ public class StageController {
         return ResponseEntity.ok(comingSoonList.getContent());
     }
 
-    // stageClose 시간 비교해 이후인 것 줄 세우기 - 관리자 page - 공연 종료 (/shows/ended)
+    // stageClose 시간 비교해 이후인 것 줄 세우기 - 관리자 - 공연 종료
     @GetMapping("ended") // API 명세 => GET /shows/ended
     public ResponseEntity<?> getEndedList(@RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "6") int size){
@@ -87,8 +87,12 @@ public class StageController {
 
     // keyword로 검색
     @GetMapping("search/{keyword}") // API 명세 => GET /shows/search/{keyword}
-    public ResponseEntity<?> searchStage(@PathVariable @Valid String keyword) {
+    public ResponseEntity<?> searchStage(@PathVariable("keyword") @Valid String keyword) {
         List<ResponseStageThumbnailDto> stageThumbnailDtos = stageService.searchStage(keyword);
+
+        if (stageThumbnailDtos.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 검색어의 검색 결과가 없습니다.");
+        }
 
         return ResponseEntity.ok(stageThumbnailDtos);
     }

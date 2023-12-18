@@ -54,6 +54,15 @@ public class ChairServiceImpl implements ChairService{
         return all.stream().map(ResponseChairDto::new).toList();
     }
 
+    @Override
+    public List<ResponseChairDto> getStageStartAllChair(String stageStartUuid) {
+        StageStart findStageStart = stageStartRepository.findByUuid(stageStartUuid)
+                .orElseThrow(() -> new EntityNotFoundException("해당 회차정보가 존재하지 않습니다."));
+        List<Chair> allChairs = chairRepository.findByStageStart(findStageStart);
+
+        return allChairs.stream().map(ResponseChairDto::new).toList();
+    }
+
     // 수정 - 추후 고도화 구현시 구현?
     @Override
     @Transactional
