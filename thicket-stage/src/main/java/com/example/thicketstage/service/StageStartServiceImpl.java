@@ -78,6 +78,7 @@ public class StageStartServiceImpl implements StageStartService {
 
         StageStart stageStart = optionalStageStart.get();
 
+        stageStart.deleteStageStart();
         stageStartRepository.delete(stageStart);
     }
 }
