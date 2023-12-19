@@ -63,9 +63,8 @@ public class StageController {
         return ResponseEntity.ok(stageTypeList.getContent());
     }
 
-    // todo stagestatus 삭제되며 생긴 수정사항 + 앤드포인드
-    // BEFORE(관리자페이지 + memberuuid)로 나누기
     // ticketOpen 시간 비교해 이전인 것만 줄 세우기 - main 커밍순 + 관리자
+        // BEFORE(관리자페이지 + memberuuid)로 나누기
     @GetMapping("before") // API 명세 => GET /shows/before
     public ResponseEntity<?> getComingSoonList(@RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "4") int size){

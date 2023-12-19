@@ -7,6 +7,7 @@ import com.example.thicketstage.dto.response.ResponseStageDto;
 import com.example.thicketstage.dto.response.ResponseStageThumbnailDto;
 import com.example.thicketstage.enumerate.StageType;
 import com.example.thicketstage.repository.StageRepository;
+import com.example.thicketstage.repository.StageStartRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 public class StageServiceImpl implements StageService{
 
     private final StageRepository stageRepository;
+    private final StageStartRepository stageStartRepository;
     
     @Override
     public RequestCreateStageDto createStage(RequestCreateStageDto stageDto) {
@@ -54,7 +56,8 @@ public class StageServiceImpl implements StageService{
 
         List<Stage> allStages = stageRepository.findAll();
         List<Stage> ongoingStages = allStages.stream()
-                .filter(stage -> stage.getStageOpen().isBefore(now) && stage.getStageClose().isAfter(now))
+                .filter(stage -> stage.getStageOpen().isBefore(now)
+                                    && stage.getStageClose().isAfter(now))
                 .collect(Collectors.toList());
 
         if (ongoingStages.isEmpty()) {
@@ -80,7 +83,8 @@ public class StageServiceImpl implements StageService{
 
     // StageType 별로 줄 세우기 - 진행 중인 공연 최신 등록 순으로 정렬
     @Override
-    public Page<ResponseStageThumbnailDto> getStageTypeList(StageType stageType, Pageable pageable) {
+    public Page<ResponseStageThumbnailDto> getStageTypeList(StageType stageType,
+                                                            Pageable pageable) {
         LocalDateTime now = LocalDateTime.now();
 
         List<Stage> stages = stageRepository.findByStageType(stageType);
@@ -157,6 +161,7 @@ public class StageServiceImpl implements StageService{
     }
 
     @Override
+    @Transactional
     public void deleteStage(String uuid) {
         Optional<Stage> optionalStage = stageRepository.findByUuid(uuid);
 

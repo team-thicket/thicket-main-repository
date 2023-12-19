@@ -29,7 +29,7 @@ public class StageStart extends TimeStamp {
     @ManyToOne(fetch = FetchType.LAZY)
     private Stage stage;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "stageStart")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "stageStart", cascade = CascadeType.REMOVE)
     private List<Chair> chair = new ArrayList<>();
 
 
@@ -65,7 +65,6 @@ public class StageStart extends TimeStamp {
     public void deleteStageStart() {
         if(stage != null) {
             stage.getStageStart().remove(this);
-            stage = null;
         }
     }
 }

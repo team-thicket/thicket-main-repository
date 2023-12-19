@@ -48,7 +48,7 @@ public class Stage extends TimeStamp {
     @Enumerated(EnumType.STRING)
     private StageType stageType;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "stage")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "stage")
     private List<StageStart> stageStart = new ArrayList<>();
 
     @Column(nullable = true)

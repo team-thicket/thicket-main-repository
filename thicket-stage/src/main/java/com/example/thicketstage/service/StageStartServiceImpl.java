@@ -4,6 +4,7 @@ import com.example.thicketstage.domain.Stage;
 import com.example.thicketstage.domain.StageStart;
 import com.example.thicketstage.dto.request.RequestCreateStageStartDto;
 import com.example.thicketstage.dto.response.ResponseStageStartDto;
+import com.example.thicketstage.repository.ChairRepository;
 import com.example.thicketstage.repository.StageRepository;
 import com.example.thicketstage.repository.StageStartRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,6 +21,7 @@ public class StageStartServiceImpl implements StageStartService {
 
     private final StageStartRepository stageStartRepository;
     private final StageRepository stageRepository;
+    private final ChairRepository chairRepository;
 
     @Override
     @Transactional
@@ -66,6 +68,7 @@ public class StageStartServiceImpl implements StageStartService {
 //    }
 
     @Override
+    @Transactional
     public void deleteStageStart(String uuid) {
         Optional<StageStart> optionalStageStart = stageStartRepository.findByUuid(uuid);
 
@@ -75,7 +78,6 @@ public class StageStartServiceImpl implements StageStartService {
 
         StageStart stageStart = optionalStageStart.get();
 
-        stageStart.deleteStageStart();
         stageStartRepository.delete(stageStart);
     }
 }
