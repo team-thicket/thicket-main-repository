@@ -1,52 +1,68 @@
 package com.example.thicketticket.dto.response;
 
 import com.example.thicketticket.domain.Ticket;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-@Data
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Getter
+@NoArgsConstructor
 public class ResponseTicketDto {
 
-    @NotBlank
-    private String ticketNumber;
+    private String id;
 
-    @NotBlank
+    private LocalDateTime createdAt;
+
+    private LocalDateTime date;
+
+    private LocalDateTime cancelDate;
+
     private String stageName;
 
-    @NotBlank
-    private String date;
+    private String stageType;
 
-    @NotBlank
     private String place;
 
-    @NotBlank
-    private String chairType;
-
-    @NotBlank
-    private String memberName;
-
-    @NotNull
     private int price;
 
-    @NotBlank
+    private String chairType;
+
+    private int count;
+
+    private String memberName;
+
+    private String howReceive;
+
+    private String method;
+
+    private String status;
+
     private Long stageId;
 
-    @NotBlank
     private Long memberId;
 
 
     // Ticket 엔티티를 ResponseAllTicketsDto로 변환하는 메소드
-    public static ResponseTicketDto toDto(Ticket ticket) {
-        ResponseTicketDto responseTicketDto = new ResponseTicketDto();
+    public ResponseTicketDto(Ticket ticket) {
+        this.id = String.valueOf(ticket.getId());
+        this.createdAt = ticket.getCreatedAt();
+        this.date = ticket.getDate();
+        this.cancelDate = ticket.getCancelDate();
+        this.stageName = ticket.getStageName();
+        this.stageType = ticket.getStageType();
+        this.place = ticket.getPlace();
+        this.chairType = ticket.getChairType();
+        this.count = ticket.getCount();
+        this.price = ticket.getPrice();
+        this.memberName = ticket.getMemberName();
+        this.howReceive = ticket.getPayment().getHowReceive().name();
+        this.method = ticket.getPayment().getMethod().name();
+        this.status = String.valueOf(ticket.getStatus());
 
-        responseTicketDto.setStageName(ticket.getStageName());
-        responseTicketDto.setDate(ticket.getDate());
-        responseTicketDto.setPlace(ticket.getPlace());
-        responseTicketDto.setChairType(ticket.getChairType());
-        responseTicketDto.setMemberName(ticket.getMemberName());
-        responseTicketDto.setPrice(ticket.getPrice());
-        responseTicketDto.setStageId(ticket.getStageId());
-        responseTicketDto.setMemberId(ticket.getMemberId());
-        return responseTicketDto;
     }
+
 }
