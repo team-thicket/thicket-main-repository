@@ -47,6 +47,7 @@ export default function Header() {
                             <HeaderMenu name={"연극"} link={"/play"} />
                             <HeaderMenu name={"콘서트"} link={"/concert"} />
                             <HeaderMenu name={"티켓오픈"} link={"/soon"} />
+                            <HeaderMenu name={"ㅇ"} link={"/detail"} />
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'flex-end', width: "630px" }}>
                             <HeaderMenu name={"로그인"} link={"/login"} />

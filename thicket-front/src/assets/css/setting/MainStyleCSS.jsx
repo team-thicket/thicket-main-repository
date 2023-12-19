@@ -21,7 +21,7 @@ export const InvisibleScroll = styled.main`
 `;
 export const MainContainer = styled.div`
     overflow-y: auto; // 내부 수직 스크롤바
-    max-height: 88vh; // 
+    max-height: 88.1vh; // 계산 끝
 `;
 
 export const DivList = styled.div`
@@ -141,6 +141,7 @@ export const MarginTop = styled.main`
 export const Container = styled.div`
   display: flex;
   align-items: flex-start;
+  
 `;
 
 export const ASide = styled.div`
