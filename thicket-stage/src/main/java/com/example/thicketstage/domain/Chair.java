@@ -25,10 +25,7 @@ public class Chair extends TimeStamp {
     @Column(nullable = false)
     private int price;
 
-//    @Column(nullable = false)
-//    private String stageUuid;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private StageStart stageStart;
 
     // 연관관계 메서드
@@ -66,7 +63,6 @@ public class Chair extends TimeStamp {
     public void deleteChair() {
         if(stageStart != null) {
             stageStart.getChair().remove(this);
-            stageStart = null;
         }
     }
 }

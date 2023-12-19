@@ -1,7 +1,6 @@
 package com.example.thicketstage.dto.request;
 
 import com.example.thicketstage.domain.Stage;
-import com.example.thicketstage.enumerate.StageStatus;
 import com.example.thicketstage.enumerate.StageType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -45,8 +44,6 @@ public class RequestCreateStageDto {
 
     private StageType stageType;
 
-    private StageStatus stageStatus;
-
     private String posterImg;
 
     private String detailPosterImg;
@@ -59,12 +56,7 @@ public class RequestCreateStageDto {
                 stageOpen,stageClose,
                 lastTicket, runningTime,
                 ageLimit, stageType,
-                stageStatus, posterImg,
+                posterImg,
                 detailPosterImg,stageInfo);
-    }
-
-    // 테스트용 메서드
-    public Long getId() {
-        return 1L;
     }
 }

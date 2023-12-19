@@ -2,12 +2,16 @@ package com.example.thicketstage.controller;
 
 import com.example.thicketstage.dto.request.RequestCreateChairDto;
 import com.example.thicketstage.dto.request.RequestUpdateChairDto;
+import com.example.thicketstage.dto.response.ResponseChairDto;
 import com.example.thicketstage.service.ChairService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("chairs")
@@ -34,6 +38,14 @@ public class ChairController {
         return ResponseEntity.ok(chairService.getAllChair());
     }
 
+    // 하나의 회차 정보의 모든 좌석 정보 조회
+    @GetMapping("all/{stagestartuuid}") // API 명세 => GET /chairs/all/{stagestartuuid}
+    public ResponseEntity<?> getStageStartAllChair(@PathVariable("stagestartuuid") String stageStartUuid) {
+        List<ResponseChairDto> allChair = chairService.getStageStartAllChair(stageStartUuid);
+
+        return ResponseEntity.ok(allChair);
+    }
+
     // 좌석 정보 수정은 추후 고도화시 구현
     @PatchMapping("update/{uuid}")  // API 명세 => PATCH /chairs/update/{uuid}
     public ResponseEntity<?> updateChair(@PathVariable String uuid,
@@ -48,5 +60,11 @@ public class ChairController {
         chairService.deleteChair(uuid);
 
         return ResponseEntity.ok("삭제가 완료되었습니다");
+    }
+
+    // 예외 처리
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> exceptionHandler(Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }

@@ -11,11 +11,13 @@ public interface ChairService {
 
     public List<Chair> createChair(RequestCreateChairDto dto);
 
-    // 단일 조회 - 필요할까?
+    // 단일 조회
     public ResponseChairDto findChairByUuid(String uuid);
 
     // 전체 조회
     public List<ResponseChairDto> getAllChair();
+
+    public List<ResponseChairDto> getStageStartAllChair(String stageStartUuid);
 
     // 수정 - 추후 고도화 시 구현예정
     public void updateChair(String uuid, RequestUpdateChairDto updateChairDto);
