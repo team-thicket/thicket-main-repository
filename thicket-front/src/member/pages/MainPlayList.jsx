@@ -3,7 +3,7 @@ import {
     InvisibleScroll,
     MainContainer,
     H1,
-    DivList,
+    DivList1,
     RankCard,
 } from "../../assets/css/setting/MainStyleCSS";
 
@@ -14,7 +14,7 @@ function MainPlayList() {
             <InvisibleScroll>
                 <MainContainer>
                     <H1> 연극 목록</H1>
-                    <DivList>
+                    <DivList1>
                         <RankCard rank={1}/>
                         <RankCard rank={2}/>
                         <RankCard rank={3}/>
@@ -40,7 +40,7 @@ function MainPlayList() {
                         <RankCard rank={3}/>
                         <RankCard rank={4}/>
                         <RankCard rank={5}/>
-                    </DivList>
+                    </DivList1>
                 </MainContainer>
             </InvisibleScroll>
         </Wrapper>

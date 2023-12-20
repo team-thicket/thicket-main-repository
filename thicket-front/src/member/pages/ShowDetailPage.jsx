@@ -14,39 +14,40 @@ import moment from "moment";
 
 registerLocale('ko', ko);
 
-const 메인 = styled.div`
-  border: black solid 1px; // 테두리 << 일단 확인용 나중에 지워
+const ShowMain = styled.div`
+  //border: black solid 1px; // 테두리 << 일단 확인용 나중에 지워
   ::-webkit-scrollbar {
     display: none;
   }
 `;
 
-const 사이드 = styled.div`
+const ShowSide = styled.div`
   margin-left: 20px;
   ::-webkit-scrollbar {
     display: none;
   }
 `;
 
-const 스크롤처리 = styled.div`
+const Scroll = styled.div`
     overflow-y: auto; // 내부 수직 스크롤바
-    max-height: 85.6vh;  // 계산 끝
+    max-height: 90.5vh;  // 계산 끝
 `;
 
-const 달력자리 = styled.div`
+const SideTop = styled.div`
   align-items: center; // 자식 요소를 수직으로 중앙 정렬
   width: 330px;
   border: lightgray solid 1px; // 실선 테두리
   border-radius: 15px;
   display: flex;
   flex-direction: column;
+  margin:20px 0;
 `;
 
-const 예매하기 = styled.div`
+const SideBottom = styled.div`
   display: flex;
   width: 332px;
   height: 50px;
-  margin-top: 10px;
+  margin-bottom: 20px;
   border-radius: 15px;
   align-items: center;
   justify-content: center;
@@ -104,22 +105,59 @@ const StyledCalendar = styled(Calendar)`
   }
 `;
 
+const PostImage = styled.div`
+  width: 300px;
+  height: 400px;
+  margin-top: 20px;
+  background-color: #CCC;
+`;
+
+const PostInfo = styled.div`
+  width: 584px;
+  height: 400px;
+  margin-left: 40px;
+  margin-top: 20px;
+  border: 1px solid #000;
+`;
+
+
 const LightGrayLine = styled.div`
   width: 100%;
   border-top: lightgray solid 1px;
 `;
 
-function MainDetailPage() {
+const SideFont = styled.div`
+  text-align: left;
+  font-size: 14px;
+  font-weight: bold;
+`;
+const SideMarginTop = styled.div`
+  width: 90%;
+  margin-top: 10px;
+`;
+const SideMargin = styled.div`
+  width: 90%;
+  margin: 10px 0;
+`;
+
+const ButtonList = styled.div`
+  margin-top: 5px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+`;
+
+function ShowDetailPage() {
     const [value, onChange] = useState(new Date());
 
     return (
         <Wrapper>
             <MarginTop>
                 <Container>
-                    <메인>
-                        <스크롤처리>
+                    <ShowMain>
+                        <Scroll>
                             <Container>
-                                <div style={{width: '300px', height: '400px' , backgroundColor: '#CCC'}}>
+                                <PostImage>
                                     포스터 이미지
                                     <br/>
                                     300x400 사이즈
@@ -127,8 +165,8 @@ function MainDetailPage() {
                                     <br/>
                                     <br/>
                                     ← 테두리 삭제 예정
-                                </div>
-                                <div style={{ width: '584px', height: '400px', marginLeft: '40px', border: '1px solid #000' }}>
+                                </PostImage>
+                                <PostInfo>
                                     <H1>제목 : </H1>
                                     <H1>장소 : </H1>
                                     <H1>공연기간 : </H1>
@@ -136,24 +174,22 @@ function MainDetailPage() {
                                     <H1>가격 : </H1>
                                     <H1>※ 테이블 구조로 바꿔보자</H1>
                                     <H1>(↓테두리 삭제예정)</H1>
-                                </div>
+                                </PostInfo>
                             </Container>
                             <H1>공연정보</H1>
                             <H1>(디테일이미지 전 공지사항, 매진 등 입력 가능)</H1>
                             <div style={{width: '926px', height: '2000px' , backgroundColor: '#CCC'}}>
                                 <H1>상세페이지 이미지</H1>
                                 <H1>첨부한 파일_(아래스크롤)</H1>
-                                <Calendar />
-                                <a>이건 기본 캘린더</a>
+                                <H1>그 외 기타 추가 내용이 있을까</H1>
                             </div>
-                            <H1>그 외 기타 추가 내용이 있을까</H1>
-                        </스크롤처리>
-                    </메인>
-                    <사이드>
-                        <스크롤처리 >
-                            <달력자리>
-                                <div style={{width:'90%', marginTop:'10px' }}>
-                                    <div style={{ textAlign: 'left', fontSize: '14px', fontWeight: 'bold' }}>관람일</div>
+                        </Scroll>
+                    </ShowMain>
+                    <ShowSide>
+                        <Scroll>
+                            <SideTop>
+                                <SideMarginTop>
+                                    <SideFont>관람일</SideFont>
                                     <StyledCalendar
                                         onChange={onChange}
                                         value={value}
@@ -162,28 +198,28 @@ function MainDetailPage() {
                                         showNeighboringMonth={false}
                                         calendarType="US" // 일요일부터 시작
                                     />
-                                </div>
+                                </SideMarginTop>
                                 <LightGrayLine />
-                                <div style={{width:'90%', margin:'10px 0'}}>
-                                    <div style={{ textAlign: 'left', fontSize: '14px', fontWeight: 'bold' }}>회차</div>
-                                    <div style={{ marginTop: '5px', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                                <SideMargin>
+                                    <SideFont>회차</SideFont>
+                                    <ButtonList>
                                         <div style={{ textAlign: 'center', fontSize: '14px', fontWeight: 'bold', border:'black solid 1px', borderRadius: '5px', padding:'10px'}}>1회 09:00</div>
                                         <div style={{ textAlign: 'center', fontSize: '14px', fontWeight: 'bold', border:'black solid 1px', borderRadius: '5px', padding:'10px'}}>2회 13:00</div>
                                         <div style={{ textAlign: 'center', fontSize: '14px', fontWeight: 'bold', border:'black solid 1px', borderRadius: '5px', padding:'10px'}}>3회 19:00</div>
-                                    </div>
-                                </div>
+                                    </ButtonList>
+                                </SideMargin>
                                 <LightGrayLine />
-                                <div style={{width:'90%', margin:'10px 0'}}>
-                                    <div style={{ textAlign: 'left', fontSize: '14px', fontWeight: 'bold' }}>좌석</div>
-                                    <div style={{ marginTop: '5px', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                                <SideMargin>
+                                    <SideFont>좌석</SideFont>
+                                    <ButtonList>
                                         <div style={{ textAlign: 'center', fontSize: '14px', fontWeight: 'bold', border:'black solid 1px', borderRadius: '5px', padding:'10px'}}>VIP석</div>
                                         <div style={{ textAlign: 'center', fontSize: '14px', fontWeight: 'bold', border:'black solid 1px', borderRadius: '5px', padding:'10px'}}>R석</div>
                                         <div style={{ textAlign: 'center', fontSize: '14px', fontWeight: 'bold', border:'black solid 1px', borderRadius: '5px', padding:'10px'}}>S석</div>
-                                    </div>
-                                </div>
+                                    </ButtonList>
+                                </SideMargin>
                                 <LightGrayLine />
-                                <div style={{width:'90%', margin:'10px 0'}}>
-                                    <div style={{ textAlign: 'left', fontSize: '14px', fontWeight: 'bold' }}>수량</div>
+                                <SideMargin>
+                                    <SideFont>수량</SideFont>
                                     <div style={{ marginTop: '5px' }}>
                                         <select>
                                             {[...Array(10).keys()].map((value) => (
@@ -191,29 +227,28 @@ function MainDetailPage() {
                                             ))}
                                         </select> 개
                                     </div>
-                                </div>
+                                </SideMargin>
                                 <LightGrayLine />
-                                <div style={{width:'90%', margin:'10px 0'}}>
-                                    <div style={{ textAlign: 'left', fontSize: '14px', fontWeight: 'bold' }}>선택정보</div>
+                                <SideMargin>
+                                    <SideFont>선택정보</SideFont>
                                     <div style={{ width: '90%', margin: '10px 0 0 0', display: 'grid' }}>
-                                        <div style={{ textAlign: 'left', fontSize: '14px', fontWeight: 'bold' }}>
+                                        <SideFont>
                                             yyyy년 MM월 dd일 hh:mm
                                             <br/>
                                             VIP석 1개
-                                        </div>
+                                        </SideFont>
                                     </div>
-                                </div>
-                            </달력자리>
-                            <예매하기>
+                                </SideMargin>
+                            </SideTop>
+                            <SideBottom>
                                 예매하기
-                            </예매하기>
-                        </스크롤처리>
-
-                    </사이드>
+                            </SideBottom>
+                        </Scroll>
+                    </ShowSide>
                 </Container>
             </MarginTop>
         </Wrapper>
     );
 };
 
-export default MainDetailPage;
+export default ShowDetailPage;

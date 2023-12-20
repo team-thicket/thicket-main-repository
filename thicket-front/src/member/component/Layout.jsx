@@ -13,7 +13,7 @@ import MainMusicalList from "../pages/MainMusicalList";
 import MainPlayList from "../pages/MainPlayList";
 import MainConcertList from "../pages/MainConcertList";
 import MainOpeningSoon from "../pages/MainOpeningSoon";
-import MainDetailPage from "../pages/MainDetailPage";
+import ShowDetailPage from "../pages/ShowDetailPage";
 
 export const EmailContext = createContext();
 
@@ -31,7 +31,7 @@ function Layout() {
                         <Route path="play" element={<MainPlayList />} />
                         <Route path="concert" element={<MainConcertList />} />
                         <Route path="soon" element={<MainOpeningSoon />} />
-                        <Route path="detail" element={<MainDetailPage />} />
+                        <Route path="detail" element={<ShowDetailPage />} />
                         <Route path="mypage" element={<MyPage />} />
                         <Route path="admin" element={<AdminPage />} />
                         <Route path="payment" element={<ReadyKakaopay />} />

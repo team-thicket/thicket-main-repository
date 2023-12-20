@@ -3,7 +3,7 @@ import {
     InvisibleScroll,
     MainContainer,
     H1,
-    DivList,
+    DivList2,
     OpenCard,
     왼쪽광고, 오른쪽광고
 } from "../../assets/css/setting/MainStyleCSS";
@@ -15,7 +15,7 @@ function MainOpeningSoon() {
             <InvisibleScroll>
                 <MainContainer>
                     <H1>티켓오픈 목록</H1>
-                    <DivList>
+                    <DivList2>
                         <OpenCard date={"2023-11-16"}/>
                         <OpenCard date={"2023-11-17"}/>
                         <OpenCard date={"2023-12-18"}/>
@@ -40,11 +40,11 @@ function MainOpeningSoon() {
                         <OpenCard date={"2023-11-19"}/>
                         <OpenCard date={"2023-11-20"}/>
                         <OpenCard date={"2023-12-21"}/>
-                    </DivList>
+                    </DivList2>
                 </MainContainer>
             </InvisibleScroll>
-            <왼쪽광고>광고</왼쪽광고>
-            <오른쪽광고>광고</오른쪽광고>
+            {/*<왼쪽광고>광고</왼쪽광고>*/}
+            {/*<오른쪽광고>문의</오른쪽광고>*/}
         </Wrapper>
     );
 };
