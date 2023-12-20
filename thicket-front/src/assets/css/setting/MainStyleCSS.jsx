@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Calendar from "react-calendar";
 
 export const Wrapper = styled.div`
   display: flex; // Flex 컨테이너로 설정하여 자식 요소들을 플렉스 방향으로 배치
@@ -193,4 +194,165 @@ export const 오른쪽광고 = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+// ────────────────────── 아래 부분은 쇼 디테일 페이지  ──────────────────────
+
+export const ShowMain = styled.div`
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const ShowSide = styled.div`
+  margin-left: 20px;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const Scroll = styled.div`
+    overflow-y: auto; // 내부 수직 스크롤바
+    max-height: 90.5vh;  // 계산 끝
+`;
+
+export const SideTop = styled.div`
+  align-items: center; // 자식 요소를 수직으로 중앙 정렬
+  width: 330px;
+  border: lightgray solid 1px; // 실선 테두리
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  margin:20px 0;
+`;
+
+export const SideBottom = styled.div`
+  display: flex;
+  width: 332px;
+  height: 50px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  align-items: center;
+  justify-content: center;
+  background-color: #8e43e7; 
+  cursor: pointer;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+`;
+
+export const StyledCalendar = styled(Calendar)`
+  border: none;
+
+  .react-calendar__navigation { // 년, 월
+    margin-bottom: 0px
+  }
+
+  .react-calendar__navigation__label { // 년, 월
+    font-size: 17px;
+  }
+
+  .react-calendar__navigation__arrow { // 년, 월 옆 네비게이션 버튼
+    font-size: 22px;
+  }
+
+  .react-calendar__month-view__weekdays { // 요일 전체 div
+    background-color: #f0f0f0; /* 밝은 회색 배경 설정 */
+  }
+
+  .react-calendar__month-view__weekdays__weekday {
+    font-size: 16px;
+  }
+
+  .react-calendar__month-view__days__day--weekend { // 주말 숫자
+    color: #000000; /* 주말의 기본 색상 (토요일, 일요일) */
+  }
+
+  .react-calendar__month-view__days__day { // 일일(숫자)
+    font-size: 16px;
+  }
+  
+  .react-calendar__navigation__prev2-button,
+  .react-calendar__navigation__next2-button { // 년 이동 버튼
+    display: none;
+  }
+
+  .react-calendar__navigation__prev-button { // 이전월 이동 버튼
+    color: #CCC;
+    margin-left: 40px;
+  }
+  .react-calendar__navigation__next-button { // 다음월 이동 버튼
+    color: #CCC;
+    margin-right: 40px;
+  }
+`;
+
+export const PostImage = styled.div`
+  width: 300px;
+  height: 400px;
+  margin-top: 20px;
+  background-color: #CCC;
+`;
+
+export const PostInfo = styled.div`
+  width: 604px;
+  height: 400px;
+  margin-left: 20px;
+  margin-top: 20px;
+  //border: 1px solid #000;
+`;
+
+
+export const LightGrayLine = styled.div`
+  width: 100%;
+  border-top: lightgray solid 1px;
+`;
+
+export const SideFont = styled.div`
+  text-align: left;
+  font-size: 14px;
+  font-weight: bold;
+`;
+export const SideMarginTop = styled.div`
+  width: 90%;
+  margin-top: 10px;
+`;
+export const SideMargin = styled.div`
+  width: 90%;
+  margin: 10px 0;
+`;
+
+export const ButtonList = styled.div`
+  margin-top: 5px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+`;
+
+export const ChoiceDiv = styled.div`
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px;
+`;
+
+export const Th  = styled.th`
+  width: 80px;
+  text-align: left;
+  padding: 8px 0px;
+`;
+export const Th1  = styled.th`
+  width: 80px;
+  text-align: left;
+  padding: 8px 0px;
+  vertical-align: top;
+`;
+
+export const Th2  = styled.th`
+  width: 60px;
+  text-align: left;
+  padding: 8px 0px;
 `;
