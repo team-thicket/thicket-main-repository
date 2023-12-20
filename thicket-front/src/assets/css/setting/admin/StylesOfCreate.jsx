@@ -3,9 +3,9 @@ import DatePicker from "react-datepicker";
 import React from "react";
 
 export const Container = styled.div`
-    padding: 10px;
-    overflow-y: auto; // 내부 수직 스크롤바
-    max-height: 80vh;
+  padding: 10px;
+  overflow-y: auto; // 내부 수직 스크롤바
+  max-height: 80vh;
 `;
 
 export const CustomDiv = styled.div`
@@ -48,11 +48,11 @@ export const RightDiv = styled.div`
 `;
 
 export const CalenderDiv = styled.div`
-    position: absolute;
-    left: 280px;
-    top: 5px;
-    cursor: pointer;
-  
+  position: absolute;
+  left: 280px;
+  top: 5px;
+  cursor: pointer;
+
 `;export const CalenderDiv2 = styled.div`
   position: absolute;
   left: 280px;
@@ -60,58 +60,58 @@ export const CalenderDiv = styled.div`
 `;
 
 export const H1 = styled.h1`
-    margin: 0 0 20px 0;
-    padding-left: 5px;
+  margin: 0 0 20px 0;
+  padding-left: 5px;
 `;
 
 export const CustomH1 = styled.h1`
-    margin: 60px 0 20px 0;
-    padding-left: 5px;
+  margin: 60px 0 20px 0;
+  padding-left: 5px;
 `;
 
 export const H2 = styled.h2`
-    margin: 0 0 20px 0;
-    padding-left: 5px;
+  margin: 0 0 20px 0;
+  padding-left: 5px;
 `;
 
 export const P = styled.p`
-    margin-left: 10px;
-    font-size: 15px;
-    color: #555;
-    line-height: 1.7;
+  margin-left: 10px;
+  font-size: 15px;
+  color: #555;
+  line-height: 1.7;
 `;
 
 export const Table = styled.table`
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 `;
 
 export const Th = styled.th`
-    text-align: left;
-    height: 29px;
-    padding: 10px;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #ccc;
-    background: #f7f7f7;
-    width: 180px;
-    max-width: 180px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  text-align: left;
+  height: 29px;
+  padding: 10px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #ccc;
+  background: #f7f7f7;
+  width: 180px;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Td = styled.td`
-    text-align: left;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    background: white;
-    border-top: 1px solid #000;
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  background: white;
+  border-top: 1px solid #000;
 `;
 
 export const Input = styled.input`
-    width: 300px;
-    height: 25px;
-    box-sizing: border-box;
+  width: 300px;
+  height: 25px;
+  box-sizing: border-box;
 `;
 
 export const InputFile = styled.input`
@@ -119,10 +119,10 @@ export const InputFile = styled.input`
 `;
 
 export const Textarea = styled.textarea`
-    width: 300px;
-    height: 25px;
-    box-sizing: border-box;
-    padding: 5px 0 0 1px;
+  width: 300px;
+  height: 25px;
+  box-sizing: border-box;
+  padding: 5px 0 0 1px;
 `;
 
 export const Button = styled.button`

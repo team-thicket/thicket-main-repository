@@ -60,7 +60,7 @@ const AdminCreateShow = () => {
         }
         const newRoot = document.createElement('div'); // 새로운 루트 엘리먼트 생성
         const newRootInstance = createRoot(newRoot); // 새로운 루트 인스턴스 생성
-        const newWindow = window.open('', '_blank', 'width=240,height=220,left=100,top=100');
+        const newWindow = window.open('', '_blank', 'width=240,height=210,left=100,top=100');
         newWindow.document.body.appendChild(newRoot); // 새 창에 추가
 
         newRootInstance.render(
@@ -127,7 +127,7 @@ const AdminCreateShow = () => {
     const handleAddButtonClick = () => {
         const newRoot = document.createElement('div'); // 새로운 루트 엘리먼트 생성
         const newRootInstance = createRoot(newRoot); // 새로운 루트 인스턴스 생성
-        const newWindow = window.open('', '_blank', 'width=400,height=240,left=100,top=100');
+        const newWindow = window.open('', '_blank', 'width=280,height=240,left=100,top=100');
         newWindow.document.body.appendChild(newRoot); // 새 창에 루트 엘리먼트 추가
 
         newRootInstance.render(
@@ -430,7 +430,7 @@ const AdminCreateShow = () => {
                         <Th>좌석</Th>
                         <Td>
                             <Button1 onClick={handleAddButtonClick}>
-                                추가
+                                좌석추가
                             </Button1>
                         </Td>
                     </tr>
