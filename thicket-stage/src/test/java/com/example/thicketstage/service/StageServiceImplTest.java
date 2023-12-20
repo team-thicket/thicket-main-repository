@@ -4,6 +4,7 @@ import com.example.thicketstage.domain.Stage;
 import com.example.thicketstage.dto.request.RequestCreateStageDto;
 import com.example.thicketstage.dto.request.RequestDeleteStageDto;
 import com.example.thicketstage.dto.request.RequestUpdateInfoDto;
+import com.example.thicketstage.dto.response.ResponseAdminStageDto;
 import com.example.thicketstage.dto.response.ResponseStageDto;
 import com.example.thicketstage.dto.response.ResponseStageThumbnailDto;
 import com.example.thicketstage.enumerate.StageType;
@@ -165,7 +166,7 @@ class StageServiceImplTest {
         stageRepository.save(stage2);
 
     //when
-        List<ResponseStageThumbnailDto> allStage = stageService.getAllStage();
+        List<ResponseAdminStageDto> allStage = stageService.getAllStage();
     //then
         assertEquals(5, allStage.size());
         assertTrue(allStage.stream().anyMatch(dto -> dto.getName().equals("뮤지컬<펀홈>")));
@@ -405,11 +406,11 @@ class StageServiceImplTest {
         );
         stageRepository.save(stage2);
 
-        Page<ResponseStageThumbnailDto> resultList = stageService
+        Page<ResponseAdminStageDto> resultList = stageService
                                                      .getEndedList(PageRequest.of(0, 6,
                                                      Sort.by(Sort.Order.desc("createAt"))));
 
-        List<ResponseStageThumbnailDto> endedList = resultList.getContent();
+        List<ResponseAdminStageDto> endedList = resultList.getContent();
         assertEquals(3, endedList.size());
         assertTrue(endedList.stream().anyMatch(dto -> dto.getName().equals("뮤지컬<라이온킹>")));
         assertTrue(endedList.stream().anyMatch(dto -> dto.getName().equals("청소년극<발가락육상천재>")));
