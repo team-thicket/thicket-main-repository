@@ -2,6 +2,7 @@ package com.example.thicketstage.service;
 
 import com.example.thicketstage.dto.request.RequestCreateStageDto;
 import com.example.thicketstage.dto.request.RequestUpdateInfoDto;
+import com.example.thicketstage.dto.response.ResponseAdminStageDto;
 import com.example.thicketstage.dto.response.ResponseStageDto;
 import com.example.thicketstage.dto.response.ResponseStageThumbnailDto;
 import com.example.thicketstage.enumerate.StageType;
@@ -14,9 +15,11 @@ public interface StageService {
 
     public RequestCreateStageDto createStage(RequestCreateStageDto stageDto);
 
-    List<ResponseStageThumbnailDto> getAllStage();
+    List<ResponseAdminStageDto> getAllStage();
 
     Page<ResponseStageThumbnailDto> getOngoingList(Pageable pageable);
+
+    Page<ResponseAdminStageDto> getOngoingListAdmin(Pageable pageable);
 
     public ResponseStageDto stageDetail(String uuid);
 
@@ -24,7 +27,9 @@ public interface StageService {
 
     Page<ResponseStageThumbnailDto> getComingSoonList(Pageable pageable);
 
-    Page<ResponseStageThumbnailDto> getEndedList(Pageable pageable);
+    Page<ResponseAdminStageDto> getComingSoonListAdmin(Pageable pageable);
+
+    Page<ResponseAdminStageDto> getEndedList(Pageable pageable);
 
     List<ResponseStageThumbnailDto> searchStage(String keyword);
 

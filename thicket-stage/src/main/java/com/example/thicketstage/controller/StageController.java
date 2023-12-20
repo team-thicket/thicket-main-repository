@@ -2,10 +2,10 @@ package com.example.thicketstage.controller;
 
 import com.example.thicketstage.dto.request.RequestCreateStageDto;
 import com.example.thicketstage.dto.request.RequestUpdateInfoDto;
+import com.example.thicketstage.dto.response.ResponseAdminStageDto;
 import com.example.thicketstage.dto.response.ResponseStageThumbnailDto;
 import com.example.thicketstage.enumerate.StageType;
 import com.example.thicketstage.service.StageService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,17 +31,32 @@ public class StageController {
         return new ResponseEntity<>(createStageDto, HttpStatus.CREATED);
     }
 
-    @GetMapping("all") // API 명세 => GET /shows/all - memberuuid 엮어서 내가 쓴 글 all이 필요
+    @GetMapping("all") // API 명세 => GET /shows/all - memberuuid 엮어서 관리자 전체 목록이 필요
     public ResponseEntity<?> getAllStages() {
-        return ResponseEntity.ok(stageService.getAllStage());
+        List<ResponseAdminStageDto> allStage = stageService.getAllStage();
+
+        if(allStage.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("공연 목록이 존재하지 않습니다.");
+        }
+
+        return ResponseEntity.ok(allStage);
     }
 
-    // 진행중인 공연 모두 최신 순으로 => main + 관리자
+    // 진행중인 공연 모두 최신 순으로 => main
     @GetMapping("ongoing") // API 명세 => GET /shows/ongoing
     public ResponseEntity<?> getOngoingList(@RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "6") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<ResponseStageThumbnailDto> ongoingList = stageService.getOngoingList(pageable);
+        return ResponseEntity.ok(ongoingList.getContent());
+    }
+
+    // 진행 중인 공연 최신 순으로 => 관리자
+    @GetMapping("ongoing/admin") // API 명세 => GET /shows/ongoing
+    public ResponseEntity<?> getOngoingListAdmin(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<ResponseAdminStageDto> ongoingList = stageService.getOngoingListAdmin(pageable);
         return ResponseEntity.ok(ongoingList.getContent());
     }
 
@@ -63,8 +78,7 @@ public class StageController {
         return ResponseEntity.ok(stageTypeList.getContent());
     }
 
-    // ticketOpen 시간 비교해 이전인 것만 줄 세우기 - main 커밍순 + 관리자
-        // BEFORE(관리자페이지 + memberuuid)로 나누기
+    // ticketOpen 시간 비교해 이전인 것만 줄 세우기 - main 커밍순
     @GetMapping("before") // API 명세 => GET /shows/before
     public ResponseEntity<?> getComingSoonList(@RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "4") int size){
@@ -74,12 +88,22 @@ public class StageController {
         return ResponseEntity.ok(comingSoonList.getContent());
     }
 
+    // ticketOpen 시간 비교해 이전인 것만 줄 세우기 => admin
+    @GetMapping("before/admin") // API 명세 => GET /shows/before
+    public ResponseEntity<?> getComingSoonListAdmin(@RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "10") int size){
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<ResponseAdminStageDto> comingSoonList = stageService.getComingSoonListAdmin(pageable);
+
+        return ResponseEntity.ok(comingSoonList.getContent());
+    }
+
     // stageClose 시간 비교해 이후인 것 줄 세우기 - 관리자 - 공연 종료
     @GetMapping("ended") // API 명세 => GET /shows/ended
     public ResponseEntity<?> getEndedList(@RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "6") int size){
+                                          @RequestParam(defaultValue = "10") int size){
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        Page<ResponseStageThumbnailDto> endedList = stageService.getEndedList(pageable);
+        Page<ResponseAdminStageDto> endedList = stageService.getEndedList(pageable);
 
         return ResponseEntity.ok(endedList.getContent());
     }
@@ -109,11 +133,5 @@ public class StageController {
         stageService.deleteStage(uuid);
 
         return ResponseEntity.ok("삭제가 완료되었습니다.");
-    }
-
-    // 예외 처리
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> exceptionHandler(Exception e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }

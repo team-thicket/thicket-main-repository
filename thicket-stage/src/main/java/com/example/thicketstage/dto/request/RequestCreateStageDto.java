@@ -17,7 +17,7 @@ public class RequestCreateStageDto {
     @NotBlank(message = "공연명은 필수 입력 항목입니다.")
     private String name;
 
-    @NotBlank(message = "공연장소는 필수 입력 항목입니다.")
+    @NotBlank(message = "공연장소는 필수 입력 항목입니다.0")
     private String place;
 
     @NotNull(message = "티켓오픈일은 필수 입력 항목입니다.")
