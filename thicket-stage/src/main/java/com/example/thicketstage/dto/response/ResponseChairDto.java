@@ -12,12 +12,12 @@ public class ResponseChairDto {
 
     private int price;
 
-    private String stageStartUuid;
+    private String chairUuid;
 
     public ResponseChairDto(Chair chair) {
         this.chairType = chair.getChairType();
         this.count = chair.getCount();
         this.price = chair.getPrice();
-        this.stageStartUuid = chair.getUuid();
+        this.chairUuid = chair.getUuid();
     }
 }

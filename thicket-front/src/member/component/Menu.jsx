@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Wrapper = styled.a`
+const Wrapper = styled.div`
   height: 40px;
   margin: 10px 10px 10px 10px;
   font-size: 20px;

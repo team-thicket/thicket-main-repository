@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -54,13 +55,13 @@ public class RequestCreateTicketDto {
     @NotNull
     private boolean deleted;
 
-
     @NotNull
     private int latency;
     // 추가된 필드
     private String uuid;
 
     private LocalDateTime correctedTimestamp;
+
 
 
     public Ticket toEntity() {
@@ -71,6 +72,7 @@ public class RequestCreateTicketDto {
                 cancelDate,stageId,memberId,
                 stageType
                );
+
     }
     public String toString() {
         return "RequestCreateTicketDto{" +
@@ -93,6 +95,5 @@ public class RequestCreateTicketDto {
                 ", correctedTimestamp=" + correctedTimestamp +
                 '}';
     }
-
 
 }

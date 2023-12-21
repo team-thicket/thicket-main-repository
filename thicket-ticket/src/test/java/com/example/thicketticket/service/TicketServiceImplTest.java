@@ -37,6 +37,44 @@ class TicketServiceImplTest {
     TicketService ticketService;
 
 
+    @Test
+    @Transactional
+    void createTicket() {
+        //given
+        RequestCreateTicketDto createDto = new RequestCreateTicketDto();
+
+        createDto.setStageName("Example Stage");
+        createDto.setDate(LocalDateTime.of(2023, 1, 1, 12, 0));
+        createDto.setPlace("Example Place");
+        createDto.setChairType("Example Chair Type");
+        createDto.setCount(2); // 예시 값
+        createDto.setMemberName("Example Member");
+        createDto.setPrice(100); // 예시 값
+        createDto.setCancelDate(LocalDateTime.of(2023, 1, 1, 12, 0));
+        createDto.setStageId("123L"); // 예시 값
+        createDto.setMemberId("456L"); // 예시 값
+        createDto.setStageType("공연");
+
+        //when
+        RequestCreateTicketDto createTicketDto = ticketService.createTicket(createDto);
+
+        //then
+        Ticket savedTicket = ticketRepository.findById(createTicketDto.getId())
+                .orElseThrow(() -> new AssertionError("저장된 예매가 없습니다."));
+
+        assertEquals(createDto.getStageName(), savedTicket.getStageName());
+        assertEquals(createDto.getDate(), savedTicket.getDate());
+        assertEquals(createDto.getPlace(), savedTicket.getPlace());
+        assertEquals(createDto.getChairType(), savedTicket.getChairType());
+        assertEquals(createDto.getCount(), savedTicket.getCount());
+        assertEquals(createDto.getMemberName(), savedTicket.getMemberName());
+        assertEquals(createDto.getPrice(), savedTicket.getPrice());
+        assertEquals(createDto.getCancelDate(), savedTicket.getCancelDate());
+        assertEquals(createDto.getStageId(), savedTicket.getStageId());
+        assertEquals(createDto.getMemberId(), savedTicket.getMemberId());
+
+    }
+
 
     //티켓 취소
     @Test

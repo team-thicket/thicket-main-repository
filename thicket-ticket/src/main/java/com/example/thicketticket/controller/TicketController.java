@@ -11,8 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,7 @@ import java.util.UUID;
 public class TicketController {
 
     private final TicketService ticketService;
+
 
 
     //티켓 대기번호 리턴 로직
@@ -88,16 +91,13 @@ public class TicketController {
         return new ResponseEntity<>(getTicketsDos, HttpStatus.OK);
     }
 
+
     //예매 취소
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTicket(@PathVariable(name = "id") String id) {
         ticketService.deleteTicket(UUID.fromString(id));
         return ResponseEntity.status(HttpStatus.OK).body("티켓 취소");
     }
-
-
-
-
 
     //예외 에러코드
     @ExceptionHandler(IllegalArgumentException.class)

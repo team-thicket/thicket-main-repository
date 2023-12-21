@@ -1,24 +1,27 @@
 package com.example.thicketstage.dto.response;
 
 import com.example.thicketstage.domain.Stage;
+import com.example.thicketstage.enumerate.StageType;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class ResponseStageThumbnailDto {
+public class ResponseAdminStageDto {
+
+    private StageType stageType;
 
     private String name;
-    private String place;
-    private LocalDateTime stageOpen;
-    private LocalDateTime stageClose;
-    private String posterImg;
 
-    public ResponseStageThumbnailDto(Stage findStage) {
+    private LocalDateTime stageOpen;
+
+    private LocalDateTime stageClose;
+
+
+    public ResponseAdminStageDto(Stage findStage) {
+        this.stageType = findStage.getStageType();
         this.name = findStage.getName();
-        this.place = findStage.getPlace();
         this.stageOpen = findStage.getStageOpen();
         this.stageClose = findStage.getStageClose();
-        this.posterImg = findStage.getPosterImg();
     }
 }
