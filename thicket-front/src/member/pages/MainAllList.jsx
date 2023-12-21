@@ -4,10 +4,45 @@ import {
     MainContainer,
     H1,
     DivList1,
-    DivList2,
-    RankCard,
-    OpenCard,
+    RankCard, Poster1, ImgDiv1, ImgInfo1, Img1,
 } from "../../assets/css/setting/MainStyleCSS";
+import {useEffect, useState} from "react";
+
+const ShowList = () => {
+    const [shows, setShows] = useState([]);
+
+    useEffect(() => {
+        fetch('/shows/ongoing')
+            .then(response => response.json())
+            .then(data => {
+                setShows(data);
+            });
+    }, []);
+
+    const formatDateString = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString(); // Adjust the format as needed
+    };
+
+    return (
+        <DivList1>
+            {Array.isArray(shows) ? (
+                shows.map(show => (
+                    <Poster1 key={show.id}>
+                        <Img1 src={show.posterImg} alt="Poster" />
+                        <ImgInfo1>
+                            <div>{show.name}</div>
+                            <div>{show.place}</div>
+                            <div>{`${formatDateString(show.stageOpen)} ~ ${formatDateString(show.stageClose)}`}</div>
+                        </ImgInfo1>
+                    </Poster1>
+                ))
+            ) : (
+                <H1>없습니다.　　　　　　　　</H1>
+            )}
+        </DivList1>
+    );
+};
 
 function MainAllList() {
 
@@ -15,39 +50,8 @@ function MainAllList() {
         <Wrapper>
             <InvisibleScroll>
                 <MainContainer>
-                    <H1> 뮤지컬 Top5.</H1>
-                    <DivList1>
-                        <RankCard rank={1}/>
-                        <RankCard rank={2}/>
-                        <RankCard rank={3}/>
-                        <RankCard rank={4}/>
-                        <RankCard rank={5}/>
-                        <RankCard rank={6}/>
-                    </DivList1>
-                    <H1> 연극 Top5.</H1>
-                    <DivList1>
-                        <RankCard rank={1}/>
-                        <RankCard rank={2}/>
-                        <RankCard rank={3}/>
-                        <RankCard rank={4}/>
-                        <RankCard rank={5}/>
-                    </DivList1>
-                    <H1> 콘서트 Top5.</H1>
-                    <DivList1>
-                        <RankCard rank={1}/>
-                        <RankCard rank={2}/>
-                        <RankCard rank={3}/>
-                        <RankCard rank={4}/>
-                    </DivList1>
-                    <H1> 티켓오픈 </H1>
-                    <DivList2>
-                        <OpenCard date={"2023-11-16"}/>
-                        <OpenCard date={"2023-11-17"}/>
-                        <OpenCard date={"2023-12-18"}/>
-                        <OpenCard date={"2023-11-19"}/>
-                        <OpenCard date={"2023-11-20"}/>
-                        <OpenCard date={"2023-12-21"}/>
-                    </DivList2>
+                    <H1>진행중인 공연 목록</H1>
+                        <ShowList />
                 </MainContainer>
             </InvisibleScroll>
         </Wrapper>
