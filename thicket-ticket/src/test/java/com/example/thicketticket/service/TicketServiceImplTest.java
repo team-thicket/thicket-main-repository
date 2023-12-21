@@ -36,6 +36,7 @@ class TicketServiceImplTest {
     @Autowired
     TicketService ticketService;
 
+
     @Test
     @Transactional
     void createTicket() {
@@ -73,6 +74,7 @@ class TicketServiceImplTest {
         assertEquals(createDto.getMemberId(), savedTicket.getMemberId());
 
     }
+
 
     //티켓 취소
     @Test
