@@ -9,13 +9,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
+
+import java.util.concurrent.CompletableFuture;
 import java.util.List;
 import java.util.UUID;
+
 
 public interface TicketService {
 
     //티켓 예매
-    RequestCreateTicketDto createTicket(RequestCreateTicketDto ticketDto);
+
+    CompletableFuture<String> createTicket(RequestCreateTicketDto ticketDto);
+
     //admin 티켓id로 조회
     ResponseAdminTicketDto adminFindById(UUID id);
     // 티켓 상세 조회

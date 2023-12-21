@@ -1,13 +1,12 @@
 package com.example.thicketticket.dto.request;
 
 import com.example.thicketticket.domain.Ticket;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
+
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -56,6 +55,14 @@ public class RequestCreateTicketDto {
     @NotNull
     private boolean deleted;
 
+    @NotNull
+    private int latency;
+    // 추가된 필드
+    private String uuid;
+
+    private LocalDateTime correctedTimestamp;
+
+
 
     public Ticket toEntity() {
         return Ticket.createTicket(
@@ -65,8 +72,28 @@ public class RequestCreateTicketDto {
                 cancelDate,stageId,memberId,
                 stageType
                );
+
     }
-
-
+    public String toString() {
+        return "RequestCreateTicketDto{" +
+                "id=" + id +
+                ", stageName='" + stageName + '\'' +
+                ", stageType='" + stageType + '\'' +
+                ", date=" + date +
+                ", place='" + place + '\'' +
+                ", chairType='" + chairType + '\'' +
+                ", count=" + count +
+                ", memberName='" + memberName + '\'' +
+                ", price=" + price +
+                ", phone='" + phone + '\'' +
+                ", cancelDate=" + cancelDate +
+                ", stageId='" + stageId + '\'' +
+                ", memberId='" + memberId + '\'' +
+                ", deleted=" + deleted +
+                ", latency=" + latency +
+                ", uuid='" + uuid + '\'' +
+                ", correctedTimestamp=" + correctedTimestamp +
+                '}';
+    }
 
 }

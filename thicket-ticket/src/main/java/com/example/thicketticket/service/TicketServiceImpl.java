@@ -9,18 +9,28 @@ import com.example.thicketticket.dto.response.ResponseTicketsByStageIdDto;
 import com.example.thicketticket.dto.response.ResponseTicketsDto;
 import com.example.thicketticket.enumerate.Status;
 import com.example.thicketticket.repository.TicketRepository;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
 
 @Service
 @RequiredArgsConstructor
@@ -28,27 +38,84 @@ public class TicketServiceImpl implements TicketService{
 
     private final TicketRepository ticketRepository;
 
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    // JSON 직렬화 및 역직렬화를 수행하는 Jackson 라이브러리의 핵심 클래스
+    private final ObjectMapper objectMapper;
     //생성
     @Override
     @Transactional
-    public RequestCreateTicketDto createTicket(RequestCreateTicketDto ticketDto) {
-        Ticket ticket = ticketDto.toEntity();
-        // 엔터티를 저장하고 저장된 엔터티를 받아옴
-        Ticket savedTicket = ticketRepository.save(ticket);
 
-        Payment newPayment = Payment.createPayment(savedTicket.getMemberId(), String.valueOf(savedTicket.getId()),savedTicket.getStageId());
-        savedTicket.setPayment(newPayment); // Payment 설정
-        // ID 값을 DTO에 설정
-        ticketDto.setId(savedTicket.getId());
+    public CompletableFuture<String> createTicket(RequestCreateTicketDto ticketDto) {
+        // 현재 서버 시간
+        Instant currentTime = Instant.now();
 
-        // 저장된 DTO 반환
-        return ticketDto;
+        //latency
+        int latency = ticketDto.getLatency();
+
+        // latency 빼서 보정된 시간값 계산
+        Instant correctedTimestamp = currentTime.minusMillis(latency);
+
+        // 고유값(UUID) 값을 DTO에 설정
+        ticketDto.setUuid(String.valueOf(UUID.randomUUID()));
+
+        // CorrectedTimestamp 설정
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(correctedTimestamp, ZoneId.systemDefault());
+        ticketDto.setCorrectedTimestamp(LocalDateTime.from(localDateTime));
+        System.out.println("Corrected Timestamp in DTO: " + ticketDto.getCorrectedTimestamp());
+
+        // 객체를 JSON 문자열로 직렬화
+        String jsonMessage;
+        try {
+            jsonMessage = objectMapper.writeValueAsString(ticketDto);
+        } catch (JsonProcessingException e) {
+            // JSON 직렬화 실패 시
+            return CompletableFuture.completedFuture("JSON 직렬화 실패");
+        }
+
+        // Kafka에 메시지 전송
+        CompletableFuture<SendResult<String, String>> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                return kafkaTemplate.send("test", jsonMessage).get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        // 메시지 전송 결과에 대한 처리 - 비동기
+        return future.thenApply(result -> {
+            // 메시지 전송 성공 시
+            System.out.println("Sent message=[" +
+                    "] with offset=[" + result.getRecordMetadata().offset() + "]");
+            return "성공";
+        }).exceptionally(ex -> {
+            // 메시지 전송 실패 시
+            System.out.println("Unable to send message= due to : " + ex.getMessage());
+            return "실패";
+        });
+
+
     }
+
     //단일 티켓 조회
     @Override
     @Transactional
     public ResponseTicketDto findById(UUID id) {
         Optional<Ticket> findTicket = ticketRepository.findByIdAndDeletedFalse(id);
+
+
+        if (findTicket.isEmpty()) {
+            throw new IllegalArgumentException("존재하지 않는 티켓.");
+        }
+        Ticket ticket = findTicket.get();
+        return new ResponseTicketDto(ticket);
+    }
+
+    //admin 티켓 id 조회
+    @Override
+    @Transactional
+    public ResponseAdminTicketDto adminFindById(UUID id) {
+        Optional<Ticket> findTicket = ticketRepository.findByIdAndDeletedFalse(id);
+
 
         if (findTicket.isEmpty()) {
             throw new IllegalArgumentException("존재하지 않는 티켓.");
@@ -80,7 +147,22 @@ public class TicketServiceImpl implements TicketService{
             throw new EntityNotFoundException("공연의 예매가 존재하지 않습니다.");
         }
 
+
+        Ticket ticket = findTicket.get();
+
+        return new ResponseAdminTicketDto(ticket);
+    }
+    //사용자가 사용한 티켓 조회
+    @Override
+    @Transactional
+    public Page<ResponseTicketsDto> findByMemberIdAndDateBefore(String memberId, LocalDateTime currentTime, Pageable pageable) {
+        Page<Ticket> tickets = ticketRepository.findByMemberIdAndDateBeforeAndDeletedFalse(memberId,currentTime,pageable);
+        if (tickets.isEmpty()) {
+            throw new EntityNotFoundException("공연의 예매가 존재하지 않습니다.");
+        }
+
         return tickets.map(ResponseTicketsDto::new);
+
     }
     //사용자가 앞으로 볼 티켓 조회
     @Override
@@ -97,13 +179,16 @@ public class TicketServiceImpl implements TicketService{
     //admin 공연별 티켓조회
     @Override
     @Transactional
+
     public Page<ResponseTicketsByStageIdDto> findByStageId(String Stage, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByStageIdAndDeletedFalse(Stage, pageable);
 
         if(tickets.isEmpty()){
             throw new EntityNotFoundException("공연의 예매가 존재하지 않습니다.");
+
         }
        return tickets.map(ResponseTicketsByStageIdDto::new);
+
 
     }
 
