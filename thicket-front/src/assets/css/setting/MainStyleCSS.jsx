@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import Calendar from "react-calendar";
 
 export const Wrapper = styled.div`
@@ -18,7 +18,7 @@ export const InvisibleScroll = styled.main`
   ::-webkit-scrollbar {
     display: none;
   }
-  //border: black solid 1px; // 1px 두께의 검은색 실선 테두리, 사이즈 확인용
+  //border: black solid 1px; // 테두리, 사이즈 확인용
 `;
 export const MainContainer = styled.div`
     overflow-y: auto; // 내부 수직 스크롤바
@@ -44,16 +44,6 @@ export const Img1 = styled.img`
   border-radius: 10px 10px 0 0;
 `;
 
-export const ImgDiv1 = styled.div`
-  width: 360px;
-  height: 480px;
-  border-radius: 10px 10px 0 0;
-  background-color: grey;  // 여기부터 아래까지는
-  display: flex;           // 빼도 됨
-  align-items: center;     // 글자 가운데 보려고
-  justify-content: center; // 넣은거임
-`;
-
 export const ImgInfo1 = styled.div`
   width: 318px;
   height: 99px;
@@ -63,22 +53,6 @@ export const ImgInfo1 = styled.div`
   justify-content: center;
   gap: 10px; // 균등분배
 `;
-
-export const RankCard = ({rank}) => {
-    return (
-        <div style={{ display: "inline-block"  }}>
-            <Poster1>
-                {/*<Img1 />*/}
-                <ImgDiv1>이미지</ImgDiv1>
-                <ImgInfo1>
-                    <div>{rank}(랭킹) or 제목</div>
-                    <div>장소</div>
-                    <div>날짜</div>
-                </ImgInfo1>
-            </Poster1>
-        </div>
-    )
-};
 
 export const DivList2 = styled.div`
   margin-bottom: 40px;
@@ -126,19 +100,6 @@ export const ImgDivInfo2 = styled.div`
   justify-content: center;
   gap: 20px; // 사이 간격
 `;
-
-export const OpenCard = ({date}) => {
-    return (
-        <Poster2>
-            <ImgDiv2>이미지</ImgDiv2>
-            <ImgDivInfo2>
-                <div><h1>{date}오늘 or 내일</h1></div>
-                <div><h1>제목</h1></div>
-                <div><h1>장소</h1></div>
-            </ImgDivInfo2>
-        </Poster2>
-    )
-};
 
 export const H1 = styled.h1`
     margin: 20px 0 20px 0;
@@ -288,21 +249,24 @@ export const StyledCalendar = styled(Calendar)`
   }
 `;
 
-export const PostImage = styled.div`
+export const PostImg = styled.img`
   width: 300px;
   height: 400px;
   margin-top: 20px;
-  background-color: #CCC;
+`;
+
+export const PostDetailImg = styled.img`
+  width: auto; /* 이미지의 원본 크기로 표시하도록 설정 */
+  max-width: 926px; /* 최대 너비를 926px로 제한 (원본보다 큰 경우에만 적용) */
+  margin: 10px 0 20px 0;
 `;
 
 export const PostInfo = styled.div`
-  width: 604px;
+  width: 584px;
   height: 400px;
-  margin-left: 20px;
+  margin-left: 40px;
   margin-top: 20px;
-  //border: 1px solid #000;
 `;
-
 
 export const LightGrayLine = styled.div`
   width: 100%;
@@ -333,10 +297,21 @@ export const ButtonList = styled.div`
 export const ChoiceDiv = styled.div`
   text-align: center;
   font-size: 14px;
-  font-weight: bold;
-  border: 1px solid black;
+  border: 1px solid ${props => (props.selected ? '#8e43e7' : 'gray')};
   border-radius: 5px;
   padding: 10px;
+  cursor: ${props => (props.onClick ? 'pointer' : 'default')};
+  background-color: ${props => (props.selected ? '#8e43e7' : 'white')};
+  font-weight: ${props => (props.selected ? 'bold' : 'normal')}; // Added font-weight property
+
+  &:hover {
+    background-color: ${props => (props.selected ? '#8e43e7' : props.onClick ? '#f0f0f0' : 'white')};
+  }
+
+  ${props => props.selected && props.selectedTime && css`
+    background-color: #8e43e7;
+    font-weight: bold;
+  `}
 `;
 
 export const Th  = styled.th`
