@@ -1,25 +1,66 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import ReactDOM from 'react-dom';
 import 'react-calendar/dist/Calendar.css';
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import {
-    Wrapper,
-    H1,
+    ButtonList,
+    ChoiceDiv,
     Container,
+    H1,
+    LightGrayLine,
     MarginTop,
-    ShowMain,
-    Scroll,
     PostImage,
     PostInfo,
-    SideTop,
-    SideMarginTop,
+    Scroll,
+    ShowMain,
+    ShowSide,
+    SideBottom,
     SideFont,
+    SideMargin,
+    SideMarginTop,
+    SideTop,
     StyledCalendar,
-    LightGrayLine, SideMargin, ButtonList, SideBottom, ShowSide, Th, Th1, Th2, ChoiceDiv,
+    Th,
+    Th1,
+    Th2,
+    Wrapper,
 } from "../../assets/css/setting/MainStyleCSS";
+import Reservation from "../../payment/pages/Reservation";
 
 function ShowDetailPage() {
     const [value, onChange] = useState(new Date());
+    const [reservationWindow, setReservationWindow] = useState(null);
+
+    const handleReservationClick = () => {
+        // 예매하기 버튼을 눌렀을 때, 새 창으로 Reservation 페이지를 엽니다.
+        const width = Math.floor(window.innerWidth * 0.7);
+        const height = Math.floor(window.innerHeight * 0.8);
+        const left = Math.floor((window.innerWidth - width) / 2);
+        const top = Math.floor((window.innerHeight - height) / 2);
+
+        const windowFeatures = `width=${width},height=${height},left=${left},top=${top}`;
+
+        const paymentWindow = window.open('', '_blank', windowFeatures);
+
+        if (paymentWindow) {
+            // 예약 페이지를 새 창에 렌더링
+            const reservationContainer = paymentWindow.document.createElement('div');
+            paymentWindow.document.body.appendChild(reservationContainer);
+
+            setReservationWindow(reservationContainer);
+        } else {
+            // 팝업 창이 차단되었거나 오류가 있는 경우에는 경고를 표시합니다.
+            alert('팝업 창이 차단되었거나 오류가 발생했습니다. 팝업 차단을 해제해주세요.');
+        }
+    };
+
+    useEffect(() => {
+        // reservationWindow이 변경되면 Reservation 컴포넌트를 렌더링
+        if (reservationWindow) {
+            ReactDOM.render(<Reservation />, reservationWindow);
+        }
+    }, [reservationWindow]);
 
     return (
         <Wrapper>
@@ -141,7 +182,7 @@ function ShowDetailPage() {
                                     </div>
                                 </SideMargin>
                             </SideTop>
-                            <SideBottom>
+                            <SideBottom onClick={handleReservationClick}>
                                 예매하기
                             </SideBottom>
                         </Scroll>

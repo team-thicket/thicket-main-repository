@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 @Data
 public class ResponseAdminStageDto {
 
+    private String stageUuid;
+
     private StageType stageType;
 
     private String name;
@@ -22,6 +24,7 @@ public class ResponseAdminStageDto {
 
 
     public ResponseAdminStageDto(Stage findStage) {
+        this.stageUuid = findStage.getUuid();
         this.stageType = findStage.getStageType();
         this.name = findStage.getName();
         this.stageOpen = findStage.getStageOpen();
