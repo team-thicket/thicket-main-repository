@@ -21,6 +21,10 @@ public class RequestCreateStageDto {
     @NotBlank(message = "공연장소는 필수 입력 항목입니다.")
     private String place;
 
+    @NotNull(message = "티켓오픈일은 필수 입력 항목입니다.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime ticketOpen;
+
     @NotNull(message = "개막일은 필수 입력 항목입니다.")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime stageOpen;
@@ -28,6 +32,10 @@ public class RequestCreateStageDto {
     @NotNull(message = "폐막일은 필수 입력 항목입니다.")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime stageClose;
+
+    @NotNull(message = "티켓마감일은 필수 입력 항목입니다.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime lastTicket;
 
     @NotBlank(message = "러닝타임은 필수 입력 항목입니다.")
     private String runningTime;
@@ -47,11 +55,12 @@ public class RequestCreateStageDto {
 
     public Stage toEntity() {
         return Stage.createStage(
-                name,place,
+                name,place, ticketOpen,
                 stageOpen,stageClose,
-                runningTime,ageLimit,
-                stageType,stageStatus,
-                posterImg, detailPosterImg,stageInfo);
+                lastTicket, runningTime,
+                ageLimit, stageType,
+                stageStatus, posterImg,
+                detailPosterImg,stageInfo);
     }
 
     // 테스트용 메서드

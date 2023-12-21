@@ -42,10 +42,14 @@ class StageStartServiceImplTest {
 
         RequestCreateStageStartDto.StageStartDto stageStartDto = new RequestCreateStageStartDto.StageStartDto();
         stageStartDto.setDate(LocalDate.of(2023, 11, 25));
-        stageStartDto.setTimes(Arrays.asList(LocalTime.of(19, 30),
-                                            LocalTime.of(21, 30)));
+        stageStartDto.setTime(LocalTime.of(19, 30));
 
-        createStageStartDto.setStageStartDtos(Arrays.asList(stageStartDto));
+        RequestCreateStageStartDto.StageStartDto stageStartDto1 = new RequestCreateStageStartDto.StageStartDto();
+        stageStartDto1.setDate(LocalDate.of(2023, 11, 25));
+        stageStartDto1.setTime(LocalTime.of(21, 30));
+
+
+        createStageStartDto.setStageStartDtos(Arrays.asList(stageStartDto, stageStartDto1));
 
         // when
         List<StageStart> createdStageStarts = stageStartService.createStageStart(createStageStartDto);
@@ -53,12 +57,12 @@ class StageStartServiceImplTest {
         // then
         assertNotNull(createdStageStarts);
 
-        assertEquals(1, createdStageStarts.size());
+        assertEquals(2, createdStageStarts.size());
 
         StageStart stageStart = createdStageStarts.get(0);
         assertNotNull(stageStart);
         assertEquals(stageStartDto.getDate(), stageStart.getDate());
-        assertEquals(stageStartDto.getTimes(), stageStart.getTimes());
+        assertEquals(stageStartDto.getTime(), stageStart.getTime());
     }
 
     @Test
@@ -69,11 +73,9 @@ class StageStartServiceImplTest {
         Stage stage = stages.get(0);
 
         StageStart stageStart1 = StageStart.createStageStart(LocalDate.of(2023, 11, 25),
-                                                            Arrays.asList(LocalTime.of(19, 30)),
-                                                            stage);
+                                                            LocalTime.of(19, 30), stage);
         StageStart stageStart2 = StageStart.createStageStart(LocalDate.of(2023, 12, 1),
-                                                            Arrays.asList(LocalTime.of(20, 0)),
-                                                            stage);
+                                                            LocalTime.of(20, 0), stage);
 
         stageStartRepository.save(stageStart1);
         stageStartRepository.save(stageStart2);
@@ -83,8 +85,9 @@ class StageStartServiceImplTest {
 
         // then
         assertNotNull(allDate);
-        assertEquals(5, allDate.size());
+        assertEquals(7, allDate.size());
     }
+
     // 회차 정보 수정은 추후 고도화 구현시 구현 예정
 //    @Test
 //    @Transactional
@@ -119,8 +122,7 @@ class StageStartServiceImplTest {
         Stage stage = stages.get(0);
 
         StageStart stageStart = StageStart.createStageStart(LocalDate.of(2023, 11, 25),
-                                                            Arrays.asList(LocalTime.of(19, 30)),
-                                                            stage);
+                                                            LocalTime.of(19, 30), stage);
         stageStartRepository.save(stageStart);
 
         // when

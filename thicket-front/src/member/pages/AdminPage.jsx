@@ -2,10 +2,11 @@ import styled from "styled-components";
 import Menu from "../component/Menu";
 import React, {useState} from "react";
 import {AdminAllStageList} from "../component/AdminAllStageList";
-import AdminCreateStage from "../component/AdminCreateStage";
-import {AdminMusicalList} from "../component/AdminMusicalList";
-import {AdminPlayList} from "../component/AdminPlayList";
-import {AdminConcertList} from "../component/AdminConcertList";
+import AdminCreateShow from "../component/AdminCreateShow";
+import { AdminBeforeList } from "../component/AdminBeforeList";
+import {AdminOngoingList} from "../component/AdminOngoingList";
+import {AdminEndedList} from "../component/AdminEndedList";
+import AdminEditShow from "../component/AdminEditShow";
 
 const Wrapper = styled.div`
   display: flex; // Flex 컨테이너로 설정하여 자식 요소들을 플렉스 방향으로 배치
@@ -40,11 +41,12 @@ const AdminPage = () => {
     };
 
     const selectComponent = {
-        all: <AdminAllStageList contentHandler={contentHandler} />,
-        create: <AdminCreateStage contentHandler={contentHandler} />,
-        musical: <AdminMusicalList contentHandler={contentHandler} />,
-        play: <AdminPlayList contentHandler={contentHandler} />,
-        concert: <AdminConcertList contentHandler={contentHandler} />,
+        all: <AdminAllStageList />,
+        create: <AdminCreateShow />,
+        before: <AdminBeforeList contentHandler={contentHandler} />,
+        ongoing: <AdminOngoingList />,
+        ended: <AdminEndedList />,
+        edit: <AdminEditShow />,
     };
 
     return (
@@ -52,9 +54,9 @@ const AdminPage = () => {
             <ASide>
                 <Menu name={"공연 등록"} onClick={() => contentHandler("create")} />
                 <Menu name={"전체 목록"} onClick={() => contentHandler("all")} />
-                <Menu name={"뮤지컬"} onClick={() => contentHandler("musical")} />
-                <Menu name={"연극"} onClick={() => contentHandler("play")} />
-                <Menu name={"콘서트"} onClick={() => contentHandler("concert")} />
+                <Menu name={"공연 예정"} onClick={() => contentHandler("before")} />
+                <Menu name={"공 연 중"} onClick={() => contentHandler("ongoing")} />
+                <Menu name={"공연 종료"} onClick={() => contentHandler("ended")} />
             </ASide>
             <Main>{selectComponent[content]}</Main>
         </Wrapper>
