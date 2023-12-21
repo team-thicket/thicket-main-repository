@@ -1,7 +1,6 @@
 package com.example.thicketstage.dto.response;
 
 import com.example.thicketstage.domain.Stage;
-import com.example.thicketstage.enumerate.StageStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -13,7 +12,7 @@ public class ResponseStageThumbnailDto {
     private String place;
     private LocalDateTime stageOpen;
     private LocalDateTime stageClose;
-    private StageStatus stageStatus;
+    private LocalDateTime ticketOpen;
     private String posterImg;
 
     public ResponseStageThumbnailDto(Stage findStage) {
@@ -21,7 +20,7 @@ public class ResponseStageThumbnailDto {
         this.place = findStage.getPlace();
         this.stageOpen = findStage.getStageOpen();
         this.stageClose = findStage.getStageClose();
-        this.stageStatus = findStage.getStageStatus();
+        this.ticketOpen = findStage.getTicketOpen();
         this.posterImg = findStage.getPosterImg();
     }
 }

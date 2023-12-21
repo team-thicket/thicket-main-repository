@@ -38,8 +38,25 @@ public class StageStartServiceImpl implements StageStartService {
     @Override
     public List<ResponseStageStartDto> getAllDate(){
         List<StageStart> findStageStarts = stageStartRepository.findAll();
-        return findStageStarts.stream().map(ResponseStageStartDto::new).toList();
+        List<ResponseStageStartDto> listStageStart = findStageStarts.stream()
+                                                    .map(ResponseStageStartDto::new).toList();
+        if(listStageStart.isEmpty()){
+            throw new EntityNotFoundException("회차 정보가 존재하지 않습니다.");
+        }
+
+        return listStageStart;
     }
+
+    @Override
+    public List<ResponseStageStartDto> getStageAllStageStart(String stageUuid) {
+        Stage stage = stageRepository.findByUuid(stageUuid)
+                .orElseThrow(() -> new EntityNotFoundException("해당 공연을 찾을 수 없습니다."));
+
+        List<StageStart> allStageStarts = stageStartRepository.findByStage(stage);
+
+        return allStageStarts.stream().map(ResponseStageStartDto::new).toList();
+    }
+
     // 회차 정보 수정은 추후 고도화 구현시 구현 예정
 //    @Override
 //    @Transactional
@@ -56,11 +73,12 @@ public class StageStartServiceImpl implements StageStartService {
 //    }
 
     @Override
+    @Transactional
     public void deleteStageStart(String uuid) {
         Optional<StageStart> optionalStageStart = stageStartRepository.findByUuid(uuid);
 
         if(optionalStageStart.isEmpty()){
-            throw new EntityNotFoundException("해당 공연을 찾을 수 없습니다.");
+            throw new EntityNotFoundException("해당 회차 정보를 찾을 수 없습니다.");
         }
 
         StageStart stageStart = optionalStageStart.get();

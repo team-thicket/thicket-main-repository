@@ -120,7 +120,7 @@ class PaymentServiceTest {
                 paymentService.findAllPaymentByMemberId(memberId);
 
         //then
-        assertThat(findDtos.size()).isEqualTo(4);
+        assertThat(findDtos.size()).isEqualTo(5);
     }
 
     @Test
@@ -144,7 +144,7 @@ class PaymentServiceTest {
                 paymentService.findAllPaymentByStageId(stageId);
 
         //then
-        assertThat(findDtos.size()).isEqualTo(5);
+        assertThat(findDtos.size()).isEqualTo(6);
     }
 
     @Test

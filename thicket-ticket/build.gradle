@@ -24,6 +24,7 @@ repositories {
 dependencies {
     /*ORM & DataBase*/
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.1.5'
+    testImplementation 'org.projectlombok:lombok:1.18.28'
     runtimeOnly 'com.h2database:h2:2.1.214'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.1.4'
 
@@ -41,6 +42,11 @@ dependencies {
 
     /*Feign*/
     implementation 'org.springframework:spring-webflux:6.0.13'
+
+    /*Kafka*/
+    implementation group: 'org.apache.kafka', name: 'kafka_2.13', version: '3.6.0'
+    implementation group: 'org.springframework.kafka', name: 'spring-kafka', version: '3.1.0'
+
 
 }
 

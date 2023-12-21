@@ -2,7 +2,6 @@ package com.example.thicketstage.domain;
 
 import com.example.thicketstage.TimeStamp;
 import com.example.thicketstage.dto.request.RequestUpdateInfoDto;
-import com.example.thicketstage.enumerate.StageStatus;
 import com.example.thicketstage.enumerate.StageType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -49,10 +48,7 @@ public class Stage extends TimeStamp {
     @Enumerated(EnumType.STRING)
     private StageType stageType;
 
-    @Enumerated(EnumType.STRING)
-    private StageStatus stageStatus;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "stage")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "stage")
     private List<StageStart> stageStart = new ArrayList<>();
 
     @Column(nullable = true)
@@ -81,15 +77,10 @@ public class Stage extends TimeStamp {
         this.stageInfo = updateInfoDto.getStageInfo();
     }
 
-    public void setStageStatus(StageStatus newStatus) {
-        stageStatus = newStatus;
-    }
-
     public static Stage createStage(String newName, String newPlace, LocalDateTime newTicketOpen,
                                     LocalDateTime newStageOpen, LocalDateTime newStageClose,
                                     LocalDateTime newLastTicket, String newRunningTime,
                                     String newAgeLimit, StageType newStageType,
-                                    StageStatus newStageStatus,
                                     String newPosterImg, String newDetailPosterImg,
                                     String newStageInfo) {
         Stage stage = new Stage();
@@ -103,7 +94,6 @@ public class Stage extends TimeStamp {
         stage.runningTime = newRunningTime;
         stage.ageLimit = newAgeLimit;
         stage.stageType = newStageType;
-        stage.stageStatus = newStageStatus;
         stage.posterImg = newPosterImg;
         stage.detailPosterImg = newDetailPosterImg;
         stage.stageInfo = newStageInfo;
