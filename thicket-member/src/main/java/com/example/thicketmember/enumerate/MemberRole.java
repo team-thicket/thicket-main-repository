@@ -1,7 +1,7 @@
 package com.example.thicketmember.enumerate;
 
 public enum MemberRole {
-    USER,
-    ADMIN,
-    MASTER
+    ROLE_USER,
+    ROLE_ADMIN,
+    ROLE_MASTER
 }

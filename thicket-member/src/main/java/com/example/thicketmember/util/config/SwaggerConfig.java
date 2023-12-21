@@ -1,4 +1,4 @@
-package com.example.thicketmember.config;
+package com.example.thicketmember.util.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -15,13 +15,12 @@ import org.springframework.context.annotation.Configuration;
                    version = "v1"))
 @Configuration
 public class SwaggerConfig {
-
     @Bean
     public OpenAPI openAPI(){
         SecurityScheme securityScheme = new SecurityScheme()
             .type(SecurityScheme.Type.APIKEY)
             .in(SecurityScheme.In.HEADER)
-            .name("Email");
+            .name("Authorization");
 
         return new OpenAPI()
             .components(new Components()

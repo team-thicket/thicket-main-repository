@@ -5,16 +5,22 @@ import com.example.thicketmember.service.MemberService;
 import com.sun.jdi.request.DuplicateRequestException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.webjars.NotFoundException;
 
 @RestController
-@RequestMapping("members")
+@RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberApiController {
     private final MemberService memberService;
+
+    @GetMapping("health")
+    public String health_check() {
+        return "healthy~!!";
+    }
 
     @PostMapping("join")
     public ResponseEntity<?> signup(@RequestBody RequestMemberSignupDto dto) {
@@ -24,45 +30,40 @@ public class MemberApiController {
 
     @PostMapping("{role}") //토큰 반환
     public ResponseEntity<?> signin(@RequestBody RequestMemberSigninDto dto) {
-        memberService.signin(dto);
-        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).body("로그인 성공");
+        HttpHeaders headers = memberService.signin(dto);
+        return ResponseEntity.status(HttpStatus.PERMANENT_REDIRECT)
+                .headers(headers).body("로그인 성공");
     }
 
     @GetMapping("master")
-    public ResponseEntity<?> memberList(HttpServletRequest req) {
-        if (!req.getHeader("Role").equals("MASTER")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("접근 불가능");
-        }
+    public ResponseEntity<?> memberList() {
         return ResponseEntity.ok(memberService.findMembers());
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<?> memberDetail(HttpServletRequest req) {
-        return ResponseEntity.ok(memberService.findMember(req.getHeader("Authorization")));
+        return ResponseEntity.ok(memberService.findMember(req.getHeader("UUID")));
     }
 
     @PostMapping("master")
-    public ResponseEntity<?> changeMemberRole(HttpServletRequest req, @RequestBody RequestChangeMemberRoleDto dto) {
-        if (!req.getHeader("Role").equals("MASTER")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("접근 불가능");
-        }
+    public ResponseEntity<?> changeMemberRole(@RequestBody RequestChangeMemberRoleDto dto) {
         memberService.changeMemberRole(dto);
         return ResponseEntity.ok("권한 승급 성공");
     }
 
-    @PatchMapping()
+    @PatchMapping
     public ResponseEntity<?> changePassword(HttpServletRequest req,
                                             @RequestBody RequestChangePasswordDto dto) {
-        memberService.changePassword(req.getHeader("Authorization"),dto);
+        memberService.changePassword(req.getHeader("UUID"),dto);
         return ResponseEntity.ok("비밀번호 변경 성공");
     }
 
     @DeleteMapping
     public ResponseEntity<?> withdraw(HttpServletRequest req, @RequestBody RequestWithdrawDto dto) {
-        memberService.withdraw(req.getHeader("Authorization"),dto);
+        memberService.withdraw(req.getHeader("UUID"),dto);
         return ResponseEntity.ok("회원 탈퇴 성공");
     }
-    @PostMapping()
+
     @ExceptionHandler({IllegalArgumentException.class, DuplicateRequestException.class, NotFoundException.class})
     public ResponseEntity<?> exceptionHandler(Exception e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

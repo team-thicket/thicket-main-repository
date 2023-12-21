@@ -5,7 +5,6 @@ import com.example.thicketmember.enumerate.MemberRole;
 import com.example.thicketmember.enumerate.MemberStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -72,7 +71,7 @@ public class Member extends TimeStamp {
     }
 
     public void changeAdmin(String newBusinessCode) {
-        memberRole = MemberRole.ADMIN;
+        memberRole = MemberRole.ROLE_ADMIN;
         businessCode = newBusinessCode;
     }
 }
