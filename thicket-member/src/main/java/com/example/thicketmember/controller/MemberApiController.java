@@ -13,6 +13,7 @@ import org.webjars.NotFoundException;
 @RestController
 @RequestMapping("members")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class MemberApiController {
     private final MemberService memberService;
 
@@ -25,7 +26,8 @@ public class MemberApiController {
     @PostMapping("{role}") //토큰 반환
     public ResponseEntity<?> signin(@RequestBody RequestMemberSigninDto dto) {
         memberService.signin(dto);
-        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).body("로그인 성공");
+//        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).body("로그인 성공");
+        return ResponseEntity.status(HttpStatus.OK).body("로그인 성공");
     }
 
     @GetMapping("master")

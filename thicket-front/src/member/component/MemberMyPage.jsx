@@ -21,6 +21,7 @@ export const MemberMyPage = ({contentHandler}) => {
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [memberName, setMemberName] = useState("");
     const [memberBirth, setMemberBirth] = useState("");
+    const [memberPhone, setMemberPhone] = useState("");
     const [memberEmail, setMemberEmail] = useState("");
 
     // State to track password check result
@@ -29,13 +30,14 @@ export const MemberMyPage = ({contentHandler}) => {
         fetch('/members',{
             method: "GET",
             headers: {
-                "Email":'test123@gmail.com'
+                "Authorization":'c8fced4f-e838-4804-b5e1-0e9995784179'
             }
         })
             .then(res => res.json())
             .then(data => {
                 setMemberName(data.name);
                 setMemberBirth(data.birth);
+                setMemberPhone(data.phoneNumber);
                 setMemberEmail(data.email);
             })
     }, []);
@@ -89,6 +91,10 @@ export const MemberMyPage = ({contentHandler}) => {
                         <Td>{memberBirth}</Td>
                     </tr>
                     <tr>
+                        <Th>전화번호</Th>
+                        <Td>{memberPhone}</Td>
+                    </tr>
+                    <tr>
                         <Th>이메일</Th>
                         <Td>{memberEmail}</Td>
                     </tr>
@@ -104,11 +110,11 @@ export const MemberMyPage = ({contentHandler}) => {
                         <Th>기존 비밀번호</Th>
                         <Td>
                             <Input
-                                   type="password"
-                                   id="currentPassword"
-                                   placeholder="  비밀번호를 입력하세요."
-                                   value={currentPassword}
-                                   onChange={(e) => setCurrentPassword(e.target.value)}
+                                type="password"
+                                id="currentPassword"
+                                placeholder="  비밀번호를 입력하세요."
+                                value={currentPassword}
+                                onChange={(e) => setCurrentPassword(e.target.value)}
                             />
                         </Td>
                     </tr>
@@ -116,11 +122,11 @@ export const MemberMyPage = ({contentHandler}) => {
                         <Th>신규 비밀번호</Th>
                         <Td>
                             <Input
-                                   type="password"
-                                   id="newPassword"
-                                   placeholder="  비밀번호를 입력하세요."
-                                   value={newPassword}
-                                   onChange={(e) => setNewPassword(e.target.value)}
+                                type="password"
+                                id="newPassword"
+                                placeholder="  비밀번호를 입력하세요."
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
                             />
                         </Td>
                     </tr>
@@ -128,11 +134,11 @@ export const MemberMyPage = ({contentHandler}) => {
                         <Th>신규 비밀번호 재확인</Th>
                         <Td>
                             <Input
-                                   type="password"
-                                   id="confirmNewPassword"
-                                   placeholder="  비밀번호를 입력하세요."
-                                   value={confirmNewPassword}
-                                   onChange={(e) => setConfirmNewPassword(e.target.value)}
+                                type="password"
+                                id="confirmNewPassword"
+                                placeholder="  비밀번호를 입력하세요."
+                                value={confirmNewPassword}
+                                onChange={(e) => setConfirmNewPassword(e.target.value)}
                             />
                             <Button onClick={handlePasswordChange}>변경</Button>
                             {passwordCheckResult === false && (

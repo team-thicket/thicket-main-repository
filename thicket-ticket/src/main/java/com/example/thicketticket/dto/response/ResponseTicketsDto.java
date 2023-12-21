@@ -5,35 +5,28 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Data
 public class ResponseTicketsDto {
 
-    @NotBlank
-    private String ticketNumber;
-
-    @NotBlank
+    private String id;
+    private LocalDateTime createdAt;
     private String stageName;
+    private String stageType;
+    private LocalDateTime date;
+    private String place;
+    private String status;
 
-    @NotNull
-    private String date;
 
-    @NotBlank
-    private String chairType;
-
-    @NotBlank
-    private String memberName;
-
-    @NotNull
-    private Long memberId;
-
-    // Ticket 엔티티를 ResponseAllTicketsDto로 변환하는 메소드
-    public static ResponseTicketsDto toDto(Ticket ticket) {
-        ResponseTicketsDto responseTicketsDto = new ResponseTicketsDto();
-        responseTicketsDto.setStageName(ticket.getStageName());
-        responseTicketsDto.setDate(ticket.getDate());
-        responseTicketsDto.setChairType(ticket.getChairType());
-        responseTicketsDto.setMemberName(ticket.getMemberName());
-        responseTicketsDto.setMemberId(ticket.getMemberId());
-        return responseTicketsDto;
+    public ResponseTicketsDto(Ticket ticket){
+        this.id= String.valueOf(ticket.getId());
+        this.createdAt = ticket.getCreatedAt();
+        this.date = ticket.getDate();
+        this.status = ticket.getStatus().name();
+        this.stageType = ticket.getStageType();
+        this.stageName = ticket.getStageName();
+        this.place = ticket.getPlace();
     }
 }

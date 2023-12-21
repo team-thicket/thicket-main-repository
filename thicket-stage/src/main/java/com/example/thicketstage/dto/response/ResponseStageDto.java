@@ -1,7 +1,6 @@
 package com.example.thicketstage.dto.response;
 
 import com.example.thicketstage.domain.Stage;
-import com.example.thicketstage.enumerate.StageStatus;
 import com.example.thicketstage.enumerate.StageType;
 import lombok.Data;
 
@@ -30,8 +29,6 @@ public class ResponseStageDto {
 
     private StageType stageType;
 
-    private StageStatus stageStatus;
-
     private String posterImg;
 
     private String detailPosterImg;
@@ -49,7 +46,6 @@ public class ResponseStageDto {
         this.runningTime = stage.getRunningTime();
         this.ageLimit = stage.getAgeLimit();
         this.stageType = stage.getStageType();
-        this.stageStatus = stage.getStageStatus();
         this.posterImg = stage.getPosterImg();
         this.detailPosterImg = stage.getDetailPosterImg();
         this.stageInfo = stage.getStageInfo();

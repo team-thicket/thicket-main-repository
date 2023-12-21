@@ -9,7 +9,6 @@ export const Container = styled.div`
 
 export const H1 = styled.h1`
     margin: 0 0 20px 0;
-    padding-left: 5px;
 `;
 
 export const P = styled.p`

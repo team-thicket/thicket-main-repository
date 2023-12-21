@@ -29,7 +29,7 @@ class PaymentRepositoryTest {
         List<ResponsePaymentForStageDto> payments = paymentRepository.findAllByStageId(stageId);
 
         //then
-        assertThat(payments.size()).isEqualTo(5);
+        assertThat(payments.size()).isEqualTo(6);
     }
 
     @Test
@@ -41,7 +41,7 @@ class PaymentRepositoryTest {
         List<ResponsePaymentForMemberDto> payments = paymentRepository.findAllByMemberId(memberId);
 
         //then
-        assertThat(payments.size()).isEqualTo(4);
+        assertThat(payments.size()).isEqualTo(5);
     }
 
     @Test

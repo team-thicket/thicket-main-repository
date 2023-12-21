@@ -1,7 +1,6 @@
 package com.example.thicketstage.dto.request;
 
 import com.example.thicketstage.domain.Stage;
-import com.example.thicketstage.enumerate.StageStatus;
 import com.example.thicketstage.enumerate.StageType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,7 +17,7 @@ public class RequestCreateStageDto {
     @NotBlank(message = "공연명은 필수 입력 항목입니다.")
     private String name;
 
-    @NotBlank(message = "공연장소는 필수 입력 항목입니다.")
+    @NotBlank(message = "공연장소는 필수 입력 항목입니다.0")
     private String place;
 
     @NotNull(message = "티켓오픈일은 필수 입력 항목입니다.")
@@ -45,8 +44,6 @@ public class RequestCreateStageDto {
 
     private StageType stageType;
 
-    private StageStatus stageStatus;
-
     private String posterImg;
 
     private String detailPosterImg;
@@ -59,12 +56,7 @@ public class RequestCreateStageDto {
                 stageOpen,stageClose,
                 lastTicket, runningTime,
                 ageLimit, stageType,
-                stageStatus, posterImg,
+                posterImg,
                 detailPosterImg,stageInfo);
-    }
-
-    // 테스트용 메서드
-    public Long getId() {
-        return 1L;
     }
 }
