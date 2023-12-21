@@ -6,13 +6,18 @@ import com.example.thicketticket.dto.response.ResponseTicketDto;
 import com.example.thicketticket.dto.response.ResponseTicketsByStageIdDto;
 import com.example.thicketticket.dto.response.ResponseTicketsDto;
 import com.example.thicketticket.service.TicketService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -28,29 +33,18 @@ public class TicketController {
 
     private final TicketService ticketService;
 
-    //티켓 예매완료 결과 리턴
-    @PostMapping("/ticket")
-    public ResponseEntity<?> createTicket(@RequestBody @Valid RequestCreateTicketDto ticketDto) {
-        RequestCreateTicketDto createTicketDto = ticketService.createTicket(ticketDto);
-
-        return new ResponseEntity<>(createTicketDto,HttpStatus.CREATED);
-    }
 
     //티켓 대기번호 리턴 로직
-    @PostMapping("/")
-    public String createReserve(){
-        //예매티켓의 유니크한 id값생성
-        //UUID 로 생성된 id 그대로 사용할 것인지? , 사전에 생성되는 UUID 값으로 할것인지?
+    @PostMapping("/ticket")
+    public ResponseEntity<?> createTicket(@RequestBody @Valid RequestCreateTicketDto ticketDto) {
 
-        //시간 보정로직
+        String result = String.valueOf(ticketService.createTicket(ticketDto));
 
-        //카프카에 넣을 메세지 생성
-        //카프카에 전송
+        return new ResponseEntity<>(result,HttpStatus.CREATED);
 
-        //몇번째 순위인지, 결과 성공 실패 여부
-
-        return "예매티켓의 유니크한 아이디 값";
     }
+
+
 
     //예매 정보 조회
     @GetMapping("/{id}")

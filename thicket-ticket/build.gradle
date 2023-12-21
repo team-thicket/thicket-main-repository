@@ -43,6 +43,11 @@ dependencies {
     /*Feign*/
     implementation 'org.springframework:spring-webflux:6.0.13'
 
+    /*Kafka*/
+    implementation group: 'org.apache.kafka', name: 'kafka_2.13', version: '3.6.0'
+    implementation group: 'org.springframework.kafka', name: 'spring-kafka', version: '3.1.0'
+
+
 }
 
 tasks.named('test') {
