@@ -22,7 +22,7 @@ public interface StageService {
 
     Page<ResponseAdminStageDto> getOngoingListAdmin(Pageable pageable);
 
-    public ResponseStageDto stageDetail(String uuid);
+    public ResponseStageDto stageDetail(UUID id);
 
     Page<ResponseStageThumbnailDto> getStageTypeList(StageType stageType, Pageable pageable);
 
@@ -34,9 +34,9 @@ public interface StageService {
 
     List<ResponseStageThumbnailDto> searchStage(String keyword);
 
-    String checkOpenDate(String stageId);
+    String checkOpenDate(UUID stageId);
 
-    void updateInfo(String uuid, RequestUpdateInfoDto updateInfoDto);
+    void updateInfo(UUID id, RequestUpdateInfoDto updateInfoDto);
 
-    void deleteStage(String uuid);
+    void deleteStage(UUID id);
 }

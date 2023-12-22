@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 public class RequestCreateStageStartDto {
 
     @NotBlank(message = "공연UUID는 필수 입력 항목입니다.")
-    private String stageUuid;
+    private UUID stageId;
 
     private List<StageStartDto> stageStartDtos;
 

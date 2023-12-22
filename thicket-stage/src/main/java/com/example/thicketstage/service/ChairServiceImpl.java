@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class ChairServiceImpl implements ChairService{
     @Override
     @Transactional
     public List<Chair> createChair(RequestCreateChairDto dto) {
-        StageStart stageStart = stageStartRepository.findByUuid(dto.getStageStartUuid())
+        StageStart stageStart = stageStartRepository.findById(dto.getStageStartId())
                 .orElseThrow(() -> new EntityNotFoundException("해당 회차 정보가 존재하지 않습니다."));
 
         List<Chair> chairs = dto.getChairDtos().stream()
@@ -35,8 +36,8 @@ public class ChairServiceImpl implements ChairService{
     }
 
     @Override // 단일조회 - 불필요시 삭제 예정
-    public ResponseChairDto findChairByUuid(String uuid) {
-        Optional<Chair> optionalChair = chairRepository.findByUuid(uuid);
+    public ResponseChairDto findChairById(UUID id) {
+        Optional<Chair> optionalChair = chairRepository.findById(id);
 
         if(optionalChair.isEmpty()){
             throw new EntityNotFoundException("해당 좌석이 없습니다.");
@@ -47,8 +48,8 @@ public class ChairServiceImpl implements ChairService{
     }
 
     @Override
-    public List<ResponseChairDto> getStageStartAllChair(String stageStartUuid) {
-        StageStart findStageStart = stageStartRepository.findByUuid(stageStartUuid)
+    public List<ResponseChairDto> getStageStartAllChair(UUID stageStartId) {
+        StageStart findStageStart = stageStartRepository.findById(stageStartId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 회차 정보가 존재하지 않습니다."));
 
         List<Chair> allChairs = chairRepository.findByStageStart(findStageStart);
@@ -71,8 +72,8 @@ public class ChairServiceImpl implements ChairService{
 
     @Override
     @Transactional
-    public void deleteChair(String uuid){
-        Optional<Chair> optionalChair = chairRepository.findByUuid(uuid);
+    public void deleteChair(UUID id){
+        Optional<Chair> optionalChair = chairRepository.findById(id);
 
         if(optionalChair.isEmpty()){
             throw new EntityNotFoundException("해당 좌석이 존재하지 않습니다.");
