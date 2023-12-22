@@ -91,8 +91,7 @@ function ShowDetailPage() {
         setSelectedQuantity(parseInt(event.target.value, 10));
     };
 
-    // 이하 
-    const [value, onChange] = useState(new Date());
+    // 이하 예매 로직
     const [reservationWindow, setReservationWindow] = useState(null);
 
     const handleReservationClick = () => {
