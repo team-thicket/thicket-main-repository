@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 @Component
 @RequiredArgsConstructor
@@ -53,7 +54,7 @@ public class SseEmitters {
             //key를 split함
             // 0 index -> memberId
             // 1 index -> stageId
-            String stageStatus = stageService.checkOpenDate(key[1]);
+            String stageStatus = stageService.checkOpenDate(UUID.fromString(key[1]));
             log.info(stageStatus);
             SseEmitter sseEmitter = emitters.get(k);
             try {

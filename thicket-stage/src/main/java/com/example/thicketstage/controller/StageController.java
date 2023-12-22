@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("shows")
@@ -67,9 +68,9 @@ public class StageController {
     }
 
     // 공연 하나 선택 했을 때 상세 페이지 조회 되게
-    @GetMapping("stagedetail/{uuid}") // API 명세 => GET /shows/stagedetail/{uuid}
-    public ResponseEntity<?> getStageDetail(@PathVariable @Valid String uuid) {
-        return ResponseEntity.ok(stageService.stageDetail(uuid));
+    @GetMapping("stagedetail/{id}") // API 명세 => GET /shows/stagedetail/{id}
+    public ResponseEntity<?> getStageDetail(@PathVariable @Valid UUID id) {
+        return ResponseEntity.ok(stageService.stageDetail(id));
     }
 
     // StageType별로 줄세우기 -> ONGOING + 최신순 => main
@@ -126,17 +127,17 @@ public class StageController {
         return ResponseEntity.ok(stageThumbnailDtos);
     }
 
-    @PatchMapping("update/{uuid}") // API 명세 => PATCH /shows/update/{uuid}
-    public ResponseEntity<?> updateInfo(@PathVariable String uuid,
+    @PatchMapping("update/{id}") // API 명세 => PATCH /shows/update/{id}
+    public ResponseEntity<?> updateInfo(@PathVariable UUID id,
                                         @RequestBody @Valid RequestUpdateInfoDto updateInfoDto) {
-        stageService.updateInfo(uuid, updateInfoDto);
+        stageService.updateInfo(id, updateInfoDto);
 
         return ResponseEntity.ok("수정이 완료되었습니다.");
     }
 
-    @DeleteMapping("{uuid}") // API 명세 => DELETE /shows/{uuid}
-    public ResponseEntity<?> deleteStage(@PathVariable @Valid String uuid) {
-        stageService.deleteStage(uuid);
+    @DeleteMapping("{id}") // API 명세 => DELETE /shows/{id}
+    public ResponseEntity<?> deleteStage(@PathVariable @Valid UUID id) {
+        stageService.deleteStage(id);
 
         return ResponseEntity.ok("삭제가 완료되었습니다.");
     }
