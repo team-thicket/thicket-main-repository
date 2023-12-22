@@ -3,40 +3,23 @@ import 'react-calendar/dist/Calendar.css';
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import {
-    Wrapper,
-    H1,
-    Container,
-    MarginTop,
-    ShowMain,
-    Scroll,
-    PostImg,
-    PostInfo,
-    SideTop,
-    SideMarginTop,
-    SideFont,
-    StyledCalendar,
-    LightGrayLine,
-    SideMargin,
-    ButtonList,
-    SideBottom,
-    ShowSide,
-    Th,
-    Th1,
-    Th2,
-    ChoiceDiv,
-    PostDetailImg,
+    Wrapper, MarginTop, Container, Scroll,
+    ShowMain, ShowSide, SideTop, SideMarginTop, SideMargin, SideFont, SideBottom,
+    PostImg, PostDetailImg, PostInfo,
+    H1, Th, Th1, Th2, LightGrayLine,
+    StyledCalendar, ButtonList, ChoiceDiv,
 } from "../../assets/css/setting/MainStyleCSS";
 
 function ShowDetailPage() {
-    const [show, setShow] = useState([]);   // 공연정보
-    const [times, setTimes] = useState([]); // 공연정보-시간리스트
+    const [show, setShow] = useState([]);       // 공연정보
+    const [times, setTimes] = useState([]);     // 공연정보-시간리스트
     const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
-    const [value, onChange] = useState(new Date()); // 달력
+    const [value, onChange] = useState(new Date());     // 달력
     const [filteredTimes, setFilteredTimes] = useState([]); // 시간필터링 (초단위 생략)
-    const [selectedDate, setSelectedDate] = useState(null); // 선택 날짜
-    const [selectedTime, setSelectedTime] = useState(null); // 선택 시간
-    const [selectedChair, setSelectedChair] = useState(null); // 선택 좌석
-    const [selectedQuantity, setSelectedQuantity] = useState(1);    // 갯수 기본 1개
+    const [selectedDate, setSelectedDate] = useState(null);     // 선택 날짜
+    const [selectedTime, setSelectedTime] = useState(null);     // 선택 시간
+    const [selectedChair, setSelectedChair] = useState(null);   // 선택 좌석
+    const [selectedQuantity, setSelectedQuantity] = useState(1); // 갯수 기본 1개
 
     useEffect(() => { // 공연정보 (stage.stage uuid)
         fetch('/shows/stagedetail/a0f924e1-97f9-4d56-a4e0-43aa0ee8f9f5')
@@ -93,7 +76,7 @@ function ShowDetailPage() {
 
     // 시간 선택
     const handleTimeSelect = (time) => {
-        setSelectedTime(time); // 시간 선택 시 selectedTime 업데이트
+        setSelectedTime(time);
     };
 
     // 좌석 선택
@@ -180,7 +163,7 @@ function ShowDetailPage() {
                                                 <ChoiceDiv
                                                     key={index}
                                                     selected={time === selectedTime}
-                                                    selectedTime={selectedTime} // Pass selectedTime prop
+                                                    selectedTime={selectedTime}
                                                     onClick={() => handleTimeSelect(time)}
                                                 >
                                                     {index + 1}회 {time.time}
