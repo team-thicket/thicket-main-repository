@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface StageService {
 
@@ -33,7 +34,9 @@ public interface StageService {
 
     List<ResponseStageThumbnailDto> searchStage(String keyword);
 
-    public void updateInfo(String uuid, RequestUpdateInfoDto updateInfoDto);
+    String checkOpenDate(String stageId);
 
-    public void deleteStage(String uuid);
+    void updateInfo(String uuid, RequestUpdateInfoDto updateInfoDto);
+
+    void deleteStage(String uuid);
 }

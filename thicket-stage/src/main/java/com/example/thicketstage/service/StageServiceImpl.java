@@ -20,15 +20,18 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class StageServiceImpl implements StageService{
 
     private final StageRepository stageRepository;
 
     @Override
+    @Transactional
     public RequestCreateStageDto createStage(RequestCreateStageDto stageDto) {
         Stage stage = stageDto.toEntity();
 
@@ -190,6 +193,14 @@ public class StageServiceImpl implements StageService{
         }
 
         return stageInfoList;
+    }
+
+    @Override
+    public String checkOpenDate(String stageId) {
+        LocalDateTime openDateTime = stageRepository.findTicketOpenByUuid(stageId)
+                .orElseThrow(() -> new EntityNotFoundException("공연을 찾을 수 없습니다."));
+
+        return openDateTime.isAfter(LocalDateTime.now()) ? "No" : "Yes";
     }
 
     @Override

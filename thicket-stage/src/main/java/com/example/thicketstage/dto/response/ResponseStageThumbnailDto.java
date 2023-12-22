@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class ResponseStageThumbnailDto {
 
+    private String stageUuid;
     private String name;
     private String place;
     private LocalDateTime stageOpen;
@@ -16,6 +17,7 @@ public class ResponseStageThumbnailDto {
     private String posterImg;
 
     public ResponseStageThumbnailDto(Stage findStage) {
+        this.stageUuid = findStage.getUuid();
         this.name = findStage.getName();
         this.place = findStage.getPlace();
         this.stageOpen = findStage.getStageOpen();

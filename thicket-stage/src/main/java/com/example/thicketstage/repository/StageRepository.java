@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,5 +18,8 @@ public interface StageRepository extends JpaRepository<Stage, Long> {
     List<Stage> findByStageType(StageType stageType);
 
     Optional<Stage> findByUuid(String uuid);
+
+    @Query("SELECT s.ticketOpen FROM Stage s WHERE s.uuid = :stageUuid")
+    Optional<LocalDateTime> findTicketOpenByUuid(String stageUuid);
 
 }

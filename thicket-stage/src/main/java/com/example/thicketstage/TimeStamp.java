@@ -20,7 +20,7 @@ public class TimeStamp {
     private LocalDateTime createAt;
     @LastModifiedDate
     private LocalDateTime updateAt;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String uuid;
 
     @PrePersist
