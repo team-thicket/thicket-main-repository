@@ -2,7 +2,6 @@ package com.example.thicketmember;
 
 import com.example.thicketmember.domain.Member;
 import com.example.thicketmember.enumerate.MemberRole;
-import com.example.thicketmember.enumerate.MemberStatus;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +34,7 @@ public class Init {
                     "test123@gmail.com",
                     pe.encode("a12345678!"),
                     "010-1234-5678",
-                    MemberRole.USER);
+                    MemberRole.ROLE_USER);
             em.persist(member1);
 
             Member member2 = Member.createMember(
@@ -44,7 +43,7 @@ public class Init {
                     "test1234@gmail.com",
                     pe.encode("a12345678!"),
                     "010-1598-4859",
-                    MemberRole.ADMIN);
+                    MemberRole.ROLE_ADMIN);
             em.persist(member2);
 
             Member member3 = Member.createMember(
@@ -53,7 +52,7 @@ public class Init {
                     "test1235@gmail.com",
                     pe.encode("a12345678!"),
                     "010-1265-4985",
-                    MemberRole.MASTER);
+                    MemberRole.ROLE_MASTER);
             em.persist(member3);
 
             Member member4 = Member.createMember(
@@ -62,7 +61,7 @@ public class Init {
                     "test1237895@gmail.com",
                     pe.encode("a12345678!"),
                     "010-1265-4985",
-                    MemberRole.USER);
+                    MemberRole.ROLE_USER);
             em.persist(member4);
 
             Member member5 = Member.createMember(
@@ -71,7 +70,7 @@ public class Init {
                     "test123485@gmail.com",
                     pe.encode("a12345678!"),
                     "010-1265-4985",
-                    MemberRole.USER);
+                    MemberRole.ROLE_USER);
             em.persist(member5);
         }
     }
