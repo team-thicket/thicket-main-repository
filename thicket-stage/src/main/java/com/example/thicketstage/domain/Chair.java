@@ -23,6 +23,9 @@ public class Chair extends TimeStamp {
     private int count;
 
     @Column(nullable = false)
+    private int availableCount;
+
+    @Column(nullable = false)
     private int price;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
@@ -44,6 +47,7 @@ public class Chair extends TimeStamp {
         chair.chairType = chairType;
         chair.count = count;
         chair.price = price;
+        chair.availableCount = 0;
         chair.foreignKey(stageStart);
 
         return chair;
