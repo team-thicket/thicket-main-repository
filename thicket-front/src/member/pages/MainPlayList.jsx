@@ -3,8 +3,7 @@ import {
     InvisibleScroll,
     MainContainer,
     H1,
-    DivList1,
-    RankCard, Poster1, Img1, ImgInfo1,
+    DivList1, Poster1, Img1, ImgInfo1,
 } from "../../assets/css/setting/MainStyleCSS";
 import {useEffect, useState} from "react";
 
@@ -38,7 +37,7 @@ const ShowList = () => {
                     </Poster1>
                 ))
             ) : (
-                <H1>없습니다.　　　　　　　　</H1>
+                <H1>없습니다.　　　　　　　　아니 그냥 없어요.</H1>
             )}
         </DivList1>
     );

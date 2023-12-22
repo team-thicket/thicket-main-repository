@@ -3,8 +3,7 @@ import {
     InvisibleScroll,
     MainContainer,
     H1,
-    DivList2,
-    OpenCard, DivList1, Poster1, Img1, ImgInfo1, Poster2, Img2, ImgDivInfo2,
+    DivList2, Poster2, Img2, ImgDivInfo2,
     // 왼쪽광고, 오른쪽광고
 } from "../../assets/css/setting/MainStyleCSS";
 import {useEffect, useState} from "react";
