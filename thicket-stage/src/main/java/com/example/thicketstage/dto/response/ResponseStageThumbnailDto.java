@@ -8,17 +8,21 @@ import java.time.LocalDateTime;
 @Data
 public class ResponseStageThumbnailDto {
 
+    private String stageUuid;
     private String name;
     private String place;
     private LocalDateTime stageOpen;
     private LocalDateTime stageClose;
+    private LocalDateTime ticketOpen;
     private String posterImg;
 
     public ResponseStageThumbnailDto(Stage findStage) {
+        this.stageUuid = findStage.getUuid();
         this.name = findStage.getName();
         this.place = findStage.getPlace();
         this.stageOpen = findStage.getStageOpen();
         this.stageClose = findStage.getStageClose();
+        this.ticketOpen = findStage.getTicketOpen();
         this.posterImg = findStage.getPosterImg();
     }
 }

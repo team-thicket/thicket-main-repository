@@ -8,13 +8,20 @@ import com.example.thicketmember.enumerate.MemberRole;
 import com.example.thicketmember.enumerate.MemberStatus;
 import com.example.thicketmember.repository.MemberRepository;
 import com.sun.jdi.request.DuplicateRequestException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
+import java.security.Key;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
+@PropertySource("classpath:secretKey.properties")
 class MemberServiceImplTest {
     @Autowired
     MemberRepository memberRepository;
@@ -32,6 +40,8 @@ class MemberServiceImplTest {
     MemberService memberService;
     @Autowired
     PasswordEncoder pe;
+    @Value("${jwtSecret}")
+    String secret;
 
     @Test
     void 회원가입() {
@@ -57,7 +67,7 @@ class MemberServiceImplTest {
         assertThat(member.getEmail()).isEqualTo(email);
         assertTrue(pe.matches(password, member.getPassword()));
         assertThat(member.getStatus()).isEqualTo(MemberStatus.ACTIVE);
-        assertThat(member.getMemberRole()).isEqualTo(MemberRole.USER);
+        assertThat(member.getMemberRole()).isEqualTo(MemberRole.ROLE_USER);
 
     }
     @Test
@@ -86,12 +96,22 @@ class MemberServiceImplTest {
         dto.setEmail(email);
         dto.setPassword(password);
 
+        Key key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+
         //when
-        Member signin = memberService.signin(dto);
-        Member findMember = memberRepository.findById(signin.getId()).get();
+        HttpHeaders httpHeaders = memberService.signin(dto);
+        List<String> list = httpHeaders.get(HttpHeaders.AUTHORIZATION);
+        String token = list.get(0).split(" ")[1];
+
+        String id = Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+
+        Member findMember = memberRepository.findById(UUID.fromString(id)).get();
 
         //then
-        assertThat(signin).isEqualTo(findMember);
+        assertThat(findMember.getEmail()).isEqualTo(email);
 
     }
 

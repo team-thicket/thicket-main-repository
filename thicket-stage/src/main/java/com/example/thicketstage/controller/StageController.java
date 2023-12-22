@@ -6,6 +6,7 @@ import com.example.thicketstage.dto.response.ResponseAdminStageDto;
 import com.example.thicketstage.dto.response.ResponseStageThumbnailDto;
 import com.example.thicketstage.enumerate.StageType;
 import com.example.thicketstage.service.StageService;
+import com.example.thicketstage.util.SseEmitters;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,9 +14,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -23,6 +27,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StageController {
     private final StageService stageService;
+    private final SseEmitters sseEmitters;
+    private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 3600; // 1 hour
 
     @PostMapping("") // API 명세 => POST /shows
     public ResponseEntity<?> createStage(@RequestBody @Valid RequestCreateStageDto stageDto) {
@@ -133,5 +139,17 @@ public class StageController {
         stageService.deleteStage(uuid);
 
         return ResponseEntity.ok("삭제가 완료되었습니다.");
+    }
+
+    @GetMapping(value = "isOngoing", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public ResponseEntity<SseEmitter> connect(@RequestParam("stageId") String stageId,
+                                              @RequestParam("memberId") String memberId) {
+        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
+        sseEmitters.add(memberId, stageId, emitter);
+        return ResponseEntity.ok(emitter);
+    }
+    @GetMapping("serverTime")
+    public ResponseEntity<?> serverTime() {
+        return ResponseEntity.ok(Instant.now());
     }
 }
