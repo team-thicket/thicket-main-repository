@@ -37,7 +37,6 @@ dependencies {
 
 	/*Batch*/
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
-
 	implementation 'org.apache.kafka:kafka-streams'
 	implementation 'org.springframework.kafka:spring-kafka'
 
