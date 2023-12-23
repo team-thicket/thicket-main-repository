@@ -5,6 +5,7 @@ import com.example.thicketstage.dto.request.RequestCreateStageStartDto;
 import com.example.thicketstage.dto.response.ResponseStageStartDto;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface StageStartService {
 
@@ -12,11 +13,11 @@ public interface StageStartService {
 
     List<ResponseStageStartDto> getAllDate();
 
-    public List<ResponseStageStartDto> getStageAllStageStart(String stageUuid);
+    public List<ResponseStageStartDto> getStageAllStageStart(UUID stageId);
 
     // 회차 정보 수정은 추후 고도화 구현시 구현 예정
 //    void updateStageStart(Long id, RequestStageStartUpdateDto stageStartUpdateDto);
 
-    void deleteStageStart(String uuid);
+    void deleteStageStart(UUID id);
 
 }

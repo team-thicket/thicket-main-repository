@@ -114,6 +114,22 @@ public class Init {
             chairInit(stageStart6, "S", 500, 132000);
             chairInit(stageStart7, "R", 2500, 143000);
             chairInit(stageStart7, "S", 500, 132000);
+
+            Stage stage4 = Stage.createStage(
+                    "테스트용 공연",
+                    "플레이 데이터",
+                    LocalDateTime.now().plusSeconds(30),
+                    LocalDateTime.of(2023, 11, 25, 19, 30),
+                    LocalDateTime.of(2024, 2, 7, 19, 30),
+                    LocalDateTime.of(2024, 2, 6, 0, 0),
+                    "60분",
+                    "전체 관람가",
+                    StageType.PLAY,
+                    "포스터 링크",
+                    "상세 포스터 링크",
+                    "공연 상세 설명"
+            );
+            em.persist(stage4);
         }
 
         private StageStart initStageStart(Stage stage, LocalDate date, LocalTime time) {

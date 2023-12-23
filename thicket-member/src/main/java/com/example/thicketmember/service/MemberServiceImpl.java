@@ -7,8 +7,10 @@ import com.example.thicketmember.dto.response.ResponseMemberDtoForAdmin;
 import com.example.thicketmember.enumerate.MemberRole;
 import com.example.thicketmember.enumerate.MemberStatus;
 import com.example.thicketmember.repository.MemberRepository;
+import com.example.thicketmember.util.JwtTokenGenerator;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +25,8 @@ import java.util.UUID;
 @Transactional
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
-    private final PasswordEncoder pe;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenGenerator tokenGenerator;
 
     public Member signup(RequestMemberSignupDto dto) {
         // 이미 가입한 계정이 있으면 해당 계정이 리턴됨
@@ -45,20 +48,24 @@ public class MemberServiceImpl implements MemberService{
         }
         // dto의 이메일로 가입된 계정이 없다면 신규 가입 처리
         return memberRepository.save(Member.createMember(dto.getName(),
-                dto.getBirthdate(), dto.getEmail(),pe.encode(dto.getPassword()),
-                dto.getPhoneNumber(), MemberRole.USER));
+                dto.getBirthdate(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()),
+                dto.getPhoneNumber(), MemberRole.ROLE_USER));
     }
 
     @Override
-    public Member signin(RequestMemberSigninDto dto) {
+    public HttpHeaders signin(RequestMemberSigninDto dto) {
         Member member = memberRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new NotFoundException("계정 정보를 확인해주세요."));
 
-        if (!pe.matches(dto.getPassword(), member.getPassword())) {
+        if (!passwordEncoder.matches(dto.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("계정 정보를 확인해주세요.");
         }
+        if (member.getStatus().equals(MemberStatus.INACTIVE)) {
+            throw new NotFoundException("계정 정보를 확인해주세요.");
+        }
 
-        return member;
+        return tokenGenerator.createToken(String.valueOf(member.getId()),
+                String.valueOf(member.getMemberRole()));
     }
 
     @Override
@@ -73,7 +80,7 @@ public class MemberServiceImpl implements MemberService{
     @Transactional(readOnly = true)
     public List<ResponseMemberDtoForAdmin> findMembers() {
 
-        List<Member> members = memberRepository.findAllByMemberRole(MemberRole.USER);
+        List<Member> members = memberRepository.findAllByMemberRole(MemberRole.ROLE_USER);
         if (members.isEmpty()) {
             throw new NotFoundException("회원 정보가 없습니다.");
         }
@@ -87,16 +94,16 @@ public class MemberServiceImpl implements MemberService{
         Member findMember = memberRepository.findMemberById(UUID.fromString(id));
 
         // 서로 다를때 예외 발생이므로 부정 연산(!) O
-        if (!pe.matches(dto.getCurrentPassword(), findMember.getPassword())) {
+        if (!passwordEncoder.matches(dto.getCurrentPassword(), findMember.getPassword())) {
             throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
         }
 
         // 서로 같을때 예외 발생이므로 부정 연산(!) X
-        if (pe.matches(dto.getNewPassword(),findMember.getPassword())) {
+        if (passwordEncoder.matches(dto.getNewPassword(),findMember.getPassword())) {
             throw new IllegalArgumentException("이전 비밀번호와 다른 비밀번호를 입력해 주세요.");
         }
 
-        findMember.changePassword(pe.encode(dto.getNewPassword()));
+        findMember.changePassword(passwordEncoder.encode(dto.getNewPassword()));
     }
 
     @Override
@@ -104,7 +111,7 @@ public class MemberServiceImpl implements MemberService{
     public void withdraw(String id, RequestWithdrawDto dto) {
         Member findMember = memberRepository.findMemberById(UUID.fromString(id));
 
-        if (!pe.matches(dto.getPassword(), findMember.getPassword())) {
+        if (!passwordEncoder.matches(dto.getPassword(), findMember.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 

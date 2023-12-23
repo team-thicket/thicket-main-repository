@@ -20,15 +20,18 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class StageServiceImpl implements StageService{
 
     private final StageRepository stageRepository;
 
     @Override
+    @Transactional
     public RequestCreateStageDto createStage(RequestCreateStageDto stageDto) {
         Stage stage = stageDto.toEntity();
 
@@ -93,8 +96,8 @@ public class StageServiceImpl implements StageService{
 
     // 공연 하나 선택 했을 때 상세 페이지 조회 되게
     @Override
-    public ResponseStageDto stageDetail(String uuid) {
-        Optional<Stage> optionalStage = stageRepository.findByUuid(uuid);
+    public ResponseStageDto stageDetail(UUID id) {
+        Optional<Stage> optionalStage = stageRepository.findById(id);
 
         if(optionalStage.isEmpty()){
             throw new EntityNotFoundException("해당 공연이 존재하지 않습니다");
@@ -193,18 +196,26 @@ public class StageServiceImpl implements StageService{
     }
 
     @Override
-    @Transactional
-    public void updateInfo(String uuid, RequestUpdateInfoDto updateInfoDto) {
+    public String checkOpenDate(UUID stageId) {
+        LocalDateTime openDateTime = stageRepository.findTicketOpenById(stageId)
+                .orElseThrow(() -> new EntityNotFoundException("공연을 찾을 수 없습니다."));
 
-        Stage stage = stageRepository.findByUuid(uuid)
+        return openDateTime.isAfter(LocalDateTime.now()) ? "No" : "Yes";
+    }
+
+    @Override
+    @Transactional
+    public void updateInfo(UUID id, RequestUpdateInfoDto updateInfoDto) {
+
+        Stage stage = stageRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("공연을 찾을 수 없습니다."));
         stage.updateStageInfo(updateInfoDto);
     }
 
     @Override
     @Transactional
-    public void deleteStage(String uuid) {
-        Optional<Stage> optionalStage = stageRepository.findByUuid(uuid);
+    public void deleteStage(UUID id) {
+        Optional<Stage> optionalStage = stageRepository.findById(id);
 
         if(optionalStage.isEmpty()){
             throw new EntityNotFoundException("공연을 찾을 수 없습니다.");

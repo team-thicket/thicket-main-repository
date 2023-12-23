@@ -5,11 +5,12 @@ import com.example.thicketstage.enumerate.StageType;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 public class ResponseStageDto {
 
-    private String stageUuid;
+    private UUID stageId;
 
     private String name;
 
@@ -36,7 +37,7 @@ public class ResponseStageDto {
     private String stageInfo;
 
     public ResponseStageDto(Stage stage) {
-        this.stageUuid = stage.getUuid();
+        this.stageId = stage.getId();
         this.name = stage.getName();
         this.place= stage.getPlace();
         this.ticketOpen = stage.getTicketOpen();
