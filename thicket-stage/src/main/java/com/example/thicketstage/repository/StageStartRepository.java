@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
-public interface StageStartRepository extends JpaRepository<StageStart, Long>  {
-    Optional<StageStart> findByUuid(String uuid);
+public interface StageStartRepository extends JpaRepository<StageStart, UUID>  {
 
     List<StageStart> findByStage(Stage stage);
 

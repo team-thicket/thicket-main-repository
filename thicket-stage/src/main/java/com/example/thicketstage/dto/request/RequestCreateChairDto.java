@@ -9,13 +9,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 public class RequestCreateChairDto {
 
     @NotBlank(message = "회차 정보 UUID는 필수 입력 항목입니다.")
-    private String stageStartUuid;
+    private UUID stageStartId;
 
     private List<ChairDto> chairDtos;
 

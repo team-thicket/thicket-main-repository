@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -168,7 +169,7 @@ class StageServiceImplTest {
     //when
         List<ResponseAdminStageDto> allStage = stageService.getAllStage();
     //then
-        assertEquals(5, allStage.size());
+        assertEquals(6, allStage.size());
         assertTrue(allStage.stream().anyMatch(dto -> dto.getName().equals("뮤지컬<펀홈>")));
         assertTrue(allStage.stream().anyMatch(dto -> dto.getName().equals("청소년극<발가락육상천재>")));
     }
@@ -216,7 +217,7 @@ class StageServiceImplTest {
 
         // then
         List<ResponseStageThumbnailDto> resultContent = resultPage.getContent();
-        assertEquals(2, resultContent.size());
+        assertEquals(3, resultContent.size());
         assertTrue(resultContent.stream().anyMatch(dto -> dto.getName().equals("뮤지컬<펀홈>")));
         assertTrue(resultContent.stream().anyMatch(dto -> dto.getName().equals("청소년극<#버킷리스트>")));
         assertFalse(resultContent.stream().anyMatch(dto -> dto.getName().equals("청소년극<발가락육상천재>")));
@@ -244,10 +245,10 @@ class StageServiceImplTest {
                 "공연 상세 설명"
         );
         stageRepository.save(savedStage);
-        String uuid = savedStage.getUuid();
+        UUID id = savedStage.getId();
 
         // when
-        ResponseStageDto findResponseStageDto = stageService.stageDetail(uuid);
+        ResponseStageDto findResponseStageDto = stageService.stageDetail(id);
 
         //then
         assertNotNull(findResponseStageDto);
@@ -311,7 +312,7 @@ class StageServiceImplTest {
                                                                 Sort.by(Sort.Order.desc("createAt"))));
         //then
         List<ResponseStageThumbnailDto> stageTypeList = resultPage.getContent();
-        assertEquals(2, stageTypeList.size());
+        assertEquals(3, stageTypeList.size());
         assertFalse(stageTypeList.stream().allMatch(dto -> dto.getName().equals("뮤지컬<펀홈>")));
         assertThat(stageTypeList, Matchers.hasItem(hasProperty("name", equalTo("청소년극<발가락육상천재>"))));
 //        assertTrue(stageTypeList.stream().allMatch(dto -> dto.getName().equals("청소년극<발가락육상천재>")));
@@ -359,7 +360,7 @@ class StageServiceImplTest {
                                                     Sort.by(Sort.Order.desc("createAt"))));
 
         List<ResponseStageThumbnailDto> comingSoonList = resultList.getContent();
-        assertEquals(3, comingSoonList.size());
+        assertEquals(4, comingSoonList.size());
         assertTrue(comingSoonList.stream().anyMatch(dto -> dto.getName().equals("뮤지컬<라이온킹>")));
         assertTrue(comingSoonList.stream().anyMatch(dto -> dto.getName().equals("청소년극<발가락육상천재>")));
         assertTrue(comingSoonList.stream().anyMatch(dto -> dto.getName().equals("하현상 콘서트<With All My Heart>")));
@@ -454,7 +455,7 @@ class StageServiceImplTest {
                 "공연 상세 설명"
         );
         Stage savedStage = stageRepository.save(createStage);
-        String uuid = savedStage.getUuid();
+        UUID id = savedStage.getId();
 
         RequestUpdateInfoDto.RequestUpdateInfoDtoBuilder update = RequestUpdateInfoDto.builder()
                 .name(newName)
@@ -471,10 +472,10 @@ class StageServiceImplTest {
                 .stageInfo(newInfo);
 
         //when
-        stageService.updateInfo(uuid, update.build());
+        stageService.updateInfo(id, update.build());
 
         //then
-        Stage updatedStage = stageRepository.findByUuid(uuid)
+        Stage updatedStage = stageRepository.findById(id)
                 .orElseThrow(() -> new AssertionError("업데이트된 정보가 없습니다."));
 
         assertEquals(newName, updatedStage.getName());
@@ -500,15 +501,15 @@ class StageServiceImplTest {
         );
 
         stageRepository.save(savedStage);
-        String uuid = savedStage.getUuid();
+        UUID id = savedStage.getId();
 
         RequestDeleteStageDto deleteStageDto = new RequestDeleteStageDto();
 
         //when
-        stageService.deleteStage(uuid);
+        stageService.deleteStage(id);
 
         //then
         assertThrows(EntityNotFoundException.class,
-                () -> stageRepository.findByUuid(uuid).orElseThrow(EntityNotFoundException::new));
+                () -> stageRepository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 }

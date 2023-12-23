@@ -3,6 +3,8 @@ package com.example.thicketstage.dto.response;
 import com.example.thicketstage.domain.Chair;
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class ResponseChairDto {
 
@@ -12,12 +14,12 @@ public class ResponseChairDto {
 
     private int price;
 
-    private String chairUuid;
+    private UUID chairId;
 
     public ResponseChairDto(Chair chair) {
         this.chairType = chair.getChairType();
         this.count = chair.getCount();
         this.price = chair.getPrice();
-        this.chairUuid = chair.getUuid();
+        this.chairId = chair.getId();
     }
 }

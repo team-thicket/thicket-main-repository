@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("tickets")
@@ -38,9 +39,9 @@ public class StageStartController {
     }
 
     // 공연 하나의 모든 회차정보 조회
-    @GetMapping("all/{stageuuid}") // API 명세 => GET /tickets/all/{stageuuid}
-    public ResponseEntity<?> getStageAllDate(@PathVariable("stageuuid") String stageUuid) {
-        List<ResponseStageStartDto> allStageStart = stageStartService.getStageAllStageStart(stageUuid);
+    @GetMapping("all/{stageid}") // API 명세 => GET /tickets/all/{stageid}
+    public ResponseEntity<?> getStageAllDate(@PathVariable("stageid") UUID stageId) {
+        List<ResponseStageStartDto> allStageStart = stageStartService.getStageAllStageStart(stageId);
 
         if(allStageStart.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회차 정보가 존재하지 않습니다.");
@@ -59,9 +60,9 @@ public class StageStartController {
 //    }
 
     // 회차 삭제
-    @DeleteMapping("{uuid}") // API 명세 => DELETE /tickets/{uuid}
-    public ResponseEntity<?> deleteStageStart(@PathVariable @Valid String uuid) {
-        stageStartService.deleteStageStart(uuid);
+    @DeleteMapping("{id}") // API 명세 => DELETE /tickets/{id}
+    public ResponseEntity<?> deleteStageStart(@PathVariable @Valid UUID id) {
+        stageStartService.deleteStageStart(id);
 
         return ResponseEntity.ok("삭제가 완료되었습니다.");
     }
