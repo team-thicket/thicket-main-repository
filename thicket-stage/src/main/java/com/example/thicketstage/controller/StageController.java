@@ -6,7 +6,6 @@ import com.example.thicketstage.dto.response.ResponseAdminStageDto;
 import com.example.thicketstage.dto.response.ResponseStageThumbnailDto;
 import com.example.thicketstage.enumerate.StageType;
 import com.example.thicketstage.service.StageService;
-import com.example.thicketstage.util.SseEmitters;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,10 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.time.Instant;
 import java.util.List;
@@ -27,7 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StageController {
     private final StageService stageService;
-    private final SseEmitters sseEmitters;
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 3600; // 1 hour
 
     @PostMapping("") // API 명세 => POST /shows
@@ -41,7 +37,7 @@ public class StageController {
     public ResponseEntity<?> getAllStages() {
         List<ResponseAdminStageDto> allStage = stageService.getAllStage();
 
-        if(allStage.isEmpty()) {
+        if (allStage.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("공연 목록이 존재하지 않습니다.");
         }
 
@@ -51,7 +47,7 @@ public class StageController {
     // 진행중인 공연 모두 최신 순으로 => main
     @GetMapping("ongoing") // API 명세 => GET /shows/ongoing
     public ResponseEntity<?> getOngoingList(@RequestParam(defaultValue = "0") int page,
-                                           @RequestParam(defaultValue = "6") int size) {
+                                            @RequestParam(defaultValue = "6") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<ResponseStageThumbnailDto> ongoingList = stageService.getOngoingList(pageable);
         return ResponseEntity.ok(ongoingList.getContent());
@@ -60,7 +56,7 @@ public class StageController {
     // 진행 중인 공연 최신 순으로 => 관리자
     @GetMapping("ongoing/admin") // API 명세 => GET /shows/ongoing
     public ResponseEntity<?> getOngoingListAdmin(@RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "10") int size) {
+                                                 @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<ResponseAdminStageDto> ongoingList = stageService.getOngoingListAdmin(pageable);
         return ResponseEntity.ok(ongoingList.getContent());
@@ -77,7 +73,7 @@ public class StageController {
     public ResponseEntity<?> getStageTypeList(@PathVariable("stagetype")
                                               @Valid StageType stageType,
                                               @RequestParam(defaultValue = "0") int page,
-                                              @RequestParam(defaultValue = "6") int size){
+                                              @RequestParam(defaultValue = "6") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<ResponseStageThumbnailDto> stageTypeList = stageService.getStageTypeList(stageType, pageable);
 
@@ -87,7 +83,7 @@ public class StageController {
     // ticketOpen 시간 비교해 이전인 것만 줄 세우기 - main 커밍순
     @GetMapping("before") // API 명세 => GET /shows/before
     public ResponseEntity<?> getComingSoonList(@RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "4") int size){
+                                               @RequestParam(defaultValue = "4") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<ResponseStageThumbnailDto> comingSoonList = stageService.getComingSoonList(pageable);
 
@@ -97,7 +93,7 @@ public class StageController {
     // ticketOpen 시간 비교해 이전인 것만 줄 세우기 => admin
     @GetMapping("before/admin") // API 명세 => GET /shows/before
     public ResponseEntity<?> getComingSoonListAdmin(@RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "10") int size){
+                                                    @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<ResponseAdminStageDto> comingSoonList = stageService.getComingSoonListAdmin(pageable);
 
@@ -107,7 +103,7 @@ public class StageController {
     // stageClose 시간 비교해 이후인 것 줄 세우기 - 관리자 - 공연 종료
     @GetMapping("ended") // API 명세 => GET /shows/ended
     public ResponseEntity<?> getEndedList(@RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "10") int size){
+                                          @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<ResponseAdminStageDto> endedList = stageService.getEndedList(pageable);
 
@@ -119,7 +115,7 @@ public class StageController {
     public ResponseEntity<?> searchStage(@PathVariable("keyword") @Valid String keyword) {
         List<ResponseStageThumbnailDto> stageThumbnailDtos = stageService.searchStage(keyword);
 
-        if (stageThumbnailDtos.isEmpty()){
+        if (stageThumbnailDtos.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 검색어의 검색 결과가 없습니다.");
         }
 
@@ -141,13 +137,11 @@ public class StageController {
         return ResponseEntity.ok("삭제가 완료되었습니다.");
     }
 
-    @GetMapping(value = "isOngoing", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public ResponseEntity<SseEmitter> connect(@RequestParam("stageId") String stageId,
-                                              @RequestParam("memberId") String memberId) {
-        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
-        sseEmitters.add(memberId, stageId, emitter);
-        return ResponseEntity.ok(emitter);
+    @GetMapping(value = "isOngoing")
+    public ResponseEntity<String> connect(@RequestParam("stageId") String stageId) {
+        return ResponseEntity.ok(stageService.checkOpenDate(stageId));
     }
+
     @GetMapping("serverTime")
     public ResponseEntity<?> serverTime() {
         return ResponseEntity.ok(Instant.now());
