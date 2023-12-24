@@ -31,7 +31,7 @@ function Layout() {
                         <Route path="play" element={<MainPlayList />} />
                         <Route path="concert" element={<MainConcertList />} />
                         <Route path="soon" element={<MainOpeningSoon />} />
-                        <Route path="detail" element={<ShowDetailPage />} />
+                        <Route path="detail/:id" element={<ShowDetailPage />} />
                         <Route path="mypage" element={<MyPage />} />
                         <Route path="admin" element={<AdminPage />} />
                         <Route path="payment" element={<ReadyKakaopay />} />
