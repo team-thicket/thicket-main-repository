@@ -23,22 +23,22 @@ function ShowDetailPage() {
     const [selectedChair, setSelectedChair] = useState(null);   // 선택 좌석
     const [selectedQuantity, setSelectedQuantity] = useState(1); // 갯수 기본 1개
 
-    useEffect(() => { // 공연정보 (stage.stage uuid)
-        fetch('/shows/stagedetail/a0f924e1-97f9-4d56-a4e0-43aa0ee8f9f5')
+    useEffect(() => { // 공연정보 (SELECT * FROM thicket_stage.stage; → id)
+        fetch('/shows/stagedetail/a6b5c388-8692-41fa-91b6-104a608674e0')
             .then(response => response.json())
             .then(data => {
                 setShow(data);
             });
     }, []);
-    useEffect(() => { // 공연정보 - 시간리스트 (stage.stage uuid)
-        fetch('/tickets/all/a0f924e1-97f9-4d56-a4e0-43aa0ee8f9f5')
+    useEffect(() => { // 공연정보 - 시간리스트 (SELECT * FROM thicket_stage.stage; → id)
+        fetch('/tickets/all/a6b5c388-8692-41fa-91b6-104a608674e0')
             .then(response => response.json())
             .then(data => {
                 setTimes(data);
             });
     }, []);
-    useEffect(() => { // 단일시간 - 좌석리스트 (stage.stage_start uuid)
-        fetch('/chairs/all/bc6160ce-dea4-4d82-983c-1e3f34b01250')
+    useEffect(() => { // 단일시간 - 좌석리스트 (SELECT * FROM thicket_stage.chair; → stage_start_id)
+        fetch('/chairs/all/5851f931-196e-4277-aef5-5e87abddf883')
             .then(response => response.json())
             .then(data => {
                 setChairs(data);
@@ -187,6 +187,8 @@ function ShowDetailPage() {
                                         formatDay={(locale, date) => moment(date).format('D')}
                                         showNeighboringMonth={false}
                                         calendarType="gregory" // 일요일부터 시작
+                                        minDate={new Date(show.stageOpen)} // Set the minimum date
+                                        maxDate={new Date(show.stageClose)} // Set the maximum date
                                     />
                                 </SideMarginTop>
                                 <LightGrayLine />

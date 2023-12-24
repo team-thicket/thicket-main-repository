@@ -231,15 +231,11 @@ export const StyledCalendar = styled(Calendar)`
   }
 
   .react-calendar__month-view__weekdays { // 요일 전체 div
-    background-color: #f0f0f0; /* 밝은 회색 배경 설정 */
+    //background-color: #f0f0f0; /* 밝은 회색 배경 설정 필요할경우 색상 바꿔 */
   }
 
   .react-calendar__month-view__weekdays__weekday {
     font-size: 16px;
-  }
-
-  .react-calendar__month-view__days__day--weekend { // 주말 숫자
-    color: #000000; /* 주말의 기본 색상 (토요일, 일요일) */
   }
 
   .react-calendar__month-view__days__day { // 일일(숫자)
@@ -255,9 +251,14 @@ export const StyledCalendar = styled(Calendar)`
     color: #CCC;
     margin-left: 40px;
   }
+  
   .react-calendar__navigation__next-button { // 다음월 이동 버튼
     color: #CCC;
     margin-right: 40px;
+  }
+  
+  .react-calendar__month-view__days__day { // 전체 숫자 검정색
+    color: black;
   }
 `;
 

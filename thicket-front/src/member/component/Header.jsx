@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {FaSearch} from "react-icons/fa";
 import HeaderMenu from "./HeaderMenu";
+import {useEffect, useState} from "react";
 
 const LogoHeader = styled.header`
   width: 100%;
@@ -25,6 +26,16 @@ const Menubar = styled.div`
   top: 18px; // 로고 위치에 따라 수동 조절
 `
 export default function Header() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        // 토큰 변경 시 로그인 상태 업데이트
+        if(token === null) {
+            setIsLoggedIn(false)
+        } else {
+            setIsLoggedIn(true);
+        }
+    }, []);
     return (
         <div>
             <LogoHeader>
@@ -49,11 +60,20 @@ export default function Header() {
                             <HeaderMenu name={"티켓오픈"} link={"/soon"} />
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'flex-end', width: "630px" }}>
-                            <HeaderMenu name={"로그인"} link={"/login"} />
-                            <HeaderMenu name={"회원가입"} link={"/auth"} />
-                            <HeaderMenu name={"마이페이지"} link={"/mypage"} />
-                            <HeaderMenu name={"임시어드민"} link={"/admin"} />
-                            <HeaderMenu name={"로그아웃"} />
+                            {isLoggedIn ? (
+                                <>
+                                    <HeaderMenu name={'마이페이지'} link={'/mypage'} />
+                                    <HeaderMenu name={'임시어드민'} link={'/admin'} />
+                                    <HeaderMenu name={'로그아웃'} link={'/login'} onClick={() => {
+                                        localStorage.removeItem('token');
+                                    }} />
+                                </>
+                            ) : (
+                                <>
+                                    <HeaderMenu name={'로그인'} link={'/login'} />
+                                    <HeaderMenu name={'회원가입'} link={'/auth'} />
+                                </>
+                            )}
                         </div>
                     </div>
                 </Menubar>
