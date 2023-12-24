@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // axios를 import합니다.
 import { useNavigate } from 'react-router-dom';
 import {H1} from "../../assets/css/setting/admin/StylesOfCreate";
+
 
 const inlineStyles = {
   loginFormContainer: {
@@ -54,6 +54,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -64,25 +65,28 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:8000/members/admin', { email, password }, { headers: { 'Content-Type': 'application/json' } });
-      console.log(response.data);
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
-      if (response.status === 200) { // 로그인 성공 시
-        // window.location.href = 'http://localhost:3000/'; // 네이버 페이지로 이동
-        alert("로그인 성공 하지만 바뀌는건 없지롱")
-      } else {
-        if (response.data === '로그인 성공') {
-          // Handle successful login
-        } else {
-          // Handle other cases
-        }
-      }
-    } catch (error) {
-      console.error('로그인 실패:', error);
-      alert("아이디 또는 비밀번호를 확인해주세요.")
-      // Handle login failure
-    }
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: JSON.stringify({
+        "email": email,
+        "password": password
+      }),
+      redirect: 'follow'
+    };
+
+    fetch("/members/USER", requestOptions)
+        .then(response => {
+          localStorage.setItem('token', response.headers.get('Authorization'));
+          console.log(localStorage.getItem('token'));
+          return response;
+        })
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+    navigate("/")
   };
 
   const handleSignUp = () => {

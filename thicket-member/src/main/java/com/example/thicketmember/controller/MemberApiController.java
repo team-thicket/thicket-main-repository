@@ -9,7 +9,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 import org.webjars.NotFoundException;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/members")
