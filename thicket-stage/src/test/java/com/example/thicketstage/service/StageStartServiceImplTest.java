@@ -38,7 +38,7 @@ class StageStartServiceImplTest {
         Stage stage = stages.get(0);
 
         RequestCreateStageStartDto createStageStartDto = new RequestCreateStageStartDto();
-        createStageStartDto.setStageUuid(stage.getUuid());
+        createStageStartDto.setStageId(stage.getId());
 
         RequestCreateStageStartDto.StageStartDto stageStartDto = new RequestCreateStageStartDto.StageStartDto();
         stageStartDto.setDate(LocalDate.of(2023, 11, 25));
@@ -85,7 +85,7 @@ class StageStartServiceImplTest {
 
         // then
         assertNotNull(allDate);
-        assertEquals(7, allDate.size());
+        assertEquals(9, allDate.size());
     }
 
     // 회차 정보 수정은 추후 고도화 구현시 구현 예정
@@ -126,9 +126,9 @@ class StageStartServiceImplTest {
         stageStartRepository.save(stageStart);
 
         // when
-        stageStartService.deleteStageStart(stageStart.getUuid());
+        stageStartService.deleteStageStart(stageStart.getId());
 
         // then
-        assertFalse(stageStartRepository.findByUuid(stageStart.getUuid()).isPresent());
+        assertFalse(stageStartRepository.findById(stageStart.getId()).isPresent());
     }
 }

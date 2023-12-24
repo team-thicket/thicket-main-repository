@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("chairs")
@@ -31,15 +32,15 @@ public class ChairController {
     }
 
     // 단일 조회
-    @GetMapping("chairdetail/{uuid}")  // API 명세 => GET /chairs/chairdetail/{uuid}
-    public ResponseEntity<?> getChairDetail(@PathVariable String uuid) {
-        return ResponseEntity.ok(chairService.findChairByUuid(uuid));
+    @GetMapping("chairdetail/{id}")  // API 명세 => GET /chairs/chairdetail/{id}
+    public ResponseEntity<?> getChairDetail(@PathVariable UUID id) {
+        return ResponseEntity.ok(chairService.findChairById(id));
     }
 
     // 하나의 회차 정보의 모든 좌석 정보 조회
-    @GetMapping("all/{stagestartuuid}") // API 명세 => GET /chairs/all/{stagestartuuid}
-    public ResponseEntity<?> getStageStartAllChair(@PathVariable("stagestartuuid") String stageStartUuid) {
-        List<ResponseChairDto> allChair = chairService.getStageStartAllChair(stageStartUuid);
+    @GetMapping("all/{stagestartid}") // API 명세 => GET /chairs/all/{stagestartid}
+    public ResponseEntity<?> getStageStartAllChair(@PathVariable("stagestartid") UUID stageStartId) {
+        List<ResponseChairDto> allChair = chairService.getStageStartAllChair(stageStartId);
 
         if (allChair.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("좌석 정보가 존재하지 않습니다.");
@@ -57,9 +58,9 @@ public class ChairController {
 //        return ResponseEntity.ok("수정이 완료되었습니다.");
 //    }
 
-    @DeleteMapping("{uuid}")  // API 명세 => DELETE /chairs/{uuid}
-    public ResponseEntity<?> deleteChair(@PathVariable @Valid String uuid) {
-        chairService.deleteChair(uuid);
+    @DeleteMapping("{id}")  // API 명세 => DELETE /chairs/{id}
+    public ResponseEntity<?> deleteChair(@PathVariable @Valid UUID id) {
+        chairService.deleteChair(id);
 
         return ResponseEntity.ok("삭제가 완료되었습니다");
     }

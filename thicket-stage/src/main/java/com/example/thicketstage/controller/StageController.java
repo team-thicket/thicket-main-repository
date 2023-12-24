@@ -6,6 +6,7 @@ import com.example.thicketstage.dto.response.ResponseAdminStageDto;
 import com.example.thicketstage.dto.response.ResponseStageThumbnailDto;
 import com.example.thicketstage.enumerate.StageType;
 import com.example.thicketstage.service.StageService;
+import com.example.thicketstage.util.SseEmitters;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,16 +14,22 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("shows")
 @RequiredArgsConstructor
 public class StageController {
     private final StageService stageService;
+    private final SseEmitters sseEmitters;
+    private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 3600; // 1 hour
 
     @PostMapping("") // API 명세 => POST /shows
     public ResponseEntity<?> createStage(@RequestBody @Valid RequestCreateStageDto stageDto) {
@@ -35,7 +42,7 @@ public class StageController {
     public ResponseEntity<?> getAllStages() {
         List<ResponseAdminStageDto> allStage = stageService.getAllStage();
 
-        if(allStage.isEmpty()) {
+        if (allStage.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("공연 목록이 존재하지 않습니다.");
         }
 
@@ -45,7 +52,7 @@ public class StageController {
     // 진행중인 공연 모두 최신 순으로 => main
     @GetMapping("ongoing") // API 명세 => GET /shows/ongoing
     public ResponseEntity<?> getOngoingList(@RequestParam(defaultValue = "0") int page,
-                                           @RequestParam(defaultValue = "6") int size) {
+                                            @RequestParam(defaultValue = "6") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<ResponseStageThumbnailDto> ongoingList = stageService.getOngoingList(pageable);
         return ResponseEntity.ok(ongoingList.getContent());
@@ -54,16 +61,16 @@ public class StageController {
     // 진행 중인 공연 최신 순으로 => 관리자
     @GetMapping("ongoing/admin") // API 명세 => GET /shows/ongoing
     public ResponseEntity<?> getOngoingListAdmin(@RequestParam(defaultValue = "0") int page,
-                                            @RequestParam(defaultValue = "10") int size) {
+                                                 @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<ResponseAdminStageDto> ongoingList = stageService.getOngoingListAdmin(pageable);
         return ResponseEntity.ok(ongoingList.getContent());
     }
 
     // 공연 하나 선택 했을 때 상세 페이지 조회 되게
-    @GetMapping("stagedetail/{uuid}") // API 명세 => GET /shows/stagedetail/{uuid}
-    public ResponseEntity<?> getStageDetail(@PathVariable @Valid String uuid) {
-        return ResponseEntity.ok(stageService.stageDetail(uuid));
+    @GetMapping("stagedetail/{id}") // API 명세 => GET /shows/stagedetail/{id}
+    public ResponseEntity<?> getStageDetail(@PathVariable @Valid UUID id) {
+        return ResponseEntity.ok(stageService.stageDetail(id));
     }
 
     // StageType별로 줄세우기 -> ONGOING + 최신순 => main
@@ -71,7 +78,7 @@ public class StageController {
     public ResponseEntity<?> getStageTypeList(@PathVariable("stagetype")
                                               @Valid StageType stageType,
                                               @RequestParam(defaultValue = "0") int page,
-                                              @RequestParam(defaultValue = "6") int size){
+                                              @RequestParam(defaultValue = "6") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<ResponseStageThumbnailDto> stageTypeList = stageService.getStageTypeList(stageType, pageable);
 
@@ -81,7 +88,7 @@ public class StageController {
     // ticketOpen 시간 비교해 이전인 것만 줄 세우기 - main 커밍순
     @GetMapping("before") // API 명세 => GET /shows/before
     public ResponseEntity<?> getComingSoonList(@RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "4") int size){
+                                               @RequestParam(defaultValue = "4") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<ResponseStageThumbnailDto> comingSoonList = stageService.getComingSoonList(pageable);
 
@@ -91,7 +98,7 @@ public class StageController {
     // ticketOpen 시간 비교해 이전인 것만 줄 세우기 => admin
     @GetMapping("before/admin") // API 명세 => GET /shows/before
     public ResponseEntity<?> getComingSoonListAdmin(@RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "10") int size){
+                                                    @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<ResponseAdminStageDto> comingSoonList = stageService.getComingSoonListAdmin(pageable);
 
@@ -101,7 +108,7 @@ public class StageController {
     // stageClose 시간 비교해 이후인 것 줄 세우기 - 관리자 - 공연 종료
     @GetMapping("ended") // API 명세 => GET /shows/ended
     public ResponseEntity<?> getEndedList(@RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "10") int size){
+                                          @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<ResponseAdminStageDto> endedList = stageService.getEndedList(pageable);
 
@@ -113,25 +120,37 @@ public class StageController {
     public ResponseEntity<?> searchStage(@PathVariable("keyword") @Valid String keyword) {
         List<ResponseStageThumbnailDto> stageThumbnailDtos = stageService.searchStage(keyword);
 
-        if (stageThumbnailDtos.isEmpty()){
+        if (stageThumbnailDtos.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 검색어의 검색 결과가 없습니다.");
         }
 
         return ResponseEntity.ok(stageThumbnailDtos);
     }
 
-    @PatchMapping("update/{uuid}") // API 명세 => PATCH /shows/update/{uuid}
-    public ResponseEntity<?> updateInfo(@PathVariable String uuid,
+    @PatchMapping("update/{id}") // API 명세 => PATCH /shows/update/{id}
+    public ResponseEntity<?> updateInfo(@PathVariable UUID id,
                                         @RequestBody @Valid RequestUpdateInfoDto updateInfoDto) {
-        stageService.updateInfo(uuid, updateInfoDto);
+        stageService.updateInfo(id, updateInfoDto);
 
         return ResponseEntity.ok("수정이 완료되었습니다.");
     }
 
-    @DeleteMapping("{uuid}") // API 명세 => DELETE /shows/{uuid}
-    public ResponseEntity<?> deleteStage(@PathVariable @Valid String uuid) {
-        stageService.deleteStage(uuid);
+    @DeleteMapping("{id}") // API 명세 => DELETE /shows/{id}
+    public ResponseEntity<?> deleteStage(@PathVariable @Valid UUID id) {
+        stageService.deleteStage(id);
 
         return ResponseEntity.ok("삭제가 완료되었습니다.");
+    }
+
+    @GetMapping(value = "isOngoing", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public ResponseEntity<SseEmitter> connect(@RequestParam("stageId") String stageId,
+                                              @RequestParam("memberId") String memberId) {
+        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
+        sseEmitters.add(memberId, stageId, emitter);
+        return ResponseEntity.ok(emitter);
+    }
+    @GetMapping("serverTime")
+    public ResponseEntity<?> serverTime() {
+        return ResponseEntity.ok(Instant.now());
     }
 }

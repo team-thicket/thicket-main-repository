@@ -3,14 +3,15 @@ import {
     InvisibleScroll,
     MainContainer,
     H1,
-    DivList2,
-    OpenCard, DivList1, Poster1, Img1, ImgInfo1, Poster2, Img2, ImgDivInfo2,
+    DivList2, Poster2, Img2, ImgDivInfo2,
     // 왼쪽광고, 오른쪽광고
 } from "../../assets/css/setting/MainStyleCSS";
 import {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 const ShowList = () => {
     const [shows, setShows] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch('/shows/before')
@@ -22,14 +23,14 @@ const ShowList = () => {
 
     const formatDateString = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleDateString(); // Adjust the format as needed
+        return date.toLocaleDateString();
     };
 
     return (
         <DivList2>
             {Array.isArray(shows) > 0 ? (
                 shows.map(show => (
-                    <Poster2 key={show.id}>
+                    <Poster2 key={show.id} onClick={() => navigate(`/detail/${show.id}`)}>
                         <Img2 src={show.posterImg} alt="Poster" />
                         <ImgDivInfo2>
                             <div><h2>{show.name}</h2></div>
@@ -39,7 +40,7 @@ const ShowList = () => {
                     </Poster2>
                 ))
             ) : (
-                <H1>없습니다.　　　　　　　　</H1>
+                <H1>없습니다.　　　　　　　　아니 그냥 없어요.</H1>
             )}
         </DivList2>
     );

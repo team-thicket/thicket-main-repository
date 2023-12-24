@@ -6,11 +6,12 @@ import com.example.thicketstage.enumerate.StageType;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 public class ResponseAdminStageDto {
 
-    private String stageUuid;
+    private UUID stageId;
 
     private StageType stageType;
 
@@ -24,7 +25,7 @@ public class ResponseAdminStageDto {
 
 
     public ResponseAdminStageDto(Stage findStage) {
-        this.stageUuid = findStage.getUuid();
+        this.stageId = findStage.getId();
         this.stageType = findStage.getStageType();
         this.name = findStage.getName();
         this.stageOpen = findStage.getStageOpen();
