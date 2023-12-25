@@ -7,7 +7,7 @@ import {
     Wrapper, MarginTop, Container, Scroll,
     ShowMain, ShowSide, SideTop, SideMarginTop, SideMargin, SideFont, SideBottom,
     PostImg, PostDetailImg, PostInfo,
-    H1, Th, Th1, Th2, LightGrayLine,
+    H1, Th, Th1, Th2, Td1, Td2, LightGrayLine,
     StyledCalendar, ButtonList, ChoiceDiv,
 } from "../../assets/css/setting/MainStyleCSS";
 import Reservation from "../../payment/pages/Reservation";
@@ -23,22 +23,22 @@ function ShowDetailPage() {
     const [selectedChair, setSelectedChair] = useState(null);   // 선택 좌석
     const [selectedQuantity, setSelectedQuantity] = useState(1); // 갯수 기본 1개
 
-    useEffect(() => { // 공연정보 (stage.stage uuid)
-        fetch('/shows/stagedetail/a0f924e1-97f9-4d56-a4e0-43aa0ee8f9f5')
+    useEffect(() => { // 공연정보 (SELECT * FROM thicket_stage.stage; → id)
+        fetch('/shows/stagedetail/a6b5c388-8692-41fa-91b6-104a608674e0')
             .then(response => response.json())
             .then(data => {
                 setShow(data);
             });
     }, []);
-    useEffect(() => { // 공연정보 - 시간리스트 (stage.stage uuid)
-        fetch('/tickets/all/a0f924e1-97f9-4d56-a4e0-43aa0ee8f9f5')
+    useEffect(() => { // 공연정보 - 시간리스트 (SELECT * FROM thicket_stage.stage; → id)
+        fetch('/tickets/all/a6b5c388-8692-41fa-91b6-104a608674e0')
             .then(response => response.json())
             .then(data => {
                 setTimes(data);
             });
     }, []);
-    useEffect(() => { // 단일시간 - 좌석리스트 (stage.stage_start uuid)
-        fetch('/chairs/all/bc6160ce-dea4-4d82-983c-1e3f34b01250')
+    useEffect(() => { // 단일시간 - 좌석리스트 (SELECT * FROM thicket_stage.chair; → stage_start_id)
+        fetch('/chairs/all/5851f931-196e-4277-aef5-5e87abddf883')
             .then(response => response.json())
             .then(data => {
                 setChairs(data);
@@ -137,28 +137,30 @@ function ShowDetailPage() {
                                     <table>
                                         <tr>
                                             <Th>장소</Th>
-                                            <td>{show.place}</td>
+                                            <Td1>{show.place}</Td1>
                                         </tr>
                                         <tr>
                                             <Th>공연기간</Th>
-                                            <td>{`${formatDateString(show.stageOpen)} ~ ${formatDateString(show.stageClose)}`}</td>
+                                            <Td1>{`${formatDateString(show.stageOpen)} ~ ${formatDateString(show.stageClose)}`}</Td1>
                                         </tr>
                                         <tr>
                                             <Th>공연시간</Th>
-                                            <td>{show.runningTime}</td>
+                                            <Td1>{show.runningTime}</Td1>
                                         </tr>
                                         <tr>
                                             <Th>관람연령</Th>
-                                            <td>{show.ageLimit}</td>
+                                            <Td1>{show.ageLimit}</Td1>
                                         </tr>
                                         <tr>
                                             <Th1>가격</Th1>
-                                            {Array.isArray(chairs) && chairs.length > 0 && chairs.map(chair => (
-                                                <tr key={chair.chairUuid}>
-                                                    <Th2>{chair.chairType}석</Th2>
-                                                    <td>{Number(chair.price).toLocaleString()}원</td>
-                                                </tr>
-                                            ))}
+                                            {Array.isArray(chairs) && chairs.length > 0 && chairs
+                                                .sort((a, b) => b.price - a.price) // 가격을 내림차순으로 정렬
+                                                .map(chair => (
+                                                    <tr key={chair.chairUuid}>
+                                                        <Th2>{chair.chairType}석</Th2>
+                                                        <Td2>{Number(chair.price).toLocaleString()}원</Td2>
+                                                    </tr>
+                                                ))}
                                         </tr>
                                     </table>
                                 </PostInfo>
@@ -187,6 +189,9 @@ function ShowDetailPage() {
                                         formatDay={(locale, date) => moment(date).format('D')}
                                         showNeighboringMonth={false}
                                         calendarType="gregory" // 일요일부터 시작
+                                        minDate={new Date(show.stageOpen)} // Set the minimum date
+                                        // minDate={new Date()} // 실제 로직에서는 스테이지 오픈 대신 오늘 날짜로 사용
+                                        maxDate={new Date(show.stageClose)} // Set the maximum date
                                     />
                                 </SideMarginTop>
                                 <LightGrayLine />

@@ -231,15 +231,11 @@ export const StyledCalendar = styled(Calendar)`
   }
 
   .react-calendar__month-view__weekdays { // 요일 전체 div
-    background-color: #f0f0f0; /* 밝은 회색 배경 설정 */
+    //background-color: #f0f0f0; /* 밝은 회색 배경 설정 필요할경우 색상 바꿔 */
   }
 
   .react-calendar__month-view__weekdays__weekday {
     font-size: 16px;
-  }
-
-  .react-calendar__month-view__days__day--weekend { // 주말 숫자
-    color: #000000; /* 주말의 기본 색상 (토요일, 일요일) */
   }
 
   .react-calendar__month-view__days__day { // 일일(숫자)
@@ -255,9 +251,36 @@ export const StyledCalendar = styled(Calendar)`
     color: #CCC;
     margin-left: 40px;
   }
+  
   .react-calendar__navigation__next-button { // 다음월 이동 버튼
     color: #CCC;
     margin-right: 40px;
+  }
+  
+  .react-calendar__month-view__days__day { // 전체 숫자 검정색
+    color: black;
+  }
+  .react-calendar__tile:disabled { // 비활성화 배경
+    background-color: #ffffff;
+  } 
+  .react-calendar__tile:disabled abbr {
+    color: lightgray; /* 비활성화된 날짜의 텍스트 색상을 회색으로 설정 */
+  }
+  .react-calendar__navigation button:disabled { // 월 이동 배경
+    background-color: #ffffff;
+  }
+
+  .react-calendar__navigation button:enabled:hover,
+  .react-calendar__navigation button:enabled:focus { // 년월, 화살표 배경 흰색
+    background-color: #ffffff;
+  }
+  .react-calendar__tile--active {
+    background: #007fff;
+    color: white;
+  }
+  .react-calendar__tile--active:enabled:hover,
+  .react-calendar__tile--active:enabled:focus {
+    background: #007fff;
   }
 `;
 
@@ -326,20 +349,36 @@ export const ChoiceDiv = styled.div`
   `}
 `;
 
-export const Th  = styled.th`
+export const Th  = styled.td`
   width: 80px;
   text-align: left;
   padding: 8px 0;
 `;
-export const Th1  = styled.th`
+
+export const Td  = styled.td`
+  width: 80px;
+  text-align: left;
+  padding: 8px 0;
+`;
+
+export const Th1  = styled.td`
   width: 80px;
   text-align: left;
   padding: 8px 0;
   vertical-align: top;
 `;
 
-export const Th2  = styled.th`
-  width: 60px;
+
+export const Td1  = styled.th`
   text-align: left;
+`;
+
+export const Th2  = styled.th`
+  text-align: right;
   padding: 8px 0;
+`;
+
+export const Td2  = styled.th`
+  text-align: right;
+  padding-left: 20px;
 `;
