@@ -1,14 +1,34 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {registerLocale} from 'react-datepicker';
 import ko from 'date-fns/locale/ko';
 import 'react-datepicker/dist/react-datepicker.css';
 import ReactDOM from 'react-dom';
-import { createRoot } from 'react-dom/client';
+import {createRoot} from 'react-dom/client';
 import {
-    Container, CustomDiv, RelativeDiv, FlexCenterDiv, BetweenDiv, TimeDiv, WidthDiv, CalenderDiv,
-    Table, Th, Td, H1, P, Input, InputFile, Textarea, Select,
-    Button, Button1, Button2, ButtonX,
-    StyledDatePicker, Img, CalendarSVG, ImageViewerModal,
+    BetweenDiv,
+    Button,
+    Button1,
+    ButtonX,
+    CalendarSVG,
+    CalenderDiv,
+    Container,
+    CustomDiv,
+    FlexCenterDiv,
+    H1,
+    ImageViewerModal,
+    Img,
+    Input,
+    InputFile,
+    P,
+    RelativeDiv,
+    Select,
+    StyledDatePicker,
+    Table,
+    Td,
+    Textarea,
+    Th,
+    TimeDiv,
+    WidthDiv,
 } from '../../assets/css/setting/admin/StylesOfCreate';
 import ImageFileHandling from "../../assets/css/setting/admin/ImageFileHandling";
 import RegistrationSchedule from "../../assets/css/setting/admin/RegistrationSchedule";
@@ -17,14 +37,27 @@ import DeleteSchedule from "../../assets/css/setting/admin/DeleteSchedule";
 import DeleteSeat from "../../assets/css/setting/admin/DeleteSeat";
 
 const AdminCreateShow = () => {
-
+    const [showTitle, setShowTitle] = useState(""); // 공연 제목
+    const [showAddress, setShowAddress] = useState(""); // 공연장 주소
     const [startDate, setStartDate] = useState(null);   // 전체 시작일
-    const [endDate, setEndDate] = useState(null);       // 전체 종료일
-    const startDatePickerRef = useRef(null);    // 전체 시작일 달력
-    const endDatePickerRef = useRef(null);      // 전체 종료일 달력
+    const [endDate, setEndDate] = useState(null); // 전체 종료일
+    const [ticketOpen, setTicketOpen] = useState(null);
+    const [lastTicket, setLastTicket] = useState(null);
+    const [showDuring, setShowDuring] = useState(""); // 공연 시간
+    const [ageLimit, setAgeLimit] = useState(""); // 연령 제한
+    const [selectedPerformanceType, setSelectedPerformanceType] = useState(''); // 공연 종류
+    const [detailText, setDetailText] = useState(""); // 상세 텍스트
+    const [showId, setShowId] = useState("");
+
+    const startDatePickerRef = useRef(null); // 전체 시작일 달력
+    const endDatePickerRef = useRef(null); // 전체 종료일 달력
+    const ticketOpenPickerRef = useRef(null);
+    const lastTicketPickerRef = useRef(null);
     const [hasExistingSchedules, setHasExistingSchedules] = useState(false); // 달력 비활성화
-    const [selectedPerformanceType, setSelectedPerformanceType] = useState('');     // 공연 종류
-    const [selectedPerformanceStatus, setSelectedPerformanceStatus] = useState(''); // 공연 상태
+    const [hasStartDate, setHasStartDate] = useState(true);
+    const [hasEndDate, setHasEndDate] = useState(true);
+    const [hasShowId, setHasShowId] = useState(false);
+
     const { // 공연포스터 이미지, 상세페이지 이미지
         uploadedFiles, selectedImage, fileInputRef,
         handleFileUpload, handleRemoveFile, handleImageClick, handleCloseModal,
@@ -51,6 +84,10 @@ const AdminCreateShow = () => {
             setHasExistingSchedules(false);
         }
     }, [timeSlots]);
+
+    useEffect(() => {
+        setHasShowId(showId !== "");
+    }, [showId]);
 
     // 일별 시작 시간 일정추가 버튼 (유효성 검사 포함)
     const handleAddTimeButtonClick = () => {
@@ -153,7 +190,64 @@ const AdminCreateShow = () => {
             />
         );
     };
+    function submitNewShow() {
+        let posterImageLink = ""; // 포스터 이미지 링크
+        let detailImageLink = []; // 디테일 이미지 링크 배열
+        let formData = new FormData();
+        uploadedFiles
+            .forEach((img, index) => formData.append(`images`,img));
+        uploadedDetailImages
+            .forEach((img, index) => formData.append(`images`,img));
 
+        const requestOptions = {
+            method: 'POST',
+            body: formData
+        };
+
+        fetch("/shows/image", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            const urls = JSON.parse(result);
+            urls.forEach((url, index) => {
+                console.log(index);
+                console.log(url);
+                if (index === 0) {
+                    posterImageLink = url;
+                }
+                detailImageLink.push(url);
+            });
+            console.log(posterImageLink);
+            console.log(detailImageLink);
+        })
+        .then(() => {
+            fetch("/shows", {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: showTitle,
+                    place: showAddress,
+                    ticketOpen: ticketOpen,
+                    stageOpen: startDate,
+                    stageClose: endDate,
+                    lastTicket: lastTicket,
+                    runningTime: showDuring,
+                    ageLimit: ageLimit,
+                    stageType: selectedPerformanceType,
+                    imgLink: posterImageLink,
+                    detailImgLink: detailImageLink,
+                    stageInfo: detailText
+                }),
+                headers: {
+                    "Content-Type":"application/json"
+                }
+            })
+            .then(response => {
+                if (response.status === 201) {
+                    setShowId(response.text());
+                }
+            })
+            .catch(error => console.log(error));
+        });
+    }
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
@@ -167,13 +261,17 @@ const AdminCreateShow = () => {
                     <tr>
                         <Th>제목</Th>
                         <Td>
-                            <Input placeholder="  제목을 입력하세요." />
+                            <Input placeholder="  제목을 입력하세요."
+                                   onChange={(e) => setShowTitle(e.target.value)}
+                                   disabled={hasShowId}/>
                         </Td>
                     </tr>
                     <tr>
                         <Th>공연장 주소</Th>
                         <Td>
-                            <Input placeholder="  주소를 입력하세요." />
+                            <Input placeholder="  주소를 입력하세요."
+                                   onChange={(e) => setShowAddress(e.target.value)}
+                                   disabled={hasShowId}/>
                         </Td>
                     </tr>
                     <tr>
@@ -183,12 +281,15 @@ const AdminCreateShow = () => {
                                 <StyledDatePicker
                                     ref={startDatePickerRef}
                                     selected={startDate}
-                                    onChange={(date) => setStartDate(date)}
+                                    onChange={(date) => {
+                                        setStartDate(date)
+                                        setHasStartDate(false);
+                                    }}
                                     dateFormat="yyyy년 MM월 dd일"
                                     placeholderText="  날짜를 선택하세요."
                                     locale="ko"
                                     maxDate={endDate} // 종료일 이후로 선택 불가능
-                                    disabled={hasExistingSchedules} // 일정이 있으면 비활성화
+                                    disabled={hasExistingSchedules || hasShowId} // 일정이 있으면 비활성화
                                 />
                                 <CalenderDiv onClick={() => startDatePickerRef.current && startDatePickerRef.current.setOpen(true)}>
                                     <CalendarSVG />
@@ -204,35 +305,87 @@ const AdminCreateShow = () => {
                                 <StyledDatePicker
                                     ref={endDatePickerRef}
                                     selected={endDate}
-                                    onChange={(date) => setEndDate(date)}
+                                    onChange={(date) => {
+                                        setEndDate(date);
+                                        setHasEndDate(false);
+                                    }}
                                     dateFormat="yyyy년 MM월 dd일"
                                     placeholderText="  날짜를 선택하세요."
                                     locale="ko"
                                     minDate={startDate} // 시작일 이전으로 설정 불가능
-                                    disabled={hasExistingSchedules} // 일정이 있으면 비활성화
+                                    disabled={hasExistingSchedules || hasShowId} // 일정이 있으면 비활성화
                                 />
                                 <CalenderDiv onClick={() => endDatePickerRef.current && endDatePickerRef.current.setOpen(true)}>
                                     <CalendarSVG />
                                 </CalenderDiv>
                                 <P>
                                     수정이 필요할 경우 일정을 전부 삭제해주세요.
-                                    <Button2 onClick={handleRemoveAllTimeSlots}>
-                                        일정 전체 삭제
-                                    </Button2>
+                                    <Button onClick={handleRemoveAllTimeSlots}>일정 전체 삭제</Button>
                                 </P>
+                            </RelativeDiv>
+                        </Td>
+                    </tr>
+                    <tr>
+                        <Th>예매 시작일</Th>
+                        <Td>
+                            <RelativeDiv>
+                                <StyledDatePicker
+                                    ref={ticketOpenPickerRef}
+                                    selected={ticketOpen}
+                                    onChange={(date) => setTicketOpen(date)}
+                                    dateFormat="yyyy년 MM월 dd일"
+                                    placeholderText="  날짜를 선택하세요."
+                                    locale="ko"
+                                    maxDate={startDate} // 시작일 이전에서만 선택 가능
+                                    disabled={hasStartDate || hasShowId}
+                                    // 시작 날짜를 골라야지 예약 시작 날짜를 고를 수 있음.
+                                />
+                                <CalenderDiv onClick={() => ticketOpenPickerRef.current && ticketOpenPickerRef.current.setOpen(true)}>
+                                    <CalendarSVG />
+                                </CalenderDiv>
+                                <P> 전체 공연 종료일을 먼저 선택해주세요.</P>
+                            </RelativeDiv>
+                        </Td>
+                    </tr>
+                    <tr>
+                        <Th>예매 종료일</Th>
+                        <Td>
+                            <RelativeDiv>
+                                <StyledDatePicker
+                                    ref={lastTicketPickerRef}
+                                    selected={lastTicket}
+                                    onChange={(date) => setLastTicket(date)}
+                                    dateFormat="yyyy년 MM월 dd일"
+                                    placeholderText="  날짜를 선택하세요."
+                                    locale="ko"
+                                    minDate={startDate}
+                                    maxDate={endDate} // 시작일 이전에서만 선택 가능
+                                    disabled={hasEndDate || hasShowId}
+                                />
+                                <CalenderDiv onClick={() => lastTicketPickerRef.current && lastTicketPickerRef.current.setOpen(true)}>
+                                    <CalendarSVG />
+                                </CalenderDiv>
+                                <P> 전체 공연 종료일을 먼저 선택해주세요.</P>
                             </RelativeDiv>
                         </Td>
                     </tr>
                     <tr>
                         <Th>공연 시간</Th>
                         <Td>
-                            <Input placeholder="  시간을 입력하세요." />
+                            <RelativeDiv>
+                                <Input placeholder="  시간을 입력하세요."
+                                       onChange={(e) => setShowDuring(e.target.value)}
+                                       disabled={hasShowId}/>
+                                <P> 인터미션등의 특이사항도 함께 적어주세요. </P>
+                            </RelativeDiv>
                         </Td>
                     </tr>
                     <tr>
                         <Th>관람 연령</Th>
                         <Td>
-                            <Input placeholder="  연령제한을 입력하세요." />
+                            <Input placeholder="  연령제한을 입력하세요."
+                                   onChange={(e) => setAgeLimit(e.target.value)}
+                                   disabled={hasShowId} />
                         </Td>
                     </tr>
                     <tr>
@@ -241,25 +394,12 @@ const AdminCreateShow = () => {
                             <Select
                                 value={selectedPerformanceType}
                                 onChange={(e) => setSelectedPerformanceType(e.target.value)}
+                                disabled={hasShowId}
                             >
                                 <option value="">선택</option>
-                                <option value="뮤지컬">뮤지컬</option>
-                                <option value="연극">연극</option>
-                                <option value="콘서트">콘서트</option>
-                            </Select>
-                        </Td>
-                    </tr>
-                    <tr>
-                        <Th>공연 상태</Th>
-                        <Td>
-                            <Select
-                                value={selectedPerformanceStatus}
-                                onChange={(e) => setSelectedPerformanceStatus(e.target.value)}
-                            >
-                                <option value="">선택</option>
-                                <option value="공연예정">공연예정</option>
-                                <option value="진행중">진행중</option>
-                                <option value="공연종료">공연종료</option>
+                                <option value="MUSICAL">뮤지컬</option>
+                                <option value="PLAY">연극</option>
+                                <option value="CONCERT">콘서트</option>
                             </Select>
                         </Td>
                     </tr>
@@ -270,6 +410,7 @@ const AdminCreateShow = () => {
                                 type="file"
                                 ref={fileInputRef}
                                 onChange={handleFileUpload}
+                                /*disabled={hasShowId}*/
                             />
                             <Button1 onClick={() => fileInputRef.current.click()}>
                                 파일선택
@@ -281,7 +422,8 @@ const AdminCreateShow = () => {
                             <Th>
                                 <BetweenDiv>
                                     썸네일
-                                    <ButtonX onClick={() => handleRemoveFile(index)}>
+                                    <ButtonX onClick={() => handleRemoveFile()}
+                                             /*disabled={hasShowId}*/>
                                         ✕
                                     </ButtonX>
                                 </BetweenDiv>
@@ -316,6 +458,7 @@ const AdminCreateShow = () => {
                                 type="file"
                                 ref={detailImageInputRef}
                                 onChange={handleDetailImageUpload}
+                                // disabled={hasShowId}
                             />
                             <Button1 onClick={() => detailImageInputRef.current.click()}>
                                 파일선택
@@ -327,7 +470,8 @@ const AdminCreateShow = () => {
                             <Th>
                                 <BetweenDiv>
                                     썸네일
-                                    <ButtonX onClick={() => handleRemoveDetailImage(index)}>
+                                    <ButtonX onClick={() => handleRemoveDetailImage(index)}
+                                             /*disabled={hasShowId}*/>
                                         ✕
                                     </ButtonX>
                                 </BetweenDiv>
@@ -359,7 +503,9 @@ const AdminCreateShow = () => {
                         <Th>상세페이지 텍스트</Th>
                         <Td>
                             <FlexCenterDiv>
-                                <Textarea placeholder="  이미지 외 추가설명을 입력하세요." />
+                                <Textarea placeholder="  이미지 외 추가설명을 입력하세요."
+                                          onChange={(e) => setDetailText(e.target.value)}
+                                          disabled={hasShowId}/>
                                 <P>텍스트 상자의 오른쪽 하단을 클릭해서 입력창을 조절할 수 있습니다.</P>
                             </FlexCenterDiv>
                         </Td>
@@ -368,10 +514,11 @@ const AdminCreateShow = () => {
                 </Table>
             </div>
             <CustomDiv>
-                <Button>공연 등록</Button>
+                <Button onClick={submitNewShow}
+                        disabled={hasShowId}>공연 등록</Button>
             </CustomDiv>
             <div>
-                <H1>일정 등록</H1>
+                <H1>상세 일정 등록</H1>
                 <Table>
                     <tbody>
                     <tr>
@@ -421,6 +568,7 @@ const AdminCreateShow = () => {
             </div>
             <CustomDiv>
                 <Button>일정 등록</Button>
+                <Button onClick={handleRemoveAllTimeSlots}>일정 전체 삭제</Button>
             </CustomDiv>
             <div>
                 <H1>좌석 등록</H1>

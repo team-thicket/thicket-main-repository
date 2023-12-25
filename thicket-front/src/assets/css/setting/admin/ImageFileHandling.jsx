@@ -19,12 +19,9 @@ const ImageFileHandling = () => {
     };
 
     // 공연포스터 이미지 삭제
-    const handleRemoveFile = (index) => {
-        setUploadedFiles((prevFiles) => {
-            const newFiles = [...prevFiles];
-            newFiles.splice(index, 1);
-            return newFiles;
-        });
+    const handleRemoveFile = () => {
+        setUploadedFiles([]);
+        fileInputRef.current.value = null;
     };
 
     // 공연포스터 이미지 클릭 시 모달 열기
@@ -41,6 +38,7 @@ const ImageFileHandling = () => {
     const handleDetailImageUpload = (e) => {
         const file = e.target.files[0];
         setUploadedDetailImages((prevImages) => [...prevImages, file]);
+        console.log(uploadedDetailImages);
     };
 
     // 상세페이지 이미지 삭제
@@ -48,6 +46,7 @@ const ImageFileHandling = () => {
         setUploadedDetailImages((prevImages) => {
             const newImages = [...prevImages];
             newImages.splice(index, 1);
+            console.log(newImages)
             return newImages;
         });
     };

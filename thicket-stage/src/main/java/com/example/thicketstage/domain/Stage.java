@@ -49,18 +49,15 @@ public class Stage extends TimeStamp {
     @Enumerated(EnumType.STRING)
     private StageType stageType;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "stage")
-    private List<StageStart> stageStart = new ArrayList<>();
-
-    @Column(nullable = true)
     private String posterImg;
 
-    @Column(nullable = true)
+    @Column(length = 10000)
     private String detailPosterImg;
 
-    @Column(nullable = true)
     private String stageInfo;
 
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "stage")
+    private List<StageStart> stageStart = new ArrayList<>();
 
     // 비즈니스 로직
     public void updateStageInfo(RequestUpdateInfoDto updateInfoDto) {
