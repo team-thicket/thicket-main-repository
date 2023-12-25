@@ -98,8 +98,11 @@ function Login() {
       })
     };
 
-    fetch("/members/USER", requestOptions)
+    fetch("/thicket-member/members/USER", requestOptions)
         .then(response => {
+          if (response.status === 400) {
+            console.log(response.text());
+          }
           if (response.headers.get('Authorization') !== null) {
             localStorage.setItem('token', response.headers.get('Authorization'));
           }
@@ -109,9 +112,6 @@ function Login() {
           // 로그인이 성공한 경우에만 리디렉션
           if (localStorage.getItem('token') !== null) {
             window.location.replace("/");
-          } else {
-            // 로그인 실패 처리
-            alert("로그인 실패")
           }
         })
   };

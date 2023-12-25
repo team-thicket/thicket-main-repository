@@ -1,9 +1,9 @@
 server:
-  port: 8000
+  port: 0
 
 spring:
   application:
-    name: thicket-stage
+    name: thicket-show
 
   profiles:
     active: localDB, s3key
