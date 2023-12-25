@@ -2,6 +2,8 @@ import styled from "styled-components";
 import {FaSearch} from "react-icons/fa";
 import HeaderMenu from "./HeaderMenu";
 import {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const LogoHeader = styled.header`
   width: 100%;
@@ -25,6 +27,12 @@ const Menubar = styled.div`
   position: fixed;
   top: 18px; // 로고 위치에 따라 수동 조절
 `
+const SearchInput = styled.input`
+  height: 30px;
+  width: 185px;
+  margin-right: 5px;
+`;
+
 export default function Header() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     useEffect(() => {
@@ -36,6 +44,16 @@ export default function Header() {
             setIsLoggedIn(true);
         }
     }, []);
+
+    const navigate = useNavigate(); // useHistory 대신 useNavigate 사용
+    const [query, setQuery] = useState("");
+
+    const handleSearch = () => {
+        if (query) {
+            navigate(`/search/${query}`); // useHistory 대신 useNavigate 사용
+        }
+    };
+
     return (
         <div>
             <LogoHeader>
@@ -51,7 +69,17 @@ export default function Header() {
                     <div style={{ display: "flex", margin: "auto" }}>
                         <div style={{ display: "flex", alignItems: "center", width: "650px" }}>
                             <div style={{ width: "10px" }}></div>
-                            <input style={{ height: "30px", width: "185px", marginRight: "5px" }} />
+                            <SearchInput
+                                type="text"
+                                placeholder=" 검색"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        handleSearch();
+                                    }
+                                }}
+                            />
                             <FaSearch />
                             <div style={{ width: "20px" }}></div>
                             <HeaderMenu name={"뮤지컬"} link={"/musical"} />

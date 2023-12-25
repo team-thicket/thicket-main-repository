@@ -14,20 +14,22 @@ import MainPlayList from "../pages/MainPlayList";
 import MainConcertList from "../pages/MainConcertList";
 import MainOpeningSoon from "../pages/MainOpeningSoon";
 import ShowDetailPage from "../pages/ShowDetailPage";
+import MainSearchList from "../pages/MainSearchList";
 
 export const EmailContext = createContext();
 
 function Layout() {
     return (
-        <>
-            <Header/>
-            <Router>
+        <Router>
+            <>
+                <Header />
                 <Routes>
                     <Route index element={<MainAllList />} />
                     <Route path="musical" element={<MainMusicalList />} />
                     <Route path="play" element={<MainPlayList />} />
                     <Route path="concert" element={<MainConcertList />} />
                     <Route path="soon" element={<MainOpeningSoon />} />
+                    <Route path="search/:query" element={<MainSearchList />} />
                     <Route path="detail/:id" element={<ShowDetailPage />} />
                     <Route path="mypage" element={<MyPage />} />
                     <Route path="admin" element={<AdminPage />} />
@@ -37,8 +39,8 @@ function Layout() {
                     <Route path="auth" element={<AuthPage />} />
                     <Route path="signup" element={<SignUp />} />
                 </Routes>
-            </Router>
-        </>
+            </>
+        </Router>
     );
 }
 export default Layout;
