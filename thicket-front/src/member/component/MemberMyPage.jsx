@@ -27,10 +27,10 @@ export const MemberMyPage = ({contentHandler}) => {
     // State to track password check result
     const [passwordCheckResult, setPasswordCheckResult] = useState(true);
     useEffect(() => {
-        fetch('/members',{
+        fetch('/thicket-member/members',{
             method: "GET",
             headers: {
-                "Authorization":'c8fced4f-e838-4804-b5e1-0e9995784179'
+                "Authorization": localStorage.getItem('token')
             }
         })
             .then(res => res.json())
@@ -60,7 +60,7 @@ export const MemberMyPage = ({contentHandler}) => {
             alert("비밀 번호 변경란을 모두 입력해 주십시오.")
             return;
         }
-        fetch('/members',{
+        fetch('/thicket-member/members',{
             method: "PATCH",
             headers: {
                 'Email':'test123@gmail.com',

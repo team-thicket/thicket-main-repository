@@ -201,10 +201,13 @@ const AdminCreateShow = () => {
 
         const requestOptions = {
             method: 'POST',
+            headers: {
+                "Authorization": localStorage.getItem('token')
+            },
             body: formData
         };
 
-        fetch("/shows/image", requestOptions)
+        fetch("/thicket-show/shows/image", requestOptions)
         .then(response => response.text())
         .then(result => {
             const urls = JSON.parse(result);
@@ -216,7 +219,8 @@ const AdminCreateShow = () => {
             });
         })
         .then(() => {
-            fetch("/shows", {
+            console.log("tprtm");
+            fetch("/thicket-show/shows", {
                 method: 'POST',
                 body: JSON.stringify({
                     name: showTitle,
@@ -233,7 +237,9 @@ const AdminCreateShow = () => {
                     stageInfo: detailText
                 }),
                 headers: {
-                    "Content-Type":"application/json"
+                    "Content-Type":"application/json",
+                    // "redirect":"follow"
+                    "Authorization": localStorage.getItem('token')
                 }
             })
             .then(response => {

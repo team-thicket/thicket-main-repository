@@ -37,24 +37,26 @@ public class Init {
             Stage stage1 = Stage.createStage(
                     "뮤지컬<마리퀴리>",
                     "홍익대 아트센터 대극장",
-                    LocalDateTime.of(2022, 10, 25, 14, 0),
-                    LocalDateTime.of(2022, 11, 25, 19, 30),
-                    LocalDateTime.of(2023, 2, 7, 19, 30),
-                    LocalDateTime.of(2023, 2, 6, 0, 0),
+                    LocalDateTime.of(2023, 10, 25, 14, 0),
+                    LocalDateTime.of(2023, 11, 25, 19, 30),
+                    LocalDateTime.of(2024, 2, 7, 19, 30),
+                    LocalDateTime.of(2024, 2, 6, 0, 0),
                     "180분",
                     "8세이상 관람가",
                     StageType.MUSICAL,
-                    "포스터 링크",
-                    "상세 포스터 링크",
+                    "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%EB%A7%88%EB%A6%AC%ED%80%B4%EB%A6%AC1.gif",
+                    "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%EB%A7%88%EB%A6%AC%ED%80%B4%EB%A6%AC2.jpg&" +
+                            "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%EB%A7%88%EB%A6%AC%ED%80%B4%EB%A6%AC3.jpg&" +
+                            "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%EB%A7%88%EB%A6%AC%ED%80%B4%EB%A6%AC3.jpg",
                     "공연 상세 설명"
             );
             em.persist(stage1);
 
-            StageStart stageStart1 = initStageStart(stage1, LocalDate.of(2022, 11, 25),
+            StageStart stageStart1 = initStageStart(stage1, LocalDate.of(2023, 11, 25),
                                                             LocalTime.of(14, 30));
-            StageStart stageStart2 = initStageStart(stage1, LocalDate.of(2022, 11, 25),
+            StageStart stageStart2 = initStageStart(stage1, LocalDate.of(2023, 11, 25),
                                                             LocalTime.of(19, 30));
-            StageStart stageStart3 = initStageStart(stage1, LocalDate.of(2022, 11, 27),
+            StageStart stageStart3 = initStageStart(stage1, LocalDate.of(2023, 11, 27),
                                                             LocalTime.of(14, 30));
 
             chairInit(stageStart1, "VIP", 100, 99000);
@@ -77,8 +79,9 @@ public class Init {
                     "100분",
                     "전체 관람가",
                     StageType.PLAY,
-                    "포스터 링크",
-                    "상세 포스터 링크",
+                    "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%EB%B2%84%ED%82%B7%EB%A6%AC%EC%8A%A4%ED%8A%B81.webp",
+                    "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%EB%B2%84%ED%82%B7%EB%A6%AC%EC%8A%A4%ED%8A%B82.jpg&" +
+                            "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%EB%B2%84%ED%82%B7%EB%A6%AC%EC%8A%A4%ED%8A%B83.jpg",
                     "공연 상세 설명"
             );
             em.persist(stage2);
@@ -93,15 +96,17 @@ public class Init {
             Stage stage3 = Stage.createStage(
                     "하현상 콘서트<With All My Heart>",
                     "올림픽공원 올림픽홀",
-                    LocalDateTime.of(2023, 12, 31, 14, 0),
+                    LocalDateTime.now().plusMinutes(3),
                     LocalDateTime.of(2024, 1, 13, 18, 0),
                     LocalDateTime.of(2024, 1, 14, 17, 0),
                     LocalDateTime.of(2024, 1, 13, 14, 0),
                     "100분",
                     "만 7세이상",
                     StageType.CONCERT,
-                    "포스터 링크",
-                    "상세 포스터 링크",
+                    "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif",
+                    "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif&" +
+                            "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif&" +
+                            "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif",
                     "공연 상세 설명"
             );
             em.persist(stage3);
@@ -118,15 +123,17 @@ public class Init {
             Stage stage4 = Stage.createStage(
                     "테스트용 공연",
                     "플레이 데이터",
-                    LocalDateTime.now().plusSeconds(30),
+                    LocalDateTime.now().plusMinutes(5),
                     LocalDateTime.of(2023, 11, 25, 19, 30),
                     LocalDateTime.of(2024, 2, 7, 19, 30),
                     LocalDateTime.of(2024, 2, 6, 0, 0),
                     "60분",
                     "전체 관람가",
                     StageType.PLAY,
-                    "포스터 링크",
-                    "상세 포스터 링크",
+                    "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif",
+                    "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif&" +
+                            "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif&" +
+                            "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif",
                     "공연 상세 설명"
             );
             em.persist(stage4);
