@@ -6,28 +6,40 @@ import {
     DivList1, Poster1, Img1, ImgInfo1,
 } from "../../assets/css/setting/MainStyleCSS";
 import {useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const ShowList = () => {
     const [shows, setShows] = useState([]);
     const navigate = useNavigate();
+    const { query } = useParams();
 
     useEffect(() => {
-        fetch('/shows/stagetype/PLAY')
-            .then(response => response.json())
-            .then(data => {
-                setShows(data);
-            });
-    }, []);
+        if (query) {
+            fetch(`/shows/search/${query}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Not Found");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    setShows(data);
+                })
+                .catch(error => {
+                    // Handle 404 error here
+                    setShows([]);
+                });
+        }
+    }, [query]);
 
     const formatDateString = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleDateString(); // Adjust the format as needed
+        return date.toLocaleDateString();
     };
 
     return (
         <DivList1>
-            {Array.isArray(shows) ? (
+            {shows.length > 0 ? (
                 shows.map(show => (
                     <Poster1 key={show.id} onClick={() => navigate(`/detail/${show.id}`)}>
                         <Img1 src={show.posterImg} alt="Poster" />
@@ -39,19 +51,19 @@ const ShowList = () => {
                     </Poster1>
                 ))
             ) : (
-                <H1>없습니다.　　　　　　　　아니 그냥 없어요.</H1>
+                <H1>없습니다.　　　　　　　아니 그냥 없어요.</H1>
             )}
         </DivList1>
     );
 };
 
-function MainPlayList() {
+function MainSearchList() {
 
     return (
         <Wrapper>
             <InvisibleScroll>
                 <MainContainer>
-                    <H1>진행중인 연극 목록</H1>
+                    <H1>검색 결과</H1>
                     <ShowList />
                 </MainContainer>
             </InvisibleScroll>
@@ -59,4 +71,4 @@ function MainPlayList() {
     );
 };
 
-export default MainPlayList;
+export default MainSearchList;
