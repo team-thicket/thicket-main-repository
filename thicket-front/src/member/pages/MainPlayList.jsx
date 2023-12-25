@@ -3,7 +3,8 @@ import {
     InvisibleScroll,
     MainContainer,
     H1,
-    DivList1, Poster1, Img1, ImgInfo1,
+    DivList1,
+    RankCard, Poster1, Img1, ImgInfo1,
 } from "../../assets/css/setting/MainStyleCSS";
 import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";

@@ -23,6 +23,7 @@ function ShowDetailPage() {
     const [selectedChair, setSelectedChair] = useState(null);   // 선택 좌석
     const [selectedQuantity, setSelectedQuantity] = useState(1); // 갯수 기본 1개
 
+
     useEffect(() => { // 공연정보 (SELECT * FROM thicket_stage.stage; → id)
         fetch('/shows/stagedetail/a6b5c388-8692-41fa-91b6-104a608674e0')
             .then(response => response.json())
@@ -30,6 +31,7 @@ function ShowDetailPage() {
                 setShow(data);
             });
     }, []);
+
     useEffect(() => { // 공연정보 - 시간리스트 (SELECT * FROM thicket_stage.stage; → id)
         fetch('/tickets/all/a6b5c388-8692-41fa-91b6-104a608674e0')
             .then(response => response.json())
@@ -37,6 +39,7 @@ function ShowDetailPage() {
                 setTimes(data);
             });
     }, []);
+
     useEffect(() => { // 단일시간 - 좌석리스트 (SELECT * FROM thicket_stage.chair; → stage_start_id)
         fetch('/chairs/all/5851f931-196e-4277-aef5-5e87abddf883')
             .then(response => response.json())
@@ -95,25 +98,34 @@ function ShowDetailPage() {
     const [reservationWindow, setReservationWindow] = useState(null);
 
     const handleReservationClick = () => {
-        // 예매하기 버튼을 눌렀을 때, 새 창으로 Reservation 페이지를 엽니다.
-        const width = Math.floor(window.innerWidth * 0.7);
-        const height = Math.floor(window.innerHeight * 0.8);
-        const left = Math.floor((window.innerWidth - width) / 2);
-        const top = Math.floor((window.innerHeight - height) / 2);
+        if (selectedDate && selectedTime && selectedChair) {
+            const width = Math.floor(window.innerWidth * 0.7);
+            const height = Math.floor(window.innerHeight * 0.8);
+            const left = Math.floor((window.innerWidth - width) / 2);
+            const top = Math.floor((window.innerHeight - height) / 2);
 
-        const windowFeatures = `width=${width},height=${height},left=${left},top=${top}`;
+            const windowFeatures = `width=${width},height=${height},left=${left},top=${top}`;
 
-        const paymentWindow = window.open('', '_blank', windowFeatures);
+            const paymentWindow = window.open('', '_blank', windowFeatures);
 
-        if (paymentWindow) {
-            // 예약 페이지를 새 창에 렌더링
-            const reservationContainer = paymentWindow.document.createElement('div');
-            paymentWindow.document.body.appendChild(reservationContainer);
+            if (paymentWindow) {
+                // 선택된 좌석을 Reservation 컴포넌트로 프롭스로 전달
+                const reservationContainer = paymentWindow.document.createElement('div');
+                paymentWindow.document.body.appendChild(reservationContainer);
 
-            setReservationWindow(reservationContainer);
+                ReactDOM.render(
+                    <Reservation selectedChair={selectedChair}
+                                 selectedTime={selectedTime}
+                                 selectedDate={selectedDate}
+                                 selectedQuantity={selectedQuantity}
+                    />,
+                    reservationContainer
+                );
+            } else {
+                alert('팝업 창이 차단되었거나 오류가 발생했습니다. 팝업 차단을 해제해주세요.');
+            }
         } else {
-            // 팝업 창이 차단되었거나 오류가 있는 경우에는 경고를 표시합니다.
-            alert('팝업 창이 차단되었거나 오류가 발생했습니다. 팝업 차단을 해제해주세요.');
+            alert('날짜, 시간 및 좌석을 선택하세요.');
         }
     };
 
