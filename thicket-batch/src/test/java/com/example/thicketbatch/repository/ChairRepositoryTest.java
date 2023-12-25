@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -16,8 +18,8 @@ class ChairRepositoryTest {
 
     @Test
     void findAvailableCountByUuid() {
-        int count = repository.findAvailableCountByUuid("1e785eb9-1927-4674-b1eb-14eca84f5e8b");
-        Assertions.assertEquals(count,500);
+        int count =repository.findCountByChairId(UUID.fromString("5b3a69b0-a644-47f5-bd20-16cd40c547a4"));
+        Assertions.assertEquals(count,300);
     }
 
     @Test

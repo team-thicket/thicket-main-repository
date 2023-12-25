@@ -11,15 +11,16 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 @Entity
-@Table
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Stage extends TimeStamp {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(length = 100, nullable = false)
     private String name;
@@ -61,29 +62,6 @@ public class Stage extends TimeStamp {
     private String stageInfo;
 
 
+    // 비즈니스 로직
 
-
-    public static Stage createStage(String newName, String newPlace, LocalDateTime newTicketOpen,
-                                    LocalDateTime newStageOpen, LocalDateTime newStageClose,
-                                    LocalDateTime newLastTicket, String newRunningTime,
-                                    String newAgeLimit, StageType newStageType,
-                                    String newPosterImg, String newDetailPosterImg,
-                                    String newStageInfo) {
-        Stage stage = new Stage();
-
-        stage.name = newName;
-        stage.place = newPlace;
-        stage.ticketOpen = newTicketOpen;
-        stage.stageOpen = newStageOpen;
-        stage.stageClose = newStageClose;
-        stage.lastTicket = newLastTicket;
-        stage.runningTime = newRunningTime;
-        stage.ageLimit = newAgeLimit;
-        stage.stageType = newStageType;
-        stage.posterImg = newPosterImg;
-        stage.detailPosterImg = newDetailPosterImg;
-        stage.stageInfo = newStageInfo;
-
-        return stage;
-    }
 }

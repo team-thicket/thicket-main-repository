@@ -20,7 +20,6 @@ public class KafkaProducer {
     // JSON 직렬화 및 역직렬화를 수행하는 Jackson 라이브러리의 핵심 클래스
     private final ObjectMapper objectMapper;
 
-    @Transactional
     public CompletableFuture<String> send(RequestCreateTicketDto ticketDto) {
 
         // 객체를 JSON 문자열로 직렬화

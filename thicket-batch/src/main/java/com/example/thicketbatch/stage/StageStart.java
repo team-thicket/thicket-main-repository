@@ -1,6 +1,5 @@
 package com.example.thicketbatch.stage;
 
-
 import com.example.thicketbatch.TimeStamp;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,15 +10,16 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 @Entity
-@Table
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StageStart extends TimeStamp {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(length = 100, nullable = false)
     private LocalDate date;
@@ -63,7 +63,7 @@ public class StageStart extends TimeStamp {
 //        }
 //    }
 
-        public void deleteStageStart() {
+    public void deleteStageStart() {
         if(stage != null) {
             stage.getStageStart().remove(this);
         }
