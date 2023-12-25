@@ -7,8 +7,8 @@ import Bank from "../component/Bank";
 function Payment({ selectedChair, selectedTime, selectedDate, selectedQuantity }) {
     const [paymentMethod, setPaymentMethod] = useState('');
     const [show, setShow] = useState([]);       // 공연정보
-    // const [times, setTimes] = useState([]);     // 공연정보-시간리스트
-    // const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
+    const [times, setTimes] = useState([]);     // 공연정보-시간리스트
+    const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
 
     useEffect(() => {
         // 페이지가 처음 렌더링될 때 초기 상태
@@ -22,20 +22,20 @@ function Payment({ selectedChair, selectedTime, selectedDate, selectedQuantity }
                 setShow(data);
             });
     }, []);
-    // useEffect(() => { // 공연정보 - 시간리스트 (stage.stage uuid)
-    //     fetch('/tickets/all/51f864ca-1352-4b9b-80fe-359ad340c136')
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             setTimes(data);
-    //         });
-    // }, []);
-    // useEffect(() => { // 단일시간 - 좌석리스트 (stage.stage_start uuid)
-    //     fetch('/chairs/all/892c4364-a8f0-4e58-85ef-41d2f6434331')
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             setChairs(data);
-    //         });
-    // }, []);
+    useEffect(() => { // 공연정보 - 시간리스트 (stage.stage uuid)
+        fetch('/tickets/all/51f864ca-1352-4b9b-80fe-359ad340c136')
+            .then(response => response.json())
+            .then(data => {
+                setTimes(data);
+            });
+    }, []);
+    useEffect(() => { // 단일시간 - 좌석리스트 (stage.stage_start uuid)
+        fetch('/chairs/all/892c4364-a8f0-4e58-85ef-41d2f6434331')
+            .then(response => response.json())
+            .then(data => {
+                setChairs(data);
+            });
+    }, []);
 
     return (
         <>
