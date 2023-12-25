@@ -33,27 +33,6 @@ public class Chair extends TimeStamp {
     @ManyToOne(cascade = CascadeType.REMOVE)
     private StageStart stageStart;
 
-    // 연관관계 메서드
-    public void foreignKey(StageStart stageStart){
-        this.stageStart = stageStart;
-        stageStart.getChair().add(this);
-    }
-
-    // 비즈니스 로직
-    public static Chair createChair(String chairType,
-                                    int count,
-                                    int price,
-                                    StageStart stageStart) {
-        Chair chair = new Chair();
-
-        chair.chairType = chairType;
-        chair.count = count;
-        chair.price = price;
-        chair.availableCount = 0;
-        chair.foreignKey(stageStart);
-
-        return chair;
-    }
 
 
 }

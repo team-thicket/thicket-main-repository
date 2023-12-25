@@ -29,7 +29,7 @@ public class BatchJob {
     private final ObjectMapper objectMapper;
     private final ChairRepository chairRepository;
     // chairId별로 메시지를 쌓을 Map
-    private Map<String, PriorityQueue<RequestCreateTicketDto>> groupedByStageId = new ConcurrentHashMap<>();
+    private Map<String, PriorityQueue<RequestCreateTicketDto>> groupedBychairId = new ConcurrentHashMap<>();
 
     // 각 chairId에 대한 mCount를 유지하는 Map
     private Map<String, AtomicInteger> mCountMap = new ConcurrentHashMap<>();
@@ -51,11 +51,11 @@ public class BatchJob {
     }
     //큐에 메세지 추가
     private void addToQueue(RequestCreateTicketDto message) {
-        String stageId = message.getStageId();
-        groupedByStageId
-                .computeIfAbsent(stageId, k -> new PriorityQueue<>())
+        String chairId = message.getChairId();
+        groupedBychairId
+                .computeIfAbsent(chairId, k -> new PriorityQueue<>())
                 .offer(message);
-        System.out.println("Added message to queue. StageId: " + stageId + ", Message: " + message);
+        System.out.println("Added message to queue. chairId: " + chairId + ", Message: " + message);
     }
 
     //메세지 전송 및 업데이트
@@ -63,13 +63,13 @@ public class BatchJob {
     @Async
     @Transactional
     protected void processAndSendMessages() {
-        groupedByStageId.forEach((stageId, queue) -> {
-            log.info(stageId);
+        groupedBychairId.forEach((chairId, queue) -> {
+            log.info(chairId);
             //chairId별 rank생성
-            AtomicInteger rank = mCountMap.computeIfAbsent(stageId, k -> new AtomicInteger(0));
+            AtomicInteger rank = mCountMap.computeIfAbsent(chairId, k -> new AtomicInteger(0));
 
             //남은좌석조회,db의 availablecount 가져옴
-            Integer availableCount = chairRepository.findCountByChairId(UUID.fromString(stageId));
+            Integer availableCount = chairRepository.findCountByChairId(UUID.fromString(chairId));
             log.info(String.valueOf(availableCount));
 
             //queue.length의 80% 만 예매진행
@@ -86,7 +86,7 @@ public class BatchJob {
             //큐의 메세지 전부 유효한 메세지 일 때
             if (updateCount >= 0) {
                 //좌석 데이터 업데이트
-                chairRepository.updateCountByChairId(UUID.fromString(stageId), updateCount);
+                chairRepository.updateCountByChairId(UUID.fromString(chairId), updateCount);
                 chairRepository.flush();
                 //ordered 토픽으로 메세지 전송
                 producer(rank,queue,ql,updateCount);
@@ -95,7 +95,7 @@ public class BatchJob {
             else {
                 //남은좌석 수 만큼만 예매진행
                 //남은좌석 데이터 업데이트
-                chairRepository.updateCountByChairId(UUID.fromString(stageId), 0);
+                chairRepository.updateCountByChairId(UUID.fromString(chairId), 0);
                 chairRepository.flush();
 
                 //ordered 토픽으로 메세지 전송
