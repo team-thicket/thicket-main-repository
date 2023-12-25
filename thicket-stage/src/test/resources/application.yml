@@ -1,16 +1,10 @@
-server:
-  port: 0
 spring:
-  application:
-    name: thicket-stage
-
   profiles:
-    active: testDB
+    active: testDB, s3key
 
   datasource:
     driver-class-name: ${testDB.driver}
     username: ${testDB.username_}
-    password: ${testDB.password}
     url: ${testDB.url}
 
   jpa:
@@ -20,3 +14,15 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
+
+cloud:
+  aws:
+    s3:
+      bucket: ${s3key.bucket}
+    stack:
+      auto: false
+    region:
+      static: ${s3key.region}
+    credentials:
+      accessKey: ${s3key.accessKey}
+      secretKey: ${s3key.secretKey}

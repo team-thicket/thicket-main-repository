@@ -51,8 +51,8 @@ class StageServiceImplTest {
         createDto.setRunningTime("180분");
         createDto.setAgeLimit("8세이상 관람가");
         createDto.setStageType(StageType.MUSICAL);
-        createDto.setPosterImg("포스터 링크");
-        createDto.setDetailPosterImg("상세 포스터 링크");
+        createDto.setImgLink("포스터 링크");
+        createDto.setDetailImgLink("상세 포스터 링크");
         createDto.setStageInfo("공연 상세 설명");
 
         //when
@@ -74,8 +74,8 @@ class StageServiceImplTest {
         assertEquals(createDto.getRunningTime(), savedStage.getRunningTime());
         assertEquals(createDto.getAgeLimit(), savedStage.getAgeLimit());
         assertEquals(createDto.getStageType(), savedStage.getStageType());
-        assertEquals(createDto.getPosterImg(), savedStage.getPosterImg());
-        assertEquals(createDto.getDetailPosterImg(), savedStage.getDetailPosterImg());
+        assertEquals(createDto.getImgLink(), savedStage.getPosterImg());
+        assertEquals(createDto.getDetailImgLink(), savedStage.getDetailPosterImg());
         assertEquals(createDto.getStageInfo(), savedStage.getStageInfo());
     }
 

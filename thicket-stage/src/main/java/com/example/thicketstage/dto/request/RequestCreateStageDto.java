@@ -1,19 +1,25 @@
 package com.example.thicketstage.dto.request;
 
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.thicketstage.domain.Stage;
 import com.example.thicketstage.enumerate.StageType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
+@Slf4j
 public class RequestCreateStageDto {
-
     @NotBlank(message = "공연명은 필수 입력 항목입니다.")
     private String name;
 
@@ -44,9 +50,9 @@ public class RequestCreateStageDto {
 
     private StageType stageType;
 
-    private String posterImg;
+    private String imgLink;
 
-    private String detailPosterImg;
+    private List<String> detailImgLink;
 
     private String stageInfo;
 
@@ -56,7 +62,7 @@ public class RequestCreateStageDto {
                 stageOpen,stageClose,
                 lastTicket, runningTime,
                 ageLimit, stageType,
-                posterImg,
-                detailPosterImg,stageInfo);
+                imgLink, String.join("&", detailImgLink)
+                ,stageInfo);
     }
 }
