@@ -1,5 +1,7 @@
 package com.example.thicketstage.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.thicketstage.domain.Stage;
 import com.example.thicketstage.dto.request.RequestCreateStageDto;
 import com.example.thicketstage.dto.request.RequestUpdateInfoDto;
@@ -10,12 +12,16 @@ import com.example.thicketstage.enumerate.StageType;
 import com.example.thicketstage.repository.StageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,18 +32,41 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class StageServiceImpl implements StageService{
 
     private final StageRepository stageRepository;
+    private final AmazonS3Client amazonS3Client;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
 
     @Override
     @Transactional
-    public RequestCreateStageDto createStage(RequestCreateStageDto stageDto) {
+    public String createStage(RequestCreateStageDto stageDto) {
         Stage stage = stageDto.toEntity();
+        log.info(stage.getDetailPosterImg());
+        return stageRepository.save(stage).getId().toString();
+    }
 
-        stageRepository.save(stage);
-        
-        return new RequestCreateStageDto();
+    @Override
+    public List<String> uploadImage(List<MultipartFile> images) {
+        if(images.isEmpty()) {
+            throw new IllegalArgumentException("한 장 이상의 이미지를 등록해주세요.");
+        }
+
+        return images.stream().map(img -> {
+            String imgId = UUID.randomUUID().toString();
+            try {
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentType(img.getContentType());
+                metadata.setContentLength(img.getSize());
+                amazonS3Client.putObject(bucket, imgId, img.getInputStream(), metadata);
+            } catch (IOException e) {
+                throw new IllegalArgumentException("잘못된 이미지 입니다.");
+            }
+            return amazonS3Client.getUrl(bucket, imgId).toString();
+        }).toList();
     }
 
     @Override
@@ -193,14 +222,6 @@ public class StageServiceImpl implements StageService{
         }
 
         return stageInfoList;
-    }
-
-    @Override
-    public String checkOpenDate(UUID stageId) {
-        LocalDateTime openDateTime = stageRepository.findTicketOpenById(stageId)
-                .orElseThrow(() -> new EntityNotFoundException("공연을 찾을 수 없습니다."));
-
-        return openDateTime.isAfter(LocalDateTime.now()) ? "No" : "Yes";
     }
 
     @Override
