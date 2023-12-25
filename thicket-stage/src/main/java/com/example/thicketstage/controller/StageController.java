@@ -6,7 +6,6 @@ import com.example.thicketstage.dto.response.ResponseAdminStageDto;
 import com.example.thicketstage.dto.response.ResponseStageThumbnailDto;
 import com.example.thicketstage.enumerate.StageType;
 import com.example.thicketstage.service.StageService;
-import com.example.thicketstage.util.SseEmitters;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,10 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.List;
@@ -28,14 +26,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class StageController {
     private final StageService stageService;
-    private final SseEmitters sseEmitters;
-    private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 3600; // 1 hour
 
     @PostMapping("") // API 명세 => POST /shows
     public ResponseEntity<?> createStage(@RequestBody @Valid RequestCreateStageDto stageDto) {
-        RequestCreateStageDto createStageDto = stageService.createStage(stageDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(stageService.createStage(stageDto));
+    }
 
-        return new ResponseEntity<>(createStageDto, HttpStatus.CREATED);
+    @PostMapping("image") // API 명세 => POST /shows
+    public ResponseEntity<?> submitImage(@RequestPart List<MultipartFile> images) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(stageService.uploadImage(images));
     }
 
     @GetMapping("all") // API 명세 => GET /shows/all - memberuuid 엮어서 관리자 전체 목록이 필요
@@ -142,13 +143,6 @@ public class StageController {
         return ResponseEntity.ok("삭제가 완료되었습니다.");
     }
 
-    @GetMapping(value = "isOngoing", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public ResponseEntity<SseEmitter> connect(@RequestParam("stageId") String stageId,
-                                              @RequestParam("memberId") String memberId) {
-        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
-        sseEmitters.add(memberId, stageId, emitter);
-        return ResponseEntity.ok(emitter);
-    }
     @GetMapping("serverTime")
     public ResponseEntity<?> serverTime() {
         return ResponseEntity.ok(Instant.now());

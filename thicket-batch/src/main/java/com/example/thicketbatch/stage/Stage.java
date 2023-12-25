@@ -62,5 +62,6 @@ public class Stage extends TimeStamp {
     private String stageInfo;
 
 
+    // 비즈니스 로직
 
 }

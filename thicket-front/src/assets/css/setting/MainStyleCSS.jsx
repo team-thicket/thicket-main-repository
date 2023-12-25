@@ -21,80 +21,88 @@ export const InvisibleScroll = styled.main`
   //border: black solid 1px; // 테두리, 사이즈 확인용
 `;
 export const MainContainer = styled.div`
-    overflow-y: auto; // 내부 수직 스크롤바
-    max-height: 90.5vh; // 계산 끝
+  width: 100%;
+  overflow-y: auto; // 내부 수직 스크롤바
+  max-height: 90.5vh; // 계산 끝
+  //border: black solid 1px; // 테두리, 사이즈 확인용
 `;
 
 export const DivList1 = styled.div`
   margin-bottom: 40px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px 97px;
+  gap: 20px 73px;
 `;
 
 export const Poster1 = styled.div`
+  padding: 0 9px 9px 9px;
   display: inline-block;
-  border: 1px solid lightgray;
-  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 export const Img1 = styled.img`
-  width: 360px;
-  height: 480px;
+  min-width: 358px;
+  max-width: 358px;
+  height: 479px;
+  border: 1px solid lightgray;
+  border-bottom: 0;
   border-radius: 10px 10px 0 0;
 `;
 
 export const ImgInfo1 = styled.div`
   width: 318px;
   height: 99px;
-  padding: 0 20px;
+  padding: 0 20px ;
+  border: 1px solid lightgray;
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 10px; // 균등분배
+  //gap: 10px; // 균등분배
 `;
 
 export const DivList2 = styled.div`
   margin-bottom: 40px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 40px 40px;
+  gap: 30px 20px;
 `;
 
 export const Poster2 = styled.div`
+  padding: 0 15px 15px 15px;
   display: flex;
   align-items: center;
-  //margin-bottom: 20px;
-  width: 618px;
+  justify-content: center;
+  width: 600px;
   height: 260px;
-  border: 1px solid lightgray;
-  border-radius: 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
 export const Img2 = styled.img`
   max-width: 210px;
   min-width: 210px;
   height: 100%;
+  border: 1px solid lightgray;
+  border-right: 0;
   border-radius: 20px 0 0 20px;
-`;
-
-export const ImgDiv2 = styled.div`
-  max-width: 210px;
-  min-width: 210px;
-  height: 100%;
-  border-radius: 20px 0 0 20px;
-  background-color: grey;  // 여기부터 아래까지는
-  display: flex;           // 빼도 됨
-  align-items: center;     // 글자 가운데 보려고
-  justify-content: center; // 넣은거임
 `;
 
 export const ImgDivInfo2 = styled.div`
   width: auto;
   height: 100%;
   padding: 0 20px;
-  border-left: none;
-  border-radius: 0 10px 10px 0;
+  border: 1px solid lightgray;
+  border-left: 0;
+  border-radius: 0 20px 20px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -132,6 +140,10 @@ export const Main = styled.div`
   border: black solid 1px; // 1px 두께의 검은색 실선 테두리
   border-radius: 5px; // 5px의 테두리를 둥글게 처리
   margin-top:20px;
+`;
+
+export const PaddingDiv = styled.div`
+  padding: 5px 0;
 `;
 
 export const 왼쪽광고 = styled.div`
@@ -219,15 +231,11 @@ export const StyledCalendar = styled(Calendar)`
   }
 
   .react-calendar__month-view__weekdays { // 요일 전체 div
-    background-color: #f0f0f0; /* 밝은 회색 배경 설정 */
+    //background-color: #f0f0f0; /* 밝은 회색 배경 설정 필요할경우 색상 바꿔 */
   }
 
   .react-calendar__month-view__weekdays__weekday {
     font-size: 16px;
-  }
-
-  .react-calendar__month-view__days__day--weekend { // 주말 숫자
-    color: #000000; /* 주말의 기본 색상 (토요일, 일요일) */
   }
 
   .react-calendar__month-view__days__day { // 일일(숫자)
@@ -243,9 +251,36 @@ export const StyledCalendar = styled(Calendar)`
     color: #CCC;
     margin-left: 40px;
   }
+  
   .react-calendar__navigation__next-button { // 다음월 이동 버튼
     color: #CCC;
     margin-right: 40px;
+  }
+  
+  .react-calendar__month-view__days__day { // 전체 숫자 검정색
+    color: black;
+  }
+  .react-calendar__tile:disabled { // 비활성화 배경
+    background-color: #ffffff;
+  } 
+  .react-calendar__tile:disabled abbr {
+    color: lightgray; /* 비활성화된 날짜의 텍스트 색상을 회색으로 설정 */
+  }
+  .react-calendar__navigation button:disabled { // 월 이동 배경
+    background-color: #ffffff;
+  }
+
+  .react-calendar__navigation button:enabled:hover,
+  .react-calendar__navigation button:enabled:focus { // 년월, 화살표 배경 흰색
+    background-color: #ffffff;
+  }
+  .react-calendar__tile--active {
+    background: #007fff;
+    color: white;
+  }
+  .react-calendar__tile--active:enabled:hover,
+  .react-calendar__tile--active:enabled:focus {
+    background: #007fff;
   }
 `;
 
@@ -314,20 +349,36 @@ export const ChoiceDiv = styled.div`
   `}
 `;
 
-export const Th  = styled.th`
+export const Th  = styled.td`
   width: 80px;
   text-align: left;
-  padding: 8px 0px;
+  padding: 8px 0;
 `;
-export const Th1  = styled.th`
+
+export const Td  = styled.td`
   width: 80px;
   text-align: left;
-  padding: 8px 0px;
+  padding: 8px 0;
+`;
+
+export const Th1  = styled.td`
+  width: 80px;
+  text-align: left;
+  padding: 8px 0;
   vertical-align: top;
 `;
 
-export const Th2  = styled.th`
-  width: 60px;
+
+export const Td1  = styled.th`
   text-align: left;
-  padding: 8px 0px;
+`;
+
+export const Th2  = styled.th`
+  text-align: right;
+  padding: 8px 0;
+`;
+
+export const Td2  = styled.th`
+  text-align: right;
+  padding-left: 20px;
 `;

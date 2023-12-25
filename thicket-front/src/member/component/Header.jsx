@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import {FaSearch} from "react-icons/fa";
 import HeaderMenu from "./HeaderMenu";
+import {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const LogoHeader = styled.header`
   width: 100%;
@@ -24,7 +27,33 @@ const Menubar = styled.div`
   position: fixed;
   top: 18px; // 로고 위치에 따라 수동 조절
 `
+const SearchInput = styled.input`
+  height: 30px;
+  width: 185px;
+  margin-right: 5px;
+`;
+
 export default function Header() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        // 토큰 변경 시 로그인 상태 업데이트
+        if(token === null) {
+            setIsLoggedIn(false)
+        } else {
+            setIsLoggedIn(true);
+        }
+    }, []);
+
+    const navigate = useNavigate(); // useHistory 대신 useNavigate 사용
+    const [query, setQuery] = useState("");
+
+    const handleSearch = () => {
+        if (query) {
+            navigate(`/search/${query}`); // useHistory 대신 useNavigate 사용
+        }
+    };
+
     return (
         <div>
             <LogoHeader>
@@ -40,21 +69,49 @@ export default function Header() {
                     <div style={{ display: "flex", margin: "auto" }}>
                         <div style={{ display: "flex", alignItems: "center", width: "650px" }}>
                             <div style={{ width: "10px" }}></div>
-                            <input style={{ height: "30px", width: "185px", marginRight: "5px" }} />
-                            <FaSearch />
+                            <SearchInput
+                                type="text"
+                                placeholder=" 검색어를 입력해 주세요"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        handleSearch();
+                                    }
+                                }}
+                            />
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    cursor: "pointer",
+                                }}
+                                onClick={handleSearch}
+                            >
+                                <FaSearch />
+                            </div>
                             <div style={{ width: "20px" }}></div>
                             <HeaderMenu name={"뮤지컬"} link={"/musical"} />
                             <HeaderMenu name={"연극"} link={"/play"} />
                             <HeaderMenu name={"콘서트"} link={"/concert"} />
                             <HeaderMenu name={"티켓오픈"} link={"/soon"} />
-                            <HeaderMenu name={"ㅇ"} link={"/detail"} />
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'flex-end', width: "630px" }}>
-                            <HeaderMenu name={"로그인"} link={"/login"} />
-                            <HeaderMenu name={"회원가입"} link={"/auth"} />
-                            <HeaderMenu name={"마이페이지"} link={"/mypage"} />
-                            <HeaderMenu name={"임시어드민"} link={"/admin"} />
-                            <HeaderMenu name={"로그아웃"} />
+                            {isLoggedIn ? (
+                                <>
+                                    <HeaderMenu name={'마이페이지'} link={'/mypage'} />
+                                    <HeaderMenu name={'임시어드민'} link={'/admin'} />
+                                    <HeaderMenu name={'로그아웃'} link={'/login'} onClick={() => {
+                                        localStorage.removeItem('token');
+                                    }} />
+                                </>
+                            ) : (
+                                <>
+                                    <HeaderMenu name={'로그인'} link={'/login'} />
+                                    <HeaderMenu name={'회원가입'} link={'/auth'} />
+                                </>
+                            )}
                         </div>
                     </div>
                 </Menubar>

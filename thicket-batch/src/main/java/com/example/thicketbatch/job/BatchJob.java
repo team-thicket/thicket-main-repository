@@ -31,7 +31,6 @@ public class BatchJob {
     // chairId별로 메시지를 쌓을 Map
     private Map<String, PriorityQueue<RequestCreateTicketDto>> groupedBychairId = new ConcurrentHashMap<>();
 
-    // 각 chairId에 대한 mCount를 유지하는 Map
     private Map<String, AtomicInteger> mCountMap = new ConcurrentHashMap<>();
 
     @KafkaListener(topics = "test", groupId = "group-id-1")

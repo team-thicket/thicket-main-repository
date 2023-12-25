@@ -6,7 +6,7 @@ spring:
     name: thicket-stage
 
   profiles:
-    active: localDB
+    active: localDB, s3key
 
   datasource:
     driver-class-name: ${localDB.driver}
@@ -25,6 +25,18 @@ spring:
 logging:
   level:
     org.springframework.web: DEBUG
+
+cloud:
+  aws:
+    s3:
+      bucket: ${s3key.bucket}
+    stack:
+      auto: false
+    region:
+      static: ${s3key.region}
+    credentials:
+      accessKey: ${s3key.accessKey}
+      secretKey: ${s3key.secretKey}
 
 eureka:
   instance:
