@@ -45,7 +45,6 @@ public class StageServiceImpl implements StageService{
     @Transactional
     public String createStage(RequestCreateStageDto stageDto) {
         Stage stage = stageDto.toEntity();
-        log.info(stage.getDetailPosterImg());
         return stageRepository.save(stage).getId().toString();
     }
 
