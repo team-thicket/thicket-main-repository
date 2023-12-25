@@ -4,13 +4,38 @@ import ReadyKakaopay from "../../member/pages/ReadyKakaopay";
 import Bank from "../component/Bank";
 
 
-function Payment() {
+function Payment({ selectedChair, selectedTime, selectedDate, selectedQuantity }) {
     const [paymentMethod, setPaymentMethod] = useState('');
+    const [show, setShow] = useState([]);       // 공연정보
+    // const [times, setTimes] = useState([]);     // 공연정보-시간리스트
+    // const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
 
     useEffect(() => {
         // 페이지가 처음 렌더링될 때 초기 상태
-        setPaymentMethod('kakao');
+        setPaymentMethod('bank');
     }, []);
+
+    useEffect(() => { // 공연정보 (stage.stage uuid)
+        fetch('/shows/stagedetail/51f864ca-1352-4b9b-80fe-359ad340c136')
+            .then(response => response.json())
+            .then(data => {
+                setShow(data);
+            });
+    }, []);
+    // useEffect(() => { // 공연정보 - 시간리스트 (stage.stage uuid)
+    //     fetch('/tickets/all/51f864ca-1352-4b9b-80fe-359ad340c136')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setTimes(data);
+    //         });
+    // }, []);
+    // useEffect(() => { // 단일시간 - 좌석리스트 (stage.stage_start uuid)
+    //     fetch('/chairs/all/892c4364-a8f0-4e58-85ef-41d2f6434331')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setChairs(data);
+    //         });
+    // }, []);
 
     return (
         <>
@@ -38,14 +63,14 @@ function Payment() {
                 </div>
 
                 <div style={{ width: '44%', textAlign: 'left' }}>
-                    <p>[청소년극] 발가락 육상천재</p>
+                    <p>{show.name}</p>
                 </div>
 
                 <div style={{ width: '32%', textAlign: 'left'}}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         <div style={{ borderRight: '1px solid black', height: '80%',top: '10%',
                                         position: 'absolute', left: '66.7%'}}></div>
-                        <p>국립극단 소극장 판</p>
+                        <p>{show.place}</p>
                     </div>
                 </div>
             </div>
@@ -153,15 +178,15 @@ function Payment() {
                     <table>
                         <tbody>
                         <tr style={{height: '150px'}}>
-                            <th style={{ textAlign: 'center', backgroundColor: 'lightgray', width: '23%', borderRadius: '5px'}}>
+                            <th style={{ textAlign: 'center', backgroundColor: 'lightgray', width: '25%', borderRadius: '5px'}}>
                                 공연 <br /><br /><br />
                                 장소 <br /><br />
                                 좌석
                             </th>
                             <td style={{ textAlign: 'center', width: '80%'}}>
-                                [청소년극] 발가락 육상천재보다 제목이 긴 공연<br /><br />
-                                국립극단 소극장 판 <br /><br />
-                                VIP석 2매
+                                {show.name}<br /><br />
+                                {show.place} <br /><br />
+                                {selectedChair && selectedChair.chairType}석 {selectedQuantity}매
                             </td>
                         </tr>
                         </tbody>
