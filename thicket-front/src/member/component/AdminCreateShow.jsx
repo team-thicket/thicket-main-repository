@@ -209,15 +209,11 @@ const AdminCreateShow = () => {
         .then(result => {
             const urls = JSON.parse(result);
             urls.forEach((url, index) => {
-                console.log(index);
-                console.log(url);
                 if (index === 0) {
                     posterImageLink = url;
                 }
                 detailImageLink.push(url);
             });
-            console.log(posterImageLink);
-            console.log(detailImageLink);
         })
         .then(() => {
             fetch("/shows", {

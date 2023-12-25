@@ -38,7 +38,6 @@ const ImageFileHandling = () => {
     const handleDetailImageUpload = (e) => {
         const file = e.target.files[0];
         setUploadedDetailImages((prevImages) => [...prevImages, file]);
-        console.log(uploadedDetailImages);
     };
 
     // 상세페이지 이미지 삭제
