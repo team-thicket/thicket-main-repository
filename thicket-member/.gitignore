@@ -41,3 +41,5 @@ src/main/resources/application-localDB.yml
 src/main/resources/application-mail.yml
 src/main/resources/secretKey.properties
 src/test/resources/application-testDB.yml
+src/test/resources/application-mail.yml
+src/test/resources/secretKey.properties

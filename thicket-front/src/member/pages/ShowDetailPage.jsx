@@ -22,10 +22,11 @@ function ShowDetailPage() {
     const [selectedTime, setSelectedTime] = useState(null);     // 선택 시간
     const [selectedChair, setSelectedChair] = useState(null);   // 선택 좌석
     const [selectedQuantity, setSelectedQuantity] = useState(1); // 갯수 기본 1개
+    const [totalAmount, setTotalAmount] = useState(0);  // 선택된 좌석의 총 금액을 저장할 새로운 상태
 
 
     useEffect(() => { // 공연정보 (SELECT * FROM thicket_stage.stage; → id)
-        fetch('/shows/stagedetail/a6b5c388-8692-41fa-91b6-104a608674e0')
+        fetch('/shows/stagedetail/c2e8bbaa-5c12-4cb7-930a-33552c85d81f')
             .then(response => response.json())
             .then(data => {
                 setShow(data);
@@ -33,7 +34,7 @@ function ShowDetailPage() {
     }, []);
 
     useEffect(() => { // 공연정보 - 시간리스트 (SELECT * FROM thicket_stage.stage; → id)
-        fetch('/tickets/all/a6b5c388-8692-41fa-91b6-104a608674e0')
+        fetch('/tickets/all/c2e8bbaa-5c12-4cb7-930a-33552c85d81f')
             .then(response => response.json())
             .then(data => {
                 setTimes(data);
@@ -41,7 +42,7 @@ function ShowDetailPage() {
     }, []);
 
     useEffect(() => { // 단일시간 - 좌석리스트 (SELECT * FROM thicket_stage.chair; → stage_start_id)
-        fetch('/chairs/all/5851f931-196e-4277-aef5-5e87abddf883')
+        fetch('/chairs/all/2a1b5854-00a9-4b9e-8017-33fa3b0429f9')
             .then(response => response.json())
             .then(data => {
                 setChairs(data);
@@ -99,6 +100,11 @@ function ShowDetailPage() {
 
     const handleReservationClick = () => {
         if (selectedDate && selectedTime && selectedChair) {
+            // 선택된 좌석의 가격과 수량을 기반으로 총 금액 계산
+            const chairPrice = selectedChair.price || 0;  // 가격이 selectedChair에 있는 경우를 가정합니다.
+            const calculatedTotalAmount = chairPrice * selectedQuantity;
+            setTotalAmount(calculatedTotalAmount);
+
             const width = Math.floor(window.innerWidth * 0.7);
             const height = Math.floor(window.innerHeight * 0.8);
             const left = Math.floor((window.innerWidth - width) / 2);
@@ -118,6 +124,7 @@ function ShowDetailPage() {
                                  selectedTime={selectedTime}
                                  selectedDate={selectedDate}
                                  selectedQuantity={selectedQuantity}
+                                 totalAmount={totalAmount}
                     />,
                     reservationContainer
                 );

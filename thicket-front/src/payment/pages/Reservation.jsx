@@ -8,23 +8,24 @@ function Reservation({ selectedChair, selectedTime, selectedDate, selectedQuanti
     const [show, setShow] = useState([]);       // 공연정보
     const [times, setTimes] = useState([]);     // 공연정보-시간리스트
     const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
+    const [totalAmount, setTotalAmount] = useState(0);  // 선택된 좌석의 총 금액을 저장할 새로운 상태
 
     useEffect(() => { // 공연정보 (stage.stage uuid)
-        fetch('/shows/stagedetail/51f864ca-1352-4b9b-80fe-359ad340c136')
+        fetch('/shows/stagedetail/c2e8bbaa-5c12-4cb7-930a-33552c85d81f')
             .then(response => response.json())
             .then(data => {
                 setShow(data);
             });
     }, []);
     useEffect(() => { // 공연정보 - 시간리스트 (stage.stage uuid)
-        fetch('/tickets/all/51f864ca-1352-4b9b-80fe-359ad340c136')
+        fetch('/tickets/all/c2e8bbaa-5c12-4cb7-930a-33552c85d81f')
             .then(response => response.json())
             .then(data => {
                 setTimes(data);
             });
     }, []);
     useEffect(() => { // 단일시간 - 좌석리스트 (stage.stage_start uuid)
-        fetch('/chairs/all/892c4364-a8f0-4e58-85ef-41d2f6434331')
+        fetch('/chairs/all/2a1b5854-00a9-4b9e-8017-33fa3b0429f9')
             .then(response => response.json())
             .then(data => {
                 setChairs(data);
@@ -47,6 +48,7 @@ function Reservation({ selectedChair, selectedTime, selectedDate, selectedQuanti
             selectedTime={selectedTime}
             selectedDate={selectedDate}
             selectedQuantity={selectedQuantity}
+            totalAmount={totalAmount}
         />;
     }
     if (!selectedChair) {
@@ -120,7 +122,7 @@ function Reservation({ selectedChair, selectedTime, selectedDate, selectedQuanti
                             <td style={{ textAlign: 'right', width: '66%'}}>
                                 {moment(selectedDate).format('YYYY년 MM월 DD일')}<br /> {selectedTime.time} <br /><br />
                                 {selectedChair.chairType}석 {selectedQuantity}매 <br /><br />
-                                198,000원
+                                {Number(selectedChair.price * selectedQuantity).toLocaleString()}원
                             </td>
                         </tr>
                         <hr style={{width: '315%'}} />
@@ -135,7 +137,7 @@ function Reservation({ selectedChair, selectedTime, selectedDate, selectedQuanti
                             </th>
                             <td style={{ textAlign: 'right', color: 'red', fontSize: '14px'}}>
                                 <div style={{ marginBottom: '5px' }}>
-                                    2023년 11월 23일(수) 24:00
+                                    {moment(selectedDate-3).format('YYYY년 MM월 DD일')} 24:00 까지
                                 </div>
                                 <div>
                                     티켓 금액의 0~30%
@@ -145,7 +147,8 @@ function Reservation({ selectedChair, selectedTime, selectedDate, selectedQuanti
                         <hr style={{width: '315%'}} />
                         <tr style={{ height: '40px'}}>
                             <th style={{ color:'#7a7a7a', textAlign: 'left', borderRadius: '5px'}}>총 결제 금액 |</th>
-                            <td style={{ textAlign: 'right', borderRadius: '5px'}}>198,000 원</td>
+                            <td style={{ textAlign: 'right', borderRadius: '5px'}}>
+                                {Number(selectedChair.price * selectedQuantity).toLocaleString()}원</td>
                         </tr>
                         </tbody>
                     </table>
@@ -180,7 +183,7 @@ function Reservation({ selectedChair, selectedTime, selectedDate, selectedQuanti
                                 장소 <br /><br />
                                 좌석
                             </th>
-                            <td style={{ textAlign: 'center', width: '80%'}}>
+                            <td style={{ textAlign: 'center', width: '80%', padding: '15px'}}>
                                 {show.name}<br /><br />
                                 {show.place} <br /><br />
                                 {selectedChair.chairType}석 {selectedQuantity}매
