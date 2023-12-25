@@ -71,7 +71,7 @@ export default function Header() {
                             <div style={{ width: "10px" }}></div>
                             <SearchInput
                                 type="text"
-                                placeholder=" 검색"
+                                placeholder=" 검색어를 입력해 주세요"
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
                                 onKeyDown={(e) => {
@@ -80,7 +80,17 @@ export default function Header() {
                                     }
                                 }}
                             />
-                            <FaSearch />
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    cursor: "pointer",
+                                }}
+                                onClick={handleSearch}
+                            >
+                                <FaSearch />
+                            </div>
                             <div style={{ width: "20px" }}></div>
                             <HeaderMenu name={"뮤지컬"} link={"/musical"} />
                             <HeaderMenu name={"연극"} link={"/play"} />
