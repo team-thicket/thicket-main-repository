@@ -14,7 +14,7 @@ const ShowList = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('/shows/before')
+        fetch('/thicket-show/shows/before')
             .then(response => response.json())
             .then(data => {
                 setShows(data);
@@ -30,7 +30,7 @@ const ShowList = () => {
         <DivList2>
             {Array.isArray(shows) > 0 ? (
                 shows.map(show => (
-                    <Poster2 key={show.id} onClick={() => navigate(`/detail/${show.id}`)}>
+                    <Poster2 key={show.stageId} onClick={() => navigate(`/detail/${show.stageId}`)}>
                         <Img2 src={show.posterImg} alt="Poster" />
                         <ImgDivInfo2>
                             <div><h2>{show.name}</h2></div>
