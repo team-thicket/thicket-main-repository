@@ -1,36 +1,45 @@
 import React, {useEffect, useState} from 'react';
 import Payment from "./Payment";
 import moment from "moment";
+import MyPage from "../../member/pages/MyPage";
 
 function Reservation({ selectedChair, selectedTime, selectedDate, selectedQuantity }) {
 
     const [isPaymentVisible, setPaymentVisible] = useState(false);
+    const [isGoToMypage, setGoToMypage] = useState(false);
     const [show, setShow] = useState([]);       // 공연정보
     const [times, setTimes] = useState([]);     // 공연정보-시간리스트
     const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
     const [totalAmount, setTotalAmount] = useState(0);  // 선택된 좌석의 총 금액을 저장할 새로운 상태
 
     useEffect(() => { // 공연정보 (stage.stage uuid)
-        fetch('/shows/stagedetail/c2e8bbaa-5c12-4cb7-930a-33552c85d81f')
+        fetch('/shows/stagedetail/e691b03d-236f-45a1-8dcf-bd311d1563cc')
             .then(response => response.json())
             .then(data => {
                 setShow(data);
             });
     }, []);
     useEffect(() => { // 공연정보 - 시간리스트 (stage.stage uuid)
-        fetch('/tickets/all/c2e8bbaa-5c12-4cb7-930a-33552c85d81f')
+        fetch('/tickets/all/e691b03d-236f-45a1-8dcf-bd311d1563cc')
             .then(response => response.json())
             .then(data => {
                 setTimes(data);
             });
     }, []);
     useEffect(() => { // 단일시간 - 좌석리스트 (stage.stage_start uuid)
-        fetch('/chairs/all/2a1b5854-00a9-4b9e-8017-33fa3b0429f9')
+        fetch('/chairs/all/69e7017c-baa2-410d-97db-465f2072729f')
             .then(response => response.json())
             .then(data => {
                 setChairs(data);
             });
     }, []);
+
+    const handleGoToMypageClick = () => {
+        setGoToMypage(true);
+    };
+    if(isGoToMypage){
+        return <MyPage />;
+    }
 
     const handlePaymentClick = () => {
         // selectedDate, selectedTime, selectedChair가 null인 경우에만 alert를 표시합니다.
@@ -82,7 +91,7 @@ function Reservation({ selectedChair, selectedTime, selectedDate, selectedQuanti
                         <div style={{ borderRight: '1px solid black',
                                     height: '80%', top: '10%',
                                     position: 'absolute', left: '20%' }}></div>
-                        <h1>예매 완료</h1>
+                        <h1>예매 대기</h1>
                     </div>
                 </div>
 
@@ -163,8 +172,9 @@ function Reservation({ selectedChair, selectedTime, selectedDate, selectedQuanti
                 >
                 </div>
                 <div style={{ padding: '5px', width: '33%', textAlign: 'center', justifyContent: 'center'}}>
-                    <h1 style={{fontSize: '20px'}}>예매가 정상적으로 완료되었습니다.</h1>
-                    <p> 다음날 자정까지 결제하지 않으면 어쩌구 저쩌구 됩니다!!!</p>
+                    <h1 style={{fontSize: '20px'}}>예매 줄서기를 완료했습니다!! </h1>
+                    <p> THICKETER의 요청을 모두 받고있어요. <br /><br /> 예매 완료 여부는 <br />마이페이지에서 알려드리겠습니다!
+                    <br /><br /> 마이페이지에서 기다려주세요! </p>
                 </div>
                 <div
                     style={{
@@ -216,6 +226,7 @@ function Reservation({ selectedChair, selectedTime, selectedDate, selectedQuanti
                         >지금 결제하기</button>
                         <br />
                         <button
+                            onClick={handleGoToMypageClick}
                             style={{
                                 padding: '10px 12px',
                                 backgroundColor: '#b0b0b0',
@@ -233,7 +244,7 @@ function Reservation({ selectedChair, selectedTime, selectedDate, selectedQuanti
                             onMouseOut={(e) => {
                                 e.target.style.backgroundColor = '#b0b0b0';
                             }}
-                        >나중에 결제하기</button>
+                        >마이페이지로 이동하기</button>
                     </div>
                 </div>
             </div>

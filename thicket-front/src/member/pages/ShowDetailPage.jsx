@@ -26,7 +26,7 @@ function ShowDetailPage() {
 
 
     useEffect(() => { // 공연정보 (SELECT * FROM thicket_stage.stage; → id)
-        fetch('/shows/stagedetail/c2e8bbaa-5c12-4cb7-930a-33552c85d81f')
+        fetch('/shows/stagedetail/e691b03d-236f-45a1-8dcf-bd311d1563cc')
             .then(response => response.json())
             .then(data => {
                 setShow(data);
@@ -34,7 +34,7 @@ function ShowDetailPage() {
     }, []);
 
     useEffect(() => { // 공연정보 - 시간리스트 (SELECT * FROM thicket_stage.stage; → id)
-        fetch('/tickets/all/c2e8bbaa-5c12-4cb7-930a-33552c85d81f')
+        fetch('/tickets/all/e691b03d-236f-45a1-8dcf-bd311d1563cc')
             .then(response => response.json())
             .then(data => {
                 setTimes(data);
@@ -42,7 +42,7 @@ function ShowDetailPage() {
     }, []);
 
     useEffect(() => { // 단일시간 - 좌석리스트 (SELECT * FROM thicket_stage.chair; → stage_start_id)
-        fetch('/chairs/all/2a1b5854-00a9-4b9e-8017-33fa3b0429f9')
+        fetch('/chairs/all/69e7017c-baa2-410d-97db-465f2072729f')
             .then(response => response.json())
             .then(data => {
                 setChairs(data);

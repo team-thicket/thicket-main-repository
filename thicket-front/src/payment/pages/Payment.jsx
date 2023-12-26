@@ -43,21 +43,21 @@ function Payment({ selectedChair, selectedTime, selectedDate, selectedQuantity }
     }, []);
 
     useEffect(() => { // 공연정보 (stage.stage uuid)
-        fetch('/shows/stagedetail/c2e8bbaa-5c12-4cb7-930a-33552c85d81f')
+        fetch('/shows/stagedetail/e691b03d-236f-45a1-8dcf-bd311d1563cc')
             .then(response => response.json())
             .then(data => {
                 setShow(data);
             });
     }, []);
     useEffect(() => { // 공연정보 - 시간리스트 (stage.stage uuid)
-        fetch('/tickets/all/c2e8bbaa-5c12-4cb7-930a-33552c85d81f')
+        fetch('/tickets/all/e691b03d-236f-45a1-8dcf-bd311d1563cc')
             .then(response => response.json())
             .then(data => {
                 setTimes(data);
             });
     }, []);
     useEffect(() => { // 단일시간 - 좌석리스트 (stage.stage_start uuid)
-        fetch('/chairs/all/2a1b5854-00a9-4b9e-8017-33fa3b0429f9')
+        fetch('/chairs/all/69e7017c-baa2-410d-97db-465f2072729f')
             .then(response => response.json())
             .then(data => {
                 setChairs(data);
@@ -191,7 +191,8 @@ function Payment({ selectedChair, selectedTime, selectedDate, selectedQuantity }
                 <div style={{ padding: '5px', width: '33%', textAlign: 'center', justifyContent: 'center'}}>
                     <h1 style={{ fontSize: '15px'}}>
                         {paymentMethod === 'kakao'
-                        ? <ReadyKakaopay />
+                        ? <ReadyKakaopay
+                                amount={Number(selectedChair.price * selectedQuantity)} />
                             :
                             <div style={{ padding: '10px', maxHeight: '80vh', width: '90%', textAlign: 'left' }}>
                                 <p style={{ padding: '6px', borderBottom: '2px solid darkgray' }}>
