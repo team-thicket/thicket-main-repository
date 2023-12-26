@@ -1,11 +1,10 @@
 import {useEffect, useState} from "react";
 
-
-export default function ReadyKakaopay(){
+export default function ReadyKakaopay({ amount }){
     const [tid, setTid] = useState("");
-    const paymentId = "870cb3da-1e57-4b67-87ec-2a74c5025544";
+    const paymentId = "d74240ab-c25c-4051-b11e-a7c74100209f";
     useEffect(() => {
-        fetch(`/ready?paymentId=${paymentId}`,{
+        fetch(`/thicket-ticket/ready?paymentId=${paymentId}`,{
             method: "GET",
             cache: "no-cache"
         })
@@ -27,6 +26,7 @@ export default function ReadyKakaopay(){
     return(
         <div>
             <h2>결제 승인 대기 중입니다.</h2>
+            <p>결제 금액: {amount.toLocaleString()}원</p>
         </div>
     )
 }
