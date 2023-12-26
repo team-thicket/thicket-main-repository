@@ -26,7 +26,7 @@ export const Table = styled.table`
 export const Th = styled.th`
     text-align: center;
     height: 29px;
-    padding: 10px;
+    padding: 10px;  
     border-bottom: 1px solid #ccc;
     background: #f7f7f7;
     width: ${(props) => props.width || 'auto'};
@@ -64,11 +64,11 @@ export const TableHeaderRow = () => {
     return (
         <tr>
             <Th width="60px">번호</Th>
-            <Th width="60px">구분</Th>
+            <Th width="70px">구분</Th>
             <Th width="auto">제목</Th>
-            <Th width="70px">상태</Th>
-            <Th width="102px">오픈일</Th>
-            <Th width="102px">마감일</Th>
+            <Th width="85px">상태</Th>
+            <Th width="120px">오픈일</Th>
+            <Th width="120px">마감일</Th>
         </tr>
     );
 };

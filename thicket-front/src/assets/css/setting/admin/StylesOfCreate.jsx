@@ -99,6 +99,19 @@ export const Th = styled.th`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
+export const Th2 = styled.th`
+  text-align: left;
+  height: 29px;
+  padding: 10px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #ccc;
+  background: #f7f7f7;
+  width: 180px;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 export const Td = styled.td`
   text-align: left;
@@ -106,6 +119,13 @@ export const Td = styled.td`
   border-bottom: 1px solid #ccc;
   background: white;
   border-top: 1px solid #000;
+`;
+export const Td2 = styled.td`
+  //text-align: left;
+  //padding: 10px;
+  //border-bottom: 1px solid #ccc;
+  //background: white;
+  //border-top: 1px solid #000;
 `;
 
 export const Input = styled.input`
