@@ -42,7 +42,7 @@ function ShowDetailPage() {
                 }));
         setInterval(dirtyCheck, 500);
     }, []);
-    
+
     // 좌석정보 가져오기 회차정보 클릭시
     const getChairInfo = (stageId) => {
         fetch(`/thicket-show/chairs/all/${stageId}`)
