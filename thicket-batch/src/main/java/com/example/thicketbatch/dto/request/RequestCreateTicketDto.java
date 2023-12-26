@@ -50,6 +50,10 @@ public class RequestCreateTicketDto implements Comparable<RequestCreateTicketDto
 
     @NotNull(message = "memberId cannot be null")
     private String memberId;
+    @NotNull
+
+    @NotNull(message = "chairId cannot be null")
+    private String chairId;
 
     @NotNull
     private boolean deleted;
@@ -63,27 +67,27 @@ public class RequestCreateTicketDto implements Comparable<RequestCreateTicketDto
 
 
 
-    public String toString() {
-        return "RequestCreateTicketDto{" +
-                "id=" + id +
-                ", stageName='" + stageName + '\'' +
-                ", stageType='" + stageType + '\'' +
-                ", date=" + date +
-                ", place='" + place + '\'' +
-                ", chairType='" + chairType + '\'' +
-                ", count=" + count +
-                ", memberName='" + memberName + '\'' +
-                ", price=" + price +
-                ", phone='" + phone + '\'' +
-                ", cancelDate=" + cancelDate +
-                ", stageId='" + stageId + '\'' +
-                ", memberId='" + memberId + '\'' +
-                ", deleted=" + deleted +
-                ", latency=" + latency +
-                ", uuid='" + uuid + '\'' +
-                ", correctedTimestamp=" + correctedTimestamp +
-                '}';
-    }
+//    public String toString() {
+//        return "RequestCreateTicketDto{" +
+//                "id=" + id +
+//                ", stageName='" + stageName + '\'' +
+//                ", stageType='" + stageType + '\'' +
+//                ", date=" + date +
+//                ", place='" + place + '\'' +
+//                ", chairType='" + chairType + '\'' +
+//                ", count=" + count +
+//                ", memberName='" + memberName + '\'' +
+//                ", price=" + price +
+//                ", phone='" + phone + '\'' +
+//                ", cancelDate=" + cancelDate +
+//                ", stageId='" + stageId + '\'' +
+//                ", memberId='" + memberId + '\'' +
+//                ", deleted=" + deleted +
+//                ", latency=" + latency +
+//                ", uuid='" + uuid + '\'' +
+//                ", correctedTimestamp=" + correctedTimestamp +
+//                '}';
+//    }
 
     @Override
     public int compareTo(RequestCreateTicketDto other) {

@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: thicket-member
+    name: thicket-ticket
 
   profiles:
     active: localDB,kafka

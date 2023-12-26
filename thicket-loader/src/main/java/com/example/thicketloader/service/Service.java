@@ -16,10 +16,9 @@ public class Service {
     private final TicketRepository ticketRepository;
 
     @Transactional
-    public void updateInfo(UUID id, TicketDto ticketDto) {
+    public void save(TicketDto ticketDto) {
+        Ticket ticket = ticketDto.toEntity();
 
-        Ticket ticket = ticketRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("공연을 찾을 수 없습니다."));
-        ticket.updateTicket(ticketDto);
+        ticketRepository.save(ticket);
     }
 }
