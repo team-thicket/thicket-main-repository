@@ -18,7 +18,7 @@ import java.util.UUID;
 public interface TicketService {
 
     //티켓 예매
-    CompletableFuture<String> createTicket(RequestCreateTicketDto ticketDto);
+    CompletableFuture<String> createTicket(RequestCreateTicketDto ticketDto, UUID memberId);
 
     //admin 티켓id로 조회
     ResponseAdminTicketDto adminFindById(UUID id);

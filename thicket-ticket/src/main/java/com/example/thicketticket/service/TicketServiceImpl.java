@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -34,6 +35,7 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TicketServiceImpl implements TicketService{
 
     private final TicketRepository ticketRepository;
@@ -45,7 +47,7 @@ public class TicketServiceImpl implements TicketService{
     @Override
     @Transactional
 
-    public CompletableFuture<String> createTicket(RequestCreateTicketDto ticketDto) {
+    public CompletableFuture<String> createTicket(RequestCreateTicketDto ticketDto,UUID memberId) {
         // 현재 서버 시간
         Instant currentTime = Instant.now();
 
@@ -57,12 +59,12 @@ public class TicketServiceImpl implements TicketService{
 
         // 고유값(UUID) 값을 DTO에 설정
         ticketDto.setUuid(String.valueOf(UUID.randomUUID()));
-
+        ticketDto.setMemberId(String.valueOf(memberId));
         // CorrectedTimestamp 설정
         LocalDateTime localDateTime = LocalDateTime.ofInstant(correctedTimestamp, ZoneId.systemDefault());
         ticketDto.setCorrectedTimestamp(LocalDateTime.from(localDateTime));
         System.out.println("Corrected Timestamp in DTO: " + ticketDto.getCorrectedTimestamp());
-
+        System.out.println(ticketDto);
         // 객체를 JSON 문자열로 직렬화
         String jsonMessage;
         try {
@@ -86,7 +88,7 @@ public class TicketServiceImpl implements TicketService{
             // 메시지 전송 성공 시
             System.out.println("Sent message=[" +
                     "] with offset=[" + result.getRecordMetadata().offset() + "]");
-            return ticketDto.getUuid();
+            return "성공";
         }).exceptionally(ex -> {
             // 메시지 전송 실패 시
             System.out.println("Unable to send message= due to : " + ex.getMessage());

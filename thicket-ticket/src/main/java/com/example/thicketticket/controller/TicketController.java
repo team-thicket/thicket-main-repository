@@ -9,9 +9,11 @@ import com.example.thicketticket.service.TicketService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -25,12 +27,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Enumeration;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("reservations")
 @RequiredArgsConstructor
 @Tag(name = "Controller", description = "API")
+@Slf4j
 public class TicketController {
 
     private final TicketService ticketService;
@@ -39,9 +43,11 @@ public class TicketController {
 
     //티켓 대기번호 리턴 로직
     @PostMapping("/ticket")
-    public ResponseEntity<?> createTicket(@RequestBody @Valid RequestCreateTicketDto ticketDto) {
-
-        String result = String.valueOf(ticketService.createTicket(ticketDto));
+    public ResponseEntity<?> createTicket(@RequestBody @Valid RequestCreateTicketDto ticketDto,
+                                          HttpServletRequest req
+                                          ) {
+        String memberId = req.getHeader("UUID");
+        String result = String.valueOf(ticketService.createTicket(ticketDto, UUID.fromString(memberId)));
 
         return new ResponseEntity<>(result,HttpStatus.CREATED);
 
