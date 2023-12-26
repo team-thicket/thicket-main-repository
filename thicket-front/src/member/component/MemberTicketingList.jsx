@@ -38,6 +38,23 @@ const tmp = [
 ];
 
 export const MemberTicketingList = () => {
+
+    // useEffect(() => {
+    //     fetch('/thicket-reservations/past',{
+    //         method: "GET",
+    //         headers: {
+    //             "Authorization": localStorage.getItem('token')
+    //         }
+    //     })
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             setMemberName(data.name);
+    //             setMemberBirth(data.birth);
+    //             setMemberPhone(data.phoneNumber);
+    //             setMemberEmail(data.email);
+    //         })
+    // }, []);
+
     const handleCancelClick = (item) => {
         const width = Math.floor(window.innerWidth * 0.7);
         const height = Math.floor(window.innerHeight * 0.8);

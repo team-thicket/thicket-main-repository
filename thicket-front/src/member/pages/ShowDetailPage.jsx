@@ -157,7 +157,7 @@ function ShowDetailPage() {
                             <Container>
                                 <PostImg src={show.posterImg} alt="posterImg" />
                                 <PostInfo>
-                                    <H1>{show.name}← 이건 디비값　　　　두줄까지 내려가면 이렇게 보입니다.</H1>
+                                    <H1>{show.name}</H1>
                                     <table>
                                         <tr>
                                             <Th>장소</Th>

@@ -28,9 +28,9 @@ const ShowList = () => {
 
     return (
         <DivList1>
-            {Array.isArray(shows) ? (
+            {Array.isArray(shows) > 0 ? (
                 shows.map(show => (
-                    <Poster1 key={show.id} onClick={() => navigate(`/detail/${show.id}`)}>
+                    <Poster1 key={show.stageId} onClick={() => navigate(`/detail/${show.stageId}`)}>
                         <Img1 src={show.posterImg} alt="Poster" />
                         <ImgInfo1>
                             <div>{show.name}</div>
