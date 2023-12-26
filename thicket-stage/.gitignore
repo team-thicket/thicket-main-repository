@@ -41,3 +41,5 @@ src/main/resources/application-localDB.yml
 src/main/resources/application-s3key.yml
 src/test/resources/application-s3key.yml
 src/test/resources/application-testDB.yml
+src/main/resources/secretKey.properties
+src/test/resources/secretKey.properties

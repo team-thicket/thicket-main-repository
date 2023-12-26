@@ -113,16 +113,19 @@ public class TicketServiceImpl implements TicketService{
     }
 
     //admin 티켓 id 조회
+
+    //admin 티켓 id 조회
     @Override
     @Transactional
     public ResponseAdminTicketDto adminFindById(UUID id) {
         Optional<Ticket> findTicket = ticketRepository.findByIdAndDeletedFalse(id);
 
-
         if (findTicket.isEmpty()) {
             throw new IllegalArgumentException("존재하지 않는 티켓.");
         }
+
         Ticket ticket = findTicket.get();
+
         return new ResponseAdminTicketDto(ticket);
     }
 
