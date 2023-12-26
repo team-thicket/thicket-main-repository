@@ -5,6 +5,8 @@ import com.example.thicketstage.enumerate.StageType;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -32,7 +34,7 @@ public class ResponseStageDto {
 
     private String posterImg;
 
-    private String detailPosterImg;
+    private List<String> detailPosterImg;
 
     private String stageInfo;
 
@@ -48,7 +50,7 @@ public class ResponseStageDto {
         this.ageLimit = stage.getAgeLimit();
         this.stageType = stage.getStageType();
         this.posterImg = stage.getPosterImg();
-        this.detailPosterImg = stage.getDetailPosterImg();
+        this.detailPosterImg = Arrays.stream(stage.getDetailPosterImg().split("&")).toList();
         this.stageInfo = stage.getStageInfo();
     }
 }

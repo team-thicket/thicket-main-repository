@@ -15,7 +15,7 @@ const ShowList = () => {
 
     useEffect(() => {
         if (query) {
-            fetch(`/shows/search/${query}`)
+            fetch(`/thicket-show/shows/search/${query}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Not Found");

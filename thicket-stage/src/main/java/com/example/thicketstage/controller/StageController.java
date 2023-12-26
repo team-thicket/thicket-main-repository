@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -145,6 +146,6 @@ public class StageController {
 
     @GetMapping("serverTime")
     public ResponseEntity<?> serverTime() {
-        return ResponseEntity.ok(Instant.now());
+        return ResponseEntity.ok(Instant.now().toString());
     }
 }

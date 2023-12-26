@@ -8,11 +8,12 @@ import {
     ShowMain, ShowSide, SideTop, SideMarginTop, SideMargin, SideFont, SideBottom,
     PostImg, PostDetailImg, PostInfo,
     H1, Th, Th1, Th2, Td1, Td2, LightGrayLine,
-    StyledCalendar, ButtonList, ChoiceDiv,
+    StyledCalendar, ButtonList, ChoiceDiv, DisabledSideBottom,
 } from "../../assets/css/setting/MainStyleCSS";
 import Reservation from "../../payment/pages/Reservation";
 
 function ShowDetailPage() {
+
     const [show, setShow] = useState([]);       // 공연정보
     const [times, setTimes] = useState([]);     // 공연정보-시간리스트
     const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
@@ -23,31 +24,34 @@ function ShowDetailPage() {
     const [selectedChair, setSelectedChair] = useState(null);   // 선택 좌석
     const [selectedQuantity, setSelectedQuantity] = useState(1); // 갯수 기본 1개
     const [totalAmount, setTotalAmount] = useState(0);  // 선택된 좌석의 총 금액을 저장할 새로운 상태
+    const [serverTime, setServerTime] = useState(Date);
 
-
+    // 공연 상세 가져오기
     useEffect(() => { // 공연정보 (SELECT * FROM thicket_stage.stage; → id)
-        fetch('/shows/stagedetail/e691b03d-236f-45a1-8dcf-bd311d1563cc')
+        // 현재 페이지의 url에서 공연 UUID 가져오기
+        const showId = window.location.href.split("/")[4];
+        // 공연 상세 API 호출
+        fetch(`/thicket-show/shows/stagedetail/${showId}`)
             .then(response => response.json())
             .then(data => {
                 setShow(data);
-            });
+            })
+            .then(fetch(`/thicket-show/tickets/all/${showId}`)
+                .then(response => response.json())
+                .then(data => {
+                    setTimes(data);
+                }));
+        setInterval(dirtyCheck, 500);
     }, []);
 
-    useEffect(() => { // 공연정보 - 시간리스트 (SELECT * FROM thicket_stage.stage; → id)
-        fetch('/tickets/all/e691b03d-236f-45a1-8dcf-bd311d1563cc')
-            .then(response => response.json())
-            .then(data => {
-                setTimes(data);
-            });
-    }, []);
-
-    useEffect(() => { // 단일시간 - 좌석리스트 (SELECT * FROM thicket_stage.chair; → stage_start_id)
-        fetch('/chairs/all/69e7017c-baa2-410d-97db-465f2072729f')
+    // 좌석정보 가져오기 회차정보 클릭시
+    const getChairInfo = (stageId) => {
+        fetch(`/thicket-show/chairs/all/${stageId}`)
             .then(response => response.json())
             .then(data => {
                 setChairs(data);
-            });
-    }, []);
+            })
+    }
 
     // 데이터 타임 형변환
     const formatDateString = (dateString) => {
@@ -77,6 +81,7 @@ function ShowDetailPage() {
                 ...time,
                 time: moment(time.time, 'HH:mm:ss').format('HH:mm'),
             }));
+        console.log(filtered);
         setFilteredTimes(filtered);
     };
 
@@ -93,6 +98,14 @@ function ShowDetailPage() {
     // 수량 선택
     const handleQuantityChange = (event) => {
         setSelectedQuantity(parseInt(event.target.value, 10));
+    };
+
+    const dirtyCheck = async () => {
+        await fetch('/thicket-show/shows/serverTime')
+        .then(response => response.text())
+        .then(data => {
+            setServerTime(new Date(data));
+        })
     };
 
     // 이하 예매 로직
@@ -142,7 +155,6 @@ function ShowDetailPage() {
             ReactDOM.render(<Reservation />, reservationWindow);
         }
     }, [reservationWindow]);
-
     return (
         <Wrapper>
             <MarginTop>
@@ -190,7 +202,9 @@ function ShowDetailPage() {
                             <LightGrayLine />
                             <div style={{marginTop:"10px"}} />
                             <p>{show.stageInfo}</p>
-                            <PostDetailImg src={show.detailPosterImg} alt="detailPosterImg" />
+                            {Array.isArray(show.detailPosterImg) ? (
+                                show.detailPosterImg.map(url => <PostDetailImg src={url} />)
+                            ) : (<p>상세 이미지가 없습니다.</p>)}
                         </Scroll>
                     </ShowMain>
                     <ShowSide>
@@ -223,7 +237,10 @@ function ShowDetailPage() {
                                                     key={index}
                                                     selected={time === selectedTime}
                                                     selectedTime={selectedTime}
-                                                    onClick={() => handleTimeSelect(time)}
+                                                    onClick={() => {
+                                                        handleTimeSelect(time)
+                                                        getChairInfo(time.stageId)
+                                                    }}
                                                 >
                                                     {index + 1}회 {time.time}
                                                 </ChoiceDiv>
@@ -280,9 +297,15 @@ function ShowDetailPage() {
                                     )}
                                 </SideMargin>
                             </SideTop>
-                            <SideBottom onClick={handleReservationClick}>
-                                예매하기
-                            </SideBottom>
+                            {new Date(show.ticketOpen) >= serverTime ? (
+                                <DisabledSideBottom>
+                                    예매하기
+                                </DisabledSideBottom>
+                            ) : (
+                                <SideBottom onClick={handleReservationClick}>
+                                    예매하기
+                                </SideBottom>
+                            )}
                         </Scroll>
                     </ShowSide>
                 </Container>

@@ -14,7 +14,7 @@ const ShowList = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('/shows/stagetype/PLAY')
+        fetch('/thicket-show/shows/stagetype/PLAY')
             .then(response => response.json())
             .then(data => {
                 setShows(data);
