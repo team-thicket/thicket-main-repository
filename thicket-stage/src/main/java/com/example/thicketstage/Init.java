@@ -44,7 +44,7 @@ public class Init {
                     "180분",
                     "8세이상 관람가",
                     StageType.MUSICAL,
-                    "포스터 링크",
+                    "https://ticketimage.interpark.com/Play/image/large/23/23013541_p.gif",
                     "상세 포스터 링크",
                     "공연 상세 설명"
             );
@@ -77,7 +77,7 @@ public class Init {
                     "100분",
                     "전체 관람가",
                     StageType.PLAY,
-                    "포스터 링크",
+                    "https://ticketimage.interpark.com/Play/image/large/16/16004169_p.gif",
                     "상세 포스터 링크",
                     "공연 상세 설명"
             );
@@ -100,7 +100,7 @@ public class Init {
                     "100분",
                     "만 7세이상",
                     StageType.CONCERT,
-                    "포스터 링크",
+                    "https://ticketimage.interpark.com/Play/image/large/23/23018077_p.gif",
                     "상세 포스터 링크",
                     "공연 상세 설명"
             );
