@@ -25,8 +25,8 @@ public interface TicketRepository extends JpaRepository<Ticket, UUID> {
         Optional<Ticket> findByIdAndDeletedFalse(@Param("id") UUID id);
 
         //티켓 전체조회 by memberId
-        Page<Ticket> findByMemberIdAndDateBeforeAndDeletedFalse(String memberId, LocalDateTime currentTime, Pageable pageable);
-        Page<Ticket> findByMemberIdAndDateAfterAndDeletedFalse(String memberId,LocalDateTime currentTime, Pageable pageable);
+        Page<Ticket> findByMemberIdAndDateBeforeAndDeletedFalse(UUID memberId, LocalDateTime currentTime, Pageable pageable);
+        Page<Ticket> findByMemberIdAndDateAfterAndDeletedFalse(UUID memberId,LocalDateTime currentTime, Pageable pageable);
         //admin 공연별 예매티켓 조회
-        Page<Ticket> findByStageIdAndDeletedFalse(String stageId,Pageable pageable);
+        Page<Ticket> findByStageIdAndDeletedFalse(UUID stageId,Pageable pageable);
 }

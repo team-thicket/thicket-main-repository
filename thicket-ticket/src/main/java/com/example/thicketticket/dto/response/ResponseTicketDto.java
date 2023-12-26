@@ -49,7 +49,7 @@ public class ResponseTicketDto {
     // Ticket 엔티티를 ResponseAllTicketsDto로 변환하는 메소드
     public ResponseTicketDto(Ticket ticket) {
         this.id = String.valueOf(ticket.getId());
-        this.createdAt = ticket.getCreatedAt();
+        this.createdAt = ticket.getCreateAt();
         this.date = ticket.getDate();
         this.cancelDate = ticket.getCancelDate();
         this.stageName = ticket.getStageName();

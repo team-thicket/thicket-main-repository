@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -34,6 +35,7 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TicketServiceImpl implements TicketService{
 
     private final TicketRepository ticketRepository;
@@ -45,7 +47,7 @@ public class TicketServiceImpl implements TicketService{
     @Override
     @Transactional
 
-    public CompletableFuture<String> createTicket(RequestCreateTicketDto ticketDto) {
+    public CompletableFuture<String> createTicket(RequestCreateTicketDto ticketDto,UUID memberId) {
         // 현재 서버 시간
         Instant currentTime = Instant.now();
 
@@ -57,12 +59,12 @@ public class TicketServiceImpl implements TicketService{
 
         // 고유값(UUID) 값을 DTO에 설정
         ticketDto.setUuid(String.valueOf(UUID.randomUUID()));
-
+        ticketDto.setMemberId(String.valueOf(memberId));
         // CorrectedTimestamp 설정
         LocalDateTime localDateTime = LocalDateTime.ofInstant(correctedTimestamp, ZoneId.systemDefault());
         ticketDto.setCorrectedTimestamp(LocalDateTime.from(localDateTime));
         System.out.println("Corrected Timestamp in DTO: " + ticketDto.getCorrectedTimestamp());
-
+        System.out.println(ticketDto);
         // 객체를 JSON 문자열로 직렬화
         String jsonMessage;
         try {
@@ -110,26 +112,24 @@ public class TicketServiceImpl implements TicketService{
         return new ResponseTicketDto(ticket);
     }
 
-
     //admin 티켓 id 조회
     @Override
     @Transactional
     public ResponseAdminTicketDto adminFindById(UUID id) {
         Optional<Ticket> findTicket = ticketRepository.findByIdAndDeletedFalse(id);
 
+
         if (findTicket.isEmpty()) {
             throw new IllegalArgumentException("존재하지 않는 티켓.");
         }
-
         Ticket ticket = findTicket.get();
-
         return new ResponseAdminTicketDto(ticket);
     }
 
     //사용자가 사용한 티켓 조회
     @Override
     @Transactional
-    public Page<ResponseTicketsDto> findByMemberIdAndDateBefore(String memberId, LocalDateTime currentTime, Pageable pageable) {
+    public Page<ResponseTicketsDto> findByMemberIdAndDateBefore(UUID memberId, LocalDateTime currentTime, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByMemberIdAndDateBeforeAndDeletedFalse(memberId,currentTime,pageable);
         if (tickets.isEmpty()) {
             throw new EntityNotFoundException("공연의 예매가 존재하지 않습니다.");
@@ -141,7 +141,7 @@ public class TicketServiceImpl implements TicketService{
     //사용자가 앞으로 볼 티켓 조회
     @Override
     @Transactional
-    public Page<ResponseTicketsDto> findByMemberIdAndDateAfter(String memberId, LocalDateTime currentTime, Pageable pageable) {
+    public Page<ResponseTicketsDto> findByMemberIdAndDateAfter(UUID memberId, LocalDateTime currentTime, Pageable pageable) {
         Page<Ticket> ticketsPage = ticketRepository.findByMemberIdAndDateAfterAndDeletedFalse(memberId, currentTime, pageable);
 
         if (ticketsPage.isEmpty()) {
@@ -154,7 +154,7 @@ public class TicketServiceImpl implements TicketService{
     @Override
     @Transactional
 
-    public Page<ResponseTicketsByStageIdDto> findByStageId(String Stage, Pageable pageable) {
+    public Page<ResponseTicketsByStageIdDto> findByStageId(UUID Stage, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByStageIdAndDeletedFalse(Stage, pageable);
 
         if(tickets.isEmpty()){
