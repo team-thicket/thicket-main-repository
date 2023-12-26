@@ -9,6 +9,7 @@ import com.example.thicketticket.service.TicketService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -64,9 +65,9 @@ public class TicketController {
     //사용자 이미 본 공연 예매 조회
     @GetMapping("/past")
     public ResponseEntity<Page<ResponseTicketsDto>> findByMemberIdAndDateAtBefore(
-            @RequestHeader(name = "memberId") String memberId,
+            HttpServletRequest req,
             Pageable pageable) {
-
+        String memberId =req.getHeader("UUID");
 
         Page<ResponseTicketsDto> getTicketsDtos = ticketService
                 .findByMemberIdAndDateBefore(memberId, LocalDateTime.now(),pageable);
@@ -75,8 +76,9 @@ public class TicketController {
     //사용자 아직 안본 공연 예매 조회
     @GetMapping("/future")
     public ResponseEntity<Page<ResponseTicketsDto>> findByMemberIdAndDateAtAfter(
-            @RequestHeader(name = "memberId") String memberId,
+            HttpServletRequest req,
             Pageable pageable) {
+        String memberId =req.getHeader("UUID");
         Page<ResponseTicketsDto> getTicketsDtos = ticketService
                 .findByMemberIdAndDateAfter(memberId, LocalDateTime.now(),pageable);
         return new ResponseEntity<>(getTicketsDtos, HttpStatus.OK);

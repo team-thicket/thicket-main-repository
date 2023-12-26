@@ -110,19 +110,6 @@ public class TicketServiceImpl implements TicketService{
         return new ResponseTicketDto(ticket);
     }
 
-    //admin 티켓 id 조회
-    @Override
-    @Transactional
-    public ResponseAdminTicketDto adminFindById(UUID id) {
-        Optional<Ticket> findTicket = ticketRepository.findByIdAndDeletedFalse(id);
-
-
-        if (findTicket.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 티켓.");
-        }
-        Ticket ticket = findTicket.get();
-        return new ResponseTicketDto(ticket);
-    }
 
     //admin 티켓 id 조회
     @Override
@@ -138,20 +125,7 @@ public class TicketServiceImpl implements TicketService{
 
         return new ResponseAdminTicketDto(ticket);
     }
-    //사용자가 사용한 티켓 조회
-    @Override
-    @Transactional
-    public Page<ResponseTicketsDto> findByMemberIdAndDateBefore(String memberId, LocalDateTime currentTime, Pageable pageable) {
-        Page<Ticket> tickets = ticketRepository.findByMemberIdAndDateBeforeAndDeletedFalse(memberId,currentTime,pageable);
-        if (tickets.isEmpty()) {
-            throw new EntityNotFoundException("공연의 예매가 존재하지 않습니다.");
-        }
 
-
-        Ticket ticket = findTicket.get();
-
-        return new ResponseAdminTicketDto(ticket);
-    }
     //사용자가 사용한 티켓 조회
     @Override
     @Transactional
