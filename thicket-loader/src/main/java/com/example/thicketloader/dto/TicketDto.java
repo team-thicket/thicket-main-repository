@@ -40,17 +40,17 @@ public class TicketDto {
 
     @Min(value = 0, message = "price must be greater than or equal to 0")
     private int price;
-
+    private int sequence;
     private String phone;
 
     @NotNull(message = "cancelDate cannot be null")
     private LocalDateTime cancelDate;
 
     @NotNull(message = "stageId cannot be null")
-    private String stageId;
+    private UUID stageId;
 
     @NotNull(message = "memberId cannot be null")
-    private String memberId;
+    private UUID memberId;
 
     @NotNull
     private boolean deleted;
@@ -62,6 +62,8 @@ public class TicketDto {
 
     private LocalDateTime correctedTimestamp;
 
+    @NotNull(message = "chairId cannot be null")
+    private UUID chairId;
 
 
     public Ticket toEntity() {
@@ -69,31 +71,11 @@ public class TicketDto {
                 stageName,place,date,
                 chairType,count,
                 memberName,phone,price,
-                cancelDate,stageId,memberId,
-                stageType
+                cancelDate,stageId,memberId,chairId,
+                stageType,sequence,latency ,correctedTimestamp
                );
 
     }
-    public String toString() {
-        return "RequestCreateTicketDto{" +
-                "id=" + id +
-                ", stageName='" + stageName + '\'' +
-                ", stageType='" + stageType + '\'' +
-                ", date=" + date +
-                ", place='" + place + '\'' +
-                ", chairType='" + chairType + '\'' +
-                ", count=" + count +
-                ", memberName='" + memberName + '\'' +
-                ", price=" + price +
-                ", phone='" + phone + '\'' +
-                ", cancelDate=" + cancelDate +
-                ", stageId='" + stageId + '\'' +
-                ", memberId='" + memberId + '\'' +
-                ", deleted=" + deleted +
-                ", latency=" + latency +
-                ", uuid='" + uuid + '\'' +
-                ", correctedTimestamp=" + correctedTimestamp +
-                '}';
-    }
+
 
 }

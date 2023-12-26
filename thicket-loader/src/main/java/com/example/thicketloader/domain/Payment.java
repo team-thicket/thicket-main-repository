@@ -2,6 +2,7 @@ package com.example.thicketloader.domain;
 
 
 
+import com.example.thicketloader.TimeStamp;
 import com.example.thicketloader.enumerate.HowReceive;
 import com.example.thicketloader.enumerate.Method;
 import com.example.thicketloader.enumerate.State;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Payment {
+public class Payment extends TimeStamp {
     @Id @GeneratedValue
     private Long id;
 
