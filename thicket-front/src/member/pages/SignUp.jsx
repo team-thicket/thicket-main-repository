@@ -74,12 +74,12 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/members/join', formData); // 수정된 부분
+      const response = await axios.post('/thicket-member/members/join', formData); // 수정된 부분
       console.log(response.data);
       alert("회원가입 성공. 로그인 페이지로 이동합니다.")
       navigate('/login');
     } catch (error) {
-      console.error('회원가입 실패:', error);
+      alert(error.response.data)
     }
   };
 

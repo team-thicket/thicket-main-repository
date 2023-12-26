@@ -212,6 +212,22 @@ export const SideTop = styled.div`
   margin:20px 0;
 `;
 
+export const DisabledSideBottom = styled.div`
+  display: flex;
+  width: 332px;
+  height: 50px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  align-items: center;
+  justify-content: center;
+  background-color: #8E43E72B;
+  cursor: pointer;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+`;
+
 export const SideBottom = styled.div`
   display: flex;
   width: 332px;
@@ -246,11 +262,15 @@ export const StyledCalendar = styled(Calendar)`
   .react-calendar__month-view__weekdays { // 요일 전체 div
     //background-color: #f0f0f0; /* 밝은 회색 배경 설정 필요할경우 색상 바꿔 */
   }
-
+  abbr[title] {
+    text-decoration: none;
+    cursor: default;
+    text-decoration-skip-ink: none;
+  }
   .react-calendar__month-view__weekdays__weekday {
     font-size: 16px;
+    cursor: default;
   }
-
   .react-calendar__month-view__days__day { // 일일(숫자)
     font-size: 16px;
   }
@@ -304,6 +324,7 @@ export const PostImg = styled.img`
 `;
 
 export const PostDetailImg = styled.img`
+  display: block;
   width: auto; /* 이미지의 원본 크기로 표시하도록 설정 */
   max-width: 926px; /* 최대 너비를 926px로 제한 (원본보다 큰 경우에만 적용) */
   margin: 10px 0 20px 0;

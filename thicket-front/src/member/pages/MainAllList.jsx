@@ -13,7 +13,7 @@ const ShowList = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('/shows/ongoing')
+        fetch('/thicket-show/shows/ongoing')
             .then(response => response.json())
             .then(data => {
                 setShows(data);
@@ -29,7 +29,7 @@ const ShowList = () => {
         <DivList1>
             {Array.isArray(shows) > 0 ? (
                 shows.map(show => (
-                    <Poster1 key={show.id} onClick={() => navigate(`/detail/${show.id}`)}>
+                    <Poster1 key={show.stageId} onClick={() => navigate(`/detail/${show.stageId}`)}>
                         <Img1 src={show.posterImg} alt="Poster" />
                         <ImgInfo1>
                             <PaddingDiv>{show.name}</PaddingDiv>
@@ -39,7 +39,7 @@ const ShowList = () => {
                     </Poster1>
                 ))
             ) : (
-                <H1>없습니다.　　　　　　　　아니 그냥 없어요.</H1>
+                <H1>현재 진행중인 뮤지컬이 없습니다.</H1>
             )}
         </DivList1>
     );

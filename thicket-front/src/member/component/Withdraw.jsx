@@ -13,7 +13,7 @@ const Withdraw = () => {
         alert("본인 확인용 비밀번호를 입력해주십시오.");
         return;
       }
-      fetch('/members',{
+      fetch('/thicket-member/members',{
         method: "DELETE",
         headers: {
           'Email':'test123@gmail.com',
