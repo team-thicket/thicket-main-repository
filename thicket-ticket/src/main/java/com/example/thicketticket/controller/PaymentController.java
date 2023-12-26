@@ -5,8 +5,9 @@ import com.example.thicketticket.service.PaymentService;
 import com.sun.jdi.request.DuplicateRequestException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.ws.rs.BadRequestException;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

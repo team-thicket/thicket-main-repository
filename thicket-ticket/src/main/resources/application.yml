@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: thicket-member
+    name: thicket-ticket
 
   profiles:
     active: localDB,kafka
@@ -16,7 +16,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true

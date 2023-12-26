@@ -4,6 +4,6 @@ export const Dropdown = ({ value, setIdentify, setIsOpen, isOpen }) => {
         setIsOpen(!isOpen)
     }
     return(
-        <li onClick={ValueClick}>{value}</li>
+        <ul onClick={ValueClick}>{value}</ul>
     )
 }

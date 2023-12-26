@@ -1,11 +1,10 @@
 import {useEffect, useState} from "react";
 
-
 export default function ReadyKakaopay({ amount }){
     const [tid, setTid] = useState("");
-    const paymentId = "870cb3da-1e57-4b67-87ec-2a74c5025544";
+    const paymentId = "d74240ab-c25c-4051-b11e-a7c74100209f";
     useEffect(() => {
-        fetch(`/ready?paymentId=${paymentId}`,{
+        fetch(`/thicket-ticket/ready?paymentId=${paymentId}`,{
             method: "GET",
             cache: "no-cache"
         })

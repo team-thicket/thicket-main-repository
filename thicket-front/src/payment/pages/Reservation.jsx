@@ -11,28 +11,42 @@ function Reservation({ selectedChair, selectedTime, selectedDate, selectedQuanti
     const [times, setTimes] = useState([]);     // 공연정보-시간리스트
     const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
     const [totalAmount, setTotalAmount] = useState(0);  // 선택된 좌석의 총 금액을 저장할 새로운 상태
+    const [serverTime, setServerTime] = useState(Date);
 
-    useEffect(() => { // 공연정보 (stage.stage uuid)
-        fetch('/shows/stagedetail/e691b03d-236f-45a1-8dcf-bd311d1563cc')
+    // 공연 상세 가져오기
+    useEffect(() => { // 공연정보 (SELECT * FROM thicket_stage.stage; → id)
+        // 현재 페이지의 url에서 공연 UUID 가져오기
+        const showId = window.location.href.split("/")[4];
+        // 공연 상세 API 호출
+        fetch(`/thicket-show/shows/stagedetail/${showId}`)
             .then(response => response.json())
             .then(data => {
                 setShow(data);
-            });
+            })
+            .then(fetch(`/thicket-show/tickets/all/${showId}`)
+                .then(response => response.json())
+                .then(data => {
+                    setTimes(data);
+                }));
+        setInterval(dirtyCheck, 500);
     }, []);
-    useEffect(() => { // 공연정보 - 시간리스트 (stage.stage uuid)
-        fetch('/tickets/all/e691b03d-236f-45a1-8dcf-bd311d1563cc')
-            .then(response => response.json())
-            .then(data => {
-                setTimes(data);
-            });
-    }, []);
-    useEffect(() => { // 단일시간 - 좌석리스트 (stage.stage_start uuid)
-        fetch('/chairs/all/69e7017c-baa2-410d-97db-465f2072729f')
+
+    // 좌석정보 가져오기 회차정보 클릭시
+    const getChairInfo = (stageId) => {
+        fetch(`/thicket-show/chairs/all/${stageId}`)
             .then(response => response.json())
             .then(data => {
                 setChairs(data);
-            });
-    }, []);
+            })
+    }
+
+    const dirtyCheck = async () => {
+        await fetch('/thicket-show/shows/serverTime')
+            .then(response => response.text())
+            .then(data => {
+                setServerTime(new Date(data));
+            })
+    };
 
     const handleGoToMypageClick = () => {
         setGoToMypage(true);

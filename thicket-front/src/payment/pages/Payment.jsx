@@ -5,17 +5,19 @@ import useDetectClose from "../component/UseDetectClose";
 import {Dropdown} from "../component/Dropdown";
 import "../../assets/css/style.css"
 
-
 function Payment({ selectedChair, selectedTime, selectedDate, selectedQuantity }) {
     const [paymentMethod, setPaymentMethod] = useState('');
     const [show, setShow] = useState([]);       // 공연정보
-    const [times, setTimes] = useState([]);     // 공연정보-시간리스트
-    const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
+    // const [times, setTimes] = useState([]);     // 공연정보-시간리스트
+    // const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
     const dropDownRef = useRef();
     const [identify, setIdentify] = useState('선택해주세요');
     const [generatedNumber, setGeneratedNumber] = useState(null);
     const list = ['농협은행', '국민은행', '하나은행'];
     const [isOpen, setIsOpen] = useDetectClose(dropDownRef, false);
+    const [serverTime, setServerTime] = useState(Date);
+    const [isGoToReadyKakaopay, setGoToReadyKakaopay] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
 
     const generateNumber = (bank) => {
         switch (bank) {
@@ -35,6 +37,12 @@ function Payment({ selectedChair, selectedTime, selectedDate, selectedQuantity }
         setGeneratedNumber(generatedNum);
         setIdentify(selectedBank);
         setIsOpen(false);
+        // 직접 선택한 은행을 사용하여 조건 확인
+        if (selectedBank === '선택해주세요') {
+            setAlertMessage('입금 은행을 선택해주세요!');
+        } else {
+            setAlertMessage('');
+        }
     };
 
     useEffect(() => {
@@ -42,27 +50,57 @@ function Payment({ selectedChair, selectedTime, selectedDate, selectedQuantity }
         setPaymentMethod('bank');
     }, []);
 
-    useEffect(() => { // 공연정보 (stage.stage uuid)
-        fetch('/shows/stagedetail/e691b03d-236f-45a1-8dcf-bd311d1563cc')
+    // 공연 상세 가져오기
+    useEffect(() => { // 공연정보 (SELECT * FROM thicket_stage.stage; → id)
+        // 현재 페이지의 url에서 공연 UUID 가져오기
+        const showId = window.location.href.split("/")[4];
+        // 공연 상세 API 호출
+        fetch(`/thicket-show/shows/stagedetail/${showId}`)
             .then(response => response.json())
             .then(data => {
                 setShow(data);
-            });
+            })
     }, []);
-    useEffect(() => { // 공연정보 - 시간리스트 (stage.stage uuid)
-        fetch('/tickets/all/e691b03d-236f-45a1-8dcf-bd311d1563cc')
+
+    // 좌석정보 가져오기 회차정보 클릭시
+    const getChairInfo = (stageId) => {
+        fetch(`/thicket-show/chairs/all/${stageId}`)
             .then(response => response.json())
             .then(data => {
-                setTimes(data);
-            });
-    }, []);
-    useEffect(() => { // 단일시간 - 좌석리스트 (stage.stage_start uuid)
-        fetch('/chairs/all/69e7017c-baa2-410d-97db-465f2072729f')
-            .then(response => response.json())
-            .then(data => {
-                setChairs(data);
-            });
-    }, []);
+            })
+    }
+
+    const handlePayment = () => {
+        if (paymentMethod === 'kakao') {
+            // console.log(`카카오페이 결제: ${Number(selectedChair.price * selectedQuantity)}원`);
+            setGoToReadyKakaopay(true);
+        } else if (paymentMethod === 'bank') {
+            if (identify === '선택해주세요') {
+                setAlertMessage('입금 은행을 선택해주세요!');
+            } else {
+                console.log(`무통장 입금 (${identify}): ${Number(selectedChair.price * selectedQuantity)}원`);
+                // 여기에 무통장 입금 관련 처리 추가
+                // fetch('/thicket-ticket/feign/payments', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify({
+                //         amount: Number(selectedChair.price * selectedQuantity),
+                //         bank: identify,
+                //     }),
+                // })
+                // .then(response => response.json())
+                // .then(data => {
+                //     // 여기에 팝업창 등의 처리 추가
+                // });
+            }
+        }
+    };
+
+    if(isGoToReadyKakaopay){
+        return <ReadyKakaopay amount={Number(selectedChair.price * selectedQuantity)}/>;
+    }
 
 
     return (
@@ -191,8 +229,8 @@ function Payment({ selectedChair, selectedTime, selectedDate, selectedQuantity }
                 <div style={{ padding: '5px', width: '33%', textAlign: 'center', justifyContent: 'center'}}>
                     <h1 style={{ fontSize: '15px'}}>
                         {paymentMethod === 'kakao'
-                        ? <ReadyKakaopay
-                                amount={Number(selectedChair.price * selectedQuantity)} />
+                        ? <div> {Number(selectedChair.price * selectedQuantity).toLocaleString()}원 결제 예정입니다.
+                                <br /><br /> 결제하기 버튼을 눌러주세요! </div>
                             :
                             <div style={{ padding: '10px', maxHeight: '80vh', width: '90%', textAlign: 'left' }}>
                                 <p style={{ padding: '6px', borderBottom: '2px solid darkgray' }}>
@@ -241,6 +279,11 @@ function Payment({ selectedChair, selectedTime, selectedDate, selectedQuantity }
                                     </tr>
                                     </tbody>
                                 </table>
+                                {alertMessage && (
+                                    <div style={{ color: 'red', marginTop: '10px', fontSize: '14px' }}>
+                                        {alertMessage}
+                                    </div>
+                                )}
                             </div>
                             }
                     </h1>
@@ -291,6 +334,7 @@ function Payment({ selectedChair, selectedTime, selectedDate, selectedQuantity }
                             onMouseOut={(e) => {
                                 e.target.style.backgroundColor = '#ff9898';
                             }}
+                            onClick={handlePayment}
                         >결제하기</button>
                     </div>
                 </div>
