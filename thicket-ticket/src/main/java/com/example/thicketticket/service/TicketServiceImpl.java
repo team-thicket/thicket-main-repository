@@ -86,7 +86,7 @@ public class TicketServiceImpl implements TicketService{
             // 메시지 전송 성공 시
             System.out.println("Sent message=[" +
                     "] with offset=[" + result.getRecordMetadata().offset() + "]");
-            return "성공";
+            return ticketDto.getUuid();
         }).exceptionally(ex -> {
             // 메시지 전송 실패 시
             System.out.println("Unable to send message= due to : " + ex.getMessage());
@@ -121,41 +121,13 @@ public class TicketServiceImpl implements TicketService{
             throw new IllegalArgumentException("존재하지 않는 티켓.");
         }
         Ticket ticket = findTicket.get();
-        return new ResponseTicketDto(ticket);
-    }
-
-    //admin 티켓 id 조회
-    @Override
-    @Transactional
-    public ResponseAdminTicketDto adminFindById(UUID id) {
-        Optional<Ticket> findTicket = ticketRepository.findByIdAndDeletedFalse(id);
-
-        if (findTicket.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 티켓.");
-        }
-
-        Ticket ticket = findTicket.get();
-
         return new ResponseAdminTicketDto(ticket);
     }
+
     //사용자가 사용한 티켓 조회
     @Override
     @Transactional
-    public Page<ResponseTicketsDto> findByMemberIdAndDateBefore(String memberId, LocalDateTime currentTime, Pageable pageable) {
-        Page<Ticket> tickets = ticketRepository.findByMemberIdAndDateBeforeAndDeletedFalse(memberId,currentTime,pageable);
-        if (tickets.isEmpty()) {
-            throw new EntityNotFoundException("공연의 예매가 존재하지 않습니다.");
-        }
-
-
-        Ticket ticket = findTicket.get();
-
-        return new ResponseAdminTicketDto(ticket);
-    }
-    //사용자가 사용한 티켓 조회
-    @Override
-    @Transactional
-    public Page<ResponseTicketsDto> findByMemberIdAndDateBefore(String memberId, LocalDateTime currentTime, Pageable pageable) {
+    public Page<ResponseTicketsDto> findByMemberIdAndDateBefore(UUID memberId, LocalDateTime currentTime, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByMemberIdAndDateBeforeAndDeletedFalse(memberId,currentTime,pageable);
         if (tickets.isEmpty()) {
             throw new EntityNotFoundException("공연의 예매가 존재하지 않습니다.");
@@ -167,7 +139,7 @@ public class TicketServiceImpl implements TicketService{
     //사용자가 앞으로 볼 티켓 조회
     @Override
     @Transactional
-    public Page<ResponseTicketsDto> findByMemberIdAndDateAfter(String memberId, LocalDateTime currentTime, Pageable pageable) {
+    public Page<ResponseTicketsDto> findByMemberIdAndDateAfter(UUID memberId, LocalDateTime currentTime, Pageable pageable) {
         Page<Ticket> ticketsPage = ticketRepository.findByMemberIdAndDateAfterAndDeletedFalse(memberId, currentTime, pageable);
 
         if (ticketsPage.isEmpty()) {
@@ -180,7 +152,7 @@ public class TicketServiceImpl implements TicketService{
     @Override
     @Transactional
 
-    public Page<ResponseTicketsByStageIdDto> findByStageId(String Stage, Pageable pageable) {
+    public Page<ResponseTicketsByStageIdDto> findByStageId(UUID Stage, Pageable pageable) {
         Page<Ticket> tickets = ticketRepository.findByStageIdAndDeletedFalse(Stage, pageable);
 
         if(tickets.isEmpty()){

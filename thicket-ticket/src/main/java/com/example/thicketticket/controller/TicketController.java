@@ -69,7 +69,7 @@ public class TicketController {
 
 
         Page<ResponseTicketsDto> getTicketsDtos = ticketService
-                .findByMemberIdAndDateBefore(memberId, LocalDateTime.now(),pageable);
+                .findByMemberIdAndDateBefore(UUID.fromString(memberId), LocalDateTime.now(),pageable);
         return new ResponseEntity<>(getTicketsDtos, HttpStatus.OK);
     }
     //사용자 아직 안본 공연 예매 조회
@@ -78,7 +78,7 @@ public class TicketController {
             @RequestHeader(name = "memberId") String memberId,
             Pageable pageable) {
         Page<ResponseTicketsDto> getTicketsDtos = ticketService
-                .findByMemberIdAndDateAfter(memberId, LocalDateTime.now(),pageable);
+                .findByMemberIdAndDateAfter(UUID.fromString(memberId), LocalDateTime.now(),pageable);
         return new ResponseEntity<>(getTicketsDtos, HttpStatus.OK);
     }
 
@@ -87,7 +87,7 @@ public class TicketController {
     public ResponseEntity<Page<ResponseTicketsByStageIdDto>> findByStageId(
             @PathVariable(name="stageId") String stageId,
             Pageable pageable) {
-        Page<ResponseTicketsByStageIdDto> getTicketsDos = ticketService.findByStageId(stageId,pageable);
+        Page<ResponseTicketsByStageIdDto> getTicketsDos = ticketService.findByStageId(UUID.fromString(stageId),pageable);
         return new ResponseEntity<>(getTicketsDos, HttpStatus.OK);
     }
 

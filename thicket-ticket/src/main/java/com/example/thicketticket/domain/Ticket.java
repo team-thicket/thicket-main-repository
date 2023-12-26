@@ -46,6 +46,8 @@
         @Column
         private String phone;
 
+        @Column
+        private int latency;
         @Column(nullable = false)
         private LocalDateTime cancelDate;
 
@@ -56,10 +58,13 @@
         @Column
         private int sequence;
         @Column(nullable = false)
-        private String stageId;
+        private UUID stageId;
 
         @Column(nullable = false)
-        private String memberId;
+        private UUID memberId;
+
+        @Column(nullable = false)
+        private UUID chairId;
 
         @Column(nullable = false)
         private boolean deleted;
@@ -70,7 +75,7 @@
         public static Ticket createTicket(String newStageName, String newPlace, LocalDateTime newDate,
                                           String newChairType, int newCount, String newMemberName,
                                           String newPhone, int newPrice, LocalDateTime newCancelDate,
-                                          String newStageId, String newMemberId, String newStageType
+                                          UUID newStageId, UUID newMemberId,UUID chairId, String newStageType
                                           ) {
             Ticket ticket = new Ticket();
 
@@ -89,7 +94,7 @@
             ticket.memberId = newMemberId;
             ticket.stageType = newStageType;
             ticket.status = Status.RESERVE;
-
+            ticket.chairId=chairId;
             return ticket;
         }
         public void updateDeleted(boolean deleted) {

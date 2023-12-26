@@ -60,20 +60,14 @@ public class RequestCreateTicketDto {
     // 추가된 필드
     private String uuid;
 
+    @NotNull
+    private String chairId;
+
     private LocalDateTime correctedTimestamp;
 
 
 
-    public Ticket toEntity() {
-        return Ticket.createTicket(
-                stageName,place,date,
-                chairType,count,
-                memberName,phone,price,
-                cancelDate,stageId,memberId,
-                stageType
-               );
 
-    }
     public String toString() {
         return "RequestCreateTicketDto{" +
                 "id=" + id +

@@ -18,7 +18,6 @@ import java.util.UUID;
 public interface TicketService {
 
     //티켓 예매
-
     CompletableFuture<String> createTicket(RequestCreateTicketDto ticketDto);
 
     //admin 티켓id로 조회
@@ -27,9 +26,9 @@ public interface TicketService {
     ResponseTicketDto findById(UUID id);
 
     //admin 공연별 티켓조회
-    Page<ResponseTicketsByStageIdDto> findByStageId(String stageId, Pageable pageable);
-    Page<ResponseTicketsDto> findByMemberIdAndDateBefore(String memberId, LocalDateTime currentTime, Pageable pageable);
-    Page<ResponseTicketsDto> findByMemberIdAndDateAfter(String memberId, LocalDateTime currentTime, Pageable pageable);
+    Page<ResponseTicketsByStageIdDto> findByStageId(UUID stageId, Pageable pageable);
+    Page<ResponseTicketsDto> findByMemberIdAndDateBefore(UUID memberId, LocalDateTime currentTime, Pageable pageable);
+    Page<ResponseTicketsDto> findByMemberIdAndDateAfter(UUID memberId, LocalDateTime currentTime, Pageable pageable);
     // 삭제
     void deleteTicket(UUID id);
 }

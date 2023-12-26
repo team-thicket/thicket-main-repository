@@ -22,7 +22,7 @@ public class ResponseTicketsDto {
 
     public ResponseTicketsDto(Ticket ticket){
         this.id= String.valueOf(ticket.getId());
-        this.createdAt = ticket.getCreatedAt();
+        this.createdAt = ticket.getCreateAt();
         this.date = ticket.getDate();
         this.status = ticket.getStatus().name();
         this.stageType = ticket.getStageType();

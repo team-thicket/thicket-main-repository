@@ -21,7 +21,7 @@ public class ResponseAdminTicketDto {
 
     public ResponseAdminTicketDto(Ticket ticket){
         this.id= String.valueOf(ticket.getId());
-        this.createdAt = ticket.getCreatedAt();
+        this.createdAt = ticket.getCreateAt();
         this.date = ticket.getDate();
         this.stageType = ticket.getStageType();
         this.status = String.valueOf(ticket.getStatus());
