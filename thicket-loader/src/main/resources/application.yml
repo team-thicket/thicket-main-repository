@@ -16,7 +16,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -38,7 +38,3 @@ spring:
           json:
             trusted:
               packages=*:
-    producer:
-      bootstrap-servers: ${kafka.bootstrap-servers}
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
