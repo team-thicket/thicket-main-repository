@@ -35,7 +35,6 @@ public class RequestCreateTicketDto {
     @NotNull(message = "count cannot be empty")
     private int count;
 
-    @NotBlank(message = "memberName cannot be empty")
     private String memberName;
 
     @Min(value = 0, message = "price must be greater than or equal to 0")
@@ -49,7 +48,6 @@ public class RequestCreateTicketDto {
     @NotNull(message = "stageId cannot be null")
     private String stageId;
 
-    @NotNull(message = "memberId cannot be null")
     private String memberId;
 
     @NotNull
@@ -58,42 +56,13 @@ public class RequestCreateTicketDto {
     @NotNull
     private int latency;
     // 추가된 필드
-    private String uuid;
+    private UUID uuid;
 
-    private LocalDateTime correctedTimestamp;
+    @NotNull(message = "chairId cannot be null")
+    private String chairId;
+
+    private Long cts;
 
 
-
-    public Ticket toEntity() {
-        return Ticket.createTicket(
-                stageName,place,date,
-                chairType,count,
-                memberName,phone,price,
-                cancelDate,stageId,memberId,
-                stageType
-               );
-
-    }
-    public String toString() {
-        return "RequestCreateTicketDto{" +
-                "id=" + id +
-                ", stageName='" + stageName + '\'' +
-                ", stageType='" + stageType + '\'' +
-                ", date=" + date +
-                ", place='" + place + '\'' +
-                ", chairType='" + chairType + '\'' +
-                ", count=" + count +
-                ", memberName='" + memberName + '\'' +
-                ", price=" + price +
-                ", phone='" + phone + '\'' +
-                ", cancelDate=" + cancelDate +
-                ", stageId='" + stageId + '\'' +
-                ", memberId='" + memberId + '\'' +
-                ", deleted=" + deleted +
-                ", latency=" + latency +
-                ", uuid='" + uuid + '\'' +
-                ", correctedTimestamp=" + correctedTimestamp +
-                '}';
-    }
 
 }

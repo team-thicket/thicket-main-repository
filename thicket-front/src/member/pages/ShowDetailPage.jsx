@@ -23,6 +23,7 @@ function ShowDetailPage() {
     const [selectedTime, setSelectedTime] = useState(null);     // 선택 시간
     const [selectedChair, setSelectedChair] = useState(null);   // 선택 좌석
     const [selectedQuantity, setSelectedQuantity] = useState(1); // 갯수 기본 1개
+    const [totalAmount, setTotalAmount] = useState(0);  // 선택된 좌석의 총 금액을 저장할 새로운 상태
     const [serverTime, setServerTime] = useState(Date);
 
     // 공연 상세 가져오기
@@ -42,7 +43,7 @@ function ShowDetailPage() {
                 }));
         setInterval(dirtyCheck, 500);
     }, []);
-    
+
     // 좌석정보 가져오기 회차정보 클릭시
     const getChairInfo = (stageId) => {
         fetch(`/thicket-show/chairs/all/${stageId}`)
@@ -112,6 +113,11 @@ function ShowDetailPage() {
 
     const handleReservationClick = () => {
         if (selectedDate && selectedTime && selectedChair) {
+            // 선택된 좌석의 가격과 수량을 기반으로 총 금액 계산
+            const chairPrice = selectedChair.price || 0;  // 가격이 selectedChair에 있는 경우를 가정합니다.
+            const calculatedTotalAmount = chairPrice * selectedQuantity;
+            setTotalAmount(calculatedTotalAmount);
+
             const width = Math.floor(window.innerWidth * 0.7);
             const height = Math.floor(window.innerHeight * 0.8);
             const left = Math.floor((window.innerWidth - width) / 2);
@@ -131,6 +137,7 @@ function ShowDetailPage() {
                                  selectedTime={selectedTime}
                                  selectedDate={selectedDate}
                                  selectedQuantity={selectedQuantity}
+                                 totalAmount={totalAmount}
                     />,
                     reservationContainer
                 );
@@ -157,7 +164,7 @@ function ShowDetailPage() {
                             <Container>
                                 <PostImg src={show.posterImg} alt="posterImg" />
                                 <PostInfo>
-                                    <H1>{show.name}← 이건 디비값　　　　두줄까지 내려가면 이렇게 보입니다.</H1>
+                                    <H1>{show.name}</H1>
                                     <table>
                                         <tr>
                                             <Th>장소</Th>

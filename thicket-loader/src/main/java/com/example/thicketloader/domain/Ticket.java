@@ -1,17 +1,18 @@
     package com.example.thicketloader.domain;
 
-    import com.example.thicketticket.TimeStamp;
-    import com.example.thicketticket.enumerate.Status;
+
+    import com.example.thicketloader.TimeStamp;
+    import com.example.thicketloader.enumerate.Status;
     import jakarta.persistence.*;
     import lombok.*;
+    import org.springframework.data.annotation.CreatedDate;
+    import org.springframework.data.annotation.LastModifiedDate;
 
     import java.time.LocalDateTime;
     import java.util.UUID;
 
     @Entity
     @Getter
-    @Builder
-    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public class Ticket extends TimeStamp {
 
@@ -52,26 +53,36 @@
         @Enumerated(EnumType.STRING)
         @Column(nullable = false)
         private Status status;
-
+        @Column
+        private LocalDateTime correctedTimestamp;
         @Column
         private int sequence;
-        @Column(nullable = false)
-        private String stageId;
+        @Column
+        private int latency;
 
         @Column(nullable = false)
-        private String memberId;
+        private UUID stageId;
 
+        @Column(nullable = false)
+        private UUID memberId;
+
+        @Column(nullable = false)
+        private UUID chairId;
         @Column(nullable = false)
         private boolean deleted;
 
         @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
         private Payment payment;
 
+        @CreatedDate
+        private LocalDateTime createAt;
+        @LastModifiedDate
+        private LocalDateTime updateAt;
         public static Ticket createTicket(String newStageName, String newPlace, LocalDateTime newDate,
                                           String newChairType, int newCount, String newMemberName,
                                           String newPhone, int newPrice, LocalDateTime newCancelDate,
-                                          String newStageId, String newMemberId, String newStageType
-                                          ) {
+                                          UUID newStageId, UUID newMemberId, UUID newChairId, String newStageType,
+                                          int sequence, int latency, LocalDateTime correctedTimestamp) {
             Ticket ticket = new Ticket();
 
 
@@ -87,9 +98,12 @@
             ticket.cancelDate = newCancelDate;
             ticket.stageId = newStageId;
             ticket.memberId = newMemberId;
+            ticket.chairId=newChairId;
             ticket.stageType = newStageType;
             ticket.status = Status.RESERVE;
-
+            ticket.sequence=sequence;
+            ticket.latency=latency;
+            ticket.correctedTimestamp=correctedTimestamp;
             return ticket;
         }
         public void updateDeleted(boolean deleted) {

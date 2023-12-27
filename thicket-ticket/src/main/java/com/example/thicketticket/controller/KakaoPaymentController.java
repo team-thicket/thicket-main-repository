@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("")
@@ -14,6 +16,7 @@ public class KakaoPaymentController {
 
     @GetMapping("ready")
     public ResponseEntity<?> ready(@RequestParam(name = "paymentId") String paymentId){
+        System.out.println(paymentId);
         return ResponseEntity.ok(kakaopayService.readyKakaopay(paymentId));
     }
 

@@ -88,16 +88,20 @@ function SignUp() {
   return (
       <div style={inlineStyles.div}>
         <div style={{ border: '1px solid #000', borderRadius: '5px', padding: '10px', display: 'inline-block' }}>
-          <H1>회원가입</H1>
+          <H1>회원가입</H1> <br />
           <form style={inlineStyles.form} onSubmit={handleSubmit}>
-            <label style={inlineStyles.label}>
+            <label style={{ marginBottom: '10px',}}>
               이메일 주소:
               <input
                   type="email"
                   name="email"
                   value={formData.email}
                   readOnly
-                  style={inlineStyles.input}
+                  style={{ padding: '10px',
+                            marginBottom: '20px',
+                            borderRadius: '5px',
+                            border: '1px solid #ddd',
+                  }}
               />
             </label>
             <br />

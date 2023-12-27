@@ -49,7 +49,7 @@ public class Chair extends TimeStamp {
         chair.chairType = chairType;
         chair.count = count;
         chair.price = price;
-        chair.availableCount = 0;
+        chair.availableCount = count;
         chair.foreignKey(stageStart);
 
         return chair;

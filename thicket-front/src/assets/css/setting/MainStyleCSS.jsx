@@ -5,10 +5,10 @@ export const Wrapper = styled.div`
   display: flex; // Flex 컨테이너로 설정하여 자식 요소들을 플렉스 방향으로 배치
   width: 100%; // 부모 요소에 대해 100%의 너비를 차지
   justify-content: center;
-`;
+`
 
 export const InvisibleScroll = styled.main`
-  margin-top: 51px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
+  margin-top: 119px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절
   width: 1280px;
   height: auto;
   position: fixed; // 위치 고정
@@ -22,8 +22,8 @@ export const InvisibleScroll = styled.main`
 `;
 export const MainContainer = styled.div`
   width: 100%;
-  overflow-y: auto; // 내부 수직 스크롤바
-  max-height: 90.5vh; // 계산 끝
+  overflow-y: scroll; // 내부 수직 스크롤바
+  max-height: 88vh; // 계산 끝 - 90.5vh
   //border: black solid 1px; // 테두리, 사이즈 확인용
 `;
 
@@ -54,7 +54,7 @@ export const Img1 = styled.img`
 `;
 
 export const ImgInfo1 = styled.div`
-  width: 318px;
+  width: 358px;
   height: 99px;
   padding: 0 20px ;
   border: 1px solid lightgray;
@@ -78,8 +78,8 @@ export const Poster2 = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 600px;
-  height: 260px;
+  width: 630px;
+  height: 275px;
   cursor: pointer;
   transition: transform 0.2s;
   &:hover {
@@ -111,10 +111,23 @@ export const ImgDivInfo2 = styled.div`
 
 export const H1 = styled.h1`
     margin: 20px 0 20px 0;
+    font-size: 32px;
+`;
+
+export const H2 = styled.h1`
+    font-size: 24px;
+`;
+
+export const H3 = styled.h1`
+    font-size: 18px;
+`;
+
+export const H4 = styled.h1`
+    font-size: 16px;
 `;
 
 export const MarginTop = styled.main`
-  margin-top: 51.5px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절 // 바꿀꺼면 51.5로
+  margin-top: 119px; // 로거해더 이미지 크기에 따라 마진탑값 수동조절 // 바꿀꺼면 51.5로
   width: 1280px;
   position: fixed; // 위치 고정
 `;
@@ -122,6 +135,7 @@ export const MarginTop = styled.main`
 export const Container = styled.div`
   display: flex;
   align-items: flex-start;
+  
 `;
 
 export const ASide = styled.div`
@@ -185,8 +199,8 @@ export const ShowSide = styled.div`
 `;
 
 export const Scroll = styled.div`
-    overflow-y: auto; // 내부 수직 스크롤바
-    max-height: 90.5vh;  // 계산 끝
+    overflow-y: scroll; // 내부 수직 스크롤바
+    max-height: 83.8vh;  // 계산 끝 90.5vh-> 83.8
 `;
 
 export const SideTop = styled.div`
@@ -196,7 +210,7 @@ export const SideTop = styled.div`
   border-radius: 15px;
   display: flex;
   flex-direction: column;
-  margin:20px 0;
+  margin:10px 0;
 `;
 
 export const DisabledSideBottom = styled.div`
@@ -207,7 +221,7 @@ export const DisabledSideBottom = styled.div`
   border-radius: 15px;
   align-items: center;
   justify-content: center;
-  background-color: #8E43E72B;
+  background-color: #707070;
   cursor: pointer;
   color: white;
   font-size: 20px;
@@ -223,7 +237,7 @@ export const SideBottom = styled.div`
   border-radius: 15px;
   align-items: center;
   justify-content: center;
-  background-color: #8e43e7; 
+  background-color: #e73b34;
   cursor: pointer;
   color: white;
   font-size: 20px;
@@ -340,7 +354,7 @@ export const SideMarginTop = styled.div`
 `;
 export const SideMargin = styled.div`
   width: 90%;
-  margin: 10px 0;
+  margin: 7px 0;
 `;
 
 export const ButtonList = styled.div`

@@ -20,7 +20,7 @@ public class ResponseCompletedPaymentDto {
     public static ResponseCompletedPaymentDto toDto(Payment payment){
         ResponseCompletedPaymentDto dto = new ResponseCompletedPaymentDto();
 
-        dto.paymentId = payment.getUuid();
+        dto.paymentId = payment.getId().toString();
         dto.ticketId = payment.getTicketUuid();
         dto.state = payment.getState();
         dto.method = payment.getMethod();
