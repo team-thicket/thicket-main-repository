@@ -25,6 +25,13 @@ function Cancel( props ) {
         setShowCancel2(true);
     };
 
+    // 현재 티켓의 일시 값
+    const ticketDate = new Date(ticket.date);
+
+// 취소 기한 계산: 티켓 일시에서 3일을 뺀 값
+    const cancelDate = new Date(ticketDate);
+    cancelDate.setDate(ticketDate.getDate() - 3);
+
     return (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {showCancel2 ? (
@@ -102,7 +109,14 @@ function Cancel( props ) {
                                     <tr>
                                         <td>취소기한</td>
                                         <th style={{ width: '250px', textAlign: 'left' }}>
-                                            {new Date(ticket.cancelDate).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
+                                            {cancelDate.toLocaleString('ko-KR', {
+                                                year: 'numeric',
+                                                month: '2-digit',
+                                                day: '2-digit',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                                hour12: false,
+                                            })}
                                         </th>
                                     </tr>
                                     </tbody>
@@ -126,11 +140,11 @@ function Cancel( props ) {
                                     </tr>
                                     <tr>
                                         <td>환불계좌</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>내계좌로 줘</th>
+                                        <th style={{ width: '250px', textAlign: 'left' }}>String</th>
                                     </tr>
                                     <tr>
                                         <td>예금주명</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>몰?루</th>
+                                        <th style={{ width: '250px', textAlign: 'left' }}>{ticket.memberName}</th>
                                     </tr>
                                     </tbody>
                                 </table>
