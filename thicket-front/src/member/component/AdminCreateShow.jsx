@@ -219,7 +219,6 @@ const AdminCreateShow = () => {
             });
         })
         .then(() => {
-            console.log("tprtm");
             fetch("/thicket-show/shows", {
                 method: 'POST',
                 body: JSON.stringify({
@@ -238,22 +237,73 @@ const AdminCreateShow = () => {
                 }),
                 headers: {
                     "Content-Type":"application/json",
-                    // "redirect":"follow"
                     "Authorization": localStorage.getItem('token')
                 }
             })
             .then(response => {
-                if (response.status === 201) {
-                    setShowId(response.text());
-                }
+                response.status === 201 ? alert("공연 등록 성공") : alert("공연 등록 성공")
+                return response.text()
+            }).then((result) => {
+                setShowId(result);
             })
             .catch(error => console.log(error));
         });
     }
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
+    const submitTimeSlot = () => {
+        // 중복 등록 방지를 위한 비교를 위해 hour과 minute으로 나뉘어져 있는 times를 하나의 문자열로 결합시키는 구문
+        let stageStart = [];
+        timeSlots.forEach((dateTime) => {
+            dateTime.times
+                .map(({hour, minute}) =>
+                    stageStart.push({ date : dateTime.date, time : hour + ":" + minute}));
+        });
+
+        fetch("/thicket-show/tickets", {
+            method: 'POST',
+            body: JSON.stringify({
+                stageId: showId,
+                stageStartDtos:stageStart
+            }),
+            headers: {
+                "Content-Type":"application/json",
+                "Authorization": localStorage.getItem('token')
+            }
+        }).then(response => response.text())
+        .then(result => alert(result))
+        .catch(error => console.log(error));
+    };
+    const submitChair = () => {
+        // [{vip, 50, 10000},{vip, 50, 10000},{vip, 50, 10000}]
+        // seatValues.map(seat => {
+        // })
+        const chairs = seatValues.map(seat => {
+            const cleanNode = seat.map((node) => {
+                switch (node.label) {
+                    case '타입':
+                        return {chairType: node.value}
+                    case '개수':
+                        return {count: node.value}
+                    default:
+                        return {price: node.value}
+                }
+            });
+            return cleanNode.reduce((result, currentObj) => Object.assign(result,currentObj));
+        });
+        fetch("/thicket-show/chairs", {
+            method: 'POST',
+            body: JSON.stringify({
+                stageId: showId,
+                chairDtos:chairs
+            }),
+            headers: {
+                "Content-Type":"application/json",
+                "Authorization": localStorage.getItem('token')
+            }
+        }).then(response => response.text())
+            .then(result => alert(result))
+            .catch(error => console.log(error));
+    };
     return (
         <Container>
             <div>
@@ -569,7 +619,7 @@ const AdminCreateShow = () => {
                 </Table>
             </div>
             <CustomDiv>
-                <Button>일정 등록</Button>
+                <Button onClick={submitTimeSlot}>일정 등록</Button>
                 <Button onClick={handleRemoveAllTimeSlots}>일정 전체 삭제</Button>
             </CustomDiv>
             <div>
@@ -606,7 +656,7 @@ const AdminCreateShow = () => {
                 </Table>
             </div>
             <div style={{ padding: '20px 0 0 0' }}>
-                <Button>좌석 등록</Button>
+                <Button onClick={submitChair}>좌석 등록</Button>
             </div>
         </Container>
     );

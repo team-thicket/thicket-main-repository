@@ -17,6 +17,7 @@ const inlineStyles = {
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: '10px',
+    marginRight: '10px'
   },
   label: {
     width: '120px',
@@ -31,22 +32,7 @@ const inlineStyles = {
     display: 'flex',
     justifyContent: 'center',
     marginTop: '10px',
-  },
-  button: {
-    padding: '8px 16px',
-    backgroundColor: '#007bff',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    marginRight: '10px',
-  },
-  signupButton: {
-    padding: '8px 16px',
-    backgroundColor: '#ffcc00',
-    color: '#fff',
-    borderRadius: '4px',
-  },
+  }
 };
 
 function Login() {
@@ -134,11 +120,29 @@ function Login() {
               <input type="password" value={password} onChange={handlePasswordChange} style={inlineStyles.input} />
             </div>
             <div style={inlineStyles.buttonContainer}>
-              <button type="submit" style={inlineStyles.button}>로그인</button>
-              <button className="signup-button" onClick={handleSignUp} style={inlineStyles.signupButton}>회원가입</button>
+              <button type="submit" style={{
+                                              padding: '8px 16px',
+                                              backgroundColor: '#E72C25',
+                                              color: '#fff',
+                                              border: 'none',
+                                              borderRadius: '4px',
+                                              cursor: 'pointer',
+                                              width: '320px', marginTop: '5px'
+                                            }}>로그인</button>
+              {/*<button className="signup-button" onClick={handleSignUp} style={{*/}
+              {/*                                                                padding: '8px 16px',*/}
+              {/*                                                                backgroundColor: 'lightgray',*/}
+              {/*                                                                color: '#fff',*/}
+              {/*                                                                borderRadius: '4px',*/}
+              {/*                                                                border: 'none'*/}
+              {/*                                                              }}>회원가입</button>*/}
             </div>
           </form>
         </div>
+        <button className="signup-button" onClick={handleSignUp} style={{
+          padding: '8px 16px', color: 'gray', backgroundColor: '#fff',
+          borderRadius: '4px', border: 'none', font: 'bold'//, marginLeft: '280px'
+        }}>| 회원가입 |</button>
       </div>
   );
 }

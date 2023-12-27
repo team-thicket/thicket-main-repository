@@ -4,41 +4,24 @@ import ReactDOM from "react-dom";
 import Cancel from "../../payment/pages/Cancel";
 import Reservation from "../../payment/pages/Reservation";
 
-const tmp = [
-    { // 사용자 예매 정보 조회 URL: /reservations/future
-        "id": "e4e64cbb-cc73-40b4-805e-62be18ab47e4",
-        "createdAt": "2023.09.09.", // 예매일
-        "stageName": "뮤지컬 <마리퀴리>",  // 이름
-        "stagetype": "Musical",
-        "place": "홍익대 대학로 아트센터 대극장",    // 장소
-        "date": "2023.12.31. 09:30", // 오픈시간
-        "cancel": "취소",
-        "status": "결제완료"
-    },
-    {
-        "id": "string2",
-        "createdAt": "string2",
-        "stageName": "청소년극 <발가락 육상천재>",
-        "stagetype": "Play",
-        "place": "국립극단 소극장판",
-        "date": "string2",
-        "cancel": "2023.11.09.",
-        "status": "결제대기"
-    },
-    {
-        "id": "string3",
-        "createdAt": "string3",
-        "stageName": "Concert",
-        "stagetype": "Concert",
-        "place": "string3",
-        "date": "string3",
-        "cancel": "string3",
-        "status": "string3"
-    }
-];
-
 export const MemberTicketingList = () => {
-    const handleCancelClick = (item) => {
+
+    const [tickets, setTickets] = useState([]);   // 예매 내역
+
+    useEffect(() => {
+        fetch('/thicket-ticket/reservations/future',{
+            method: "GET",
+            headers: {
+                "Authorization": localStorage.getItem('token')
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                setTickets(data.content);
+            })
+    }, []);
+
+    const handleCancelClick = (ticketId) => {
         const width = Math.floor(window.innerWidth * 0.7);
         const height = Math.floor(window.innerHeight * 0.8);
         const left = Math.floor((window.innerWidth - width) / 2);
@@ -49,7 +32,7 @@ export const MemberTicketingList = () => {
         const cancelWindow = window.open('', '_blank', windowFeatures);
 
         ReactDOM.render(
-            <Cancel/>,
+            <Cancel ticketId={ticketId} />,
             cancelWindow.document.body
         );
     };
@@ -76,33 +59,39 @@ export const MemberTicketingList = () => {
                 <Table>
                     <tbody>
                     <tr>
-                        <Th width="120px">예매일</Th>
+                        <Th width="130px">예매일</Th>
                         <Th width="115px">티켓고유번호</Th>
                         <Th width="70px">구분</Th>
                         <Th width="220px">공연명</Th>
                         <Th width="auto">장소</Th>
-                        <Th width="120px">공연일</Th>
-                        <Th width="120px">예매취소</Th>
+                        <Th width="130px">공연일</Th>
+                        <Th width="100px">예매취소</Th>
                         <Th width="85px">상태</Th>
                     </tr>
-                    {tmp.map((item) => (
-                        <tr key={item.id}>
-                            <Td>{item.createdAt}</Td>
-                            <Td>{item.id.slice(0, 4)}**{item.id.slice(-2)}</Td>
-                            <Td>{item.stagetype}</Td>
-                            <Td>{item.stageName}</Td>
-                            <Td>{item.place}</Td>
-                            <Td>{item.date}</Td>
-                            <Td>
-                                {isCancelable(item.date) ? (
-                                    <button onClick={() => handleCancelClick(item)}>{item.cancel}</button>
-                                ) : (
-                                    <span>취소불가</span>
-                                )}
-                            </Td>
-                            <Td>{item.status}</Td>
+                    {tickets && tickets.length > 0 ? (
+                        tickets.map((item) => (
+                            <tr key={item.id}>
+                                <Td>{new Date(item.createdAt).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}</Td>
+                                <Td>{item.id.slice(0, 4)}**{item.id.slice(-2)}</Td>
+                                <Td>{item.stageType}</Td>
+                                <Td>{item.stageName}</Td>
+                                <Td>{item.place}</Td>
+                                <Td>{new Date(item.date).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}</Td>
+                                <Td>
+                                    {isCancelable(item.date) ? (
+                                        <button style={{padding: '5px 10px'}} onClick={() => handleCancelClick(item.id)}>취소</button>
+                                    ) : (
+                                        <span>취소불가</span>
+                                    )}
+                                </Td>
+                                <Td>{item.status}</Td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <Td colSpan={8}>내역이 없습니다.</Td>
                         </tr>
-                    ))}
+                    )}
                     </tbody>
                 </Table>
             </div>

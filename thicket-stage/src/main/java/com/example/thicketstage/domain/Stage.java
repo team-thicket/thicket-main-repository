@@ -56,6 +56,8 @@ public class Stage extends TimeStamp {
 
     private String stageInfo;
 
+    private UUID adminId;
+
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "stage")
     private List<StageStart> stageStart = new ArrayList<>();
 
@@ -80,7 +82,7 @@ public class Stage extends TimeStamp {
                                     LocalDateTime newLastTicket, String newRunningTime,
                                     String newAgeLimit, StageType newStageType,
                                     String newPosterImg, String newDetailPosterImg,
-                                    String newStageInfo) {
+                                    String newStageInfo, UUID newAdminId) {
         Stage stage = new Stage();
 
         stage.name = newName;
@@ -95,6 +97,7 @@ public class Stage extends TimeStamp {
         stage.posterImg = newPosterImg;
         stage.detailPosterImg = newDetailPosterImg;
         stage.stageInfo = newStageInfo;
+        stage.adminId = newAdminId;
 
         return stage;
     }

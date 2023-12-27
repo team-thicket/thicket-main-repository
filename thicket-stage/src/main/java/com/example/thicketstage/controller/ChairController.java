@@ -22,9 +22,9 @@ public class ChairController {
 
     @PostMapping("")  // API 명세 => POST /chairs
     public ResponseEntity<?> createChair(@RequestBody @Valid RequestCreateChairDto chairDto){
-        List<Chair> chair = chairService.createChair(chairDto);
+        List<List<Chair>> chair = chairService.createChair(chairDto);
 
-        if (chair.isEmpty()){
+        if (chair.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("좌석 정보가 존재하지 않습니다.");
         }
 

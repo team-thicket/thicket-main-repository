@@ -70,9 +70,9 @@ public class TicketController {
     //사용자 이미 본 공연 예매 조회
     @GetMapping("/past")
     public ResponseEntity<Page<ResponseTicketsDto>> findByMemberIdAndDateAtBefore(
-            @RequestHeader(name = "memberId") String memberId,
+            HttpServletRequest req,
             Pageable pageable) {
-
+        String memberId =req.getHeader("UUID");
 
         Page<ResponseTicketsDto> getTicketsDtos = ticketService
                 .findByMemberIdAndDateBefore(UUID.fromString(memberId), LocalDateTime.now(),pageable);
@@ -81,8 +81,9 @@ public class TicketController {
     //사용자 아직 안본 공연 예매 조회
     @GetMapping("/future")
     public ResponseEntity<Page<ResponseTicketsDto>> findByMemberIdAndDateAtAfter(
-            @RequestHeader(name = "memberId") String memberId,
+            HttpServletRequest req,
             Pageable pageable) {
+        String memberId =req.getHeader("UUID");
         Page<ResponseTicketsDto> getTicketsDtos = ticketService
                 .findByMemberIdAndDateAfter(UUID.fromString(memberId), LocalDateTime.now(),pageable);
         return new ResponseEntity<>(getTicketsDtos, HttpStatus.OK);

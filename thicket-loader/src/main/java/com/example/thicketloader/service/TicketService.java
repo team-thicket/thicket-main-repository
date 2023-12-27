@@ -1,7 +1,6 @@
 package com.example.thicketloader.service;
 
 import com.example.thicketloader.domain.Member;
-import com.example.thicketloader.domain.Payment;
 import com.example.thicketloader.domain.Ticket;
 import com.example.thicketloader.dto.TicketDto;
 import com.example.thicketloader.repository.MemberRepository;
@@ -33,13 +32,7 @@ public class TicketService {
     @Transactional
     public void save(TicketDto ticketDto) {
         Ticket ticket = ticketDto.toEntity();
-        Ticket savedTicket = ticketRepository.save(ticket);
-        Payment newPayment = Payment.createPayment(String.valueOf(savedTicket.getMemberId()), String.valueOf(savedTicket.getId()), String.valueOf(savedTicket.getStageId()));
-        savedTicket.setPayment(newPayment); // Payment 설정
-        // ID 값을 DTO에 설정
-        ticketDto.setId(savedTicket.getId());
-
-
+        ticketRepository.save(ticket);
     }
 
     private String findMemberField(UUID memberId, Function<Member, String> fieldExtractor) {

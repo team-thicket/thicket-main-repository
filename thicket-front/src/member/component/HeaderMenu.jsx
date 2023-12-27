@@ -3,14 +3,16 @@ import styled from "styled-components";
 const Wrapper = styled.a`
   height: 30px;
   line-height: 30px; /* 텍스트의 높이에 따라 상하 가운데 정렬 */
-  margin: 10px;
+  margin: 0 10px;
   padding: 0px 10px;
-  font-size: 16px;
+  font-size: 17px;
   display: block;
-  border: black solid 1px;
+  border: #a2a2a2 solid 1px;
+  color: #565656;
   border-radius: 5px;
   text-align: center;
-  background-color: beige;
+  background-color: white;
+
   &:hover {
     background-color: lightgray; /* 색상 */
     cursor: pointer;
