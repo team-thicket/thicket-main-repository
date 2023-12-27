@@ -34,13 +34,11 @@ public class RequestCreateTicketDto implements Comparable<RequestCreateTicketDto
     @NotNull(message = "count cannot be empty")
     private int count;
 
-    @NotBlank(message = "memberName cannot be empty")
     private String memberName;
+    private String phone;
 
     @Min(value = 0, message = "price must be greater than or equal to 0")
     private int price;
-
-    private String phone;
 
     @NotNull(message = "cancelDate cannot be null")
     private LocalDateTime cancelDate;
@@ -55,15 +53,19 @@ public class RequestCreateTicketDto implements Comparable<RequestCreateTicketDto
     @NotNull(message = "chairId cannot be null")
     private String chairId;
 
+    @NotNull(message = "chairId cannot be null")
+    private String chairId;
+
     @NotNull
     private boolean deleted;
 
     @NotNull
     private int latency;
     // 추가된 필드
-    private String uuid;
+    @NotNull
+    private UUID uuid;
 
-    private LocalDateTime correctedTimestamp;
+    private Long cts;
 
 
 
@@ -85,22 +87,28 @@ public class RequestCreateTicketDto implements Comparable<RequestCreateTicketDto
 //                ", deleted=" + deleted +
 //                ", latency=" + latency +
 //                ", uuid='" + uuid + '\'' +
-//                ", correctedTimestamp=" + correctedTimestamp +
+//                ", cts=" + cts +
 //                '}';
 //    }
 
-    @Override
-    public int compareTo(RequestCreateTicketDto other) {
-        // correctedTimestamp를 기준으로 정렬
-        if (this.correctedTimestamp == null && other.correctedTimestamp == null) {
-            return 0;
-        } else if (this.correctedTimestamp == null) {
-            return -1;
-        } else if (other.correctedTimestamp == null) {
-            return 1;
-        } else {
-            // LocalDateTime.compareTo를 사용하여 두 timestamp를 비교
-            return this.correctedTimestamp.compareTo(other.correctedTimestamp);
-        }
-    }
+//localdatetime형태일 때
+//    @Override
+//    public int compareTo(RequestCreateTicketDto other) {
+//        // cts를 기준으로 정렬
+//        if (this.cts == null && other.cts == null) {
+//            return 0;
+//        } else if (this.cts == null) {
+//            return -1;
+//        } else if (other.cts == null) {
+//            return 1;
+//        } else {
+//            // LocalDateTime.compareTo를 사용하여 두 timestamp를 비교
+//            return this.cts.compareTo(other.cts);
+//        }
+//    }
+@Override
+public int compareTo(RequestCreateTicketDto other) {
+    // cts를 기준으로 정렬
+    return this.cts.compareTo(other.cts);
+}
 }
