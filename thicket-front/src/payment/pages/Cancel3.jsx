@@ -1,15 +1,35 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 
-function Cancel3({ ticketId }) {
+function Cancel3({ ticketId, closeWindowCallback }) {
+    const [countdown, setCountdown] = useState(5);
 
     useEffect(() => {
-
-        fetch(`/thicket-ticket/reservations/${ticketId}`, {
-            method: "DELETE",
-            headers: {
-                "Authorization": localStorage.getItem('token')
+        // Function to handle the countdown
+        const handleCountdown = () => {
+            if (countdown === 0) {
+                // If countdown reaches 0, close the window
+                closeWindowCallback();
+            } else {
+                // If countdown is not 0, decrement it
+                setCountdown((prevCountdown) => prevCountdown - 1);
             }
-        })
+        };
+
+        // Timer for the countdown
+        const countdownTimer = setInterval(handleCountdown, 1000);
+
+        // Cleanup the interval to avoid any potential memory leaks
+        return () => clearInterval(countdownTimer);
+    }, [countdown, closeWindowCallback]);
+
+    useEffect(() => {
+        // Make the DELETE request
+        fetch(`/thicket-ticket/reservations/${ticketId}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: localStorage.getItem('token'),
+            },
+        });
     }, [ticketId]);
 
     return (
@@ -52,9 +72,7 @@ function Cancel3({ ticketId }) {
                 <div>
                     <div>예매취소가 정상적으로 완료되었습니다.</div>
                     <div>예매내역에서 확인 바랍니다.</div>
-                    <div style={{ width:'50px', backgroundColor: 'rad'}}>
-                        <button>확인</button>
-                    </div>
+                    <div>{`${countdown}초후 창이 자동으로 닫힙니다.`}</div>
                 </div>
             </div>
         </div>

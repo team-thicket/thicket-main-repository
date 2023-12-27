@@ -35,7 +35,7 @@ function Cancel( props ) {
     return (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {showCancel2 ? (
-                <Cancel2 ticketId={props.ticketId} ticket={setTicket} />
+                <Cancel2 ticketId={props.ticketId} ticket={setTicket} closeWindowCallback={props.onCancel} />
             ) : (
                 <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div style={{

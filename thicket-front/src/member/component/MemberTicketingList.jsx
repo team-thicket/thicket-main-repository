@@ -31,8 +31,12 @@ export const MemberTicketingList = () => {
 
         const cancelWindow = window.open('', '_blank', windowFeatures);
 
+        const closeWindowCallback = () => {
+            cancelWindow.close();
+        };
+
         ReactDOM.render(
-            <Cancel ticketId={ticketId} onCancel={cancelWindow.close} />,
+            <Cancel ticketId={ticketId} onCancel={closeWindowCallback} />,
             cancelWindow.document.body
         );
     };

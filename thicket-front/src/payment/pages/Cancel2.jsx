@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Cancel3 from "./Cancel3";
 
-function Cancel2({ ticketId, ticket }) {
+function Cancel2({ ticketId, ticket, closeWindowCallback  }) {
     const [showCancel3, setShowCancel3] = useState(false);
     const [inputValue, setInputValue] = useState('');
 
@@ -15,7 +15,7 @@ function Cancel2({ ticketId, ticket }) {
     return (
         <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             {showCancel3 ? (
-                <Cancel3 ticketId={ticketId} ticket={ticket} />
+                <Cancel3 ticketId={ticketId} ticket={ticket} closeWindowCallback={closeWindowCallback} />
             ) : (
                 <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                     <div style={{
