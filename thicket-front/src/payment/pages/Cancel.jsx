@@ -1,25 +1,22 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Cancel2 from "./Cancel2";
 
-function Cancel() {
+function Cancel( props ) {
 
-    const tmp = { // 예매(결제)취소 - 예매만 된 티켓 ,결제까지 완료된 티켓 나눠서 로직 처리.
-        "id": "e4e64cbb-cc73-40b4-805e-62be18ab47e4",
-        "created": "2023.09.09.",
-        "memberName": "홍길동",
-        "stageName": "뮤지컬 <마리퀴리>",
-        "date": "2023.12.31. 09:30",
-        "stagetype": "Musical",
-        "place": "홍익대 대학로 아트센터 대극장",
-        "showStatus": "수령방법",
-        "cancelDate": "취소기한(오픈3일전)",
-        "howreceive": "수령방법",// 여기서는 안쓸듯
-        "method": "이건 뭔데",
-        "status": "상태 뭔데",
-        "chairType": "VIP", // API 명세서에 없음
-        "count": "1",       // API 명세서에 없음
-        "price": "99500",   // API 명세서에 없음
-    };
+    const [ticket, setTicket] = useState([]);   // 예매 내역
+
+    useEffect(() => {
+        fetch(`/thicket-ticket/reservations/${props.ticketId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": localStorage.getItem('token')
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                setTicket(data);
+            })
+    }, [props.ticketId]);
 
     const [showCancel2, setShowCancel2] = useState(false);
 
@@ -28,10 +25,17 @@ function Cancel() {
         setShowCancel2(true);
     };
 
+    // 현재 티켓의 일시 값
+    const ticketDate = new Date(ticket.date);
+
+// 취소 기한 계산: 티켓 일시에서 3일을 뺀 값
+    const cancelDate = new Date(ticketDate);
+    cancelDate.setDate(ticketDate.getDate() - 3);
+
     return (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {showCancel2 ? (
-                <Cancel2 tmp={tmp} />
+                <Cancel2 ticketId={props.ticketId} ticket={setTicket} />
             ) : (
                 <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div style={{
@@ -49,10 +53,10 @@ function Cancel() {
                     }}
                     >
                         <div >
-                            <h1>취소 내역 확인</h1>
+                            <h1>취소 신청</h1>
                         </div>
                         <div>
-                            <h1 style={{ color: 'white' }}>비밀번호 확인</h1>
+                            <h1 style={{ color: 'white' }}>확인 절차</h1>
                         </div>
                         <div>
                             <h1 style={{ color: 'white'}}>취소 완료</h1>
@@ -71,38 +75,49 @@ function Cancel() {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <div style={{ padding: '5px 50px', width: '80%', textAlign: 'left'}}>
-                            <div><h1 style={{fontSize: '20px'}}>예약번호 : {tmp.id.slice(0, 4)}**{tmp.id.slice(-2)}</h1></div>
+                            <div><h1 style={{ fontSize: '20px' }}>예약번호 : {`${ticket?.id?.slice(0, 4)}**${ticket?.id?.slice(-2)}`}</h1></div>
                             <hr />
                             <div>
                                 <table>
                                     <tbody>
                                     <tr>
                                         <td style={{ width: '100px'}}>고객명</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>{tmp.memberName}</th>
+                                        <th style={{ width: '250px', textAlign: 'left' }}>{ticket.memberName}</th>
                                     </tr>
                                     <tr>
                                         <td>공연제목</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>{tmp.stageName}</th>
+                                        <th style={{ width: '250px', textAlign: 'left' }}>{ticket.stageName}</th>
                                     </tr>
                                     <tr>
                                         <td>장소</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>{tmp.place}</th>
+                                        <th style={{ width: '250px', textAlign: 'left' }}>{ticket.place}</th>
                                     </tr>
                                     <tr>
                                         <td>일시</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>{tmp.date}</th>
+                                        <th style={{ width: '250px', textAlign: 'left' }}>
+                                            {new Date(ticket.date).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}
+                                        </th>
                                     </tr>
                                     <tr>
                                         <td>좌석</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>{tmp.chairType}석 {tmp.count}개</th>
+                                        <th style={{ width: '250px', textAlign: 'left' }}>{ticket.chairType}석 {ticket.count}개</th>
                                     </tr>
                                     <tr>
                                         <td>티켓금액</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>{parseInt(tmp.price).toLocaleString()}원</th>
+                                        <th style={{ width: '250px', textAlign: 'left' }}>{parseInt(ticket.price * ticket.count).toLocaleString()}원</th>
                                     </tr>
                                     <tr>
                                         <td>취소기한</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>{tmp.cancelDate}</th>
+                                        <th style={{ width: '250px', textAlign: 'left' }}>
+                                            {cancelDate.toLocaleString('ko-KR', {
+                                                year: 'numeric',
+                                                month: '2-digit',
+                                                day: '2-digit',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                                hour12: false,
+                                            })}
+                                        </th>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -117,19 +132,19 @@ function Cancel() {
                                     <tbody>
                                     <tr>
                                         <td style={{ width: '100px'}}>환불방법</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>계좌입금 or 카드취소</th>
+                                        <th style={{ width: '250px', textAlign: 'left' }}>{ticket.method}</th>
                                     </tr>
                                     <tr>
                                         <td>환불금액</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>{parseInt(tmp.price).toLocaleString()}원</th>
+                                        <th style={{ width: '250px', textAlign: 'left' }}>{parseInt(ticket.price * ticket.count).toLocaleString()}원</th>
                                     </tr>
                                     <tr>
                                         <td>환불계좌</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>내계좌로 줘</th>
+                                        <th style={{ width: '250px', textAlign: 'left' }}>String</th>
                                     </tr>
                                     <tr>
                                         <td>예금주명</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>몰?루</th>
+                                        <th style={{ width: '250px', textAlign: 'left' }}>{ticket.memberName}</th>
                                     </tr>
                                     </tbody>
                                 </table>

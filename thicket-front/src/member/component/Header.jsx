@@ -102,7 +102,6 @@ export default function Header() {
                             {isLoggedIn ? (
                                 <>
                                     <HeaderMenu name={'마이페이지'} link={'/mypage'} />
-                                    <HeaderMenu name={'임시어드민'} link={'/admin'} />
                                     <HeaderMenu name={'로그아웃'} link={'/login'} onClick={() => {
                                         localStorage.removeItem('token');
                                     }} />
