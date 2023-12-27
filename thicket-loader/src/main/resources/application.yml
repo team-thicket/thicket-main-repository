@@ -1,0 +1,40 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: thicket-member
+
+  profiles:
+    active: localDB,kafka
+
+  datasource:
+    driver-class-name: ${localDB.driver}
+    username: ${localDB.username_}
+    password: ${localDB.password}
+    url: ${localDB.url}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+  kafka:
+    consumer:
+      bootstrap-servers: ${kafka.bootstrap-servers}
+      group-id: ${kafka.group-id}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring:
+          deserializer:
+            value:
+              delegate:
+                class: org.springframework.kafka.support.serializer.JsonDeserializer
+          json:
+            trusted:
+              packages=*:

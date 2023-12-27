@@ -2,17 +2,19 @@ import {
     Wrapper,
     InvisibleScroll,
     MainContainer,
-    H1,
+    H1, H2, H3, H4,
     DivList2, Poster2, Img2, ImgDivInfo2,
     // 왼쪽광고, 오른쪽광고
 } from "../../assets/css/setting/MainStyleCSS";
 import {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 const ShowList = () => {
     const [shows, setShows] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('/shows/before')
+        fetch('/thicket-show/shows/before')
             .then(response => response.json())
             .then(data => {
                 setShows(data);
@@ -21,24 +23,24 @@ const ShowList = () => {
 
     const formatDateString = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleDateString(); // Adjust the format as needed
+        return date.toLocaleDateString();
     };
 
     return (
         <DivList2>
             {Array.isArray(shows) > 0 ? (
                 shows.map(show => (
-                    <Poster2 key={show.id}>
+                    <Poster2 key={show.stageId} onClick={() => navigate(`/detail/${show.stageId}`)}>
                         <Img2 src={show.posterImg} alt="Poster" />
                         <ImgDivInfo2>
-                            <div><h2>{show.name}</h2></div>
-                            <div><h3>{show.place}</h3></div>
-                            <div><h4>{`${formatDateString(show.ticketOpen)}`}</h4></div>
+                            <div><H2>{show.name}</H2></div>
+                            <div><H3>{show.place}</H3></div>
+                            <div><H4>{`${formatDateString(show.ticketOpen)}`}</H4></div>
                         </ImgDivInfo2>
                     </Poster2>
                 ))
             ) : (
-                <H1>없습니다.　　　　　　　　</H1>
+                <H1>없습니다.　　　　　　　　　　　　　　　아니 그냥 없어요.</H1>
             )}
         </DivList2>
     );

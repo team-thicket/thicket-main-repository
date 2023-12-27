@@ -5,11 +5,12 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Data
 public class ResponseStageStartDto {
 
-    private String stageUuid;
+    private UUID stageId;
 
     private LocalDate date;
 
@@ -17,7 +18,7 @@ public class ResponseStageStartDto {
 
 
 public ResponseStageStartDto(StageStart stageStart) {
-    this.stageUuid = stageStart.getUuid();
+    this.stageId = stageStart.getId();
     this.date = stageStart.getDate();
     this.time = stageStart.getTime();
 }

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -104,7 +105,10 @@ public class Init {
                     "홍익대 아트센터 대극장",
                     LocalDateTime.of(2023, 12, 26, 19, 30),
                     "의자유형1", 2, "회원명1", "123456789", 100, LocalDateTime.now().plusDays(1),
-                    "3", "1L", "무대유형1"
+                    UUID.fromString("60544d9e-e39c-42cf-a9dd-d8a5ced1710f"),
+                    UUID.fromString("60544d9e-e39c-42cf-a9dd-d8a5ced1710f"),
+                    UUID.fromString("60544d9e-e39c-42cf-a9dd-d8a5ced1710f"),
+                    "무대유형1"
             );
 
             Payment newPayment1 = Payment
@@ -119,7 +123,10 @@ public class Init {
                     "국립극단 소극장 판",
                     LocalDateTime.of(2023, 11, 23, 19, 30),
                     "의자유형2", 3, "회원명2", "987654321", 80, LocalDateTime.now().plusDays(2),
-                    "2L", "1L", "무대유형2"
+                    UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),
+                    UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),
+                    UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),
+                    "무대유형2"
             );
 
             Payment newPayment2 = Payment
@@ -136,7 +143,10 @@ public class Init {
                     "홍익대 아트센터 대극장",
                     LocalDateTime.of(2023, 11, 23, 19, 30),
                     "의자유형3", 1, "회원명3", "987654321", 120, LocalDateTime.now().plusDays(3),
-                    "3L", "1L", "무대유형3"
+                    UUID.fromString("540daf83-d776-4cc4-badc-11c19c2c9e8d"),
+                    UUID.fromString("540daf83-d776-4cc4-badc-11c19c2c9e8d"),
+                    UUID.fromString("540daf83-d776-4cc4-badc-11c19c2c9e8d"),
+                    "무대유형3"
             );
 
             Payment newPayment3 = Payment
@@ -151,7 +161,10 @@ public class Init {
                     "예술의 전당 콘서트홀",
                     LocalDateTime.of(2023, 12, 22, 19, 30),
                     "의자유형4", 4, "회원명4", "987654321", 150, LocalDateTime.now().plusDays(4),
-                    "4L", "1L", "무대유형4"
+                    UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),
+                    UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),
+                    UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),
+                    "무대유형4"
             );
 
             Payment newPayment4 = Payment
@@ -166,7 +179,10 @@ public class Init {
                     "대학로 블루스퀘어 뮤지컬극장",
                     LocalDateTime.of(2023, 12, 26, 19, 30),
                     "의자유형5", 2, "회원명5", "987654321", 90, LocalDateTime.now().plusDays(5),
-                    "5L", "5L", "무대유형5"
+                    UUID.fromString("ab3a3754-8b95-4834-9386-1376960b2a4b"),
+                    UUID.fromString("ab3a3754-8b95-4834-9386-1376960b2a4b"),
+                    UUID.fromString("ab3a3754-8b95-4834-9386-1376960b2a4b"),
+                    "무대유형5"
             );
 
             Payment newPayment5 = Payment

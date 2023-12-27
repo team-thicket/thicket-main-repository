@@ -7,12 +7,13 @@ import {
     Wrapper, MarginTop, Container, Scroll,
     ShowMain, ShowSide, SideTop, SideMarginTop, SideMargin, SideFont, SideBottom,
     PostImg, PostDetailImg, PostInfo,
-    H1, Th, Th1, Th2, LightGrayLine,
-    StyledCalendar, ButtonList, ChoiceDiv,
+    H1, Th, Th1, Th2, Td1, Td2, LightGrayLine,
+    StyledCalendar, ButtonList, ChoiceDiv, DisabledSideBottom,
 } from "../../assets/css/setting/MainStyleCSS";
 import Reservation from "../../payment/pages/Reservation";
 
 function ShowDetailPage() {
+
     const [show, setShow] = useState([]);       // 공연정보
     const [times, setTimes] = useState([]);     // 공연정보-시간리스트
     const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
@@ -22,28 +23,35 @@ function ShowDetailPage() {
     const [selectedTime, setSelectedTime] = useState(null);     // 선택 시간
     const [selectedChair, setSelectedChair] = useState(null);   // 선택 좌석
     const [selectedQuantity, setSelectedQuantity] = useState(1); // 갯수 기본 1개
+    const [totalAmount, setTotalAmount] = useState(0);  // 선택된 좌석의 총 금액을 저장할 새로운 상태
+    const [serverTime, setServerTime] = useState(Date);
 
-    useEffect(() => { // 공연정보 (stage.stage uuid)
-        fetch('/shows/stagedetail/a0f924e1-97f9-4d56-a4e0-43aa0ee8f9f5')
+    // 공연 상세 가져오기
+    useEffect(() => { // 공연정보 (SELECT * FROM thicket_stage.stage; → id)
+        // 현재 페이지의 url에서 공연 UUID 가져오기
+        const showId = window.location.href.split("/")[4];
+        // 공연 상세 API 호출
+        fetch(`/thicket-show/shows/stagedetail/${showId}`)
             .then(response => response.json())
             .then(data => {
                 setShow(data);
-            });
+            })
+            .then(fetch(`/thicket-show/tickets/all/${showId}`)
+                .then(response => response.json())
+                .then(data => {
+                    setTimes(data);
+                }));
+        setInterval(dirtyCheck, 500);
     }, []);
-    useEffect(() => { // 공연정보 - 시간리스트 (stage.stage uuid)
-        fetch('/tickets/all/a0f924e1-97f9-4d56-a4e0-43aa0ee8f9f5')
-            .then(response => response.json())
-            .then(data => {
-                setTimes(data);
-            });
-    }, []);
-    useEffect(() => { // 단일시간 - 좌석리스트 (stage.stage_start uuid)
-        fetch('/chairs/all/bc6160ce-dea4-4d82-983c-1e3f34b01250')
+
+    // 좌석정보 가져오기 회차정보 클릭시
+    const getChairInfo = (stageId) => {
+        fetch(`/thicket-show/chairs/all/${stageId}`)
             .then(response => response.json())
             .then(data => {
                 setChairs(data);
-            });
-    }, []);
+            })
+    }
 
     // 데이터 타임 형변환
     const formatDateString = (dateString) => {
@@ -73,6 +81,7 @@ function ShowDetailPage() {
                 ...time,
                 time: moment(time.time, 'HH:mm:ss').format('HH:mm'),
             }));
+        console.log(filtered);
         setFilteredTimes(filtered);
     };
 
@@ -91,29 +100,52 @@ function ShowDetailPage() {
         setSelectedQuantity(parseInt(event.target.value, 10));
     };
 
+    const dirtyCheck = async () => {
+        await fetch('/thicket-show/shows/serverTime')
+        .then(response => response.text())
+        .then(data => {
+            setServerTime(new Date(data));
+        })
+    };
+
     // 이하 예매 로직
     const [reservationWindow, setReservationWindow] = useState(null);
 
     const handleReservationClick = () => {
-        // 예매하기 버튼을 눌렀을 때, 새 창으로 Reservation 페이지를 엽니다.
-        const width = Math.floor(window.innerWidth * 0.7);
-        const height = Math.floor(window.innerHeight * 0.8);
-        const left = Math.floor((window.innerWidth - width) / 2);
-        const top = Math.floor((window.innerHeight - height) / 2);
+        if (selectedDate && selectedTime && selectedChair) {
+            // 선택된 좌석의 가격과 수량을 기반으로 총 금액 계산
+            const chairPrice = selectedChair.price || 0;  // 가격이 selectedChair에 있는 경우를 가정합니다.
+            const calculatedTotalAmount = chairPrice * selectedQuantity;
+            setTotalAmount(calculatedTotalAmount);
 
-        const windowFeatures = `width=${width},height=${height},left=${left},top=${top}`;
+            const width = Math.floor(window.innerWidth * 0.7);
+            const height = Math.floor(window.innerHeight * 0.8);
+            const left = Math.floor((window.innerWidth - width) / 2);
+            const top = Math.floor((window.innerHeight - height) / 2);
 
-        const paymentWindow = window.open('', '_blank', windowFeatures);
+            const windowFeatures = `width=${width},height=${height},left=${left},top=${top}`;
 
-        if (paymentWindow) {
-            // 예약 페이지를 새 창에 렌더링
-            const reservationContainer = paymentWindow.document.createElement('div');
-            paymentWindow.document.body.appendChild(reservationContainer);
+            const paymentWindow = window.open('', '_blank', windowFeatures);
 
-            setReservationWindow(reservationContainer);
+            if (paymentWindow) {
+                // 선택된 좌석을 Reservation 컴포넌트로 프롭스로 전달
+                const reservationContainer = paymentWindow.document.createElement('div');
+                paymentWindow.document.body.appendChild(reservationContainer);
+
+                ReactDOM.render(
+                    <Reservation selectedChair={selectedChair}
+                                 selectedTime={selectedTime}
+                                 selectedDate={selectedDate}
+                                 selectedQuantity={selectedQuantity}
+                                 totalAmount={totalAmount}
+                    />,
+                    reservationContainer
+                );
+            } else {
+                alert('팝업 창이 차단되었거나 오류가 발생했습니다. 팝업 차단을 해제해주세요.');
+            }
         } else {
-            // 팝업 창이 차단되었거나 오류가 있는 경우에는 경고를 표시합니다.
-            alert('팝업 창이 차단되었거나 오류가 발생했습니다. 팝업 차단을 해제해주세요.');
+            alert('날짜, 시간 및 좌석을 선택하세요.');
         }
     };
 
@@ -123,7 +155,6 @@ function ShowDetailPage() {
             ReactDOM.render(<Reservation />, reservationWindow);
         }
     }, [reservationWindow]);
-
     return (
         <Wrapper>
             <MarginTop>
@@ -137,28 +168,30 @@ function ShowDetailPage() {
                                     <table>
                                         <tr>
                                             <Th>장소</Th>
-                                            <td>{show.place}</td>
+                                            <Td1>{show.place}</Td1>
                                         </tr>
                                         <tr>
                                             <Th>공연기간</Th>
-                                            <td>{`${formatDateString(show.stageOpen)} ~ ${formatDateString(show.stageClose)}`}</td>
+                                            <Td1>{`${formatDateString(show.stageOpen)} ~ ${formatDateString(show.stageClose)}`}</Td1>
                                         </tr>
                                         <tr>
                                             <Th>공연시간</Th>
-                                            <td>{show.runningTime}</td>
+                                            <Td1>{show.runningTime}</Td1>
                                         </tr>
                                         <tr>
                                             <Th>관람연령</Th>
-                                            <td>{show.ageLimit}</td>
+                                            <Td1>{show.ageLimit}</Td1>
                                         </tr>
                                         <tr>
                                             <Th1>가격</Th1>
-                                            {Array.isArray(chairs) && chairs.length > 0 && chairs.map(chair => (
-                                                <tr key={chair.chairUuid}>
-                                                    <Th2>{chair.chairType}석</Th2>
-                                                    <td>{Number(chair.price).toLocaleString()}원</td>
-                                                </tr>
-                                            ))}
+                                            {Array.isArray(chairs) && chairs.length > 0 && chairs
+                                                .sort((a, b) => b.price - a.price) // 가격을 내림차순으로 정렬
+                                                .map(chair => (
+                                                    <tr key={chair.chairUuid}>
+                                                        <Th2>{chair.chairType}석</Th2>
+                                                        <Td2>{Number(chair.price).toLocaleString()}원</Td2>
+                                                    </tr>
+                                                ))}
                                         </tr>
                                     </table>
                                 </PostInfo>
@@ -169,7 +202,9 @@ function ShowDetailPage() {
                             <LightGrayLine />
                             <div style={{marginTop:"10px"}} />
                             <p>{show.stageInfo}</p>
-                            <PostDetailImg src={show.detailPosterImg} alt="detailPosterImg" />
+                            {Array.isArray(show.detailPosterImg) ? (
+                                show.detailPosterImg.map(url => <PostDetailImg src={url} />)
+                            ) : (<p>상세 이미지가 없습니다.</p>)}
                         </Scroll>
                     </ShowMain>
                     <ShowSide>
@@ -187,6 +222,9 @@ function ShowDetailPage() {
                                         formatDay={(locale, date) => moment(date).format('D')}
                                         showNeighboringMonth={false}
                                         calendarType="gregory" // 일요일부터 시작
+                                        minDate={new Date(show.stageOpen)} // Set the minimum date
+                                        // minDate={new Date()} // 실제 로직에서는 스테이지 오픈 대신 오늘 날짜로 사용
+                                        maxDate={new Date(show.stageClose)} // Set the maximum date
                                     />
                                 </SideMarginTop>
                                 <LightGrayLine />
@@ -199,7 +237,10 @@ function ShowDetailPage() {
                                                     key={index}
                                                     selected={time === selectedTime}
                                                     selectedTime={selectedTime}
-                                                    onClick={() => handleTimeSelect(time)}
+                                                    onClick={() => {
+                                                        handleTimeSelect(time)
+                                                        getChairInfo(time.stageId)
+                                                    }}
                                                 >
                                                     {index + 1}회 {time.time}
                                                 </ChoiceDiv>
@@ -256,9 +297,15 @@ function ShowDetailPage() {
                                     )}
                                 </SideMargin>
                             </SideTop>
-                            <SideBottom onClick={handleReservationClick}>
-                                예매하기
-                            </SideBottom>
+                            {new Date(show.ticketOpen) >= serverTime ? (
+                                <DisabledSideBottom>
+                                    예매하기
+                                </DisabledSideBottom>
+                            ) : (
+                                <SideBottom onClick={handleReservationClick}>
+                                    예매하기
+                                </SideBottom>
+                            )}
                         </Scroll>
                     </ShowSide>
                 </Container>

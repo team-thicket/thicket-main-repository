@@ -8,13 +8,16 @@ import com.example.thicketstage.dto.response.ResponseStageThumbnailDto;
 import com.example.thicketstage.enumerate.StageType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface StageService {
 
-    public RequestCreateStageDto createStage(RequestCreateStageDto stageDto);
+    String createStage(RequestCreateStageDto stageDto);
+
+    List<String> uploadImage(List<MultipartFile> images);
 
     List<ResponseAdminStageDto> getAllStage();
 
@@ -22,7 +25,7 @@ public interface StageService {
 
     Page<ResponseAdminStageDto> getOngoingListAdmin(Pageable pageable);
 
-    public ResponseStageDto stageDetail(String uuid);
+    public ResponseStageDto stageDetail(UUID id);
 
     Page<ResponseStageThumbnailDto> getStageTypeList(StageType stageType, Pageable pageable);
 
@@ -34,9 +37,7 @@ public interface StageService {
 
     List<ResponseStageThumbnailDto> searchStage(String keyword);
 
-    String checkOpenDate(String stageId);
+    void updateInfo(UUID id, RequestUpdateInfoDto updateInfoDto);
 
-    void updateInfo(String uuid, RequestUpdateInfoDto updateInfoDto);
-
-    void deleteStage(String uuid);
+    void deleteStage(UUID id);
 }

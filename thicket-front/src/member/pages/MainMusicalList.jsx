@@ -6,12 +6,14 @@ import {
     DivList1, Poster1, Img1, ImgInfo1,
 } from "../../assets/css/setting/MainStyleCSS";
 import {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 const ShowList = () => {
     const [shows, setShows] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('/shows/stagetype/MUSICAL')
+        fetch('/thicket-show/shows/stagetype/MUSICAL')
             .then(response => response.json())
             .then(data => {
                 setShows(data);
@@ -20,14 +22,14 @@ const ShowList = () => {
 
     const formatDateString = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleDateString(); // Adjust the format as needed
+        return date.toLocaleDateString();
     };
 
     return (
         <DivList1>
             {Array.isArray(shows) > 0 ? (
                 shows.map(show => (
-                    <Poster1 key={show.id}>
+                    <Poster1 key={show.stageId} onClick={() => navigate(`/detail/${show.stageId}`)}>
                         <Img1 src={show.posterImg} alt="Poster" />
                         <ImgInfo1>
                             <div>{show.name}</div>

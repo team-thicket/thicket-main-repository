@@ -3,7 +3,6 @@ package com.example.thicketstage.service;
 import com.example.thicketstage.domain.Chair;
 import com.example.thicketstage.domain.StageStart;
 import com.example.thicketstage.dto.request.RequestCreateChairDto;
-import com.example.thicketstage.dto.request.RequestUpdateChairDto;
 import com.example.thicketstage.dto.response.ResponseChairDto;
 import com.example.thicketstage.repository.ChairRepository;
 import com.example.thicketstage.repository.StageStartRepository;
@@ -13,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,7 +36,7 @@ class ChairServiceImplTest {
         StageStart stageStart = stageStarts.get(0);
 
         RequestCreateChairDto createChairDto = new RequestCreateChairDto();
-        createChairDto.setStageStartUuid(stageStart.getUuid());
+        createChairDto.setStageStartId(stageStart.getId());
 
         RequestCreateChairDto.ChairDto chairDto = new RequestCreateChairDto.ChairDto();
         chairDto.setChairType("VIP");
@@ -63,7 +61,7 @@ class ChairServiceImplTest {
 
     @Test
     @Transactional
-    void findChairByUuid() {
+    void findChairById() {
         // given
         List<StageStart> stageStarts = stageStartRepository.findAll();
         StageStart stageStart = stageStarts.get(0);
@@ -72,11 +70,11 @@ class ChairServiceImplTest {
         chairRepository.save(chair);
 
         // when
-        ResponseChairDto responseChairDto = chairService.findChairByUuid(chair.getUuid());
+        ResponseChairDto responseChairDto = chairService.findChairById(chair.getId());
 
         // then
         assertNotNull(responseChairDto);
-        assertEquals(chair.getUuid(), responseChairDto.getStageStartUuid()
+        assertEquals(chair.getId(), responseChairDto.getChairId()
         );
         assertEquals(chair.getChairType(), responseChairDto.getChairType());
         assertEquals(chair.getCount(), responseChairDto.getCount());
@@ -85,7 +83,7 @@ class ChairServiceImplTest {
 
     @Test
     @Transactional
-    void getAllChair() {
+    void getStageStartAllChair() {
         // given
         List<StageStart> stageStarts = stageStartRepository.findAll();
         StageStart stageStart = stageStarts.get(0);
@@ -97,41 +95,42 @@ class ChairServiceImplTest {
         chairRepository.save(chair2);
 
         // when
-        List<ResponseChairDto> allChair = chairService.getAllChair();
+        List<ResponseChairDto> allChair = chairService.getStageStartAllChair(stageStart.getId());
 
         //then
         assertNotNull(allChair);
-        assertEquals(13, allChair.size());
+        assertEquals(5, allChair.size());
     }
 
-    @Test
-    @Transactional
-    void updateChair() {
-        // given
-        List<StageStart> stageStarts = stageStartRepository.findAll();
-        StageStart stageStart = stageStarts.get(0);
-
-        Chair chair = Chair.createChair("VIP", 100, 99000, stageStart);
-        chairRepository.save(chair);
-
-        RequestUpdateChairDto updateDto = new RequestUpdateChairDto();
-        RequestUpdateChairDto.UpdateChairDto updateChairDto = new RequestUpdateChairDto.UpdateChairDto();
-        updateChairDto.setChairType("R");
-        updateChairDto.setCount(200);
-        updateChairDto.setPrice(88000);
-        updateDto.setUpdateChairDtos(Collections.singletonList(updateChairDto));
-
-        // when
-        chairService.updateChair(chair.getUuid(), updateDto);
-        chairRepository.save(chair);
-
-        //then
-        Chair updatedChair = chairRepository.findByUuid(chair.getUuid()).orElse(null);
-        assertNotNull(updatedChair);
-        assertEquals(updateChairDto.getChairType(), updatedChair.getChairType());
-        assertEquals(updateChairDto.getCount(), updatedChair.getCount());
-        assertEquals(updateChairDto.getPrice(), updatedChair.getPrice());
-    }
+//  좌석정보수정은 추후 고도화시 구현 예정
+//    @Test
+//    @Transactional
+//    void updateChair() {
+//        // given
+//        List<StageStart> stageStarts = stageStartRepository.findAll();
+//        StageStart stageStart = stageStarts.get(0);
+//
+//        Chair chair = Chair.createChair("VIP", 100, 99000, stageStart);
+//        chairRepository.save(chair);
+//
+//        RequestUpdateChairDto updateDto = new RequestUpdateChairDto();
+//        RequestUpdateChairDto.UpdateChairDto updateChairDto = new RequestUpdateChairDto.UpdateChairDto();
+//        updateChairDto.setChairType("R");
+//        updateChairDto.setCount(200);
+//        updateChairDto.setPrice(88000);
+//        updateDto.setUpdateChairDtos(Collections.singletonList(updateChairDto));
+//
+//        // when
+//        chairService.updateChair(chair.getUuid(), updateDto);
+//        chairRepository.save(chair);
+//
+//        //then
+//        Chair updatedChair = chairRepository.findByUuid(chair.getUuid()).orElse(null);
+//        assertNotNull(updatedChair);
+//        assertEquals(updateChairDto.getChairType(), updatedChair.getChairType());
+//        assertEquals(updateChairDto.getCount(), updatedChair.getCount());
+//        assertEquals(updateChairDto.getPrice(), updatedChair.getPrice());
+//    }
 
     @Test
     @Transactional
@@ -144,9 +143,9 @@ class ChairServiceImplTest {
         chairRepository.save(chair);
 
         // when
-        chairService.deleteChair(chair.getUuid());
+        chairService.deleteChair(chair.getId());
 
         // then
-        assertFalse(chairRepository.findByUuid(chair.getUuid()).isPresent());
+        assertFalse(chairRepository.findById(chair.getId()).isPresent());
     }
 }

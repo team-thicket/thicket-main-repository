@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import axios from 'axios'; // axios를 import합니다.
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {H1} from "../../assets/css/setting/admin/StylesOfCreate";
+
 
 const inlineStyles = {
   loginFormContainer: {
@@ -50,9 +50,30 @@ const inlineStyles = {
 };
 
 function Login() {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  const isAuthenticated = () => {
+    console.log(localStorage.getItem('token'))
+    return localStorage.getItem('token') !== null;
+  };
+
+  useEffect(() => {
+    // 페이지가 로드될 때 이미 로그인한 사용자인 경우 강제로 로그아웃
+    if (isAuthenticated()) {
+      handleLogout();
+    }
+  }, []);
+
+  const handleLogout = () => {
+    // 로그아웃 로직을 구현합니다. 예를 들어, localStorage에서 토큰을 제거합니다
+    localStorage.clear();
+    // 선택적으로 사용자를 로그아웃 페이지 또는 홈페이지로 리디렉션할 수 있습니다
+    navigate("/login");
+  };
+
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -64,25 +85,35 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:8000/members/admin', { email, password }, { headers: { 'Content-Type': 'application/json' } });
-      console.log(response.data);
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Cache-Control", "no-cache");
 
-      if (response.status === 200) { // 로그인 성공 시
-        // window.location.href = 'http://localhost:3000/'; // 네이버 페이지로 이동
-        alert("로그인 성공 하지만 바뀌는건 없지롱")
-      } else {
-        if (response.data === '로그인 성공') {
-          // Handle successful login
-        } else {
-          // Handle other cases
-        }
-      }
-    } catch (error) {
-      console.error('로그인 실패:', error);
-      alert("아이디 또는 비밀번호를 확인해주세요.")
-      // Handle login failure
-    }
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: JSON.stringify({
+        "email": email,
+        "password": password
+      })
+    };
+
+    fetch("/thicket-member/members/USER", requestOptions)
+        .then(response => {
+          if (response.status === 400) {
+            console.log(response.text());
+          }
+          if (response.headers.get('Authorization') !== null) {
+            localStorage.setItem('token', response.headers.get('Authorization'));
+          }
+          return response;
+        })
+        .then(result => {
+          // 로그인이 성공한 경우에만 리디렉션
+          if (localStorage.getItem('token') !== null) {
+            window.location.replace("/");
+          }
+        })
   };
 
   const handleSignUp = () => {

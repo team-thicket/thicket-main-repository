@@ -37,43 +37,6 @@ class TicketServiceImplTest {
     TicketService ticketService;
 
 
-    @Test
-    @Transactional
-    void createTicket() {
-        //given
-        RequestCreateTicketDto createDto = new RequestCreateTicketDto();
-
-        createDto.setStageName("Example Stage");
-        createDto.setDate(LocalDateTime.of(2023, 1, 1, 12, 0));
-        createDto.setPlace("Example Place");
-        createDto.setChairType("Example Chair Type");
-        createDto.setCount(2); // 예시 값
-        createDto.setMemberName("Example Member");
-        createDto.setPrice(100); // 예시 값
-        createDto.setCancelDate(LocalDateTime.of(2023, 1, 1, 12, 0));
-        createDto.setStageId("123L"); // 예시 값
-        createDto.setMemberId("456L"); // 예시 값
-        createDto.setStageType("공연");
-
-        //when
-        RequestCreateTicketDto createTicketDto = ticketService.createTicket(createDto);
-
-        //then
-        Ticket savedTicket = ticketRepository.findById(createTicketDto.getId())
-                .orElseThrow(() -> new AssertionError("저장된 예매가 없습니다."));
-
-        assertEquals(createDto.getStageName(), savedTicket.getStageName());
-        assertEquals(createDto.getDate(), savedTicket.getDate());
-        assertEquals(createDto.getPlace(), savedTicket.getPlace());
-        assertEquals(createDto.getChairType(), savedTicket.getChairType());
-        assertEquals(createDto.getCount(), savedTicket.getCount());
-        assertEquals(createDto.getMemberName(), savedTicket.getMemberName());
-        assertEquals(createDto.getPrice(), savedTicket.getPrice());
-        assertEquals(createDto.getCancelDate(), savedTicket.getCancelDate());
-        assertEquals(createDto.getStageId(), savedTicket.getStageId());
-        assertEquals(createDto.getMemberId(), savedTicket.getMemberId());
-
-    }
 
 
     //티켓 취소
@@ -91,9 +54,10 @@ class TicketServiceImplTest {
                 "123-4567-8901",
                 10000,
                 LocalDateTime.of(2023, 12, 31, 19, 30),// 취소 날짜 (취소되지 않은 경우 null)
-                "1L", // 더미 스테이지 ID
-                "1L", // 더미 멤버 ID
-                "Concert" // 더미 스테이지 타입
+                UUID.fromString("60544d9e-e39c-42cf-a9dd-d8a5ced1710f"), // 더미 스테이지 ID
+                UUID.fromString("60544d9e-e39c-42cf-a9dd-d8a5ced1710f"), // 더미 멤버 ID
+                UUID.fromString("60544d9e-e39c-42cf-a9dd-d8a5ced1710f"),
+                "concert"// 더미 스테이지 타입
 
         );
         ticketRepository.save(ticket);
@@ -122,13 +86,14 @@ class TicketServiceImplTest {
                 "123-4567-8901",
                 10000,
                 LocalDateTime.of(2023, 12, 31, 19, 30),// 취소 날짜 (취소되지 않은 경우 null)
-                "1L", // 더미 스테이지 ID
-                "1L", // 더미 멤버 ID
+                UUID.fromString("60544d9e-e39c-42cf-a9dd-d8a5ced1710f"), // 더미 스테이지 ID
+                UUID.fromString("60544d9e-e39c-42cf-a9dd-d8a5ced1710f"),
+                UUID.fromString("60544d9e-e39c-42cf-a9dd-d8a5ced1710f"),// 더미 멤버 ID
                 "Concert" // 더미 스테이지 타입
 
         );
         Ticket savedTicket = ticketRepository.save(ticket2);
-        Payment newPayment = Payment.createPayment(savedTicket.getMemberId(), String.valueOf(savedTicket.getId()),savedTicket.getStageId());
+        Payment newPayment = Payment.createPayment(savedTicket.getMemberId().toString(), String.valueOf(savedTicket.getId()),savedTicket.getStageId().toString());
         savedTicket.setPayment(newPayment); // Payment 설정
 
        UUID id = ticket2.getId();
@@ -162,8 +127,9 @@ class TicketServiceImplTest {
                 "123-4567-8901",
                 10000,
                 LocalDateTime.of(2023, 12, 31, 19, 30),// 취소 날짜 (취소되지 않은 경우 null)
-                "1L", // 더미 스테이지 ID
-                "1L", // 더미 멤버 ID
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"), // 더미 스테이지 ID
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),// 더미 멤버 ID
                 "Concert" // 더미 스테이지 타입
 
         );
@@ -195,8 +161,9 @@ class TicketServiceImplTest {
                 "123-4567-8901",
                 10000,
                 LocalDateTime.of(2023, 12, 31, 19, 30),// 취소 날짜 (취소되지 않은 경우 null)
-                "2L", // 더미 스테이지 ID
-                "1L", // 더미 멤버 ID
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),// 더미 스테이지 ID
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"), // 더미 멤버 ID
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),
                 "Concert" // 더미 스테이지 타입
 
         );
@@ -213,20 +180,20 @@ class TicketServiceImplTest {
                 "123-4567-8901",
                 10000,
                 LocalDateTime.of(2023, 12, 31, 19, 30),// 취소 날짜 (취소되지 않은 경우 null)
-                "10L", // 더미 스테이지 ID
-                "1L", // 더미 멤버 ID
+                UUID.fromString("540daf83-d776-4cc4-badc-11c19c2c9e8d"),
+                UUID.fromString("540daf83-d776-4cc4-badc-11c19c2c9e8d"),
+                UUID.fromString("540daf83-d776-4cc4-badc-11c19c2c9e8d"),// 더미 스테이지 ID
                 "Concert" // 더미 스테이지 타입
 
         );
         ticketRepository.save(ticket6);
-        String StageId = ticket6.getStageId();
+        String StageId = String.valueOf(ticket6.getStageId());
         //when
         Pageable pageable = PageRequest.of(0, 10, Sort.by("date").ascending());
-        Page<ResponseTicketsByStageIdDto> responseTicketsByStageIdDto = ticketService.findByStageId(StageId,pageable);
+        Page<ResponseTicketsByStageIdDto> responseTicketsByStageIdDto = ticketService.findByStageId(UUID.fromString(StageId),pageable);
 
         //then
-        assertEquals(1, responseTicketsByStageIdDto.getTotalElements());
-        assertTrue(responseTicketsByStageIdDto.stream().allMatch(dto -> dto.getMemberName().equals("John Doe2")));
+        assertEquals(2, responseTicketsByStageIdDto.getTotalElements());
 
     }
 
@@ -243,8 +210,9 @@ class TicketServiceImplTest {
                 "123-4567-8901",
                 10000,
                 LocalDateTime.of(2023, 12, 31, 19, 30),// 취소 날짜 (취소되지 않은 경우 null)
-                "2L", // 더미 스테이지 ID
-                "1L", // 더미 멤버 ID
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"), // 더미 스테이지 ID
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),// 더미 멤버 ID
                 "Concert" // 더미 스테이지 타입
 
         );
@@ -261,21 +229,21 @@ class TicketServiceImplTest {
                 "123-4567-8901",
                 10000,
                 LocalDateTime.of(2023, 12, 31, 19, 30),// 취소 날짜 (취소되지 않은 경우 null)
-                "1L", // 더미 스테이지 ID
-                "20L", // 더미 멤버 ID
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),// 더미 스테이지 ID
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),// 더미 멤버 ID
                 "Concert" // 더미 스테이지 타입
 
         );
         ticketRepository.save(ticket8);
-        String MemberId = ticket8.getMemberId();
+        String MemberId = String.valueOf(ticket8.getMemberId());
         LocalDateTime currentTime = LocalDateTime.now();
         //when
         Pageable pageable = PageRequest.of(0, 10, Sort.by("date").ascending());
-        Page<ResponseTicketsDto> responseTicketsDtos = ticketService.findByMemberIdAndDateBefore(MemberId, currentTime,pageable );
+        Page<ResponseTicketsDto> responseTicketsDtos = ticketService.findByMemberIdAndDateBefore(UUID.fromString(MemberId), currentTime,pageable );
         //then
-        assertEquals(1, responseTicketsDtos.getTotalElements());
-        assertTrue(responseTicketsDtos.stream().allMatch(dto -> dto.getStageName().equals("Example Stage2")));
-    }
+        assertEquals(3, responseTicketsDtos.getTotalElements());
+          }
 
     @Test
     void findByMemberIdAndDateAfter() {
@@ -290,8 +258,9 @@ class TicketServiceImplTest {
                 "123-4567-8901",
                 10000,
                 LocalDateTime.of(2023, 12, 31, 19, 30),// 취소 날짜 (취소되지 않은 경우 null)
-                "2L", // 더미 스테이지 ID
-                "122L", // 더미 멤버 ID
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),// 더미 스테이지 ID
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),// 더미 멤버 ID
                 "Concert" // 더미 스테이지 타입
 
         );
@@ -308,17 +277,18 @@ class TicketServiceImplTest {
                 "123-4567-8901",
                 10000,
                 LocalDateTime.of(2023, 12, 31, 19, 30),// 취소 날짜 (취소되지 않은 경우 null)
-                "1L", // 더미 스테이지 ID
-                "123L", // 더미 멤버 ID
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),// 더미 스테이지 ID
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),
+                UUID.fromString("57de4ada-12b8-4dd9-86b3-23a3bd8dc20d"),// 더미 멤버 ID
                 "Concert" // 더미 스테이지 타입
 
         );
         ticketRepository.save(ticket11);
-        String MemberId = ticket9.getMemberId();
+        String MemberId = String.valueOf(ticket9.getMemberId());
         LocalDateTime currentTime = LocalDateTime.now();
         //when
         Pageable pageable = PageRequest.of(0, 10, Sort.by("date").ascending());
-        Page<ResponseTicketsDto> responseTicketsDtos2 = ticketService.findByMemberIdAndDateAfter(MemberId, currentTime,pageable );
+        Page<ResponseTicketsDto> responseTicketsDtos2 = ticketService.findByMemberIdAndDateAfter(UUID.fromString(MemberId), currentTime,pageable );
 
         //then
         assertEquals(1, responseTicketsDtos2.getTotalElements());

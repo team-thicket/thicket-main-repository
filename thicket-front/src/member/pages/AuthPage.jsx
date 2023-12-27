@@ -50,7 +50,7 @@ function AuthPage() {
     e.preventDefault();
 
     try {
-      const response = await axios.get(`http://localhost:8000/email?email=${email}`, { email });
+      const response = await axios.get(`/thicket-member/email?email=${email}`, { email });
       console.log(response.data);
       openModal();
     } catch (error) {
@@ -68,7 +68,7 @@ function AuthPage() {
 
   const sendAuthCode = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/email', { email, code: authCode });
+      const response = await axios.post('/thicket-member/email', { email, code: authCode });
       console.log(response.data);
 
       if (response.status === 200) {

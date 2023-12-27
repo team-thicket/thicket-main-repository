@@ -3,15 +3,18 @@ import {
     InvisibleScroll,
     MainContainer,
     H1,
-    DivList1, Poster1, Img1, ImgInfo1,
+    DivList1,
+    RankCard, Poster1, Img1, ImgInfo1,
 } from "../../assets/css/setting/MainStyleCSS";
 import {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 const ShowList = () => {
     const [shows, setShows] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('/shows/stagetype/PLAY')
+        fetch('/thicket-show/shows/stagetype/PLAY')
             .then(response => response.json())
             .then(data => {
                 setShows(data);
@@ -27,7 +30,7 @@ const ShowList = () => {
         <DivList1>
             {Array.isArray(shows) ? (
                 shows.map(show => (
-                    <Poster1 key={show.id}>
+                    <Poster1 key={show.id} onClick={() => navigate(`/detail/${show.id}`)}>
                         <Img1 src={show.posterImg} alt="Poster" />
                         <ImgInfo1>
                             <div>{show.name}</div>

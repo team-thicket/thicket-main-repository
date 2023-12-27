@@ -7,14 +7,16 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Chair extends TimeStamp {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(nullable = false)
     private String chairType;
@@ -47,7 +49,7 @@ public class Chair extends TimeStamp {
         chair.chairType = chairType;
         chair.count = count;
         chair.price = price;
-        chair.availableCount = 0;
+        chair.availableCount = count;
         chair.foreignKey(stageStart);
 
         return chair;
