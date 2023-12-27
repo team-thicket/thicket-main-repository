@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -48,7 +49,8 @@ public class Init {
                     "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%EB%A7%88%EB%A6%AC%ED%80%B4%EB%A6%AC2.jpg&" +
                             "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%EB%A7%88%EB%A6%AC%ED%80%B4%EB%A6%AC3.jpg&" +
                             "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%EB%A7%88%EB%A6%AC%ED%80%B4%EB%A6%AC3.jpg",
-                    "공연 상세 설명"
+                    "공연 상세 설명",
+                    UUID.randomUUID()
             );
             em.persist(stage1);
 
@@ -82,7 +84,8 @@ public class Init {
                     "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%EB%B2%84%ED%82%B7%EB%A6%AC%EC%8A%A4%ED%8A%B81.webp",
                     "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%EB%B2%84%ED%82%B7%EB%A6%AC%EC%8A%A4%ED%8A%B82.jpg&" +
                             "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%EB%B2%84%ED%82%B7%EB%A6%AC%EC%8A%A4%ED%8A%B83.jpg",
-                    "공연 상세 설명"
+                    "공연 상세 설명",
+                    UUID.randomUUID()
             );
             em.persist(stage2);
 
@@ -107,7 +110,8 @@ public class Init {
                     "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif&" +
                             "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif&" +
                             "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif",
-                    "공연 상세 설명"
+                    "공연 상세 설명",
+                    UUID.randomUUID()
             );
             em.persist(stage3);
 
@@ -134,7 +138,8 @@ public class Init {
                     "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif&" +
                             "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif&" +
                             "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif",
-                    "공연 상세 설명"
+                    "공연 상세 설명",
+                    UUID.randomUUID()
             );
             em.persist(stage4);
         }

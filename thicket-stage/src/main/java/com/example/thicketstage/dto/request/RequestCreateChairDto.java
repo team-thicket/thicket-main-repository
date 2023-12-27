@@ -15,8 +15,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class RequestCreateChairDto {
 
-    @NotBlank(message = "회차 정보 UUID는 필수 입력 항목입니다.")
-    private UUID stageStartId;
+    @NotNull(message = "회차 정보 UUID는 필수 입력 항목입니다.")
+    private UUID stageId;
 
     private List<ChairDto> chairDtos;
 

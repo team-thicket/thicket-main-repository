@@ -15,15 +15,15 @@ import java.util.UUID;
 
 public interface StageService {
 
-    String createStage(RequestCreateStageDto stageDto);
+    String createStage(RequestCreateStageDto stageDto, UUID adminId);
 
     List<String> uploadImage(List<MultipartFile> images);
 
-    List<ResponseAdminStageDto> getAllStage();
+    List<ResponseAdminStageDto> getAllStage(UUID adminId);
 
     Page<ResponseStageThumbnailDto> getOngoingList(Pageable pageable);
 
-    Page<ResponseAdminStageDto> getOngoingListAdmin(Pageable pageable);
+    Page<ResponseAdminStageDto> getOngoingListAdmin(Pageable pageable, UUID adminId);
 
     public ResponseStageDto stageDetail(UUID id);
 
@@ -31,9 +31,9 @@ public interface StageService {
 
     Page<ResponseStageThumbnailDto> getComingSoonList(Pageable pageable);
 
-    Page<ResponseAdminStageDto> getComingSoonListAdmin(Pageable pageable);
+    Page<ResponseAdminStageDto> getComingSoonListAdmin(Pageable pageable, UUID adminId);
 
-    Page<ResponseAdminStageDto> getEndedList(Pageable pageable);
+    Page<ResponseAdminStageDto> getEndedList(Pageable pageable, UUID adminId);
 
     List<ResponseStageThumbnailDto> searchStage(String keyword);
 

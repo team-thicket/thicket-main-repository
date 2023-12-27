@@ -18,7 +18,10 @@ public interface StageRepository extends JpaRepository<Stage, UUID> {
 
     List<Stage> findByStageType(StageType stageType);
 
-    @Query("SELECT s.ticketOpen FROM Stage s WHERE s.id = :stageId")
-    Optional<LocalDateTime> findTicketOpenById(UUID stageId);
+    List<Stage> findAllByAdminId(UUID adminId);
 
+    @Query("SELECT s FROM Stage s " +
+            "JOIN FETCH s.stageStart " +
+            "WHERE s.id = :stageId")
+    Optional<Stage> findFetchById(@Param("stageId") UUID stageId);
 }

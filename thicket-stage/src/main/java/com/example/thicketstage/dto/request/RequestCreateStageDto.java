@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
@@ -56,13 +57,13 @@ public class RequestCreateStageDto {
 
     private String stageInfo;
 
-    public Stage toEntity() {
+    public Stage toEntity(UUID adminId) {
         return Stage.createStage(
                 name,place, ticketOpen,
                 stageOpen,stageClose,
                 lastTicket, runningTime,
                 ageLimit, stageType,
                 imgLink, String.join("&", detailImgLink)
-                ,stageInfo);
+                ,stageInfo, adminId);
     }
 }

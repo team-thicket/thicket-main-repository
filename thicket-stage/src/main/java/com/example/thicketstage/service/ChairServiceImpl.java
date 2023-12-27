@@ -1,10 +1,12 @@
 package com.example.thicketstage.service;
 
 import com.example.thicketstage.domain.Chair;
+import com.example.thicketstage.domain.Stage;
 import com.example.thicketstage.domain.StageStart;
 import com.example.thicketstage.dto.request.RequestCreateChairDto;
 import com.example.thicketstage.dto.response.ResponseChairDto;
 import com.example.thicketstage.repository.ChairRepository;
+import com.example.thicketstage.repository.StageRepository;
 import com.example.thicketstage.repository.StageStartRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -21,18 +24,18 @@ public class ChairServiceImpl implements ChairService{
 
     private final ChairRepository chairRepository;
     private final StageStartRepository stageStartRepository;
+    private final StageRepository stageRepository;
 
     @Override
     @Transactional
-    public List<Chair> createChair(RequestCreateChairDto dto) {
-        StageStart stageStart = stageStartRepository.findById(dto.getStageStartId())
-                .orElseThrow(() -> new EntityNotFoundException("해당 회차 정보가 존재하지 않습니다."));
+    public List<List<Chair>> createChair(RequestCreateChairDto dto) {
+        Stage findStage = stageRepository.findFetchById(dto.getStageId())
+                .orElseThrow(() -> new EntityNotFoundException("해당 공연 정보가 존재하지 않습니다."));
 
-        List<Chair> chairs = dto.getChairDtos().stream()
-                .map(c -> Chair.createChair(c.getChairType(), c.getCount(), c.getPrice(), stageStart))
+        return findStage.getStageStart().stream()
+                .map(ss -> chairRepository.saveAll(dto.getChairDtos().stream()
+                        .map(c -> Chair.createChair(c.getChairType(), c.getCount(), c.getPrice(), ss)).toList()))
                 .toList();
-
-        return chairRepository.saveAll(chairs);
     }
 
     @Override // 단일조회 - 불필요시 삭제 예정

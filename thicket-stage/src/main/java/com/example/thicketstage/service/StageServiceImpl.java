@@ -43,8 +43,8 @@ public class StageServiceImpl implements StageService{
 
     @Override
     @Transactional
-    public String createStage(RequestCreateStageDto stageDto) {
-        Stage stage = stageDto.toEntity();
+    public String createStage(RequestCreateStageDto stageDto, UUID adminId) {
+        Stage stage = stageDto.toEntity(adminId);
         log.info(stage.getDetailPosterImg());
         return stageRepository.save(stage).getId().toString();
     }
@@ -70,8 +70,8 @@ public class StageServiceImpl implements StageService{
     }
 
     @Override
-    public List<ResponseAdminStageDto> getAllStage(){
-        List<Stage> all = stageRepository.findAll();
+    public List<ResponseAdminStageDto> getAllStage(UUID adminId){
+        List<Stage> all = stageRepository.findAllByAdminId(adminId);
 
         ArrayList<ResponseAdminStageDto> dtos = new ArrayList<>();
         for (Stage stage : all) {
@@ -106,10 +106,10 @@ public class StageServiceImpl implements StageService{
 
     // 진행 중인 공연 모두 최신순으로 => admin
     @Override
-    public Page<ResponseAdminStageDto> getOngoingListAdmin(Pageable pageable){
+    public Page<ResponseAdminStageDto> getOngoingListAdmin(Pageable pageable, UUID adminId){
         LocalDateTime now = LocalDateTime.now();
 
-        List<Stage> allStages = stageRepository.findAll();
+        List<Stage> allStages = stageRepository.findAllByAdminId(adminId);
         List<Stage> ongoingStages = allStages.stream()
                 .filter(stage -> stage.getStageOpen().isBefore(now)
                                     && stage.getStageClose().isAfter(now))
@@ -176,10 +176,10 @@ public class StageServiceImpl implements StageService{
 
     // ticketOpen시간 비교해서 이전인것만 => 관리자
     @Override
-    public Page<ResponseAdminStageDto> getComingSoonListAdmin(Pageable pageable){
+    public Page<ResponseAdminStageDto> getComingSoonListAdmin(Pageable pageable, UUID adminId){
         LocalDateTime now = LocalDateTime.now();
 
-        List<Stage> allStages = stageRepository.findAll();
+        List<Stage> allStages = stageRepository.findAllByAdminId(adminId);
         List<Stage> comingSoonStages = allStages.stream()
                 .filter(stage -> stage.getTicketOpen().isAfter(now))
                 .toList();
@@ -194,10 +194,10 @@ public class StageServiceImpl implements StageService{
 
     // stageClose보다 이후 - 관리자 page -> /shows/ended
     @Override
-    public Page<ResponseAdminStageDto> getEndedList(Pageable pageable){
+    public Page<ResponseAdminStageDto> getEndedList(Pageable pageable, UUID adminId){
         LocalDateTime now = LocalDateTime.now();
 
-        List<Stage> allStages = stageRepository.findAll();
+        List<Stage> allStages = stageRepository.findAllByAdminId(adminId);
         List<Stage> endedStages = allStages.stream()
                 .filter(stage -> stage.getStageClose().isBefore(now))
                 .toList();
