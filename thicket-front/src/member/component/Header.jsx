@@ -3,6 +3,7 @@ import {FaSearch} from "react-icons/fa";
 import HeaderMenu from "./HeaderMenu";
 import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
+import Payment from "../../payment/pages/Payment";
 
 
 const LogoHeader = styled.header`

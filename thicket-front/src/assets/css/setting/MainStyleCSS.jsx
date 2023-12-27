@@ -54,7 +54,7 @@ export const Img1 = styled.img`
 `;
 
 export const ImgInfo1 = styled.div`
-  width: 318px;
+  width: 358px;
   height: 99px;
   padding: 0 20px ;
   border: 1px solid lightgray;
@@ -78,8 +78,8 @@ export const Poster2 = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 600px;
-  height: 260px;
+  width: 630px;
+  height: 275px;
   cursor: pointer;
   transition: transform 0.2s;
   &:hover {
@@ -111,6 +111,19 @@ export const ImgDivInfo2 = styled.div`
 
 export const H1 = styled.h1`
     margin: 20px 0 20px 0;
+    font-size: 32px;
+`;
+
+export const H2 = styled.h1`
+    font-size: 24px;
+`;
+
+export const H3 = styled.h1`
+    font-size: 18px;
+`;
+
+export const H4 = styled.h1`
+    font-size: 16px;
 `;
 
 export const MarginTop = styled.main`
