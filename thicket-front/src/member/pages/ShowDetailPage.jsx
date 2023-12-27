@@ -226,7 +226,7 @@ function ShowDetailPage() {
                                                 <div
                                                     style={{
                                                         opacity: hasShows ? 1 : 0.5,
-                                                        color: hasShows ? 'black' : 'lightgray', // Change the text color
+                                                        color: hasShows ? 'black' : 'lightgray',
                                                     }}
                                                 >
                                                     {formattedDate}

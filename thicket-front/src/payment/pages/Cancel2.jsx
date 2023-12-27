@@ -54,15 +54,20 @@ function Cancel2({ ticketId, ticket }) {
                         textAlign: 'center'   // 좌우 정렬
                     }}>
                         <div>
-                            <div>비밀번호 확인</div>
-                            <div>정말로 예매를 취소하시겠습니까? 취소를 원하시면 "예매취소"를 입력하세요</div>
+                            <div>정말로 예매를 취소하시겠습니까?</div>
+                            <div>취소를 원하시면 "예매취소"를 입력후 확인 버튼을 누르세요.</div>
                         </div>
                     </div>
-                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginTop:'10px' }}>
                         <div>
-                            <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>
+                            <input
+                                type="text"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                placeholder="예매취소" // Placeholder added here
+                            />
                         </div>
-                        <div>
+                        <div style={{marginLeft:'10px'}}>
                             <button onClick={handleConfirmClick}>확인</button>
                         </div>
                     </div>
