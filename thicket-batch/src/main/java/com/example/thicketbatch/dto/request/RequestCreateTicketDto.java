@@ -1,5 +1,7 @@
 package com.example.thicketbatch.dto.request;
 
+import com.example.thicketbatch.enumerate.Status;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +17,8 @@ public class RequestCreateTicketDto implements Comparable<RequestCreateTicketDto
 
     public int sequence;
     private UUID id;
+    @Column(nullable = false)
+    private Status status;
 
     @NotBlank(message = "stageName cannot be empty")
     private String stageName;
@@ -53,11 +57,11 @@ public class RequestCreateTicketDto implements Comparable<RequestCreateTicketDto
     @NotNull(message = "chairId cannot be null")
     private String chairId;
 
-    @NotNull(message = "chairId cannot be null")
-    private String chairId;
-
     @NotNull
     private boolean deleted;
+
+    @Column
+    private LocalDateTime arriveServerTime;
 
     @NotNull
     private int latency;
