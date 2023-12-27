@@ -53,9 +53,6 @@ public class RequestCreateTicketDto implements Comparable<RequestCreateTicketDto
     @NotNull(message = "chairId cannot be null")
     private String chairId;
 
-    @NotNull(message = "chairId cannot be null")
-    private String chairId;
-
     @NotNull
     private boolean deleted;
 
