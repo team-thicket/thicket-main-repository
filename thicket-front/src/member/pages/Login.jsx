@@ -34,7 +34,7 @@ const inlineStyles = {
   },
   button: {
     padding: '8px 16px',
-    backgroundColor: '#007bff',
+    backgroundColor: '#E72C25',
     color: '#fff',
     border: 'none',
     borderRadius: '4px',
@@ -43,9 +43,10 @@ const inlineStyles = {
   },
   signupButton: {
     padding: '8px 16px',
-    backgroundColor: '#ffcc00',
+    backgroundColor: 'lightgray',
     color: '#fff',
     borderRadius: '4px',
+    border: 'none'
   },
 };
 
