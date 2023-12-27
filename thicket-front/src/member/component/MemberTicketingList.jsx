@@ -21,7 +21,7 @@ export const MemberTicketingList = () => {
             })
     }, []);
 
-    const handleCancelClick = (item) => {
+    const handleCancelClick = (ticketId) => {
         const width = Math.floor(window.innerWidth * 0.7);
         const height = Math.floor(window.innerHeight * 0.8);
         const left = Math.floor((window.innerWidth - width) / 2);
@@ -32,7 +32,7 @@ export const MemberTicketingList = () => {
         const cancelWindow = window.open('', '_blank', windowFeatures);
 
         ReactDOM.render(
-            <Cancel/>,
+            <Cancel ticketId={ticketId} />,
             cancelWindow.document.body
         );
     };
@@ -68,24 +68,30 @@ export const MemberTicketingList = () => {
                         <Th width="100px">예매취소</Th>
                         <Th width="85px">상태</Th>
                     </tr>
-                    {tickets.map((item) => (
-                    <tr key={item.id}>
-                        <Td>{new Date(item.createdAt).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}</Td>
-                        <Td>{item.id.slice(0, 4)}**{item.id.slice(-2)}</Td>
-                        <Td>{item.stageType}</Td>
-                        <Td>{item.stageName}</Td>
-                        <Td>{item.place}</Td>
-                        <Td>{new Date(item.date).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}</Td>
-                        <Td>
-                            {isCancelable(item.date) ? (
-                                <button onClick={() => handleCancelClick(item)}>{item.cancel}</button>
-                            ) : (
-                                <span>취소불가</span>
-                            )}
-                        </Td>
-                        <Td>{item.status}</Td>
-                    </tr>
-                    ))}
+                    {tickets && tickets.length > 0 ? (
+                        tickets.map((item) => (
+                            <tr key={item.id}>
+                                <Td>{new Date(item.createdAt).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}</Td>
+                                <Td>{item.id.slice(0, 4)}**{item.id.slice(-2)}</Td>
+                                <Td>{item.stageType}</Td>
+                                <Td>{item.stageName}</Td>
+                                <Td>{item.place}</Td>
+                                <Td>{new Date(item.date).toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false })}</Td>
+                                <Td>
+                                    {isCancelable(item.date) ? (
+                                        <button style={{padding: '5px 10px'}} onClick={() => handleCancelClick(item.id)}>취소</button>
+                                    ) : (
+                                        <span>취소불가</span>
+                                    )}
+                                </Td>
+                                <Td>{item.status}</Td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <Td colSpan={8}>내역이 없습니다.</Td>
+                        </tr>
+                    )}
                     </tbody>
                 </Table>
             </div>
