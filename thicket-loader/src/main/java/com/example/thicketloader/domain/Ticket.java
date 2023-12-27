@@ -57,6 +57,7 @@
         @Enumerated(EnumType.STRING)
         @Column(nullable = false)
         private Status status;
+
         @Column
         private Long cts;
         @Column
@@ -73,8 +74,6 @@
         @Column(nullable = false)
         private UUID memberId;
 
-        @Column(nullable = false)
-        private UUID chairId;
         @Column(nullable = false)
         private boolean deleted;
 
