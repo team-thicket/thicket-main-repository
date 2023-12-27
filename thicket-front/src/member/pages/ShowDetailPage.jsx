@@ -4,11 +4,31 @@ import 'react-calendar/dist/Calendar.css';
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import {
-    Wrapper, MarginTop, Container, Scroll,
-    ShowMain, ShowSide, SideTop, SideMarginTop, SideMargin, SideFont, SideBottom,
-    PostImg, PostDetailImg, PostInfo,
-    H1, Th, Th1, Th2, Td1, Td2, LightGrayLine,
-    StyledCalendar, ButtonList, ChoiceDiv, DisabledSideBottom,
+    ButtonList,
+    ChoiceDiv,
+    Container,
+    DisabledSideBottom,
+    H1,
+    LightGrayLine,
+    MarginTop,
+    PostDetailImg,
+    PostImg,
+    PostInfo,
+    Scroll,
+    ShowMain,
+    ShowSide,
+    SideBottom,
+    SideFont,
+    SideMargin,
+    SideMarginTop,
+    SideTop,
+    StyledCalendar,
+    Td1,
+    Td2,
+    Th,
+    Th1,
+    Th2,
+    Wrapper,
 } from "../../assets/css/setting/MainStyleCSS";
 import Reservation from "../../payment/pages/Reservation";
 

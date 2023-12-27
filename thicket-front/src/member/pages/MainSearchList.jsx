@@ -1,9 +1,12 @@
 import {
-    Wrapper,
+    DivList1,
+    H1,
+    Img1,
+    ImgInfo1,
     InvisibleScroll,
     MainContainer,
-    H1,
-    DivList1, Poster1, Img1, ImgInfo1,
+    Poster1,
+    Wrapper,
 } from "../../assets/css/setting/MainStyleCSS";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";

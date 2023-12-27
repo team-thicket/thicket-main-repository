@@ -1,12 +1,16 @@
 import {
-    Wrapper,
+    DivList1,
+    H1,
+    Img1,
+    ImgInfo1,
     InvisibleScroll,
     MainContainer,
-    H1,
-    DivList1, Poster1, Img1, ImgInfo1, PaddingDiv
+    PaddingDiv,
+    Poster1,
+    Wrapper
 } from "../../assets/css/setting/MainStyleCSS";
 import {useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const ShowList = () => {
     const [shows, setShows] = useState([]);

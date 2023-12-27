@@ -142,7 +142,7 @@ export const ASide = styled.div`
   align-items: center; // 자식 요소를 수직으로 중앙 정렬
   width: 160px;
   padding: 10px; // 모든 측면에 10px의 안쪽 여백 적용
-  border: black solid 1px; // 1px 두께의 검은색 실선 테두리
+  border: gray solid 1px; // 1px 두께의 검은색 실선 테두리
   border-radius: 5px; // 5px의 테두리를 둥글게 처리
   margin-top:20px;
 `;
