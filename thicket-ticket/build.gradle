@@ -31,6 +31,7 @@ dependencies {
     /*Rest Api*/
     implementation 'org.springframework.boot:spring-boot-starter-validation:3.1.5'
     implementation 'org.springframework.boot:spring-boot-starter-web:3.1.5'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux:3.1.5'
 
     /*Develop Tools*/
     compileOnly 'org.projectlombok:lombok:1.18.30'

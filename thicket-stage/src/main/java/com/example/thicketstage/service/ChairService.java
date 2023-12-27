@@ -9,17 +9,17 @@ import java.util.UUID;
 
 public interface ChairService {
 
-    public List<Chair> createChair(RequestCreateChairDto dto);
+    List<List<Chair>> createChair(RequestCreateChairDto dto);
 
     // 단일 조회
-    public ResponseChairDto findChairById(UUID id);
+    ResponseChairDto findChairById(UUID id);
 
-    public List<ResponseChairDto> getStageStartAllChair(UUID stageStartId);
+    List<ResponseChairDto> getStageStartAllChair(UUID stageStartId);
 
     // 수정 - 추후 고도화 시 구현예정
 //    public void updateChair(UUID uuid, RequestUpdateChairDto updateChairDto);
 
     //삭제
-    public void deleteChair(UUID id);
+    void deleteChair(UUID id);
 
 }

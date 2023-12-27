@@ -8,6 +8,7 @@ import com.example.thicketstage.repository.StageRepository;
 import com.example.thicketstage.repository.StageStartRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StageStartServiceImpl implements StageStartService {
 
     private final StageStartRepository stageStartRepository;
@@ -28,7 +30,7 @@ public class StageStartServiceImpl implements StageStartService {
 
         Stage stage = stageRepository.findById(dto.getStageId())
                 .orElseThrow(() -> new EntityNotFoundException("해당 공연을 찾을 수 없습니다."));
-
+        log.info(dto.getStageStartDtos().get(0).getTime().toString());
         List<StageStart> stageStarts = dto.getStageStartDtos().stream()
                 .map(ss -> StageStart.createStageStart(ss.getDate(), ss.getTime(), stage))
                 .toList();

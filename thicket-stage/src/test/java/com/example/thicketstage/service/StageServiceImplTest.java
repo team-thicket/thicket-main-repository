@@ -52,11 +52,11 @@ class StageServiceImplTest {
         createDto.setAgeLimit("8세이상 관람가");
         createDto.setStageType(StageType.MUSICAL);
         createDto.setImgLink("포스터 링크");
-        createDto.setDetailImgLink("상세 포스터 링크");
+        createDto.setDetailImgLink(List.of("상세 포스터 링크","",""));
         createDto.setStageInfo("공연 상세 설명");
 
         //when
-        stageService.createStage(createDto);
+        stageService.createStage(createDto, UUID.nameUUIDFromBytes(new byte[]{1,0,1,0}));
 
         //then
         List<Stage> stages = stageRepository.findAll();
@@ -95,7 +95,8 @@ class StageServiceImplTest {
                 StageType.MUSICAL,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
         stageRepository.save(stage1);
 
@@ -111,7 +112,8 @@ class StageServiceImplTest {
                 StageType.PLAY,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
         stageRepository.save(stage2);
 
@@ -146,7 +148,8 @@ class StageServiceImplTest {
                 StageType.MUSICAL,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
         stageRepository.save(stage1);
 
@@ -162,12 +165,13 @@ class StageServiceImplTest {
                 StageType.PLAY,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
         stageRepository.save(stage2);
 
     //when
-        List<ResponseAdminStageDto> allStage = stageService.getAllStage();
+        List<ResponseAdminStageDto> allStage = stageService.getAllStage(UUID.nameUUIDFromBytes(new byte[]{1,0,1,0}));
     //then
         assertEquals(6, allStage.size());
         assertTrue(allStage.stream().anyMatch(dto -> dto.getName().equals("뮤지컬<펀홈>")));
@@ -190,7 +194,8 @@ class StageServiceImplTest {
                 StageType.MUSICAL,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
 
         Stage stage2 = Stage.createStage(
@@ -205,7 +210,8 @@ class StageServiceImplTest {
                 StageType.PLAY,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
         stageRepository.save(stage1);
         stageRepository.save(stage2);
@@ -242,7 +248,8 @@ class StageServiceImplTest {
                 StageType.MUSICAL,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
         stageRepository.save(savedStage);
         UUID id = savedStage.getId();
@@ -286,7 +293,9 @@ class StageServiceImplTest {
                 StageType.MUSICAL,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
+
         );
         stageRepository.save(stage1);
 
@@ -302,7 +311,8 @@ class StageServiceImplTest {
                 StageType.PLAY,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
         stageRepository.save(stage2);
 
@@ -335,7 +345,8 @@ class StageServiceImplTest {
                 StageType.MUSICAL,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
         stageRepository.save(stage1);
 
@@ -351,7 +362,8 @@ class StageServiceImplTest {
                 StageType.PLAY,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
         stageRepository.save(stage2);
 
@@ -387,7 +399,8 @@ class StageServiceImplTest {
                 StageType.MUSICAL,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
         stageRepository.save(stage1);
 
@@ -403,13 +416,14 @@ class StageServiceImplTest {
                 StageType.PLAY,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
         stageRepository.save(stage2);
 
         Page<ResponseAdminStageDto> resultList = stageService
-                                                     .getEndedList(PageRequest.of(0, 6,
-                                                     Sort.by(Sort.Order.desc("createAt"))));
+                         .getEndedList(PageRequest.of(0, 6,
+                         Sort.by(Sort.Order.desc("createAt"))),UUID.nameUUIDFromBytes(new byte[]{1,0,1,0}));
 
         List<ResponseAdminStageDto> endedList = resultList.getContent();
         assertEquals(3, endedList.size());
@@ -452,7 +466,8 @@ class StageServiceImplTest {
                 StageType.MUSICAL,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
         Stage savedStage = stageRepository.save(createStage);
         UUID id = savedStage.getId();
@@ -497,7 +512,8 @@ class StageServiceImplTest {
                 StageType.MUSICAL,
                 "포스터 링크",
                 "상세 포스터 링크",
-                "공연 상세 설명"
+                "공연 상세 설명",
+                UUID.nameUUIDFromBytes(new byte[]{1,0,1,0})
         );
 
         stageRepository.save(savedStage);

@@ -29,9 +29,10 @@ public class StageController {
     private final StageService stageService;
 
     @PostMapping("") // API 명세 => POST /shows
-    public ResponseEntity<?> createStage(@RequestBody @Valid RequestCreateStageDto stageDto) {
+    public ResponseEntity<?> createStage(@RequestBody @Valid RequestCreateStageDto stageDto,
+                                         @RequestHeader("UUID") UUID adminId) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(stageService.createStage(stageDto));
+                .body(stageService.createStage(stageDto, adminId));
     }
 
     @PostMapping("image") // API 명세 => POST /shows
@@ -41,14 +42,14 @@ public class StageController {
     }
 
     @GetMapping("all") // API 명세 => GET /shows/all - memberuuid 엮어서 관리자 전체 목록이 필요
-    public ResponseEntity<?> getAllStages() {
-        List<ResponseAdminStageDto> allStage = stageService.getAllStage();
+    public ResponseEntity<?> getAllStages(@RequestHeader("UUID") UUID adminId) {
+        List<ResponseAdminStageDto> allStage = stageService.getAllStage(adminId);
 
         if (allStage.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("공연 목록이 존재하지 않습니다.");
         }
 
-        return ResponseEntity.ok(allStage);
+        return ResponseEntity.status(HttpStatus.OK).body(allStage);
     }
 
     // 진행중인 공연 모두 최신 순으로 => main
@@ -63,9 +64,10 @@ public class StageController {
     // 진행 중인 공연 최신 순으로 => 관리자
     @GetMapping("ongoing/admin") // API 명세 => GET /shows/ongoing
     public ResponseEntity<?> getOngoingListAdmin(@RequestParam(defaultValue = "0") int page,
-                                                 @RequestParam(defaultValue = "10") int size) {
+                                                 @RequestParam(defaultValue = "10") int size,
+                                                 @RequestHeader("UUID") UUID adminId) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        Page<ResponseAdminStageDto> ongoingList = stageService.getOngoingListAdmin(pageable);
+        Page<ResponseAdminStageDto> ongoingList = stageService.getOngoingListAdmin(pageable,adminId);
         return ResponseEntity.ok(ongoingList.getContent());
     }
 
@@ -100,9 +102,11 @@ public class StageController {
     // ticketOpen 시간 비교해 이전인 것만 줄 세우기 => admin
     @GetMapping("before/admin") // API 명세 => GET /shows/before
     public ResponseEntity<?> getComingSoonListAdmin(@RequestParam(defaultValue = "0") int page,
-                                                    @RequestParam(defaultValue = "10") int size) {
+                                                    @RequestParam(defaultValue = "10") int size,
+                                                    @RequestHeader("UUID") UUID adminId) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        Page<ResponseAdminStageDto> comingSoonList = stageService.getComingSoonListAdmin(pageable);
+        Page<ResponseAdminStageDto> comingSoonList =
+                stageService.getComingSoonListAdmin(pageable,adminId);
 
         return ResponseEntity.ok(comingSoonList.getContent());
     }
@@ -110,9 +114,10 @@ public class StageController {
     // stageClose 시간 비교해 이후인 것 줄 세우기 - 관리자 - 공연 종료
     @GetMapping("ended") // API 명세 => GET /shows/ended
     public ResponseEntity<?> getEndedList(@RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "10") int size) {
+                                          @RequestParam(defaultValue = "10") int size,
+                                          @RequestHeader("UUID") UUID adminId) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        Page<ResponseAdminStageDto> endedList = stageService.getEndedList(pageable);
+        Page<ResponseAdminStageDto> endedList = stageService.getEndedList(pageable,adminId);
 
         return ResponseEntity.ok(endedList.getContent());
     }

@@ -36,7 +36,7 @@ class ChairServiceImplTest {
         StageStart stageStart = stageStarts.get(0);
 
         RequestCreateChairDto createChairDto = new RequestCreateChairDto();
-        createChairDto.setStageStartId(stageStart.getId());
+        createChairDto.setStageId(stageStart.getId());
 
         RequestCreateChairDto.ChairDto chairDto = new RequestCreateChairDto.ChairDto();
         chairDto.setChairType("VIP");
@@ -46,13 +46,13 @@ class ChairServiceImplTest {
         createChairDto.setChairDtos(Arrays.asList(chairDto));
 
         //when
-        List<Chair> createdChair = chairService.createChair(createChairDto);
+        List<List<Chair>> createdChair = chairService.createChair(createChairDto);
 
         //then
         assertNotNull(createdChair);
         assertEquals(1, createdChair.size());
 
-        Chair chair = createdChair.get(0);
+        Chair chair = createdChair.get(0).get(0);
         assertNotNull(chair);
         assertEquals(chairDto.getChairType(), chair.getChairType());
         assertEquals(chairDto.getCount(), chair.getCount());

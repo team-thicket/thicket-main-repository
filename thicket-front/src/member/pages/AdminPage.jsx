@@ -13,14 +13,16 @@ const AdminPage = () => {
     const contentHandler = (selectedContent) => {
         setContent(selectedContent);
     };
+    const [showId, setShowId] = useState("")
 
     const selectComponent = {
         all: <AdminAllStageList />,
         create: <AdminCreateShow />,
         before: <AdminBeforeList contentHandler={contentHandler} />,
-        ongoing: <AdminOngoingList />,
+        ongoing: <AdminOngoingList contentHandler={contentHandler} showId={showId} />,
         ended: <AdminEndedList />,
         edit: <AdminEditShow />,
+        entrance:<></>
     };
 
     return (
