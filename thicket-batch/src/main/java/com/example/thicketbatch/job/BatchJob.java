@@ -1,6 +1,7 @@
 package com.example.thicketbatch.job;
 
 import com.example.thicketbatch.dto.request.RequestCreateTicketDto;
+import com.example.thicketbatch.enumerate.Status;
 import com.example.thicketbatch.repository.ChairRepository;
 import com.example.thicketbatch.service.KafkaProducer;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -99,11 +100,6 @@ public class BatchJob {
 
                 //ordered 토픽으로 메세지 전송
                 producer(rank,queue,availableCount,updateCount);
-                //이후 프론트에서 버튼 비활성화
-                //else 유효하지 않은 예매 요청
-                //순서 -1
-                //카프카 토픽전송s
-                //
             }
         });
     }
@@ -131,6 +127,7 @@ public class BatchJob {
                 //메세지 추출
                 RequestCreateTicketDto message = queue.poll();
                 message.setSequence(currentCount);
+                message.setStatus(Status.FAIL);
                 log.info(String.valueOf(message.getSequence()));
 
                 // 처리된 메시지를 다시 Kafka로 전송
