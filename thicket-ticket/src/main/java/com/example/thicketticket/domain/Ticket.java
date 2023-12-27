@@ -57,6 +57,10 @@
 
         @Column
         private int sequence;
+
+        @Column
+        private Long cts;
+
         @Column(nullable = false)
         private UUID stageId;
 
