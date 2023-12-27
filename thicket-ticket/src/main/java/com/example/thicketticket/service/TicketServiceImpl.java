@@ -58,12 +58,14 @@ public class TicketServiceImpl implements TicketService{
         Instant correctedTimestamp = currentTime.minusMillis(latency);
 
         // 고유값(UUID) 값을 DTO에 설정
-        ticketDto.setUuid(String.valueOf(UUID.randomUUID()));
+        ticketDto.setUuid(UUID.randomUUID());
         ticketDto.setMemberId(String.valueOf(memberId));
+
         // CorrectedTimestamp 설정
         LocalDateTime localDateTime = LocalDateTime.ofInstant(correctedTimestamp, ZoneId.systemDefault());
-        ticketDto.setCorrectedTimestamp(LocalDateTime.from(localDateTime));
-        System.out.println("Corrected Timestamp in DTO: " + ticketDto.getCorrectedTimestamp());
+        ticketDto.setCts(correctedTimestamp.toEpochMilli());
+
+        System.out.println("Corrected Timestamp in DTO: " + ticketDto.getCts());
         System.out.println(ticketDto);
         // 객체를 JSON 문자열로 직렬화
         String jsonMessage;
@@ -113,19 +115,16 @@ public class TicketServiceImpl implements TicketService{
     }
 
     //admin 티켓 id 조회
-
-    //admin 티켓 id 조회
     @Override
     @Transactional
     public ResponseAdminTicketDto adminFindById(UUID id) {
         Optional<Ticket> findTicket = ticketRepository.findByIdAndDeletedFalse(id);
 
+
         if (findTicket.isEmpty()) {
             throw new IllegalArgumentException("존재하지 않는 티켓.");
         }
-
         Ticket ticket = findTicket.get();
-
         return new ResponseAdminTicketDto(ticket);
     }
 

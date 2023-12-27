@@ -56,12 +56,12 @@ public class RequestCreateTicketDto {
     @NotNull
     private int latency;
     // 추가된 필드
-    private String uuid;
+    private UUID uuid;
 
     @NotNull(message = "chairId cannot be null")
     private String chairId;
 
-    private LocalDateTime correctedTimestamp;
+    private Long cts;
 
 
 
