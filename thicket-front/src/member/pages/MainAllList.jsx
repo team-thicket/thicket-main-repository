@@ -17,6 +17,7 @@ const ShowList = () => {
             .then(response => response.json())
             .then(data => {
                 setShows(data);
+                
             });
     }, []);
 
@@ -27,9 +28,9 @@ const ShowList = () => {
 
     return (
         <DivList1>
-            {Array.isArray(shows) > 0 ? (
+            {Array.isArray(shows) && shows.length > 0 ? (
                 shows.map(show => (
-                    <Poster1 key={show.stageId} onClick={() => navigate(`/detail/${show.stageId}`)}>
+                    <Poster1 key={show.stageId} onClick={() => navigate(`/detail/${show.stageId}`)}>   
                         <Img1 src={show.posterImg} alt="Poster" />
                         <ImgInfo1>
                             <PaddingDiv>{show.name}</PaddingDiv>

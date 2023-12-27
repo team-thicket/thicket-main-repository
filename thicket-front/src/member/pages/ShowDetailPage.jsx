@@ -33,6 +33,7 @@ function ShowDetailPage() {
         fetch(`/thicket-show/shows/stagedetail/${showId}`)
             .then(response => response.json())
             .then(data => {
+                console.log("Show Detail Data:", data);
                 setShow(data);
             })
             .then(fetch(`/thicket-show/tickets/all/${showId}`)
@@ -42,6 +43,11 @@ function ShowDetailPage() {
                 }));
         setInterval(dirtyCheck, 500);
     }, []);
+    function calculateThreeDaysAgo(selectedDate, selectedTime) {
+        const selectedDateTime = new Date(`${selectedDate} ${selectedTime}`);
+        selectedDateTime.setDate(selectedDateTime.getDate() - 3);
+        return selectedDateTime;
+    }
 
     // 좌석정보 가져오기 회차정보 클릭시
     const getChairInfo = (stageId) => {
@@ -106,41 +112,72 @@ function ShowDetailPage() {
             setServerTime(new Date(data));
         })
     };
-
+   
     // 이하 예매 로직
     const [reservationWindow, setReservationWindow] = useState(null);
+    
+    // 3일 전의 날짜를 계산하는 함수    
+    function calculateThreeDaysAgo(dateTimeString) {
+        const currentDate = new Date(dateTimeString);
+        currentDate.setDate(currentDate.getDate() - 3);
+        return currentDate;
+    }   
+
 
     const handleReservationClick = () => {
+     
         if (selectedDate && selectedTime && selectedChair) {
-            const width = Math.floor(window.innerWidth * 0.7);
-            const height = Math.floor(window.innerHeight * 0.8);
-            const left = Math.floor((window.innerWidth - width) / 2);
-            const top = Math.floor((window.innerHeight - height) / 2);
-
-            const windowFeatures = `width=${width},height=${height},left=${left},top=${top}`;
-
-            const paymentWindow = window.open('', '_blank', windowFeatures);
-
-            if (paymentWindow) {
-                // 선택된 좌석을 Reservation 컴포넌트로 프롭스로 전달
-                const reservationContainer = paymentWindow.document.createElement('div');
-                paymentWindow.document.body.appendChild(reservationContainer);
-
-                ReactDOM.render(
-                    <Reservation selectedChair={selectedChair}
-                                 selectedTime={selectedTime}
-                                 selectedDate={selectedDate}
-                                 selectedQuantity={selectedQuantity}
-                    />,
-                    reservationContainer
-                );
-            } else {
-                alert('팝업 창이 차단되었거나 오류가 발생했습니다. 팝업 차단을 해제해주세요.');
-            }
+            const reservationData = {
+                stageName: show.name,
+                date: new Date(),
+                place: show.place,
+                chairType: chairs[0].chairType,
+                count: chairs[0].count,
+                price: chairs[0].price,
+                cancelDate:calculateThreeDaysAgo(
+                    moment(selectedDate).format('YYYY-MM-DD'),
+                    selectedTime.time
+                ),
+                stageId: show.stageId,
+                chairId: chairs[0].chairId,
+                stageType: show.stageType,
+                latency: (new Date()-serverTime),
+            };
+            console.log(reservationData);
+            fetch('/thicket-ticket/reservations/ticket', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": localStorage.getItem('token')
+                },
+                body: JSON.stringify(reservationData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('네트워크 응답이 올바르지 않습니다');
+                }
+                return response.text(); // 텍스트로 응답 받기
+            })
+            .then(result => {
+                // 여기서 result는 성공 또는 실패 문자열입니다.
+                console.log('Reservation result:', result);
+                // 성공 또는 실패에 따른 처리를 추가하세요.
+                if (result === '성공') {
+                    // 성공한 경우의 처리
+                    alert('예매 대기중 입니다.')
+                } else {
+                    // 실패한 경우의 처리
+                }
+            })
+            .catch(error => {
+                console.error('예약 중 오류 발생:', error);
+                alert('예약 중 오류가 발생했습니다. 다시 시도해주세요.');
+            });
         } else {
             alert('날짜, 시간 및 좌석을 선택하세요.');
         }
     };
+    
 
     useEffect(() => {
         // reservationWindow이 변경되면 Reservation 컴포넌트를 렌더링
