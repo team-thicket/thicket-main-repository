@@ -37,7 +37,7 @@ const inlineStyles = {
   },
   modalContent: {
     backgroundColor: '#fff',
-    padding: '20px',
+    padding: '30px',
     borderRadius: '5px',
     textAlign: 'center',
   },
@@ -106,15 +106,15 @@ function AuthPage() {
           </form>
 
           {modalOpen && (
-              <div /* style={inlineStyles.modal} */>
-                <div /* style={inlineStyles.modalContent} */>
-                  <h2>인증 번호를 입력해 주세요</h2>
+              <div style={inlineStyles.modal}>
+                <div style={inlineStyles.modalContent}>
+                  <br /> <h3>인증 번호를 입력해 주세요</h3> <br />
                   <input type="text" value={authCode} onChange={(e) => setAuthCode(e.target.value)} />
-                  <button onClick={sendAuthCode} style={{marginLeft: '10px', marginRight: '5px',
-                                                    padding: '6px 13px', color: 'white', backgroundColor: '#E72C25',
+                  <button onClick={sendAuthCode} style={{marginLeft: '10px', marginRight: '4px', marginTop: '4px',
+                                                    padding: '5px 13px', color: 'white', backgroundColor: '#E72C25',
                                                     borderRadius: '4px', border: 'none'}}> 제출</button>
-                  <button onClick={closeModal} style={{marginLeft: '10px', marginRight: '5px',
-                                                    padding: '6px 13px', color: 'white', backgroundColor: 'gray',
+                  <button onClick={closeModal} style={{marginLeft: '10px', marginRight: '5px',marginTop: '4px',
+                                                    padding: '5px 13px', color: 'white', backgroundColor: 'gray',
                                                     borderRadius: '4px', border: 'none'}}> 닫기</button>
                 </div>
               </div>

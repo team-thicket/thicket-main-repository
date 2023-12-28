@@ -117,14 +117,7 @@ function Login() {
                                               cursor: 'pointer',
                                               width: '320px', marginTop: '5px'
                                             }}>로그인</button>
-              {/*<button className="signup-button" onClick={handleSignUp} style={{*/}
-              {/*                                                                padding: '8px 16px',*/}
-              {/*                                                                backgroundColor: 'lightgray',*/}
-              {/*                                                                color: '#fff',*/}
-              {/*                                                                borderRadius: '4px',*/}
-              {/*                                                                border: 'none'*/}
-              {/*                                                              }}>회원가입</button>*/}
-            </div>
+              </div>
           </form>
         </div>
         <button className="signup-button" onClick={handleSignUp} style={{
