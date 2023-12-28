@@ -60,6 +60,10 @@ function ShowDetailPage() {
                 .then(response => response.json())
                 .then(data => {
                     setTimes(data);
+                    // 최초 렌더링 시에 가격 정보를 가져오도록 설정
+                    if (data.length > 0) {
+                        getChairInfo(data[0].stageId);
+                    }
                 }));
         setInterval(dirtyCheck, 500);
     }, []);
@@ -204,14 +208,14 @@ function ShowDetailPage() {
                                         </tr>
                                         <tr>
                                             <Th1>가격</Th1>
-                                            {Array.isArray(chairs) && chairs.length > 0 && chairs
+                                            {Array.isArray(chairs) && chairs.length > 0 ? (chairs
                                                 .sort((a, b) => b.price - a.price) // 가격을 내림차순으로 정렬
                                                 .map(chair => (
                                                     <tr key={chair.chairUuid}>
                                                         <Th2>{chair.chairType}석</Th2>
                                                         <Td2>{Number(chair.price).toLocaleString()}원</Td2>
                                                     </tr>
-                                                ))}
+                                                ))) : (<Td2>가격 정보가 없습니다.</Td2>)}
                                         </tr>
                                     </table>
                                 </PostInfo>
