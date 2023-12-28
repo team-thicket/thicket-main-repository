@@ -70,7 +70,7 @@ export const MemberTicketingList = () => {
                         <Th width="auto">장소</Th>
                         <Th width="130px">공연일</Th>
                         <Th width="100px">예매취소</Th>
-                        <Th width="85px">상태</Th>
+                        <Th width="100px">상태</Th>
                     </tr>
                     {tickets && tickets.length > 0 ? (
                         tickets.map((item) => (

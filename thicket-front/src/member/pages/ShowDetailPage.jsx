@@ -31,6 +31,7 @@ import {
     Wrapper,
 } from "../../assets/css/setting/MainStyleCSS";
 import Reservation from "../../payment/pages/Reservation";
+import {useNavigate} from "react-router-dom";
 
 function ShowDetailPage() {
 
@@ -45,6 +46,7 @@ function ShowDetailPage() {
     const [selectedQuantity, setSelectedQuantity] = useState(1); // 갯수 기본 1개
     const [totalAmount, setTotalAmount] = useState(0);  // 선택된 좌석의 총 금액을 저장할 새로운 상태
     const [serverTime, setServerTime] = useState(Date);
+    const navigate = useNavigate();
 
     // 공연 상세 가져오기
     useEffect(() => { // 공연정보 (SELECT * FROM thicket_stage.stage; → id)
@@ -151,6 +153,11 @@ function ShowDetailPage() {
 
             const paymentWindow = window.open('', '_blank', windowFeatures);
 
+            const closeWindowCallback = () => {
+                paymentWindow.close();
+                navigate('/mypage');
+            };
+
             if (paymentWindow) {
                 // 선택된 좌석을 Reservation 컴포넌트로 프롭스로 전달
                 const reservationContainer = paymentWindow.document.createElement('div');
@@ -162,6 +169,7 @@ function ShowDetailPage() {
                                  selectedDate={selectedDate}
                                  selectedQuantity={selectedQuantity}
                                  totalAmount={totalAmount}
+                                 onCancel={closeWindowCallback}
                     />,
                     reservationContainer
                 );
