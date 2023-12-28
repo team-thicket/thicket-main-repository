@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Entity
+@Table(name = "chair", schema = "thicket_local_db")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Chair extends TimeStamp {
