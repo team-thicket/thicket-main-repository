@@ -54,13 +54,12 @@
         @Column(nullable = false)
         private LocalDateTime cancelDate;
 
-        @Column(nullable = false)
+        @Column
         private LocalDateTime arriveServer;
 
-        @Enumerated(EnumType.STRING)
-        @Column(nullable = false)
+        @Enumerated(EnumType.STRING) // Enum 타입을 문자열로 저장
+        @Column
         private Status status;
-
         @Column
         private Long cts;
         @Column
