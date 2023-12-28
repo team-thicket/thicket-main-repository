@@ -291,6 +291,7 @@ const AdminCreateShow = () => {
             });
             return cleanNode.reduce((result, currentObj) => Object.assign(result,currentObj));
         });
+        console.log(showId)
         fetch("/thicket-show/chairs", {
             method: 'POST',
             body: JSON.stringify({
