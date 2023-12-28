@@ -219,12 +219,24 @@ function ShowDetailPage() {
                                         }}
                                         value={value}
                                         locale="ko"
-                                        formatDay={(locale, date) => moment(date).format('D')}
+                                        formatDay={(locale, date) => {
+                                            const formattedDate = moment(date).format('D');
+                                            const hasShows = times.some(time => moment(time.date).isSame(date, 'day'));
+                                            return (
+                                                <div
+                                                    style={{
+                                                        opacity: hasShows ? 1 : 0.5,
+                                                        color: hasShows ? 'black' : 'lightgray',
+                                                    }}
+                                                >
+                                                    {formattedDate}
+                                                </div>
+                                            );
+                                        }}
                                         showNeighboringMonth={false}
-                                        calendarType="gregory" // 일요일부터 시작
-                                        minDate={new Date(show.stageOpen)} // Set the minimum date
-                                        // minDate={new Date()} // 실제 로직에서는 스테이지 오픈 대신 오늘 날짜로 사용
-                                        maxDate={new Date(show.stageClose)} // Set the maximum date
+                                        calendarType="gregory"
+                                        minDate={new Date(show.stageOpen)}
+                                        maxDate={new Date(show.stageClose)}
                                     />
                                 </SideMarginTop>
                                 <LightGrayLine />

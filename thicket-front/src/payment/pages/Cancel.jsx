@@ -28,14 +28,14 @@ function Cancel( props ) {
     // 현재 티켓의 일시 값
     const ticketDate = new Date(ticket.date);
 
-// 취소 기한 계산: 티켓 일시에서 3일을 뺀 값
+    // 취소 기한 계산: 티켓 일시에서 3일을 뺀 값
     const cancelDate = new Date(ticketDate);
     cancelDate.setDate(ticketDate.getDate() - 3);
 
     return (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {showCancel2 ? (
-                <Cancel2 ticketId={props.ticketId} ticket={setTicket} />
+                <Cancel2 ticketId={props.ticketId} ticket={setTicket} closeWindowCallback={props.onCancel} />
             ) : (
                 <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div style={{

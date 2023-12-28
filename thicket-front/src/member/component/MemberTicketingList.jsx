@@ -31,8 +31,13 @@ export const MemberTicketingList = () => {
 
         const cancelWindow = window.open('', '_blank', windowFeatures);
 
+        const closeWindowCallback = () => {
+            cancelWindow.close();
+            window.location.reload(); // 창 닫히고 새로고침
+        };
+
         ReactDOM.render(
-            <Cancel ticketId={ticketId} />,
+            <Cancel ticketId={ticketId} onCancel={closeWindowCallback} />,
             cancelWindow.document.body
         );
     };
@@ -53,7 +58,7 @@ export const MemberTicketingList = () => {
                         <H1>예매 내역</H1>
                     </div>
                     <div>
-                        <a>취소 가능 일자 : 오픈 3일전</a>
+                        <a>취소 가능 일자 : 오픈 3일전 까지</a>
                     </div>
                 </div>
                 <Table>
