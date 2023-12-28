@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {EmailContext} from "../component/Layout";
 import {H1} from "../../assets/css/setting/admin/StylesOfCreate";
 

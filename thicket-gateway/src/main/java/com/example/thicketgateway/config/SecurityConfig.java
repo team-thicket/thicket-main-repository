@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .authorizeExchange(exchange -> exchange
                 .pathMatchers("/thicket-member/members").hasRole("USER")
                 .pathMatchers("/thicket-member/members/master").hasRole("MASTER")
+                .pathMatchers("/thicket-member/members/login").hasRole("USER")
                 .pathMatchers("/thicket-member/members/**").permitAll()
                 .pathMatchers("/thicket-member/email/**").permitAll()
                 .pathMatchers("/thicket-member/email").permitAll()

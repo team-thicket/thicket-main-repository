@@ -40,10 +40,11 @@ public class JwtTokenGenerator {
                 .setExpiration(new Date(now.getTime() + accessTokenValidTime)) // 토큰 만료 기간
                 .signWith(key) // 암호화 알고리즘과 SecretKey 세팅
                 .compact();
+
         // 헤더에 전송
         HttpHeaders httpHeaders = new HttpHeaders();
-
         httpHeaders.add(HttpHeaders.AUTHORIZATION,accessToken);
+
         return httpHeaders;
     }
 }
