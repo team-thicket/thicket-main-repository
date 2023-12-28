@@ -179,6 +179,13 @@ function ShowDetailPage() {
             ReactDOM.render(<Reservation />, reservationWindow);
         }
     }, [reservationWindow]);
+    const waitTime = (number) => {
+        const wTime = new Date(number);
+
+        return Math.floor(wTime / (1000 * 60 * 60))
+            + "시간 " + Math.floor((wTime / (1000 * 60)) % 60)
+            + "분 " + Math.floor((wTime / 1000) % 60) + "초";
+    };
     return (
         <Wrapper>
             <MarginTop>
@@ -335,7 +342,9 @@ function ShowDetailPage() {
                             </SideTop>
                             {new Date(show.ticketOpen) >= serverTime ? (
                                 <DisabledSideBottom>
-                                    예매하기
+                                    {
+                                        waitTime(new Date(show.ticketOpen) - serverTime)
+                                    }
                                 </DisabledSideBottom>
                             ) : (
                                 <SideBottom onClick={handleReservationClick}>
