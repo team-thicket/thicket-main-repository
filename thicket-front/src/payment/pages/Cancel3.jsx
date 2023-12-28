@@ -62,7 +62,7 @@ function Cancel3({ ticketId, closeWindowCallback }) {
                 width: '80%',
                 backgroundColor: 'lightgray',
                 marginTop: '10px',
-                padding: '5px',
+                padding: '10px',
                 borderRadius: '12px',
                 display: 'flex',
                 justifyContent: 'space-around',

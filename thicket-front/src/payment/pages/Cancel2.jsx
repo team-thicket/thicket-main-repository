@@ -46,7 +46,7 @@ function Cancel2({ ticketId, ticket, closeWindowCallback  }) {
                         width: '80%',
                         backgroundColor: 'lightgray',
                         marginTop: '10px',
-                        padding: '5px',
+                        padding: '10px',
                         borderRadius: '12px',
                         display: 'flex',
                         justifyContent: 'space-around',
@@ -55,12 +55,12 @@ function Cancel2({ ticketId, ticket, closeWindowCallback  }) {
                     }}>
                         <div>
                             <div>정말로 예매를 취소하시겠습니까?</div>
-                            <div>취소를 원하시면 "예매취소"를 입력후 확인 버튼을 누르세요.</div>
+                            <div>취소를 원하시면 "예매 취소"를 입력 후 확인 버튼을 누르세요.</div>
                         </div>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', marginTop:'10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginTop:'10px', padding: '5px',  }}>
                         <div>
-                            <input
+                            <input style={{padding: '5px', borderRadius: '4px'}}
                                 type="text"
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
@@ -68,7 +68,8 @@ function Cancel2({ ticketId, ticket, closeWindowCallback  }) {
                             />
                         </div>
                         <div style={{marginLeft:'10px'}}>
-                            <button onClick={handleConfirmClick}>확인</button>
+                            <button style={{padding: '6px 12px', color: 'white', backgroundColor: 'gray',
+                                borderRadius: '4px', border: 'none'}} onClick={handleConfirmClick}>확인</button>
                         </div>
                     </div>
                 </div>
