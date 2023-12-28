@@ -28,6 +28,7 @@ const Withdraw = () => {
         localStorage.removeItem('token');
         alert(data);
         navigate("/login");
+        window.location.reload();
       })
     } else {
       // "탈퇴하기" 버튼을 클릭하면 비밀번호 입력란을 보여줌
