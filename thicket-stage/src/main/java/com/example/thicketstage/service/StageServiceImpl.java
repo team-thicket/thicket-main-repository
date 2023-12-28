@@ -85,14 +85,14 @@ public class StageServiceImpl implements StageService{
         return dtos;
     }
 
-    // 진행 중인 공연 모두 최신 순으로 => main
+    // 판매 중인 공연 모두 최신 순으로 => main
     @Override
     public Page<ResponseStageThumbnailDto> getOngoingList(Pageable pageable){
         LocalDateTime now = LocalDateTime.now();
 
         List<Stage> allStages = stageRepository.findAll();
         List<Stage> ongoingStages = allStages.stream()
-                .filter(stage -> stage.getStageOpen().isBefore(now)
+                .filter(stage -> stage.getTicketOpen().isBefore(now)
                                     && stage.getStageClose().isAfter(now))
                 .collect(Collectors.toList());
 
@@ -104,14 +104,14 @@ public class StageServiceImpl implements StageService{
                                         .map(ResponseStageThumbnailDto::new);
     }
 
-    // 진행 중인 공연 모두 최신순으로 => admin
+    // 판매 중인 공연 모두 최신순으로 => admin
     @Override
     public Page<ResponseAdminStageDto> getOngoingListAdmin(Pageable pageable, UUID adminId){
         LocalDateTime now = LocalDateTime.now();
 
         List<Stage> allStages = stageRepository.findAllByAdminId(adminId);
         List<Stage> ongoingStages = allStages.stream()
-                .filter(stage -> stage.getStageOpen().isBefore(now)
+                .filter(stage -> stage.getTicketOpen().isBefore(now)
                                     && stage.getStageClose().isAfter(now))
                 .collect(Collectors.toList());
 
@@ -144,7 +144,7 @@ public class StageServiceImpl implements StageService{
 
         List<Stage> stages = stageRepository.findByStageType(stageType);
         List<Stage> ongoingStages = stages.stream()
-                .filter(stage -> stage.getStageOpen().isBefore(now)
+                .filter(stage -> stage.getTicketOpen().isBefore(now)
                                     && stage.getStageClose().isAfter(now))
                 .toList();
 
