@@ -33,6 +33,7 @@ export const MemberTicketingList = () => {
 
         const closeWindowCallback = () => {
             cancelWindow.close();
+            window.location.reload(); // 창 닫히고 새로고침
         };
 
         ReactDOM.render(
