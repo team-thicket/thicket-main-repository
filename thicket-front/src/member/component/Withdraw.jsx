@@ -25,6 +25,7 @@ const Withdraw = () => {
       })
       .then(res => res.text())
       .then(data => {
+        localStorage.removeItem('token');
         alert(data);
         navigate("/login");
       })

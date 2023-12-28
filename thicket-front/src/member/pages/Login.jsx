@@ -72,7 +72,7 @@ function Login() {
     fetch("/thicket-member/members/USER", requestOptions)
         .then(response => {
           if (response.status === 400) {
-            console.log(response.text());
+              return response.text();
           }
           if (response.status === HttpStatusCode.PermanentRedirect) {
             localStorage.setItem('token', response.headers.get('Authorization'));
@@ -85,7 +85,9 @@ function Login() {
         .then(result => {
           // 로그인이 성공한 경우에만 리디렉션
           if (localStorage.getItem('token') !== null) {
-            window.location.replace("/");
+              window.location.replace("/");
+          } else {
+              alert(result);
           }
         })
   };
