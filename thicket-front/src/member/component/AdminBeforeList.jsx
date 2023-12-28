@@ -1,5 +1,5 @@
 import React from "react";
-import {Container, H1, Table, Td, TdNotCenterAnd, P, TableHeaderRow} from '../../assets/css/setting/admin/StylesOfList';
+import {Container, H1, P, Table, TableHeaderRow, Td, TdNotCenterAnd} from '../../assets/css/setting/admin/StylesOfList';
 
 export const AdminBeforeList = ({ contentHandler }) => {
     const handleTitleClick = () => {

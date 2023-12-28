@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {Container, H1, Table, Td, Th} from '../../assets/css/setting/admin/StylesOfList';
 import ReactDOM from "react-dom";
 import Cancel from "../../payment/pages/Cancel";
-import Reservation from "../../payment/pages/Reservation";
 
 export const MemberTicketingList = () => {
 

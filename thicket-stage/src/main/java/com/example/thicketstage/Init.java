@@ -142,6 +142,44 @@ public class Init {
                     UUID.randomUUID()
             );
             em.persist(stage4);
+
+            Stage stage5 = Stage.createStage(
+                    "테스트 용 오픈 예정 공연2",
+                    "플레이 데이터",
+                    LocalDateTime.of(2024,10,25,14,0),
+                    LocalDateTime.of(2024, 11, 25, 19, 30),
+                    LocalDateTime.of(2025, 2, 7, 19, 30),
+                    LocalDateTime.of(2025, 2, 6, 0, 0),
+                    "60분",
+                    "전체 관람가",
+                    StageType.PLAY,
+                    "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif",
+                    "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif&" +
+                            "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif&" +
+                            "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif",
+                    "공연 상세 설명",
+                    UUID.randomUUID()
+            );
+            em.persist(stage5);
+
+            Stage stage6 = Stage.createStage(
+                    "테스트 용 오픈 예정 공연3",
+                    "플레이 데이터",
+                    LocalDateTime.of(2024,10,25,14,0),
+                    LocalDateTime.of(2024, 11, 25, 19, 30),
+                    LocalDateTime.of(2025, 2, 7, 19, 30),
+                    LocalDateTime.of(2025, 2, 6, 0, 0),
+                    "60분",
+                    "전체 관람가",
+                    StageType.PLAY,
+                    "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif",
+                    "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif&" +
+                            "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif&" +
+                            "https://thicket-image-storage.s3.ap-northeast-2.amazonaws.com/%ED%95%98%ED%98%84%EC%83%81+%EC%BD%98%EC%84%9C%ED%8A%B8+1.gif",
+                    "공연 상세 설명",
+                    UUID.randomUUID()
+            );
+            em.persist(stage6);
         }
 
         private StageStart initStageStart(Stage stage, LocalDate date, LocalTime time) {

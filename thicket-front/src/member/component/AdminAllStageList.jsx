@@ -37,7 +37,7 @@ export const AdminAllStageList = () => {
                             <Td>{value.stageOpen}</Td>
                             <Td>{value.stageClose}</Td>
                         </tr>
-                        )}):(<tr>집가고싶다.</tr>)}
+                        )}):(<tr> 없음 </tr>)}
                     </tbody>
                 </Table>
             </div>
