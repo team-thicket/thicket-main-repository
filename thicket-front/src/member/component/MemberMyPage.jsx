@@ -63,7 +63,7 @@ export const MemberMyPage = ({contentHandler}) => {
         fetch('/thicket-member/members',{
             method: "PATCH",
             headers: {
-                'Email':'test123@gmail.com',
+                'Authorization': localStorage.getItem('token'),
                 'Content-Type':'application/json'
             },
             body: JSON.stringify({currentPassword,newPassword})

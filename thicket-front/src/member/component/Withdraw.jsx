@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import "../../assets/css/setting/withdraw.css";
 import "../../assets/css/setting/fonts.css";
 import "../../assets/css/setting/mixin.css";
+import {useNavigate} from "react-router-dom";
 
 const Withdraw = () => {
   const [password, setPassword] = useState('');
   const [showPasswordInput, setShowPasswordInput] = useState(false);
+  const navigate = useNavigate();
 
   const handleWithdrawal = () => {
     if (showPasswordInput) {
@@ -16,13 +18,16 @@ const Withdraw = () => {
       fetch('/thicket-member/members',{
         method: "DELETE",
         headers: {
-          'Email':'test123@gmail.com',
+          'Authorization': localStorage.getItem('token'),
           'Content-Type':'application/json'
         },
         body: JSON.stringify({password})
       })
       .then(res => res.text())
-      .then(data => alert(data))
+      .then(data => {
+        alert(data);
+        navigate("/login");
+      })
     } else {
       // "탈퇴하기" 버튼을 클릭하면 비밀번호 입력란을 보여줌
       setShowPasswordInput(true);

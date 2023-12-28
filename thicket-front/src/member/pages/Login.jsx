@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {H1} from "../../assets/css/setting/admin/StylesOfCreate";
+import {HttpStatusCode} from "axios";
 
 
 const inlineStyles = {
@@ -42,24 +43,8 @@ function Login() {
   const navigate = useNavigate();
 
   const isAuthenticated = () => {
-    console.log(localStorage.getItem('token'))
     return localStorage.getItem('token') !== null;
   };
-
-  useEffect(() => {
-    // 페이지가 로드될 때 이미 로그인한 사용자인 경우 강제로 로그아웃
-    if (isAuthenticated()) {
-      handleLogout();
-    }
-  }, []);
-
-  const handleLogout = () => {
-    // 로그아웃 로직을 구현합니다. 예를 들어, localStorage에서 토큰을 제거합니다
-    localStorage.clear();
-    // 선택적으로 사용자를 로그아웃 페이지 또는 홈페이지로 리디렉션할 수 있습니다
-    navigate("/login");
-  };
-
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -89,10 +74,13 @@ function Login() {
           if (response.status === 400) {
             console.log(response.text());
           }
-          if (response.headers.get('Authorization') !== null) {
+          if (response.status === HttpStatusCode.PermanentRedirect) {
             localStorage.setItem('token', response.headers.get('Authorization'));
           }
-          return response;
+          if(response.status === HttpStatusCode.Accepted) {
+            alert("중복된 로그인 입니다. 기존 로그인을 해제 후 시도해주세요.")
+          }
+          return response.text();
         })
         .then(result => {
           // 로그인이 성공한 경우에만 리디렉션

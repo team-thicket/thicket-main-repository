@@ -214,8 +214,9 @@ const AdminCreateShow = () => {
             urls.forEach((url, index) => {
                 if (index === 0) {
                     posterImageLink = url;
+                } else {
+                    detailImageLink.push(url);
                 }
-                detailImageLink.push(url);
             });
         })
         .then(() => {
