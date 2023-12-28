@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "payment", schema = "thicket_local_db")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Payment extends TimeStamp {
@@ -89,5 +90,9 @@ public class Payment extends TimeStamp {
         howReceive = HowReceive.CANCEL;
         state = State.CANCEL;
         method = Method.CANCEL;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 }

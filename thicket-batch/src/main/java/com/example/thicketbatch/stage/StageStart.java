@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "stageStart", schema = "thicket_local_db")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StageStart extends TimeStamp {

@@ -12,6 +12,7 @@
     import java.util.UUID;
 
     @Entity
+    @Table(name = "ticket", schema = "thicket_local_db")
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public class Ticket extends TimeStamp {
@@ -47,14 +48,21 @@
         @Column
         private String phone;
 
+        @Column
+        private UUID uuid;
+
         @Column(nullable = false)
         private LocalDateTime cancelDate;
+
+        @Column(nullable = false)
+        private LocalDateTime arriveServer;
 
         @Enumerated(EnumType.STRING)
         @Column(nullable = false)
         private Status status;
+
         @Column
-        private LocalDateTime correctedTimestamp;
+        private Long cts;
         @Column
         private int sequence;
         @Column
@@ -64,10 +72,11 @@
         private UUID stageId;
 
         @Column(nullable = false)
-        private UUID memberId;
+        private UUID chairId;
 
         @Column(nullable = false)
-        private UUID chairId;
+        private UUID memberId;
+
         @Column(nullable = false)
         private boolean deleted;
 
@@ -79,16 +88,17 @@
         @LastModifiedDate
         private LocalDateTime updateAt;
         public static Ticket createTicket(String newStageName, String newPlace, LocalDateTime newDate,
+                                          UUID uuid,
                                           String newChairType, int newCount, String newMemberName,
                                           String newPhone, int newPrice, LocalDateTime newCancelDate,
                                           UUID newStageId, UUID newMemberId, UUID newChairId, String newStageType,
-                                          int sequence, int latency, LocalDateTime correctedTimestamp) {
+                                          int sequence, int latency, Long cts, LocalDateTime arriveServer) {
             Ticket ticket = new Ticket();
-
 
             ticket.deleted = false;
             ticket.stageName = newStageName;
             ticket.date = newDate;
+            ticket.uuid = uuid;
             ticket.place = newPlace;
             ticket.chairType = newChairType;
             ticket.count = newCount;
@@ -100,10 +110,16 @@
             ticket.memberId = newMemberId;
             ticket.chairId=newChairId;
             ticket.stageType = newStageType;
-            ticket.status = Status.RESERVE;
             ticket.sequence=sequence;
             ticket.latency=latency;
-            ticket.correctedTimestamp=correctedTimestamp;
+            ticket.cts=cts;
+            ticket.arriveServer=arriveServer;
+
+            if(newCount>0){
+                ticket.status =Status.RESERVE;
+            }else{
+                ticket.status =Status.FAIL;
+            }
             return ticket;
         }
         public void updateDeleted(boolean deleted) {
