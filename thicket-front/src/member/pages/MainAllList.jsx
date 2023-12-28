@@ -36,9 +36,9 @@ const ShowList = () => {
                     <Poster1 key={show.stageId} onClick={() => navigate(`/detail/${show.stageId}`)}>
                         <Img1 src={show.posterImg} alt="Poster" />
                         <ImgInfo1>
-                            <PaddingDiv>{show.name}</PaddingDiv>
-                            <PaddingDiv>{show.place}</PaddingDiv>
-                            <PaddingDiv>{`${formatDateString(show.stageOpen)} ~ ${formatDateString(show.stageClose)}`}</PaddingDiv>
+                            <div>{show.name}</div>
+                            <div>{show.place}</div>
+                            <div>{`${formatDateString(show.stageOpen)} ~ ${formatDateString(show.stageClose)}`}</div>
                         </ImgInfo1>
                     </Poster1>
                 ))
