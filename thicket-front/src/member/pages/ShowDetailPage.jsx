@@ -31,26 +31,27 @@ import {
     Wrapper,
 } from "../../assets/css/setting/MainStyleCSS";
 import Reservation from "../../payment/pages/Reservation";
+import {useNavigate} from "react-router-dom";
 
 function ShowDetailPage() {
-  const [show, setShow] = useState([]); // 공연정보
-  const [times, setTimes] = useState([]); // 공연정보-시간리스트
-  const [chairs, setChairs] = useState([]); // 단일시간-좌석리스트
-  const [value, onChange] = useState(new Date()); // 달력
-  const [filteredTimes, setFilteredTimes] = useState([]); // 시간필터링 (초단위 생략)
-  const [selectedDate, setSelectedDate] = useState(null); // 선택 날짜
-  const [selectedTime, setSelectedTime] = useState(null); // 선택 시간
-  const [selectedChair, setSelectedChair] = useState(null); // 선택 좌석
-  const [selectedQuantity, setSelectedQuantity] = useState(1); // 갯수 기본 1개
-  const [totalAmount, setTotalAmount] = useState(0); // 선택된 좌석의 총 금액을 저장할 새로운 상태
-  const [serverTime, setServerTime] = useState(Date);
-
-  function calculateThreeDaysAgo(selectedDate, selectedTime) {
-    const selectedDateTime = new Date(`${selectedDate} ${selectedTime}`);
-    selectedDateTime.setDate(selectedDateTime.getDate() - 3);
-    return selectedDateTime;
-  }
-
+    const [show, setShow] = useState([]);       // 공연정보
+    const [times, setTimes] = useState([]);     // 공연정보-시간리스트
+    const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
+    const [value, onChange] = useState(new Date());     // 달력
+    const [filteredTimes, setFilteredTimes] = useState([]); // 시간필터링 (초단위 생략)
+    const [selectedDate, setSelectedDate] = useState(null);     // 선택 날짜
+    const [selectedTime, setSelectedTime] = useState(null);     // 선택 시간
+    const [selectedChair, setSelectedChair] = useState(null);   // 선택 좌석
+    const [selectedQuantity, setSelectedQuantity] = useState(1); // 갯수 기본 1개
+    const [totalAmount, setTotalAmount] = useState(0);  // 선택된 좌석의 총 금액을 저장할 새로운 상태
+    const [serverTime, setServerTime] = useState(Date);
+    const [reservationWindow, setReservationWindow] = useState(null);
+    const navigate = useNavigate();
+    function calculateThreeDaysAgo(selectedDate, selectedTime) {
+        const selectedDateTime = new Date(`${selectedDate} ${selectedTime}`);
+        selectedDateTime.setDate(selectedDateTime.getDate() - 3);
+        return selectedDateTime;
+    }
     // 공연 상세 가져오기
     useEffect(() => { // 공연정보 (SELECT * FROM thicket_stage.stage; → id)
         // 현재 페이지의 url에서 공연 UUID 가져오기
@@ -73,11 +74,19 @@ function ShowDetailPage() {
         setInterval(dirtyCheck, 500);
     }, []);
 
+    const getChairInfo = (stageId) => {
+        fetch(`/thicket-show/chairs/all/${stageId}`)
+            .then(response => response.json())
+            .then(data => {
+                setChairs(data);
+            })
+    }
+
   // 데이터 타임 형변환
-  const formatDateString = (dateString) => {
+    const formatDateString = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
-  };
+    };
 
   // 날짜 변경시 초기화
   const handleDateChange = (date) => {
@@ -129,8 +138,6 @@ function ShowDetailPage() {
   };
 
   // 이하 예매 로직
-  const [reservationWindow, setReservationWindow] = useState(null);
-
   // 3일 전의 날짜를 계산하는 함수
   function calculateThreeDaysAgo(dateTimeString) {
     const currentDate = new Date(dateTimeString);
@@ -175,14 +182,46 @@ function ShowDetailPage() {
           // 여기서 result는 성공 또는 실패 문자열입니다.
           console.log("Reservation result:", result);
           // 성공 또는 실패에 따른 처리를 추가하세요.
-          if (result === "성공") {
-            // 성공한 경우의 처리
+          // 성공한 경우의 처리
+          // 선택된 좌석의 가격과 수량을 기반으로 총 금액 계산
+          const chairPrice = selectedChair.price || 0;  // 가격이 selectedChair에 있는 경우를 가정합니다.
+          const calculatedTotalAmount = chairPrice * selectedQuantity;
+          setTotalAmount(calculatedTotalAmount);
+
+          const width = Math.floor(window.innerWidth * 0.7);
+          const height = Math.floor(window.innerHeight * 0.8);
+          const left = Math.floor((window.innerWidth - width) / 2);
+          const top = Math.floor((window.innerHeight - height) / 2);
+
+          const windowFeatures = `width=${width},height=${height},left=${left},top=${top}`;
+
+          const paymentWindow = window.open('', '_blank', windowFeatures);
+
+          const closeWindowCallback = () => {
+              paymentWindow.close();
+              navigate('/mypage');
+          };
+
+          if (paymentWindow) {
+              // 선택된 좌석을 Reservation 컴포넌트로 프롭스로 전달
+              const reservationContainer = paymentWindow.document.createElement('div');
+              paymentWindow.document.body.appendChild(reservationContainer);
+
+              ReactDOM.render(
+                  <Reservation selectedChair={selectedChair}
+                               selectedTime={selectedTime}
+                               selectedDate={selectedDate}
+                               selectedQuantity={selectedQuantity}
+                               totalAmount={totalAmount}
+                               onCancel={closeWindowCallback}
+                  />,
+                  reservationContainer
+              );
+              } else {
+                  alert('팝업 창이 차단되었거나 오류가 발생했습니다. 팝업 차단을 해제해주세요.');
+              }
             alert("예매 대기중 입니다.");
-          } else {
-            // 실패한 경우의 처리
-          }
-        })
-        .catch((error) => {
+        }).catch((error) => {
           console.error("예약 중 오류 발생:", error);
           alert("예약 중 오류가 발생했습니다. 다시 시도해주세요.");
         });
@@ -190,7 +229,6 @@ function ShowDetailPage() {
       alert("날짜, 시간 및 좌석을 선택하세요.");
     }
   };
-
 
     useEffect(() => {
         // reservationWindow이 변경되면 Reservation 컴포넌트를 렌더링

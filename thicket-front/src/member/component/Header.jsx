@@ -61,7 +61,7 @@ export default function Header() {
             headers: {
                 "Authorization": localStorage.getItem('token')
             }
-        }).then(response =>{
+        }).then(response => {
             if (response.status === HttpStatusCode.Ok) {
                 localStorage.removeItem('token');
             }

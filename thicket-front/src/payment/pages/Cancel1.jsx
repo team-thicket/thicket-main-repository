@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Cancel2 from "./Cancel2";
 
-function Cancel( props ) {
+function Cancel1(props ) {
 
     const [ticket, setTicket] = useState([]);   // 예매 내역
 
@@ -62,14 +62,15 @@ function Cancel( props ) {
                             <h1 style={{ color: 'white'}}>취소 완료</h1>
                         </div>
                     </div>
-                    <div style={{ width: '80%', backgroundColor: 'lightgray', marginTop: '10px', padding: '5px', borderRadius: '12px', display: 'flex', justifyContent: 'space-around' }}>
+                    <div style={{ width: '80%', backgroundColor: 'lightgray', marginTop: '10px', padding: '10px', borderRadius: '12px', display: 'flex', justifyContent: 'space-around' }}>
                         <div>
                             <div>본 예매 내역을 취소하시겠습니까?</div>
                             <div>취소/환불 내역을 확인한 후 [예매취소하기] 버튼을 클릭해 주시기 바랍니다.</div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <div>
-                                <button onClick={handleCancel2Click}>예매취소하기</button>
+                                <button style={{padding: '4px 12px', color: 'white', backgroundColor: 'gray',
+                                                borderRadius: '4px', border: 'none'}} onClick={handleCancel2Click}>예매취소하기</button>
                             </div>
                         </div>
                     </div>
@@ -138,14 +139,14 @@ function Cancel( props ) {
                                         <td>환불금액</td>
                                         <th style={{ width: '250px', textAlign: 'left' }}>{parseInt(ticket.price * ticket.count).toLocaleString()}원</th>
                                     </tr>
-                                    <tr>
-                                        <td>환불계좌</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>String</th>
-                                    </tr>
-                                    <tr>
-                                        <td>예금주명</td>
-                                        <th style={{ width: '250px', textAlign: 'left' }}>{ticket.memberName}</th>
-                                    </tr>
+                                    {/*<tr>*/}
+                                    {/*    <td>환불계좌</td>*/}
+                                    {/*    <th style={{ width: '250px', textAlign: 'left' }}> - </th>*/}
+                                    {/*</tr>*/}
+                                    {/*<tr>*/}
+                                    {/*    <td>예금주명</td>*/}
+                                    {/*    <th style={{ width: '250px', textAlign: 'left' }}>{ticket.memberName}</th>*/}
+                                    {/*</tr>*/}
                                     </tbody>
                                 </table>
                             </div>
@@ -157,4 +158,4 @@ function Cancel( props ) {
     );
 }
 
-export default Cancel;
+export default Cancel1;
