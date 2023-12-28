@@ -113,8 +113,8 @@ public class BatchJob {
             RequestCreateTicketDto message = queue.poll();
             //메세지 sequence 입력
             message.setSequence(currentCount);
-            log.info(String.valueOf(message.getSequence()));
 
+            log.info(String.valueOf(message.getSequence()));
             // 처리된 메시지를 다시 Kafka로 전송
             kafkaProducer.send(message);
             Count--;
@@ -127,7 +127,6 @@ public class BatchJob {
                 //메세지 추출
                 RequestCreateTicketDto message = queue.poll();
                 message.setSequence(currentCount);
-                message.setStatus(Status.FAIL);
                 log.info(String.valueOf(message.getSequence()));
 
                 // 처리된 메시지를 다시 Kafka로 전송

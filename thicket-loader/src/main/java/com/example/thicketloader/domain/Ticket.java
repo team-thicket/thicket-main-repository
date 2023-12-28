@@ -54,6 +54,9 @@
         @Column(nullable = false)
         private LocalDateTime cancelDate;
 
+        @Column(nullable = false)
+        private LocalDateTime arriveServer;
+
         @Enumerated(EnumType.STRING)
         @Column(nullable = false)
         private Status status;
@@ -89,9 +92,8 @@
                                           String newChairType, int newCount, String newMemberName,
                                           String newPhone, int newPrice, LocalDateTime newCancelDate,
                                           UUID newStageId, UUID newMemberId, UUID newChairId, String newStageType,
-                                          int sequence, int latency, Long cts) {
+                                          int sequence, int latency, Long cts, LocalDateTime arriveServer) {
             Ticket ticket = new Ticket();
-
 
             ticket.deleted = false;
             ticket.stageName = newStageName;
@@ -108,10 +110,16 @@
             ticket.memberId = newMemberId;
             ticket.chairId=newChairId;
             ticket.stageType = newStageType;
-            ticket.status = Status.RESERVE;
             ticket.sequence=sequence;
             ticket.latency=latency;
             ticket.cts=cts;
+            ticket.arriveServer=arriveServer;
+
+            if(newCount>0){
+                ticket.status =Status.RESERVE;
+            }else{
+                ticket.status =Status.FAIL;
+            }
             return ticket;
         }
         public void updateDeleted(boolean deleted) {

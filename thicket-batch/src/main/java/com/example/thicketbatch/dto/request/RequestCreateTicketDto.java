@@ -35,6 +35,9 @@ public class RequestCreateTicketDto implements Comparable<RequestCreateTicketDto
     @NotBlank(message = "chairType cannot be empty")
     private String chairType;
 
+    @NotBlank(message = "arriveServer cannot be empty")
+    private LocalDateTime arriveServer;
+
     @NotNull(message = "count cannot be empty")
     private int count;
 
