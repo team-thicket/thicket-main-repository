@@ -77,7 +77,7 @@ public class TicketDto {
                 chairType, count,
                 memberName, phone, price,
                 cancelDate, stageId, memberId, chairId,
-                stageType, sequence, latency, cts, arriveServer
+                stageType, sequence, latency, cts, arriveServer,status
         );
 
     }

@@ -22,9 +22,11 @@ public class consume {
             TicketDto ticketDto = objectMapper.readValue(record.value(), TicketDto.class);
             // consume한 메세지
             System.out.println("Received message: " + ticketDto.toString());
+
             log.info(String.valueOf(ticketDto.getCts()));
             ticketDto.setMemberName(ticketService.findName(ticketDto.getMemberId()));
             ticketDto.setPhone(ticketService.findPhone(ticketDto.getMemberId()));
+
             //DB저장
             ticketService.save(ticketDto);
 
