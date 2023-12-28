@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+@Table(name = "member", schema = "thicket_local_db")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends TimeStamp {

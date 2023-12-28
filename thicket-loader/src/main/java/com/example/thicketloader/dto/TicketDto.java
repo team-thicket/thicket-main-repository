@@ -2,6 +2,7 @@ package com.example.thicketloader.dto;
 
 
 import com.example.thicketloader.domain.Ticket;
+import com.example.thicketloader.enumerate.Status;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -43,7 +44,6 @@ public class TicketDto {
     private int sequence;
     private String phone;
 
-    @NotNull(message = "cancelDate cannot be null")
     private LocalDateTime cancelDate;
 
     @NotNull(message = "stageId cannot be null")
@@ -58,22 +58,27 @@ public class TicketDto {
     @NotNull
     private int latency;
     // 추가된 필드
-    private String uuid;
+    @NotNull
+    private UUID uuid;
 
-    private LocalDateTime correctedTimestamp;
+    private Long cts;
 
     @NotNull(message = "chairId cannot be null")
     private UUID chairId;
 
+    private Status status;
+
+    @NotNull(message = "arriveServer cannot be null")
+    private LocalDateTime arriveServer;
 
     public Ticket toEntity() {
         return Ticket.createTicket(
-                stageName,place,date,
-                chairType,count,
-                memberName,phone,price,
-                cancelDate,stageId,memberId,chairId,
-                stageType,sequence,latency ,correctedTimestamp
-               );
+                stageName, place, date, uuid,
+                chairType, count,
+                memberName, phone, price,
+                cancelDate, stageId, memberId, chairId,
+                stageType, sequence, latency, cts, arriveServer
+        );
 
     }
 

@@ -16,7 +16,7 @@ import java.util.Date;
 @PropertySource("classpath:secretKey.properties")
 public class JwtTokenGenerator {
     // JWT의 유효기간
-    private final Integer accessTokenValidTime = 1000 * 60 * 30; // 30분
+    private final Integer accessTokenValidTime = 1000 * 60 * 60 * 24; // 하루
 
     // secretKey값을 디코딩한 결과를 저장하는 Key
     private Key key;
