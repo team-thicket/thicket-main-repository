@@ -388,9 +388,9 @@ const AdminCreateShow = () => {
                                     dateFormat="yyyy년 MM월 dd일"
                                     placeholderText="  날짜를 선택하세요."
                                     locale="ko"
-                                    maxDate={startDate} // 시작일 이전에서만 선택 가능
+                                    maxDate={startDate} // 시작일 이전만 선택 가능
                                     disabled={hasStartDate || hasShowId}
-                                    // 시작 날짜를 골라야지 예약 시작 날짜를 고를 수 있음.
+                                    // 시작 날짜를 골라야 예약 시작 날짜를 고를 수 있음.
                                 />
                                 <CalenderDiv onClick={() => ticketOpenPickerRef.current && ticketOpenPickerRef.current.setOpen(true)}>
                                     <CalendarSVG />
@@ -411,7 +411,7 @@ const AdminCreateShow = () => {
                                     placeholderText="  날짜를 선택하세요."
                                     locale="ko"
                                     minDate={startDate}
-                                    maxDate={endDate} // 시작일 이전에서만 선택 가능
+                                    maxDate={endDate} // 시작일 이전만 선택 가능
                                     disabled={hasEndDate || hasShowId}
                                 />
                                 <CalenderDiv onClick={() => lastTicketPickerRef.current && lastTicketPickerRef.current.setOpen(true)}>

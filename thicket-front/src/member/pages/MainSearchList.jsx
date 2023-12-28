@@ -1,6 +1,6 @@
 import {
     DivList1,
-    H1,
+    H1, H2,
     Img1,
     ImgInfo1,
     InvisibleScroll,
@@ -54,7 +54,7 @@ const ShowList = () => {
                     </Poster1>
                 ))
             ) : (
-                <H1>없습니다.　　　　　　　아니 그냥 없어요.</H1>
+                <H2> <br /> 검색 결과가 없습니다. </H2>
             )}
         </DivList1>
     );
