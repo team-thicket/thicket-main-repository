@@ -332,19 +332,21 @@ function ShowDetailPage() {
                                     <SideFont>회차</SideFont>
                                     {filteredTimes.length > 0 ? (
                                         <ButtonList>
-                                            {filteredTimes.map((time, index) => (
-                                                <ChoiceDiv
-                                                    key={index}
-                                                    selected={time === selectedTime}
-                                                    selectedTime={selectedTime}
-                                                    onClick={() => {
-                                                        handleTimeSelect(time)
-                                                        getChairInfo(time.stageId)
-                                                    }}
-                                                >
-                                                    {index + 1}회 {time.time}
-                                                </ChoiceDiv>
-                                            ))}
+                                            {filteredTimes
+                                                .sort((a, b) => a.time.localeCompare(b.time)) // Sort by time in ascending order
+                                                .map((time, index) => (
+                                                    <ChoiceDiv
+                                                        key={index}
+                                                        selected={time === selectedTime}
+                                                        selectedTime={selectedTime}
+                                                        onClick={() => {
+                                                            handleTimeSelect(time)
+                                                            getChairInfo(time.stageId)
+                                                        }}
+                                                    >
+                                                        {index + 1}회 {time.time}
+                                                    </ChoiceDiv>
+                                                ))}
                                         </ButtonList>
                                     ) : (
                                         <div style={{marginTop:'5px'}}>
