@@ -18,7 +18,7 @@ public class RequestCreateTicketDto implements Comparable<RequestCreateTicketDto
     public int sequence;
     private UUID id;
     @Column(nullable = false)
-    private Status status;
+    private String status;
 
     @NotBlank(message = "stageName cannot be empty")
     private String stageName;
@@ -55,7 +55,6 @@ public class RequestCreateTicketDto implements Comparable<RequestCreateTicketDto
 
     @NotNull(message = "memberId cannot be null")
     private String memberId;
-    @NotNull
 
     @NotNull(message = "chairId cannot be null")
     private String chairId;

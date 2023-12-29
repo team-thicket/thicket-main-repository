@@ -54,13 +54,12 @@
         @Column(nullable = false)
         private LocalDateTime cancelDate;
 
-        @Column(nullable = false)
+        @Column
         private LocalDateTime arriveServer;
 
-        @Enumerated(EnumType.STRING)
-        @Column(nullable = false)
+        @Enumerated(EnumType.STRING) // Enum 타입을 문자열로 저장
+        @Column
         private Status status;
-
         @Column
         private Long cts;
         @Column
@@ -92,7 +91,7 @@
                                           String newChairType, int newCount, String newMemberName,
                                           String newPhone, int newPrice, LocalDateTime newCancelDate,
                                           UUID newStageId, UUID newMemberId, UUID newChairId, String newStageType,
-                                          int sequence, int latency, Long cts, LocalDateTime arriveServer) {
+                                          int sequence, int latency, Long cts, LocalDateTime arriveServer,Status status) {
             Ticket ticket = new Ticket();
 
             ticket.deleted = false;
@@ -114,12 +113,7 @@
             ticket.latency=latency;
             ticket.cts=cts;
             ticket.arriveServer=arriveServer;
-
-            if(newCount>0){
-                ticket.status =Status.RESERVE;
-            }else{
-                ticket.status =Status.FAIL;
-            }
+            ticket.status=status;
             return ticket;
         }
         public void updateDeleted(boolean deleted) {

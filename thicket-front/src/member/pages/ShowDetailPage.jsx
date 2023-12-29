@@ -34,6 +34,7 @@ import Reservation from "../../payment/pages/Reservation";
 import {useNavigate} from "react-router-dom";
 
 function ShowDetailPage() {
+
     const [show, setShow] = useState([]);       // 공연정보
     const [times, setTimes] = useState([]);     // 공연정보-시간리스트
     const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
