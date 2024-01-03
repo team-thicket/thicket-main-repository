@@ -180,7 +180,7 @@ public class TicketServiceImpl implements TicketService{
 
         Ticket ticket = findTicket.get();
         //티켓 STATUS가 RESERVE 일 경우
-        if(ticket.getStatus().equals(Status.RESERVE)) {
+        if(ticket.getStatus().equals(Status.RESERVED)) {
             ticket.updateDeleted(true);
         }
         //티켓 상태가 PAY일경우

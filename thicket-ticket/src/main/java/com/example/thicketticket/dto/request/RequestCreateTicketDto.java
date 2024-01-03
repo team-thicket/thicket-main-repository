@@ -55,7 +55,7 @@ public class RequestCreateTicketDto {
 
     private String memberId;
 
-    @Enumerated(EnumType.STRING)
+
     private Status status;
 
     @NotNull
