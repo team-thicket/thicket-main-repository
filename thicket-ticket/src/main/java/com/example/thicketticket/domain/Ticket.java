@@ -102,7 +102,7 @@
             ticket.stageId = newStageId;
             ticket.memberId = newMemberId;
             ticket.stageType = newStageType;
-            ticket.status = Status.RESERVE;
+            ticket.status = Status.RESERVED;
             ticket.chairId=chairId;
             return ticket;
         }

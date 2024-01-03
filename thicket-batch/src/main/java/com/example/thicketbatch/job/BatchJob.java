@@ -58,6 +58,7 @@ public class BatchJob {
     //큐에 메세지 추가
     private void addToQueue(RequestCreateTicketDto message) {
         String chairId = message.getChairId();
+        log.info(chairId);
         groupedBychairId.computeIfAbsent(chairId, k -> new PriorityQueue<>()).offer(message);
         System.out.println("Added message to queue. chairId: " + chairId + ", Message: " + message);
     }
@@ -71,11 +72,8 @@ public class BatchJob {
             log.info(chairId);
             //chairId별 rank생성
             AtomicInteger rank = mCountMap.computeIfAbsent(chairId, k -> new AtomicInteger(0));
-
             //남은좌석조회,db의 availablecount 가져옴
             Integer count = chairRepository.findCountByChairId(UUID.fromString(chairId));
-            log.info(String.valueOf(count));
-
             producer(rank, queue, count, UUID.fromString(chairId));
 
         });
@@ -101,9 +99,9 @@ public class BatchJob {
             // 처리된 메시지를 다시 Kafka로 전송
             kafkaProducer.send(message);
             //chair db rank 업데이트
-
         }
         int availableCount = rank.get() > count ? -1 : count - rank.get();
         chairRepository.updateAvailableCountByChairId(chairId, availableCount);
+        chairRepository.flush();
     }
 }

@@ -7,6 +7,9 @@ spring:
 
   cloud:
     gateway:
+      httpclient:
+        pool:
+          max-connections: 10000
       routes:
         # member service 라우팅 설정
         - id: member-service
