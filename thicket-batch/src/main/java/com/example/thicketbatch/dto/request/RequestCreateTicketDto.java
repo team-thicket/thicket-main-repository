@@ -62,7 +62,6 @@ public class RequestCreateTicketDto implements Comparable<RequestCreateTicketDto
     @NotNull
     private boolean deleted;
 
-    @Column
     private LocalDateTime arriveServerTime;
 
     @NotNull
