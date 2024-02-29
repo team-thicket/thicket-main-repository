@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import ReactDOM from "react-dom";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
@@ -38,7 +38,7 @@ function ShowDetailPage() {
     const [show, setShow] = useState([]);       // 공연정보
     const [times, setTimes] = useState([]);     // 공연정보-시간리스트
     const [chairs, setChairs] = useState([]);   // 단일시간-좌석리스트
-    const [value, onChange] = useState(new Date());     // 달력
+    const [value, onChange] = useState(new Date());    // 달력
     const [filteredTimes, setFilteredTimes] = useState([]); // 시간필터링 (초단위 생략)
     const [selectedDate, setSelectedDate] = useState(null);     // 선택 날짜
     const [selectedTime, setSelectedTime] = useState(null);     // 선택 시간
@@ -47,12 +47,10 @@ function ShowDetailPage() {
     const [totalAmount, setTotalAmount] = useState(0);  // 선택된 좌석의 총 금액을 저장할 새로운 상태
     const [serverTime, setServerTime] = useState(Date);
     const [reservationWindow, setReservationWindow] = useState(null);
+    const [sortedLatencies, setSortedLatencies] = useState([]);
+    const [medianLatency, setMedianLatency] = useState(0);
     const navigate = useNavigate();
-    function calculateThreeDaysAgo(selectedDate, selectedTime) {
-        const selectedDateTime = new Date(`${selectedDate} ${selectedTime}`);
-        selectedDateTime.setDate(selectedDateTime.getDate() - 3);
-        return selectedDateTime;
-    }
+
     // 공연 상세 가져오기
     useEffect(() => { // 공연정보 (SELECT * FROM thicket_stage.stage; → id)
         // 현재 페이지의 url에서 공연 UUID 가져오기
@@ -136,7 +134,21 @@ function ShowDetailPage() {
       .then((data) => {
         setServerTime(new Date(data));
       });
+
+      let eventTime = serverTime;
+      fetch("/thicket-show/shows/serverTime")
+          .then(res => res.text())
+          .then(data => {
+              let latency = new Date(data)-eventTime;
+              sortedLatencies.push(latency);
+          });
+
+      let middle = Math.floor(sortedLatencies.length / 2);
+      setMedianLatency(sortedLatencies.length % 2 !== 0 ?
+          sortedLatencies[middle] :
+          (sortedLatencies[middle - 1] + sortedLatencies[middle]) / 2);
   };
+
 
   // 이하 예매 로직
   // 3일 전의 날짜를 계산하는 함수
@@ -162,7 +174,7 @@ function ShowDetailPage() {
         stageId: show.stageId,
         chairId: chairs[0].chairId,
         stageType: show.stageType,
-        latency: new Date() - serverTime,
+        latency: medianLatency,
       };
       console.log(reservationData);
       fetch("/thicket-ticket/reservations/ticket", {
@@ -402,7 +414,7 @@ function ShowDetailPage() {
                             </SideTop>
                             {new Date(show.ticketOpen) >= serverTime ? (
                                 <DisabledSideBottom>
-                                    {
+                                    오픈까지 : {
                                         waitTime(new Date(show.ticketOpen) - serverTime)
                                     }
                                 </DisabledSideBottom>
