@@ -46,7 +46,6 @@ public class TicketServiceImpl implements TicketService{
     //생성
     @Override
     @Transactional
-
     public CompletableFuture<String> createTicket(RequestCreateTicketDto ticketDto,UUID memberId) {
         // 현재 서버 시간
         Instant currentTime = Instant.now();
